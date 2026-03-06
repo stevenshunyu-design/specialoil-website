@@ -6,9 +6,8 @@ import { toast } from 'sonner';
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
-  const { posts, getPostById, isAuthenticated } = useBlog();
+  const { posts, getPostById, isAuthenticated, isLoading: blogLoading } = useBlog();
   const [post, setPost] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   // 提取文章中的第一张图片作为og:image
@@ -17,24 +16,26 @@ const BlogPost = () => {
   }, [post]);
 
   useEffect(() => {
+    // 等待 posts 加载完成
+    if (blogLoading) return;
+    
     if (id) {
       const foundPost = getPostById(id);
       if (foundPost) {
         setPost(foundPost);
       } else {
-        toast.error('未找到该文章');
+        toast.error('Article not found');
         navigate('/blog');
       }
     }
-    setIsLoading(false);
-  }, [id, getPostById, navigate]);
+  }, [id, getPostById, navigate, blogLoading, posts]);
 
-  if (isLoading) {
+  if (blogLoading) {
     return (
       <div className="min-h-screen bg-white pt-24 pb-16 flex items-center justify-center">
         <div className="text-center">
           <i className="fa-solid fa-spinner fa-spin text-4xl text-[#D4AF37] mb-4"></i>
-          <p className="text-xl text-[#333333]">加载中...</p>
+          <p className="text-xl text-[#333333]">Loading...</p>
         </div>
       </div>
     );
