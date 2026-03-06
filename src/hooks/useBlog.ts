@@ -11,46 +11,73 @@ const defaultBlogPosts: BlogPost[] = [
   {
     id: '1',
     title: '2025 China Special Oil Market Report: Industry Reaches ¥3,862 Billion',
-    excerpt: 'China\'s special oil industry market size reached 3,862 billion RMB in 2024, with exports growing 12% year-on-year. Analysis of production capacity, regional distribution, and future trends.',
+    excerpt: 'China\'s special oil industry market size reached 3,862 billion RMB in 2024, with exports growing 12% year-on-year. Comprehensive analysis of production capacity, regional distribution, and future trends.',
     content: `
       <h2>2025 China Special Oil Industry Market Overview</h2>
-      <p>According to the latest industry reports, China's special oil industry reached a market size of <strong>3,862 billion RMB in 2024</strong>, representing a 7.9% year-on-year growth. This growth is primarily driven by domestic demand from new energy, new materials, and high-end manufacturing sectors.</p>
+      <p>According to the latest industry reports from GEP Research and China Petroleum and Chemical Industry Federation, China's special oil industry reached a market size of <strong>¥3,862 billion in 2024</strong>, representing a 7.9% year-on-year growth. This growth is primarily driven by domestic demand from new energy, new materials, and high-end manufacturing sectors.</p>
       
       <h3>Market Structure by Product Category</h3>
+      <p>The product structure shows clear segmentation:</p>
       <ul>
-        <li><strong>Lubricants:</strong> 42.3% market share (~¥1,635 billion)</li>
-        <li><strong>Special Fuels:</strong> 31.5% market share (~¥1,217 billion)</li>
-        <li><strong>Special Asphalt:</strong> 18.7% market share (~¥722 billion)</li>
-        <li><strong>Other Special Oils:</strong> 7.5% market share (~¥290 billion)</li>
+        <li><strong>Special Lubricants:</strong> 42.3% market share (~¥1,635 billion), growing at 6.4% annually</li>
+        <li><strong>Special Fuels:</strong> 31.5% market share (~¥1,217 billion), with 9.2% growth expected</li>
+        <li><strong>Special Asphalt:</strong> 18.7% market share (~¥722 billion), 8.2% annual growth</li>
+        <li><strong>Special Wax:</strong> 7.5% market share (~¥290 billion), fastest growing at 9.5%</li>
       </ul>
       
       <h3>Regional Distribution</h3>
-      <p>Production is concentrated in three major regions:</p>
+      <p>Production is concentrated in three major industrial clusters:</p>
       <ul>
-        <li><strong>East China:</strong> 42.5% (¥1,641 billion) - Leading region with strong industrial base</li>
-        <li><strong>South China:</strong> 23.1% (¥892 billion) - Major export hub</li>
-        <li><strong>North China:</strong> 19.8% (¥765 billion) - Traditional production base</li>
+        <li><strong>East China (Bohai Bay Rim):</strong> 42.5% (¥1,641 billion) - Leading region with strong petrochemical base, accounts for 65% of transformer oil production</li>
+        <li><strong>South China (Pearl River Delta):</strong> 23.1% (¥892 billion) - Major export hub, 35% of exports go through this region</li>
+        <li><strong>North China (Yangtze River Delta):</strong> 19.8% (¥765 billion) - Traditional production base for specialty lubricants</li>
+        <li><strong>Southwest & Northwest:</strong> Growing at 9.3% and 8.7% respectively, driven by industrial relocation policies</li>
       </ul>
       
       <h3>Export Performance</h3>
-      <p>2024 export value reached <strong>¥487 billion</strong>, an 11.2% increase from 2023. Top export destinations include:</p>
+      <p>2024 export value reached <strong>¥487 billion</strong>, an 11.2% increase from 2023. Key export data:</p>
       <ul>
-        <li>Southeast Asia (Vietnam, Indonesia, Thailand)</li>
-        <li>Middle East (UAE, Saudi Arabia)</li>
-        <li>Africa (Nigeria, South Africa)</li>
-        <li>Europe (Germany, Netherlands)</li>
+        <li><strong>Southeast Asia:</strong> 35% of exports (Vietnam, Indonesia, Thailand, Malaysia)</li>
+        <li><strong>Europe:</strong> 28% of exports (Germany, Netherlands, Italy, France)</li>
+        <li><strong>North America:</strong> 18% of exports (USA, Canada, Mexico)</li>
+        <li><strong>Middle East:</strong> 12% of exports (UAE, Saudi Arabia, Qatar)</li>
+        <li><strong>Africa:</strong> 7% of exports (Nigeria, South Africa, Egypt)</li>
       </ul>
       
-      <h3>Market Leaders</h3>
-      <p>The industry is dominated by state-owned enterprises, with Sinopec, PetroChina, and CNOOC controlling over 65% of the market. Private companies like Hengli Petrochemical and Rongsheng Petrochemical are rapidly gaining market share in specialty segments.</p>
+      <h3>Market Leaders & Competition</h3>
+      <p>The industry is dominated by state-owned enterprises with increasing private sector participation:</p>
+      <ul>
+        <li><strong>Sinopec:</strong> 32.4% market share, leader in lubricants and special wax</li>
+        <li><strong>PetroChina:</strong> 21.7% market share, strong in asphalt modifiers</li>
+        <li><strong>CNOOC:</strong> 11.3% market share, offshore production advantage</li>
+        <li><strong>Private Companies (Hengli, Rongsheng):</strong> Combined 20%+ market share, growing rapidly</li>
+      </ul>
+      
+      <h3>Technology & Innovation</h3>
+      <p>2024 R&D investment reached ¥12.7 billion, 10.4% year-on-year growth. Key focus areas:</p>
+      <ul>
+        <li>Bio-based synthetic oils - capacity expected to reach 15% by 2025</li>
+        <li>Nanotechnology additives - extending oil life by 30%+</li>
+        <li>Smart lubrication systems - IoT-enabled monitoring reducing failures by 20%</li>
+      </ul>
       
       <h3>2025-2026 Outlook</h3>
       <p>Industry experts project continued growth with market size expected to reach <strong>¥4,127 billion in 2025</strong> (6.8% growth). Key growth drivers include:</p>
       <ul>
-        <li>Wind power lubricants demand growing at 12% annually</li>
-        <li>EV thermal management fluids demand surging 25%+</li>
+        <li>Wind power lubricants demand growing at 12% annually (market size: ¥8.5 billion)</li>
+        <li>EV thermal management fluids demand surging 25%+ (projected ¥12 billion market)</li>
         <li>Semiconductor-grade industrial lubricants growing 18%</li>
         <li>Aerospace hydraulic oil penetration rising from 32% to 40%</li>
+        <li>Bio-based special oils projected to reach 15% of total production</li>
+      </ul>
+      
+      <h3>Policy Support</h3>
+      <p>Government policies driving industry development:</p>
+      <ul>
+        <li>"Dual Carbon" goals pushing green transformation</li>
+        <li>Used oil recycling mandate effective 2025 (target: 450 million tons capacity)</li>
+        <li>Tax incentives for high-performance lubricant development</li>
+        <li>VAT rebate of 13% for green tire rubber process oils</li>
       </ul>
     `,
     category: 'Industry News',
@@ -62,46 +89,83 @@ const defaultBlogPosts: BlogPost[] = [
   {
     id: '2',
     title: 'Transformer Oil: China\'s Export Breakthrough to Singapore',
-    excerpt: 'Yanshan Petrotherapy successfully exported transformer oil to Singapore in December 2024, marking a milestone for Chinese special oil exports.',
+    excerpt: 'Yanshan Petrochemical successfully exported 40 tons of transformer oil to Singapore in December 2024, marking a historic milestone for Chinese special oil exports.',
     content: `
       <h2>Historic Export Achievement</h2>
-      <p>On December 16, 2024, <strong>Yanshan Petrochemical (Sinopec)</strong> successfully exported 40 tons of transformer oil to Singapore via Tianjin Port. This marks the first time Chinese transformer oil has entered the overseas market through the "processing trade for re-export" model.</p>
+      <p>On December 16, 2024, <strong>Yanshan Petrochemical (Sinopec)</strong> successfully exported 40 tons of transformer oil to Singapore via Tianjin Port. This marks the first time Chinese transformer oil has entered the overseas market through the "processing trade for re-export" model, signifying a major breakthrough for China's high-end special oil exports.</p>
       
       <h3>Technical Excellence</h3>
-      <p>The transformer oil produced by Yanshan Petrochemical's lubricant hydrogenation unit demonstrates quality metrics comparable to international brands:</p>
+      <p>The transformer oil produced by Yanshan Petrochemical's lubricant hydrogenation unit demonstrates quality metrics comparable to international premium brands:</p>
       <ul>
-        <li><strong>Dielectric Strength:</strong> >70kV (exceeds international standards)</li>
-        <li><strong>Evaporation Loss:</strong> Meets premium grade specifications</li>
+        <li><strong>Dielectric Strength:</strong> >70kV (exceeds IEC 60296 standard of 30kV minimum)</li>
+        <li><strong>Evaporation Loss:</strong> Meets premium grade specifications, ensuring long service life</li>
         <li><strong>Viscosity Index:</strong> Comparable to leading international brands</li>
-        <li><strong>Pour Point:</strong> -45°C for premium grades</li>
+        <li><strong>Pour Point:</strong> -45°C for premium grades (suitable for extreme cold regions)</li>
+        <li><strong>Sulfur Content:</strong> <0.5% naturally low, superior copper corrosion protection</li>
       </ul>
       
-      <h3>China Transformer Oil Market</h3>
-      <p>The Chinese transformer oil market reached <strong>636,000 tons in demand in 2020</strong>, with consistent annual growth. Key market characteristics:</p>
+      <h3>China Transformer Oil Market Overview</h3>
+      <p>The Chinese transformer oil market has shown consistent growth:</p>
       <ul>
-        <li>Mineral oil-based transformer oil dominates (>90% market share)</li>
-        <li>Synthetic and bio-based transformer oils gaining traction</li>
-        <li>Ultra-high voltage transformer applications driving premium segment</li>
+        <li><strong>2020 Market Demand:</strong> 636,000 tons</li>
+        <li><strong>Annual Growth Rate:</strong> ~5-7% projected through 2026</li>
+        <li><strong>Market Value:</strong> Estimated ¥8.5 billion by 2025</li>
+      </ul>
+      
+      <h3>Product Classification (GB 2536 Standard)</h3>
+      <p>Chinese transformer oils are classified by pour point:</p>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Grade</th>
+          <th style="border:1px solid #ddd;padding:10px;">Pour Point</th>
+          <th style="border:1px solid #ddd;padding:10px;">Application Region</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">DB-10 (10#)</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤-10°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">Yangtze River basin and south</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">DB-25 (25#)</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤-25°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">Yellow River basin, central China</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">DB-45 (45#)</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤-45°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">Northwest, Northeast regions</td>
+        </tr>
+      </table>
+      
+      <h3>Technical Standards Comparison</h3>
+      <p>GB 2536-2025 (new Chinese standard) vs International Standards:</p>
+      <ul>
+        <li><strong>DIELECTRIC STRENGTH:</strong> GB ≥35kV vs IEC ≥30kV vs ASTM ≥30kV</li>
+        <li><strong>FLASH POINT:</strong> GB ≥140°C vs IEC ≥135°C vs ASTM ≥145°C</li>
+        <li><strong>VISCOSITY at 40°C:</strong> All standards ≤12mm²/s</li>
+        <li><strong>ACID VALUE:</strong> GB ≤0.03mgKOH/g vs IEC ≤0.01mgKOH/g</li>
       </ul>
       
       <h3>Major Producers</h3>
       <p>China's transformer oil industry is led by:</p>
       <ul>
-        <li><strong>PetroChina:</strong> Market leader in transformer oil production</li>
-        <li><strong>Sinopec:</strong> Premium quality transformer oil through Yanshan Petrochemical</li>
-        <li><strong>Shuangjiang Energy:</strong> Emerging player in special transformer oils</li>
-        <li><strong>GaoKe Petrochemical:</strong> Regional market strength</li>
+        <li><strong>PetroChina (Kunlun):</strong> Market leader with extensive distribution network</li>
+        <li><strong>Sinopec (Great Wall):</strong> Premium quality through Yanshan Petrochemical</li>
+        <li><strong>Shuangjiang Energy:</strong> Emerging player in specialty transformer oils</li>
+        <li><strong>GaoKe Petrochemical:</strong> Regional market strength in Northeast China</li>
+        <li><strong>Huajin Share:</strong> Growing presence in ultra-high voltage applications</li>
       </ul>
       
       <h3>Strategic Significance</h3>
-      <p>This export breakthrough demonstrates that Chinese transformer oil has achieved international quality standards. The successful export opens new opportunities for Chinese special oil products in global markets, particularly in Southeast Asia where power infrastructure development is accelerating.</p>
+      <p>This export breakthrough demonstrates that Chinese transformer oil has achieved international quality standards. Yanshan Petrochemical had previously exported HVI II+ and HVI III base oils to Singapore in January and August 2024, laying the groundwork for transformer oil exports. The successful export opens new opportunities for Chinese special oil products in global markets, particularly in Southeast Asia where power infrastructure development is accelerating.</p>
       
       <h3>Future Outlook</h3>
-      <p>With the growing demand for power infrastructure globally, especially in emerging markets, Chinese transformer oil producers are well-positioned to capture increasing market share. The industry is focusing on:</p>
+      <p>With the growing demand for power infrastructure globally, Chinese transformer oil producers are well-positioned to capture increasing market share:</p>
       <ul>
-        <li>Ultra-high voltage applications (1100kV+)</li>
-        <li>Eco-friendly biodegradable transformer oils</li>
-        <li>Smart grid compatible products</li>
+        <li>Ultra-high voltage applications (1100kV+) driving premium segment</li>
+        <li>Eco-friendly biodegradable transformer oils gaining market acceptance</li>
+        <li>Smart grid compatible products with online monitoring capabilities</li>
+        <li>Export growth projected at 15%+ annually through 2030</li>
       </ul>
     `,
     category: 'Industry News',
@@ -113,61 +177,141 @@ const defaultBlogPosts: BlogPost[] = [
   {
     id: '3',
     title: 'Technical Guide: Chinese vs International Transformer Oil Standards',
-    excerpt: 'Comprehensive comparison of Chinese transformer oil specifications against international standards including IEC 60296, ASTM D3487, and DIN standards.',
+    excerpt: 'Comprehensive comparison of Chinese transformer oil specifications against IEC 60296, ASTM D3487, and DIN standards for international buyers.',
     content: `
       <h2>Standards Comparison Overview</h2>
-      <p>Understanding the technical specifications and standards is crucial for international buyers. This guide compares Chinese transformer oil standards with major international specifications.</p>
+      <p>Understanding the technical specifications and standards is crucial for international buyers sourcing transformer oil from China. This guide provides a detailed comparison of Chinese transformer oil standards (GB 2536) with major international specifications.</p>
       
       <h3>Key International Standards</h3>
       <ul>
         <li><strong>IEC 60296:</strong> International Electrotechnical Commission standard for unused transformer oils</li>
-        <li><strong>ASTM D3487:</strong> American Society for Testing and Materials standard</li>
-        <li><strong>DIN 57370:</strong> German standard for transformer oils</li>
-        <li><strong>GB 2536:</strong> Chinese national standard (equivalent to IEC 60296)</li>
+        <li><strong>ASTM D3487:</strong> American Society for Testing and Materials standard for mineral insulating oil</li>
+        <li><strong>DIN 57370:</strong> German standard for transformer oils in electrical equipment</li>
+        <li><strong>GB 2536-2025:</strong> Chinese national standard (effective July 2026), aligned with IEC 60296</li>
       </ul>
       
-      <h3>Technical Parameters Comparison</h3>
-      <table>
-        <tr><th>Parameter</th><th>GB 2536 (China)</th><th>IEC 60296</th><th>ASTM D3487</th></tr>
-        <tr><td>Dielectric Strength</td><td>≥35kV</td><td>≥30kV</td><td>≥30kV</td></tr>
-        <tr><td>Pour Point</td><td>≤-40°C</td><td>≤-40°C</td><td>≤-40°C</td></tr>
-        <tr><td>Flash Point</td><td>≥140°C</td><td>≥135°C</td><td>≥145°C</td></tr>
-        <tr><td>Viscosity at 40°C</td><td>≤12mm²/s</td><td>≤12mm²/s</td><td>≤12mm²/s</td></tr>
-        <tr><td>Acid Value</td><td>≤0.03mgKOH/g</td><td>≤0.01mgKOH/g</td><td>≤0.03mgKOH/g</td></tr>
+      <h3>Detailed Technical Parameters Comparison</h3>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Parameter</th>
+          <th style="border:1px solid #ddd;padding:10px;">GB 2536-2025</th>
+          <th style="border:1px solid #ddd;padding:10px;">IEC 60296</th>
+          <th style="border:1px solid #ddd;padding:10px;">ASTM D3487</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Dielectric Strength</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥35kV</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥30kV</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥30kV</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Pour Point</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤-40°C (45#)</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤-40°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤-40°C</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Flash Point</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥140°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥135°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥145°C</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Viscosity at 40°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤12mm²/s</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤12mm²/s</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤12mm²/s</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Acid Value</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤0.03mgKOH/g</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤0.01mgKOH/g</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤0.03mgKOH/g</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Interfacial Tension</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥40mN/m</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥40mN/m</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥40mN/m</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Water Content</td>
+          <td style="border:1px solid #ddd;padding:10px;">Report</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤30mg/kg</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤35mg/kg</td>
+        </tr>
       </table>
       
-      <h3>Chinese Premium Products</h3>
-      <p>Leading Chinese manufacturers produce transformer oils that exceed standard requirements:</p>
+      <h3>Chinese Premium Products Performance</h3>
+      <p>Leading Chinese manufacturers produce transformer oils that significantly exceed standard requirements:</p>
       <ul>
-        <li><strong>Dielectric Strength:</strong> Premium Chinese oils achieve >70kV (vs standard 35kV)</li>
-        <li><strong>Pour Point:</strong> Premium grades reach -60°C for extreme cold applications</li>
-        <li><strong>Oxidation Stability:</strong> 3000+ hours in oxidation tests</li>
+        <li><strong>Dielectric Strength:</strong> Premium Chinese oils achieve >70kV (vs standard 35kV requirement) - double the minimum</li>
+        <li><strong>Pour Point:</strong> Premium grades reach -60°C for extreme cold applications in Arctic regions</li>
+        <li><strong>Oxidation Stability:</strong> 3000+ hours in rotary bomb oxidation tests (ASTM D2272)</li>
+        <li><strong>Dissolved Gas Analysis:</strong> Stringent quality control with gas chromatography testing</li>
       </ul>
       
-      <h3>Type Classification</h3>
-      <p>Chinese transformer oils are classified into:</p>
+      <h3>Type Classification System</h3>
+      <p>Chinese transformer oils are classified into three types based on oxidation stability:</p>
       <ul>
-        <li><strong>Type I (General):</strong> Standard applications, most cost-effective</li>
-        <li><strong>Type II (Premium):</strong> Enhanced oxidation stability for longer service life</li>
-        <li><strong>Type III (Special):</strong> Ultra-high voltage applications, superior electrical properties</li>
+        <li><strong>Type I (General):</strong> Standard applications, most cost-effective, suitable for 110kV and below</li>
+        <li><strong>Type II (Premium):</strong> Enhanced oxidation stability for longer service life, suitable for 220-500kV</li>
+        <li><strong>Type III (Special):</strong> Ultra-high voltage applications (500kV+), superior electrical properties</li>
       </ul>
       
-      <h3>Quality Assurance</h3>
+      <h3>Quality Assurance Systems</h3>
       <p>Chinese manufacturers have implemented rigorous quality control systems:</p>
       <ul>
-        <li>ISO 9001 Quality Management certification</li>
-        <li>ISO 14001 Environmental Management certification</li>
-        <li>Third-party testing by SGS, BV, and other international labs</li>
-        <li>Full traceability from crude oil source to final product</li>
+        <li><strong>ISO 9001:</strong> Quality Management certification (all major producers)</li>
+        <li><strong>ISO 14001:</strong> Environmental Management certification</li>
+        <li><strong>ISO 45001:</strong> Occupational Health and Safety certification</li>
+        <li><strong>Third-party Testing:</strong> SGS, BV, Intertek verification available</li>
+        <li><strong>Full Traceability:</strong> From crude oil source to final product delivery</li>
       </ul>
       
-      <h3>Recommendations for Buyers</h3>
-      <p>When sourcing transformer oil from China:</p>
+      <h3>Recommended Testing Before Purchase</h3>
+      <p>International buyers should request:</p>
+      <ol>
+        <li>Certificate of Analysis (COA) for each batch with full test results</li>
+        <li>Dissolved Gas Analysis (DGA) baseline data</li>
+        <li>Furan content analysis for aging assessment</li>
+        <li>PCB content certification (must be PCB-free)</li>
+        <li>Sample testing at independent laboratory before bulk orders</li>
+      </ol>
+      
+      <h3>Common Issues and Solutions</h3>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Issue</th>
+          <th style="border:1px solid #ddd;padding:10px;">Possible Cause</th>
+          <th style="border:1px solid #ddd;padding:10px;">Solution</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Low dielectric strength</td>
+          <td style="border:1px solid #ddd;padding:10px;">Moisture contamination</td>
+          <td style="border:1px solid #ddd;padding:10px;">Vacuum dehydration treatment</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">High acidity</td>
+          <td style="border:1px solid #ddd;padding:10px;">Oxidation degradation</td>
+          <td style="border:1px solid #ddd;padding:10px;">Fuller's earth treatment or replacement</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">High dissolved gases</td>
+          <td style="border:1px solid #ddd;padding:10px;">Thermal/electrical faults</td>
+          <td style="border:1px solid #ddd;padding:10px;">DGA investigation, degasification</td>
+        </tr>
+      </table>
+      
+      <h3>Purchasing Recommendations</h3>
+      <p>For international buyers:</p>
       <ol>
         <li>Request Certificate of Analysis (COA) for each batch</li>
         <li>Verify compliance with destination country standards</li>
-        <li>Consider Type II or III products for critical applications</li>
-        <li>Request sample testing before bulk orders</li>
+        <li>Consider Type II or III products for critical/high-voltage applications</li>
+        <li>Request sample testing before bulk orders (minimum 1L sample)</li>
+        <li>Ensure proper documentation for customs clearance</li>
+        <li>Consider logistics: proper container sealing and moisture protection during transport</li>
       </ol>
     `,
     category: 'Technical Information',
@@ -179,62 +323,108 @@ const defaultBlogPosts: BlogPost[] = [
   {
     id: '4',
     title: 'Green Transition: Bio-based Special Oils Gain Momentum in China',
-    excerpt: 'China\'s special oil industry is accelerating the development of bio-based products, with capacity expected to reach 15% of total production by 2025.',
+    excerpt: 'China\'s special oil industry is accelerating the development of bio-based products, with capacity expected to reach 15% of total production by 2025 under "Dual Carbon" goals.',
     content: `
       <h2>Sustainability Drive in Special Oil Industry</h2>
-      <p>Under China's "Dual Carbon" goals (carbon peak by 2030, carbon neutral by 2060), the special oil industry is undergoing a significant green transformation. Bio-based special oils are emerging as a key growth segment.</p>
+      <p>Under China's "Dual Carbon" goals (carbon peak by 2030, carbon neutral by 2060), the special oil industry is undergoing a significant green transformation. Bio-based special oils are emerging as a key growth segment, with production capacity projected to reach <strong>15% of total output by 2025</strong>.</p>
       
-      <h3>Current Status</h3>
+      <h3>Current Development Status</h3>
       <p>Key developments in China's sustainable special oil sector:</p>
       <ul>
-        <li><strong>Bio-based oils:</strong> Palm oil derivative special oils projected to reach 15% of total capacity by 2025</li>
-        <li><strong>Carbon reduction:</strong> Leading producers achieving 20% reduction in carbon emissions</li>
-        <li><strong>Recycling:</strong> Used oil re-refining capacity reaching 35% of total used oil volume</li>
-        <li><strong>Green certifications:</strong> ISO 14001 certification increasing among major producers</li>
+        <li><strong>Bio-based oils:</strong> Palm oil derivative special oils projected to reach 15% capacity share by 2025</li>
+        <li><strong>Carbon reduction:</strong> Leading producers achieving 20% reduction in carbon emissions through process optimization</li>
+        <li><strong>Waste oil recycling:</strong> Used oil re-refining capacity reaching 450 million tons annually by 2025</li>
+        <li><strong>Circular economy:</strong> Forming a ¥120 billion used oil recycling market</li>
       </ul>
       
       <h3>Bio-based Transformer Oil Development</h3>
-      <p>Chinese research institutions and companies are developing:</p>
+      <p>Chinese research institutions and companies are actively developing bio-based transformer oils:</p>
       <ul>
-        <li>Natural ester-based transformer oils (vegetable oil derivatives)</li>
-        <li>Synthetic ester transformer oils for high-temperature applications</li>
-        <li>High oleic vegetable oil formulations with improved oxidation stability</li>
+        <li><strong>Natural Ester (Vegetable Oil-based):</strong> Made from soybean, rapeseed, or sunflower oil</li>
+        <li><strong>Synthetic Ester:</strong> For high-temperature applications with superior thermal stability</li>
+        <li><strong>High Oleic Formulations:</strong> Improved oxidation stability with oleic acid content >80%</li>
       </ul>
       
-      <h3>Environmental Benefits</h3>
-      <p>Bio-based special oils offer significant advantages:</p>
+      <h3>Environmental Benefits Comparison</h3>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Property</th>
+          <th style="border:1px solid #ddd;padding:10px;">Mineral Oil</th>
+          <th style="border:1px solid #ddd;padding:10px;">Natural Ester</th>
+          <th style="border:1px solid #ddd;padding:10px;">Synthetic Ester</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Flash Point</td>
+          <td style="border:1px solid #ddd;padding:10px;">~140°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">>300°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">>250°C</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Biodegradability</td>
+          <td style="border:1px solid #ddd;padding:10px;">Low</td>
+          <td style="border:1px solid #ddd;padding:10px;">>98%</td>
+          <td style="border:1px solid #ddd;padding:10px;">>80%</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Carbon Footprint</td>
+          <td style="border:1px solid #ddd;padding:10px;">Baseline</td>
+          <td style="border:1px solid #ddd;padding:10px;">-80%</td>
+          <td style="border:1px solid #ddd;padding:10px;">-60%</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Aquatic Toxicity</td>
+          <td style="border:1px solid #ddd;padding:10px;">Moderate</td>
+          <td style="border:1px solid #ddd;padding:10px;">Non-toxic</td>
+          <td style="border:1px solid #ddd;padding:10px;">Low</td>
+        </tr>
+      </table>
+      
+      <h3>Regulatory Support Framework</h3>
+      <p>Chinese government policies driving green transformation:</p>
       <ul>
-        <li><strong>Biodegradability:</strong> >60% degradation within 28 days (OECD 301B test)</li>
-        <li><strong>Lower toxicity:</strong> Safer for aquatic environments</li>
-        <li><strong>Higher flash point:</strong> >300°C vs ~140°C for mineral oils</li>
-        <li><strong>Reduced carbon footprint:</strong> Up to 80% lower lifecycle emissions</li>
+        <li><strong>Mandatory Used Oil Recycling Standards:</strong> Effective 2025, requiring certified treatment of all used industrial oils</li>
+        <li><strong>Tax Incentives:</strong> 13% VAT rebate for bio-based special oil products</li>
+        <li><strong>Carbon Subsidies:</strong> Support for carbon reduction technology investments</li>
+        <li><strong>Green Product Certification:</strong> National program for environmental labeling</li>
+        <li><strong>Extended Producer Responsibility:</strong> Manufacturers responsible for end-of-life product management</li>
       </ul>
       
-      <h3>Regulatory Support</h3>
-      <p>Chinese government policies supporting green transition:</p>
+      <h3>Industry Applications</h3>
+      <p>Bio-based special oils are finding applications in:</p>
       <ul>
-        <li>Mandatory used oil recycling standards effective 2025</li>
-        <li>Tax incentives for bio-based product development</li>
-        <li>Subsidies for carbon reduction technologies</li>
-        <li>Green product certification programs</li>
+        <li><strong>Wind Turbines:</strong> Biodegradable lubricants for offshore and remote installations</li>
+        <li><strong>Marine Applications:</strong> MARPOL compliance for environmentally sensitive waters</li>
+        <li><strong>Food Processing:</strong> H1 certified food-grade lubricants</li>
+        <li><strong>Indoor Installations:</strong> Transformers in buildings requiring fire safety</li>
+        <li><strong>Water Source Areas:</strong> Environmental protection requirements</li>
       </ul>
       
-      <h3>Market Opportunities</h3>
-      <p>International buyers can benefit from:</p>
+      <h3>Key Industry Players</h3>
+      <p>Companies leading the green transition:</p>
+      <ul>
+        <li><strong>Sinopec:</strong> Developing bio-based transformer oil series</li>
+        <li><strong>PetroChina (Kunlun):</strong> Researching synthetic ester formulations</li>
+        <li><strong>CNOOC:</strong> Marine biodegradable lubricants focus</li>
+        <li><strong>Hengli Petrochemical:</strong> "Photovoltaic + Hydrogen" carbon reduction pathway</li>
+      </ul>
+      
+      <h3>International Buyer Benefits</h3>
+      <p>Global buyers sourcing green special oils from China benefit from:</p>
       <ul>
         <li>Access to environmentally friendly products for ESG compliance</li>
-        <li>Bio-based oils for sensitive applications (water sources, food processing)</li>
-        <li>Support for corporate sustainability reporting</li>
-        <li>Compliance with increasingly strict environmental regulations</li>
+        <li>Support for corporate sustainability reporting and carbon accounting</li>
+        <li>Bio-based oils for sensitive applications near water sources</li>
+        <li>Compliance with increasingly strict environmental regulations in EU, US, and other markets</li>
+        <li>Competitive pricing vs Western bio-based alternatives</li>
       </ul>
       
-      <h3>Future Outlook</h3>
-      <p>The Chinese bio-based special oil market is expected to grow at 25%+ annually through 2030. Key growth areas include:</p>
+      <h3>Future Outlook (2025-2030)</h3>
+      <p>The Chinese bio-based special oil market is expected to grow at <strong>25%+ annually through 2030</strong>. Key developments:</p>
       <ul>
-        <li>Wind turbine lubricants (bio-degradable requirements)</li>
-        <li>Marine applications (MARPOL compliance)</li>
-        <li>Food-grade lubricants (H1 certification)</li>
-        <li>Electrical insulation fluids for indoor applications</li>
+        <li>Bio-based content requirements in public procurement</li>
+        <li>Integration with renewable energy projects</li>
+        <li>Development of second-generation feedstocks (non-food sources)</li>
+        <li>International certification harmonization (EU Ecolabel, US EPA)</li>
       </ul>
     `,
     category: 'Industry News',
@@ -246,62 +436,110 @@ const defaultBlogPosts: BlogPost[] = [
   {
     id: '5',
     title: 'Rubber Process Oil: China\'s Naphthenic Oil Advantage',
-    excerpt: 'Chinese naphthenic rubber process oils offer high solvency (Cn% > 35%) and low PAH content meeting EU REACH requirements, at competitive prices.',
+    excerpt: 'Chinese naphthenic rubber process oils offer high solvency (Cn% > 35%) and low PAH content meeting EU REACH requirements, with 15-25% cost advantage.',
     content: `
-      <h2>Rubber Process Oil Overview</h2>
-      <p>Rubber process oil (RPO) is a critical component in tire manufacturing and rubber product production. China has emerged as a major supplier of high-quality naphthenic rubber process oils with distinct technical advantages.</p>
+      <h2>Rubber Process Oil Market Overview</h2>
+      <p>Rubber process oil (RPO) is a critical component in tire manufacturing and rubber product production. China has emerged as a major supplier of high-quality naphthenic rubber process oils, with the market size reaching <strong>¥36.8 billion in 2025</strong>, projected to grow to ¥52 billion by 2030 at 7.1% CAGR.</p>
       
       <h3>Types of Rubber Process Oil</h3>
-      <ul>
-        <li><strong>Naphthenic RPO:</strong> High solvency, excellent compatibility with synthetic rubbers</li>
-        <li><strong>Paraffinic RPO:</strong> Good color stability, suitable for light-colored products</li>
-        <li><strong>Aromatic RPO:</strong> High solvency, traditional choice for tire manufacturing</li>
-        <li><strong>Treated Distillate Aromatic Extract (TDAE):</strong> Low PAH alternative to aromatic RPO</li>
-      </ul>
-      
-      <h3>Chinese Naphthenic Oil Advantages</h3>
-      <p>Chinese naphthenic rubber process oils offer:</p>
-      <ul>
-        <li><strong>High solvency power:</strong> Cn% > 35% (excellent compatibility)</li>
-        <li><strong>Low PAH content:</strong> Meets EU REACH requirements (<3ppm BaP)</li>
-        <li><strong>Excellent UV stability:</strong> Suitable for light-colored rubber products</li>
-        <li><strong>Competitive pricing:</strong> 15-25% cost advantage vs European sources</li>
-      </ul>
-      
-      <h3>Applications</h3>
-      <table>
-        <tr><th>RPO Type</th><th>Key Applications</th><th>Advantages</th></tr>
-        <tr><td>Naphthenic</td><td>Tires, industrial rubber goods</td><td>High solvency, good processing</td></tr>
-        <tr><td>TDAE</td><td>Green tires, EU market</td><td>REACH compliant, low PAH</td></tr>
-        <tr><td>Paraffinic</td><td>Light-colored products, footwear</td><td>Good color, low staining</td></tr>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Type</th>
+          <th style="border:1px solid #ddd;padding:10px;">Characteristics</th>
+          <th style="border:1px solid #ddd;padding:10px;">Key Applications</th>
+          <th style="border:1px solid #ddd;padding:10px;">Market Share 2025</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>TDAE</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">Low PAH, REACH compliant</td>
+          <td style="border:1px solid #ddd;padding:10px;">Green tires, EU market</td>
+          <td style="border:1px solid #ddd;padding:10px;">38%</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>Naphthenic (NAP)</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">High solvency, excellent compatibility</td>
+          <td style="border:1px solid #ddd;padding:10px;">Tires, industrial rubber</td>
+          <td style="border:1px solid #ddd;padding:10px;">30%</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>MES</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">Light extraction, stable quality</td>
+          <td style="border:1px solid #ddd;padding:10px;">High-performance tires</td>
+          <td style="border:1px solid #ddd;padding:10px;">18%</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>RAE</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">Traditional aromatic oil</td>
+          <td style="border:1px solid #ddd;padding:10px;">Non-regulated markets</td>
+          <td style="border:1px solid #ddd;padding:10px;">14% (declining)</td>
+        </tr>
       </table>
       
-      <h3>Quality Standards</h3>
-      <p>Chinese RPO products comply with:</p>
+      <h3>Chinese Naphthenic Oil Technical Advantages</h3>
+      <p>Chinese naphthenic rubber process oils offer superior performance:</p>
       <ul>
-        <li>EU REACH regulation (PAH content limits)</li>
-        <li>ISO 9001 quality management</li>
-        <li>REACH SVHC compliance certification</li>
-        <li>Third-party testing (SGS, Intertek)</li>
+        <li><strong>High Solvency Power:</strong> Cn% > 35% (vs 20-25% for paraffinic oils)</li>
+        <li><strong>Low PAH Content:</strong> <3ppm BaP, fully compliant with EU REACH (≤10mg/kg total PAH)</li>
+        <li><strong>Excellent UV Stability:</strong> Suitable for light-colored rubber products</li>
+        <li><strong>Low Temperature Performance:</strong> Pour point -30°C to -45°C</li>
+        <li><strong>Cost Advantage:</strong> 15-25% lower than European sources</li>
+        <li><strong>Aromatic Carbon Rate:</strong> Controlled below 0.5% (4th generation hydrogenation)</li>
       </ul>
       
-      <h3>Market Trends</h3>
-      <p>Global rubber process oil market trends:</p>
+      <h3>Market Drivers</h3>
+      <p>Key factors driving Chinese RPO market growth:</p>
       <ul>
-        <li>Shift from aromatic to TDAE and naphthenic oils (environmental regulations)</li>
-        <li>Growing demand in Southeast Asia tire manufacturing</li>
-        <li>Increase in bio-based RPO development</li>
-        <li>Premium pricing for low-PAH, high-performance grades</li>
+        <li><strong>EV Tires:</strong> New energy vehicle tire demand growing 12% annually</li>
+        <li><strong>Green Tire Transition:</strong> Environmental regulations pushing TDAE/MES adoption</li>
+        <li><strong>Export Growth:</strong> 42 million tons export volume projected by 2025</li>
+        <li><strong>Price Competitiveness:</strong> APII value (aromatic polarity index) 0.25-0.35 advantage</li>
+      </ul>
+      
+      <h3>Quality Standards & Compliance</h3>
+      <p>Chinese RPO products comply with international standards:</p>
+      <ul>
+        <li><strong>EU REACH:</strong> PAH content limits (BaP <1ppm, total PAH <10ppm)</li>
+        <li><strong>HG/T 4911-2026:</strong> China green tire rubber process oil standard</li>
+        <li><strong>ISO 9001:</strong> Quality management certification</li>
+        <li><strong>Third-party Testing:</strong> SGS, Intertek, BV verification available</li>
+      </ul>
+      
+      <h3>Major Producers</h3>
+      <p>China's rubber process oil industry leaders:</p>
+      <ul>
+        <li><strong>Sinopec:</strong> Leading TDAE and naphthenic oil producer</li>
+        <li><strong>CNOOC Taizhou:</strong> Focus on aviation tire rubber oils</li>
+        <li><strong>Zhejiang Xinhu:</strong> 4th generation hydrogenation technology</li>
+        <li><strong>Shandong Jinbo:</strong> Acquired Yunnan plant, integrated production</li>
+        <li><strong>CNPC Lanzhou:</strong> Narrow fraction naphthenic oil (KV100°C 6.8mm²/s±5%)</li>
+      </ul>
+      
+      <h3>Application-Specific Grades</h3>
+      <ul>
+        <li><strong>SSBR (Solution Styrene Butadiene Rubber):</strong> 12-15% RPO content for low rolling resistance</li>
+        <li><strong>Medical Rubber:</strong> Low extraction grade (<0.6% migration at 72°C/24h)</li>
+        <li><strong>Food-grade:</strong> USP Class VI compliant for food contact</li>
+        <li><strong>High-performance Tires:</strong> Custom formulations for Michelin certification</li>
+      </ul>
+      
+      <h3>Environmental Trends</h3>
+      <p>The industry is transitioning toward sustainable products:</p>
+      <ul>
+        <li><strong>Traditional RAE Phase-out:</strong> 30% of small capacity (<50,000 tons/year) shut down</li>
+        <li><strong>Bio-based RPO:</strong> Palm oil derived products in trial (cost +35-40%)</li>
+        <li><strong>CBAM Impact:</strong> EU carbon border tax €8-12/ton from 2027</li>
+        <li><strong>Recycling Integration:</strong> Used tire oil recovery programs</li>
       </ul>
       
       <h3>Sourcing Recommendations</h3>
       <p>For international buyers:</p>
       <ol>
-        <li>Request full TDS and COA documentation</li>
-        <li>Verify PAH content testing results</li>
-        <li>Consider TDAE for EU market applications</li>
-        <li>Establish quality specifications in contracts</li>
-        <li>Request samples for application testing</li>
+        <li>Request full Technical Data Sheet (TDS) and Certificate of Analysis (COA)</li>
+        <li>Verify PAH content with independent test results</li>
+        <li>Consider TDAE for EU market applications (REACH compliance)</li>
+        <li>Request sample for application testing (minimum 5kg)</li>
+        <li>Specify packaging requirements (bulk, drums, IBC containers)</li>
+        <li>Establish quality specifications in purchase contracts</li>
       </ol>
     `,
     category: 'Technical Information',
@@ -313,64 +551,169 @@ const defaultBlogPosts: BlogPost[] = [
   {
     id: '6',
     title: 'White Oil: China\'s Food-Grade and Pharmaceutical Production',
-    excerpt: 'China\'s white oil production meets USP and FDA standards for food-grade and pharmaceutical applications, with growing export to global markets.',
+    excerpt: 'China\'s white oil production meets USP and FDA standards for food-grade and pharmaceutical applications, with complete quality certification and competitive pricing.',
     content: `
       <h2>White Oil Industry Overview</h2>
-      <p>White oil, also known as mineral oil or liquid paraffin, is a highly refined petroleum product used in pharmaceutical, food, cosmetic, and industrial applications. China has developed significant production capacity for high-purity white oils.</p>
+      <p>White oil (also known as mineral oil or liquid paraffin) is a highly refined petroleum product used in pharmaceutical, food, cosmetic, and industrial applications. China has developed significant production capacity for high-purity white oils meeting international standards.</p>
       
       <h3>Product Classification</h3>
-      <ul>
-        <li><strong>Pharmaceutical Grade (USP/BP):</strong> For medical and pharmaceutical applications</li>
-        <li><strong>Food Grade (FDA):</strong> For food processing and packaging applications</li>
-        <li><strong>Cosmetic Grade:</strong> For personal care and cosmetic products</li>
-        <li><strong>Industrial Grade:</strong> For textile, plastics, and other industrial applications</li>
-      </ul>
-      
-      <h3>Quality Standards</h3>
-      <p>Chinese white oil products comply with international standards:</p>
-      <ul>
-        <li><strong>USP (United States Pharmacopeia):</strong> Pharmaceutical grade purity</li>
-        <li><strong>BP (British Pharmacopoeia):</strong> European pharmaceutical standards</li>
-        <li><strong>FDA 21 CFR 172.878:</strong> Food-grade requirements</li>
-        <li><strong>FDA 21 CFR 178.3620:</strong> Technical white oil specifications</li>
-      </ul>
-      
-      <h3>Technical Specifications</h3>
-      <table>
-        <tr><th>Parameter</th><th>Pharmaceutical Grade</th><th>Food Grade</th><th>Industrial Grade</th></tr>
-        <tr><td>Appearance</td><td>Colorless, transparent</td><td>Colorless, transparent</td><td>Water white</td></tr>
-        <tr><td>Viscosity (40°C)</td><td>10-100 mm²/s</td><td>10-100 mm²/s</td><td>10-350 mm²/s</td></tr>
-        <tr><td>Purity</td><td>≥99.5%</td><td>≥99.0%</td><td>≥98.0%</td></tr>
-        <tr><td>Aromatic Content</td><td><0.1%</td><td><0.5%</td><td><1.0%</td></tr>
-        <tr><td>Sulfur Content</td><td><1ppm</td><td><5ppm</td><td><10ppm</td></tr>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Grade</th>
+          <th style="border:1px solid #ddd;padding:10px;">Standards</th>
+          <th style="border:1px solid #ddd;padding:10px;">Key Applications</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>Pharmaceutical Grade</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">USP, BP, EP, JP, ChP</td>
+          <td style="border:1px solid #ddd;padding:10px;">Laxatives, ointment bases, capsule lubricants</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>Food Grade</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">FDA 21 CFR 172.878, 178.3620</td>
+          <td style="border:1px solid #ddd;padding:10px;">Food processing, release agents, polishing</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>Cosmetic Grade</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">CTFA, EC 1223/2009</td>
+          <td style="border:1px solid #ddd;padding:10px;">Baby oil, skincare, hair care products</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>Industrial Grade</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">ASTM D721</td>
+          <td style="border:1px solid #ddd;padding:10px;">Textile, plastics, polymer processing</td>
+        </tr>
       </table>
       
-      <h3>Applications</h3>
+      <h3>Technical Specifications Comparison</h3>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Parameter</th>
+          <th style="border:1px solid #ddd;padding:10px;">Pharmaceutical Grade</th>
+          <th style="border:1px solid #ddd;padding:10px;">Food Grade</th>
+          <th style="border:1px solid #ddd;padding:10px;">Industrial Grade</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Appearance</td>
+          <td style="border:1px solid #ddd;padding:10px;">Colorless, transparent</td>
+          <td style="border:1px solid #ddd;padding:10px;">Colorless, transparent</td>
+          <td style="border:1px solid #ddd;padding:10px;">Water white</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Viscosity at 40°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">3-100 mm²/s</td>
+          <td style="border:1px solid #ddd;padding:10px;">3-100 mm²/s</td>
+          <td style="border:1px solid #ddd;padding:10px;">3-350 mm²/s</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Purity</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥99.5%</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥99.0%</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥98.0%</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Aromatic Content</td>
+          <td style="border:1px solid #ddd;padding:10px;"><0.1%</td>
+          <td style="border:1px solid #ddd;padding:10px;"><0.5%</td>
+          <td style="border:1px solid #ddd;padding:10px;"><1.0%</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Sulfur Content</td>
+          <td style="border:1px solid #ddd;padding:10px;"><1ppm</td>
+          <td style="border:1px solid #ddd;padding:10px;"><5ppm</td>
+          <td style="border:1px solid #ddd;padding:10px;"><10ppm</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Heavy Metals</td>
+          <td style="border:1px solid #ddd;padding:10px;"><10ppm</td>
+          <td style="border:1px solid #ddd;padding:10px;"><10ppm</td>
+          <td style="border:1px solid #ddd;padding:10px;">-</td>
+        </tr>
+      </table>
+      
+      <h3>Certification Requirements</h3>
+      <p>Chinese white oil products comply with:</p>
       <ul>
-        <li><strong>Pharmaceutical:</strong> Laxatives, ointment bases, capsule lubricants</li>
-        <li><strong>Food Processing:</strong> Food-grade lubricants, release agents, polishing</li>
-        <li><strong>Cosmetics:</strong> Baby oil, skincare products, hair care</li>
-        <li><strong>Plastics:</strong> Polymer processing aids, mold release</li>
-        <li><strong>Textiles:</strong> Fiber lubrication, fabric finishing</li>
+        <li><strong>USP (United States Pharmacopeia):</strong> Required for pharmaceutical applications in US market</li>
+        <li><strong>BP (British Pharmacopoeia):</strong> European pharmaceutical standards acceptance</li>
+        <li><strong>FDA 21 CFR 172.878:</strong> Direct food contact applications</li>
+        <li><strong>FDA 21 CFR 178.3620(a):</strong> Technical white oil specifications</li>
+        <li><strong>NSF H1:</strong> Food-grade lubricant certification</li>
+        <li><strong>Kosher & Halal:</strong> Religious dietary certification available</li>
       </ul>
       
-      <h3>Chinese Production Advantage</h3>
-      <p>China's white oil industry offers:</p>
+      <h3>Production Technology</h3>
+      <p>Chinese manufacturers employ advanced processing technologies:</p>
       <ul>
-        <li>Advanced hydroprocessing technology for high purity</li>
-        <li>Complete supply chain from crude oil to finished product</li>
-        <li>Competitive pricing (20-30% lower than Western sources)</li>
-        <li>Flexible packaging options (bulk, drums, IBC containers)</li>
+        <li><strong>Deep Hydrogenation:</strong> Removes aromatics, sulfur, and nitrogen compounds</li>
+        <li><strong>Molecular Distillation:</strong> Achieves ultra-high purity levels</li>
+        <li><strong>Clay Treatment:</strong> Final polishing for color stability</li>
+        <li><strong>GMP Facilities:</strong> Pharmaceutical-grade production environments</li>
       </ul>
       
-      <h3>Export Documentation</h3>
-      <p>Standard export documentation includes:</p>
+      <h3>Key Applications</h3>
       <ul>
-        <li>Certificate of Analysis (COA)</li>
+        <li><strong>Pharmaceutical Industry:</strong>
+          <ul>
+            <li>Laxatives and intestinal lubricants</li>
+            <li>Ointment and cream bases</li>
+            <li>Capsule and tablet lubricants</li>
+            <li>Medical device coatings</li>
+          </ul>
+        </li>
+        <li><strong>Food Processing:</strong>
+          <ul>
+            <li>Food-grade machinery lubricants</li>
+            <li>Baking pan release agents</li>
+            <li>Fruit and vegetable coatings</li>
+            <li>Egg shell preservatives</li>
+          </ul>
+        </li>
+        <li><strong>Cosmetics:</strong>
+          <ul>
+            <li>Baby oil formulations</li>
+            <li>Skincare and moisturizing products</li>
+            <li>Hair care and styling products</li>
+            <li>Makeup removers</li>
+          </ul>
+        </li>
+        <li><strong>Industrial:</strong>
+          <ul>
+            <li>Polystyrene manufacturing</li>
+            <li>PVC and plastic processing aids</li>
+            <li>Textile fiber lubrication</li>
+            <li>Electronics cleaning</li>
+          </ul>
+        </li>
+      </ul>
+      
+      <h3>Packaging Options</h3>
+      <p>Available packaging formats:</p>
+      <ul>
+        <li><strong>Bulk:</strong> ISO tanks, flexi-bags for large volumes</li>
+        <li><strong>IBCs:</strong> 1000L intermediate bulk containers</li>
+        <li><strong>Drums:</strong> 200L steel or HDPE drums</li>
+        <li><strong>Small Pack:</strong> 5L, 20L containers for specialty grades</li>
+      </ul>
+      
+      <h3>Quality Assurance</h3>
+      <p>Standard export documentation:</p>
+      <ul>
+        <li>Certificate of Analysis (COA) with full specifications</li>
         <li>Certificate of Origin</li>
         <li>USP/BP certification for pharmaceutical grades</li>
-        <li>FDA compliance documentation for food grades</li>
+        <li>FDA compliance documentation</li>
         <li>Material Safety Data Sheet (MSDS)</li>
+        <li>Batch records and traceability documentation</li>
+      </ul>
+      
+      <h3>Market Advantage</h3>
+      <p>Chinese white oil offers:</p>
+      <ul>
+        <li><strong>Cost Efficiency:</strong> 20-30% lower than Western alternatives</li>
+        <li><strong>Complete Supply Chain:</strong> From crude oil refining to finished product</li>
+        <li><strong>Flexible Volumes:</strong> From small batch specialty to bulk orders</li>
+        <li><strong>Custom Formulations:</strong> Viscosity and grade customization available</li>
       </ul>
     `,
     category: 'Technical Information',
@@ -382,63 +725,171 @@ const defaultBlogPosts: BlogPost[] = [
   {
     id: '7',
     title: 'Hydraulic Oil: Chinese Premium Products Match International Standards',
-    excerpt: 'Premium Chinese hydraulic oils achieve wear scar diameters <0.5mm in ASTM D4172 tests, meeting DIN 51524 specifications at competitive prices.',
+    excerpt: 'Premium Chinese hydraulic oils achieve wear scar diameters <0.5mm in ASTM D4172 tests, meeting DIN 51524 specifications with 20-35% cost advantage.',
     content: `
-      <h2>Hydraulic Oil Technical Performance</h2>
-      <p>Hydraulic oils are critical for the reliable operation of hydraulic systems in construction equipment, manufacturing machinery, and industrial applications. Chinese hydraulic oil products have achieved performance levels comparable to leading international brands.</p>
+      <h2>Hydraulic Oil Performance Standards</h2>
+      <p>Hydraulic oils are critical for reliable operation of hydraulic systems in construction equipment, manufacturing machinery, and industrial applications. Chinese hydraulic oil products have achieved performance levels comparable to leading international brands at competitive prices.</p>
       
       <h3>Performance Benchmarks</h3>
       <p>Premium Chinese hydraulic oils demonstrate excellent test results:</p>
       <ul>
-        <li><strong>ASTM D4172 (Four-Ball Wear Test):</strong> Wear scar diameter <0.5mm (exceeds DIN 51524)</li>
-        <li><strong>ASTM D2272 (Oxidation Stability):</strong> >3000 hours for premium grades</li>
-        <li><strong>FZG Gear Test:</strong> Failure load stage >12</li>
+        <li><strong>ASTM D4172 (Four-Ball Wear Test):</strong> Wear scar diameter <0.5mm (exceeds DIN 51524 standard)</li>
+        <li><strong>ASTM D2272 (Oxidation Stability):</strong> >3000 hours for premium grades (vs 2000h standard)</li>
+        <li><strong>FZG Gear Test:</strong> Failure load stage >12 (excellent anti-wear protection)</li>
         <li><strong>Filterability:</strong> Excellent filterability for modern high-pressure systems</li>
+        <li><strong>Thermal Stability:</strong> Stable performance up to 120°C continuous operation</li>
       </ul>
       
       <h3>Product Classification</h3>
-      <table>
-        <tr><th>Type</th><th>Characteristics</th><th>Applications</th></tr>
-        <tr><td>HM</td><td>Anti-wear hydraulic oil</td><td>General industrial applications</td></tr>
-        <tr><td>HV</td><td>High VI anti-wear oil</td><td>Wide temperature range applications</td></tr>
-        <tr><td>HS</td><td>Synthetic hydraulic oil</td><td>Extreme conditions, high performance</td></tr>
-        <tr><td>HETG</td><td>Biodegradable hydraulic oil</td><td>Environmentally sensitive areas</td></tr>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Type</th>
+          <th style="border:1px solid #ddd;padding:10px;">Standard</th>
+          <th style="border:1px solid #ddd;padding:10px;">Characteristics</th>
+          <th style="border:1px solid #ddd;padding:10px;">Applications</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>HM</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">GB 11118.1, DIN 51524-2</td>
+          <td style="border:1px solid #ddd;padding:10px;">Anti-wear hydraulic oil</td>
+          <td style="border:1px solid #ddd;padding:10px;">General industrial, mobile equipment</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>HV</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">GB 11118.1, DIN 51524-3</td>
+          <td style="border:1px solid #ddd;padding:10px;">High VI anti-wear oil</td>
+          <td style="border:1px solid #ddd;padding:10px;">Wide temperature range, outdoor</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>HS</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">ISO 6743-4</td>
+          <td style="border:1px solid #ddd;padding:10px;">Synthetic hydraulic oil</td>
+          <td style="border:1px solid #ddd;padding:10px;">Extreme conditions, high performance</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>HETG</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">ISO 15380</td>
+          <td style="border:1px solid #ddd;padding:10px;">Biodegradable (HEES/HEPG)</td>
+          <td style="border:1px solid #ddd;padding:10px;">Environmentally sensitive areas</td>
+        </tr>
       </table>
       
-      <h3>Key Specifications</h3>
+      <h3>Technical Specifications</h3>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Parameter</th>
+          <th style="border:1px solid #ddd;padding:10px;">Standard Grade</th>
+          <th style="border:1px solid #ddd;padding:10px;">Premium Grade</th>
+          <th style="border:1px solid #ddd;padding:10px;">Test Method</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Viscosity Grades (ISO VG)</td>
+          <td style="border:1px solid #ddd;padding:10px;">15, 22, 32, 46, 68, 100</td>
+          <td style="border:1px solid #ddd;padding:10px;">15, 22, 32, 46, 68, 100</td>
+          <td style="border:1px solid #ddd;padding:10px;">GB/T 265</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Viscosity Index</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥95</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥140</td>
+          <td style="border:1px solid #ddd;padding:10px;">GB/T 1995</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Flash Point</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥180°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">≥200°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">GB/T 3536</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Pour Point</td>
+          <td style="border:1px solid #ddd;padding:10px;">-30°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">-45°C</td>
+          <td style="border:1px solid #ddd;padding:10px;">GB/T 3535</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Water Separability</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤30 min</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤15 min</td>
+          <td style="border:1px solid #ddd;padding:10px;">GB/T 7305</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Air Release</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤10 min</td>
+          <td style="border:1px solid #ddd;padding:10px;">≤5 min</td>
+          <td style="border:1px solid #ddd;padding:10px;">SH/T 0308</td>
+        </tr>
+      </table>
+      
+      <h3>OEM Approvals</h3>
+      <p>Major Chinese hydraulic oil brands have obtained approvals from:</p>
       <ul>
-        <li><strong>Viscosity Grades:</strong> ISO VG 15, 22, 32, 46, 68, 100</li>
-        <li><strong>Viscosity Index:</strong> ≥95 (standard), ≥140 (premium)</li>
-        <li><strong>Flash Point:</strong> ≥180°C</li>
-        <li><strong>Pour Point:</strong> -30°C to -45°C (grade dependent)</li>
-        <li><strong>Water Separability:</strong> ≤30 minutes</li>
+        <li><strong>Construction Equipment:</strong> Caterpillar, Komatsu, Hitachi</li>
+        <li><strong>Industrial Systems:</strong> Bosch Rexroth, Parker, Eaton</li>
+        <li><strong>Machine Tools:</strong> DMG Mori, Mazak, Okuma</li>
+        <li><strong>Chinese OEMs:</strong> Sany, XCMG, Zoomlion</li>
       </ul>
       
-      <h3>Quality Assurance</h3>
+      <h3>Quality Assurance Systems</h3>
       <p>Chinese hydraulic oil manufacturers implement:</p>
       <ul>
-        <li>ISO 9001 Quality Management System</li>
-        <li>ISO 14001 Environmental Management</li>
-        <li>OEM approvals from major equipment manufacturers</li>
-        <li>Batch-level quality testing and documentation</li>
+        <li><strong>ISO 9001:</strong> Quality Management System</li>
+        <li><strong>ISO 14001:</strong> Environmental Management</li>
+        <li><strong>IATF 16949:</strong> Automotive quality standard</li>
+        <li><strong>Batch-level Testing:</strong> Full quality documentation per batch</li>
       </ul>
       
       <h3>Cost Advantages</h3>
-      <p>Chinese hydraulic oils offer:</p>
+      <p>Chinese hydraulic oils offer significant value:</p>
       <ul>
-        <li>20-35% lower cost compared to multinational brands</li>
-        <li>Equivalent or better performance characteristics</li>
-        <li>Reliable supply with domestic base oil production</li>
-        <li>Flexible packaging and logistics options</li>
+        <li><strong>Price Advantage:</strong> 20-35% lower than multinational brands</li>
+        <li><strong>Equivalent Performance:</strong> Meeting or exceeding international specifications</li>
+        <li><strong>Reliable Supply:</strong> Domestic base oil production ensures availability</li>
+        <li><strong>Flexible Logistics:</strong> Multiple packaging and delivery options</li>
       </ul>
       
-      <h3>Selection Guide</h3>
-      <p>For optimal performance, select hydraulic oil based on:</p>
+      <h3>Application Selection Guide</h3>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Operating Condition</th>
+          <th style="border:1px solid #ddd;padding:10px;">Recommended Type</th>
+          <th style="border:1px solid #ddd;padding:10px;">Viscosity Grade</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Indoor, moderate temperature</td>
+          <td style="border:1px solid #ddd;padding:10px;">HM (Standard)</td>
+          <td style="border:1px solid #ddd;padding:10px;">VG 32, 46</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Outdoor, temperature variations</td>
+          <td style="border:1px solid #ddd;padding:10px;">HV (High VI)</td>
+          <td style="border:1px solid #ddd;padding:10px;">VG 32, 46, 68</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">High pressure (>35MPa)</td>
+          <td style="border:1px solid #ddd;padding:10px;">HM Premium</td>
+          <td style="border:1px solid #ddd;padding:10px;">VG 46, 68</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Extreme temperatures (-40°C to +50°C)</td>
+          <td style="border:1px solid #ddd;padding:10px;">HV Premium or HS</td>
+          <td style="border:1px solid #ddd;padding:10px;">VG 22, 32</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;">Environmental sensitive areas</td>
+          <td style="border:1px solid #ddd;padding:10px;">HETG (Biodegradable)</td>
+          <td style="border:1px solid #ddd;padding:10px;">VG 32, 46</td>
+        </tr>
+      </table>
+      
+      <h3>Purchasing Recommendations</h3>
+      <p>For optimal performance and value:</p>
       <ol>
-        <li>Operating temperature range (consider HV for wide ranges)</li>
-        <li>Pressure requirements (higher pressures need premium anti-wear)</li>
-        <li>Environmental conditions (consider HETG for sensitive areas)</li>
-        <li>Equipment manufacturer recommendations</li>
+        <li>Match viscosity grade to operating temperature range</li>
+        <li>Consider HV for outdoor or variable temperature applications</li>
+        <li>Request OEM approval certificates for equipment warranty compliance</li>
+        <li>Obtain sample for equipment compatibility testing</li>
+        <li>Establish proper storage and handling procedures</li>
+        <li>Implement oil analysis program for condition monitoring</li>
       </ol>
     `,
     category: 'Technical Information',
@@ -449,80 +900,157 @@ const defaultBlogPosts: BlogPost[] = [
   },
   {
     id: '8',
-    title: 'Regulatory Update: EU REACH and US EPA Requirements for 2025',
-    excerpt: 'Essential compliance information for Chinese special oil exporters targeting EU and US markets in 2025 and beyond.',
+    title: 'New Chinese Regulations: Impact on Special Oil Exports',
+    excerpt: 'Updates to GB standards and REACH compliance requirements affect Chinese special oil exports. Updated environmental regulations include mandatory safety data sheets.',
     content: `
-      <h2>Regulatory Landscape 2025</h2>
-      <p>International buyers and Chinese suppliers must navigate an evolving regulatory environment. This guide covers key compliance requirements for EU and US markets.</p>
+      <h2>Regulatory Landscape Updates</h2>
+      <p>The Chinese special oil industry operates under an evolving regulatory framework that affects both domestic production and international trade. Recent regulatory changes have significant implications for exporters and international buyers.</p>
       
-      <h3>EU REACH Requirements</h3>
-      <p>REACH (Registration, Evaluation, Authorization and Restriction of Chemicals) compliance is mandatory for EU market access:</p>
+      <h3>Updated GB Standards (2024-2025)</h3>
+      <p>China has updated several key national standards affecting special oils:</p>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Standard</th>
+          <th style="border:1px solid #ddd;padding:10px;">Title</th>
+          <th style="border:1px solid #ddd;padding:10px;">Status</th>
+          <th style="border:1px solid #ddd;padding:10px;">Impact</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>GB 11118.1-2024</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">Hydraulic Fluids Specification</td>
+          <td style="border:1px solid #ddd;padding:10px;">Effective Jan 2025</td>
+          <td style="border:1px solid #ddd;padding:10px;">Updated test methods, stricter limits</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>GB/T 17411-2024</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">Transformer Oil Technical Requirements</td>
+          <td style="border:1px solid #ddd;padding:10px;">Revised</td>
+          <td style="border:1px solid #ddd;padding:10px;">Aligned with IEC 60296:2020</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>HG/T 4911-2026</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">Green Tire Rubber Process Oil</td>
+          <td style="border:1px solid #ddd;padding:10px;">Draft</td>
+          <td style="border:1px solid #ddd;padding:10px;">Mandatory PAH limits (≤10mg/kg)</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>SH/T 0726-2024</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">White Oil Food Grade Specifications</td>
+          <td style="border:1px solid #ddd;padding:10px;">Effective</td>
+          <td style="border:1px solid #ddd;padding:10px;">Harmonized with FDA 21 CFR</td>
+        </tr>
+      </table>
+      
+      <h3>Export Control Changes</h3>
+      <p>Recent changes to Chinese export regulations:</p>
       <ul>
-        <li><strong>PAH Restrictions:</strong> Stricter limits effective 2025</li>
-        <li><strong>SVHC List:</strong> Substances of Very High Concern notification requirements</li>
-        <li><strong>Registration:</strong> All substances manufactured/imported >1 ton/year</li>
-        <li><strong>SDS Requirements:</strong> Safety Data Sheets in local languages</li>
+        <li><strong>Export License Requirements:</strong> Certain specialty chemicals now require export licenses</li>
+        <li><strong>Customs Documentation:</strong> Enhanced product classification and origin verification</li>
+        <li><strong>Quality Inspection:</strong> Pre-shipment inspection requirements for certain product categories</li>
+        <li><strong>HS Code Updates:</strong> New tariff classifications for specialty oils</li>
       </ul>
       
-      <h3>US EPA Regulations</h3>
-      <p>US market entry requires compliance with:</p>
+      <h3>EU REACH Compliance Requirements</h3>
+      <p>Chinese products exported to EU must meet REACH requirements:</p>
       <ul>
-        <li><strong>TSCA (Toxic Substances Control Act):</strong> Inventory listing requirements</li>
-        <li><strong>EPA Import Certification:</strong> Documentation for lubricants entering US</li>
-        <li><strong>Composition Statements:</strong> Detailed chemical composition disclosure</li>
-        <li><label>Compliance Certificates:</label> Application-specific certifications</li>
+        <li><strong>Registration:</strong> Substances >1 ton/year require EU registration</li>
+        <li><strong>SVHC Compliance:</strong> Substances of Very High Concern limits</li>
+        <li><strong>PAH Content:</strong> Maximum 10mg/kg for rubber process oils</li>
+        <li><strong>SDS Requirements:</strong> Safety Data Sheets in EU languages</li>
+        <li><strong>Authorization:</strong> Certain substances require specific authorization</li>
       </ul>
       
-      <h3>Chinese Export Documentation</h3>
-      <p>Positive developments for Chinese exporters:</p>
+      <h3>Environmental Protection Regulations</h3>
+      <p>Chinese environmental regulations affecting the industry:</p>
       <ul>
-        <li><strong>Streamlined Process:</strong> Customs processing time reduced by 30%</li>
-        <li><strong>Electronic Submission:</strong> Digital documentation accepted</li>
-        <li><strong>One-Stop Service:</strong> Single window for export documentation</li>
+        <li><strong>Volatile Organic Compounds (VOCs):</strong> Stricter emission limits for production facilities</li>
+        <li><strong>Hazardous Waste Management:</strong> Enhanced tracking and disposal requirements</li>
+        <li><strong>Green Factory Certification:</strong> Incentives for environmentally compliant facilities</li>
+        <li><strong>Carbon Emission Reporting:</strong> Mandatory reporting for major producers</li>
       </ul>
       
-      <h3>Packaging and Labeling 2025</h3>
-      <p>New international standards effective June 2025:</p>
+      <h3>Safety Data Sheet (SDS) Requirements</h3>
+      <p>Updated SDS requirements for exported products:</p>
       <ul>
-        <li><strong>GHS Labeling:</strong> Globally Harmonized System compliance</li>
-        <li><strong>Transport Regulations:</strong> IMDG, IATA-DGR, ADR updates</li>
-        <li><strong>Environmental Labels:</strong> Eco-label requirements in certain markets</li>
+        <li><strong>Format:</strong> Must comply with GHS (Globally Harmonized System)</li>
+        <li><strong>Language:</strong> Required in destination country language</li>
+        <li><strong>Content:</strong> 16 sections with complete hazard information</li>
+        <li><strong>Updates:</strong> Must be updated within 6 months of new hazard information</li>
+        <li><strong>Electronic Format:</strong> Acceptable with proper authentication</li>
       </ul>
       
-      <h3>Compliance Support Services</h3>
-      <p>Many Chinese suppliers offer:</p>
+      <h3>Product Quality Certification</h3>
+      <p>Certification requirements for export products:</p>
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:10px;">Certification</th>
+          <th style="border:1px solid #ddd;padding:10px;">Scope</th>
+          <th style="border:1px solid #ddd;padding:10px;">Validity</th>
+          <th style="border:1px solid #ddd;padding:10px;">Issuing Authority</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>COC (Certificate of Conformity)</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">Product quality verification</td>
+          <td style="border:1px solid #ddd;padding:10px;">Per shipment</td>
+          <td style="border:1px solid #ddd;padding:10px;">CIQ, third-party labs</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>COA (Certificate of Analysis)</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">Test results for specifications</td>
+          <td style="border:1px solid #ddd;padding:10px;">Per batch</td>
+          <td style="border:1px solid #ddd;padding:10px;">Manufacturer, third-party</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>ISO 9001</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">Quality management system</td>
+          <td style="border:1px solid #ddd;padding:10px;">3 years</td>
+          <td style="border:1px solid #ddd;padding:10px;">Accredited certification bodies</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:10px;"><strong>ISO 14001</strong></td>
+          <td style="border:1px solid #ddd;padding:10px;">Environmental management</td>
+          <td style="border:1px solid #ddd;padding:10px;">3 years</td>
+          <td style="border:1px solid #ddd;padding:10px;">Accredited certification bodies</td>
+        </tr>
+      </table>
+      
+      <h3>International Trade Implications</h3>
+      <p>How regulatory changes affect international buyers:</p>
       <ul>
-        <li>REACH registration support and documentation</li>
-        <li>Third-party testing and certification</li>
-        <li>Regulatory consulting for target markets</li>
-        <li>Document preparation in multiple languages</li>
+        <li><strong>Documentation:</strong> Request updated SDS and COA for each shipment</li>
+        <li><strong>Compliance Verification:</strong> Verify products meet destination country requirements</li>
+        <li><strong>Lead Time:</strong> Allow additional time for regulatory documentation</li>
+        <li><strong>Supplier Selection:</strong> Choose suppliers with established compliance track records</li>
+        <li><strong>Contract Terms:</strong> Include regulatory compliance requirements in purchase agreements</li>
       </ul>
       
-      <h3>Buyer Checklist</h3>
-      <p>For compliance assurance, buyers should request:</p>
+      <h3>Best Practices for Importers</h3>
+      <p>Recommended practices for regulatory compliance:</p>
       <ol>
-        <li>Updated Certificate of Analysis (COA)</li>
-        <li>REACH registration number (for EU market)</li>
-        <li>TSCA inventory certification (for US market)</li>
-        <li>SDS in local language</li>
-        <li>Third-party test reports (SGS, BV, Intertek)</li>
-        <li>Product-specific compliance certificates</li>
+        <li>Request current SDS and technical documentation before purchase</li>
+        <li>Verify supplier certifications and test reports</li>
+        <li>Confirm product classification under destination country regulations</li>
+        <li>Establish clear quality specifications in contracts</li>
+        <li>Maintain documentation for customs and regulatory inspection</li>
+        <li>Stay informed of regulatory changes through industry associations</li>
+        <li>Consider third-party pre-shipment inspection for critical applications</li>
       </ol>
       
-      <h3>Staying Updated</h3>
-      <p>Key resources for regulatory updates:</p>
+      <h3>Resources</h3>
+      <p>Key regulatory information sources:</p>
       <ul>
-        <li>European Chemicals Agency (ECHA) website</li>
-        <li>US EPA Chemical Data Reporting</li>
-        <li>Chinese Customs and import/export regulations</li>
-        <li>Industry associations and trade publications</li>
+        <li><strong>China National Petroleum Corporation (CNPC):</strong> Industry standards updates</li>
+        <li><strong>China Customs:</strong> Export procedures and requirements</li>
+        <li><strong>ECHA (European Chemicals Agency):</strong> REACH regulations</li>
+        <li><strong>EPA (Environmental Protection Agency):</strong> US regulations</li>
+        <li><strong>Industry Associations:</strong> Sector-specific guidance and updates</li>
       </ul>
     `,
-    category: 'Technical Information',
-    tags: ['Regulations', 'REACH', 'EPA', 'Compliance', 'Export Requirements'],
-    featuredImage: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=450&fit=crop',
+    category: 'Regulatory',
+    tags: ['Regulations', 'GB Standards', 'REACH', 'Export Compliance', 'Environmental'],
+    featuredImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=450&fit=crop',
     publishedAt: '2024-12-10T08:00:00Z',
-    author: 'Regulatory Affairs Team'
+    author: 'Compliance Team'
   }
 ];
 
