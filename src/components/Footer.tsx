@@ -25,7 +25,7 @@ const Footer = () => {
             <div className="flex space-x-3">
               <a
                 href="https://www.linkedin.com/in/shunyu-zhang-511354266/"
-                className="flex items-center justify-center w-10 h-10 bg-white/10 hover:bg-[var(--accent-600)] rounded-sm transition-colors duration-300"
+                className="flex items-center justify-center w-10 h-10 bg-white/10 hover:bg-[var(--accent-600)] text-white hover:text-white rounded-sm transition-colors duration-300"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
@@ -34,7 +34,7 @@ const Footer = () => {
               </a>
               <a
                 href="https://wa.me/8613793280176"
-                className="flex items-center justify-center w-10 h-10 bg-white/10 hover:bg-[var(--accent-600)] rounded-sm transition-colors duration-300"
+                className="flex items-center justify-center w-10 h-10 bg-white/10 hover:bg-[var(--accent-600)] text-white hover:text-white rounded-sm transition-colors duration-300"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
@@ -43,7 +43,7 @@ const Footer = () => {
               </a>
               <a
                 href="mailto:steven.shunyu@gmail.com"
-                className="flex items-center justify-center w-10 h-10 bg-white/10 hover:bg-[var(--accent-600)] rounded-sm transition-colors duration-300"
+                className="flex items-center justify-center w-10 h-10 bg-white/10 hover:bg-[var(--accent-600)] text-white hover:text-white rounded-sm transition-colors duration-300"
                 aria-label="Email"
               >
                 <i className="fa-solid fa-envelope"></i>
@@ -193,7 +193,7 @@ const Footer = () => {
             </h3>
             <ul className="space-y-4">
               <li className="flex items-start group">
-                <div className="flex items-center justify-center w-8 h-8 bg-white/10 rounded-sm mr-3 flex-shrink-0 group-hover:bg-[var(--accent-600)] transition-colors duration-300">
+                <div className="flex items-center justify-center w-8 h-8 bg-white/10 text-white rounded-sm mr-3 flex-shrink-0 group-hover:bg-[var(--accent-600)] transition-colors duration-300">
                   <i className="fa-solid fa-location-dot text-sm"></i>
                 </div>
                 <span className="font-body text-white/70 text-sm leading-relaxed">
@@ -201,7 +201,7 @@ const Footer = () => {
                 </span>
               </li>
               <li className="flex items-center group">
-                <div className="flex items-center justify-center w-8 h-8 bg-white/10 rounded-sm mr-3 flex-shrink-0 group-hover:bg-[var(--accent-600)] transition-colors duration-300">
+                <div className="flex items-center justify-center w-8 h-8 bg-white/10 text-white rounded-sm mr-3 flex-shrink-0 group-hover:bg-[var(--accent-600)] transition-colors duration-300">
                   <i className="fa-solid fa-phone text-sm"></i>
                 </div>
                 <a
@@ -212,7 +212,7 @@ const Footer = () => {
                 </a>
               </li>
               <li className="flex items-center group">
-                <div className="flex items-center justify-center w-8 h-8 bg-white/10 rounded-sm mr-3 flex-shrink-0 group-hover:bg-[var(--accent-600)] transition-colors duration-300">
+                <div className="flex items-center justify-center w-8 h-8 bg-white/10 text-white rounded-sm mr-3 flex-shrink-0 group-hover:bg-[var(--accent-600)] transition-colors duration-300">
                   <i className="fa-solid fa-envelope text-sm"></i>
                 </div>
                 <a
@@ -223,7 +223,7 @@ const Footer = () => {
                 </a>
               </li>
               <li className="flex items-center group">
-                <div className="flex items-center justify-center w-8 h-8 bg-white/10 rounded-sm mr-3 flex-shrink-0 group-hover:bg-[var(--accent-600)] transition-colors duration-300">
+                <div className="flex items-center justify-center w-8 h-8 bg-white/10 text-white rounded-sm mr-3 flex-shrink-0 group-hover:bg-[var(--accent-600)] transition-colors duration-300">
                   <i className="fa-solid fa-clock text-sm"></i>
                 </div>
                 <span className="font-body text-white/70 text-sm">
