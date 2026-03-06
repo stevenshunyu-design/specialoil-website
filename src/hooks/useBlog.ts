@@ -1111,11 +1111,18 @@ export function useBlog() {
 
     const loadLocalPosts = () => {
       try {
+        // 检查数据版本，确保使用最新的博客数据
+        const storedVersion = localStorage.getItem('blogPostsVersion');
+        const currentVersion = '2.0'; // 更新版本号以强制刷新数据
         const storedPosts = localStorage.getItem('blogPosts');
-        if (storedPosts) {
+        
+        if (storedPosts && storedVersion === currentVersion) {
           setPosts(JSON.parse(storedPosts));
         } else {
+          // 版本不匹配或首次加载，使用最新的默认数据
+          console.log('Refreshing blog data to latest version:', currentVersion);
           localStorage.setItem('blogPosts', JSON.stringify(defaultBlogPosts));
+          localStorage.setItem('blogPostsVersion', currentVersion);
           setPosts(defaultBlogPosts);
         }
       } catch (error) {
