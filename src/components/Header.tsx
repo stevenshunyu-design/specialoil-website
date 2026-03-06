@@ -10,37 +10,33 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      setIsScrolled(window.scrollY > 20);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
+
   // 确定是否在首页
   const isHomePage = location.pathname === '/';
-  
+
   // 根据页面位置和滚动状态确定文字颜色
   const getTextColorClass = () => {
-    // 如果是首页且未滚动，则使用白色文字
     if (isHomePage && !isScrolled) {
       return 'text-white';
     }
-    // 其他情况（非首页或首页但已滚动）使用黑色文字
-    return 'text-[var(--primary-brand)]';
+    return 'text-[var(--text-dark)]';
   };
-  
-  // 获取导航链接的悬停颜色类
+
   const getHoverColorClass = () => {
-    // 统一使用金色悬停色
     return 'hover:text-[var(--accent-brand)]';
   };
 
   const menuItems = [
     { label: 'Home', path: '/' },
-    { label: 'About Us', path: '/about' },
-    { 
-      label: 'Products', 
+    { label: 'About', path: '/about' },
+    {
+      label: 'Products',
       path: '/products',
       isDropdown: true,
       dropdownItems: [
@@ -56,46 +52,56 @@ const Header = () => {
   ];
 
   return (
-    <header 
+    <header
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
+        isScrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-sm py-3'
+          : 'bg-transparent py-5'
       }`}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <div className="flex justify-between items-center">
-          <Link 
-            to="/" 
-            className={`text-2xl font-bold ${getTextColorClass()} font-['Montserrat'] tracking-tight flex items-center gap-2`}
+          <Link
+            to="/"
+            className={`${getTextColorClass()} font-display font-semibold text-xl flex items-center gap-3 transition-colors duration-300`}
           >
-                 <img 
-                  src="https://lf-code-agent.coze.cn/obj/x-ai-cn/324537063426/attachment/CN_SpecLube Chain LOGO_20260212115043.png" 
-                  alt="CN-SpecLube Chain Logo" 
-                  className="h-8"
-                />
-                <span className="hidden md:inline">CN-SpecLube Chain</span>
+            <div className="flex items-center justify-center w-10 h-10 bg-[var(--accent-brand)] rounded-sm">
+              <span className="text-white font-bold text-lg">C</span>
+            </div>
+            <div className="hidden md:flex flex-col leading-tight">
+              <span className="font-semibold">CN-SpecLube</span>
+              <span className="text-xs tracking-wider font-normal opacity-90">CHAIN</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-1">
             {menuItems.map((item) => (
               <div key={item.label} className="relative">
                 {item.isDropdown ? (
                   <button
                     onClick={() => setIsProductsDropdownOpen(!isProductsDropdownOpen)}
-                      className={`${getTextColorClass()} ${getHoverColorClass()} font-semibold flex items-center transition-colors ${
-                        isProductsDropdownOpen ? 'text-[var(--accent-brand)]' : ''
-                      }`}
+                    className={`${getTextColorClass()} ${getHoverColorClass()} font-body font-medium px-4 py-2 text-sm uppercase tracking-wider flex items-center transition-colors duration-200 ${
+                      isProductsDropdownOpen ? 'text-[var(--accent-brand)]' : ''
+                    }`}
                   >
                     {item.label}
-                    <i className={`fa-solid fa-chevron-down ml-1 text-xs transition-transform ${
-                      isProductsDropdownOpen ? 'rotate-180' : ''
-                    }`}></i>
+                    <svg
+                      className={`ml-2 w-4 h-4 transition-transform duration-200 ${
+                        isProductsDropdownOpen ? 'rotate-180' : ''
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
                   </button>
                 ) : (
-                  <Link 
-                     to={item.path} 
-                     className={`${getTextColorClass()} ${getHoverColorClass()} font-semibold transition-colors`}
-                   >
+                  <Link
+                    to={item.path}
+                    className={`${getTextColorClass()} ${getHoverColorClass()} font-body font-medium px-4 py-2 text-sm uppercase tracking-wider transition-colors duration-200`}
+                  >
                     {item.label}
                   </Link>
                 )}
@@ -107,7 +113,7 @@ const Header = () => {
                       <Link
                         key={dropdownItem.label}
                         to={dropdownItem.path}
-                        className="block px-4 py-3 text-[var(--text-body)] hover:bg-[var(--bg-light)] hover:text-[var(--primary-brand)] transition-colors"
+                        className="block px-5 py-3 text-[var(--text-body)] hover:bg-[var(--bg-surface)] hover:text-[var(--text-dark)] transition-colors duration-200 text-sm"
                         onClick={() => setIsProductsDropdownOpen(false)}
                       >
                         {dropdownItem.label}
@@ -121,36 +127,55 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-             className={`md:hidden text-2xl ${isHomePage && !isScrolled ? 'text-white' : 'text-[var(--primary-brand)]'}`}
+            className={`lg:hidden text-2xl transition-colors duration-300 ${
+              isHomePage && !isScrolled ? 'text-white' : 'text-[var(--text-dark)]'
+            }`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            <i className={`fa-solid ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
           </button>
         </div>
       </div>
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white shadow-lg absolute w-full">
-          <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4">
+        <div className="lg:hidden bg-white shadow-lg absolute w-full">
+          <nav className="container mx-auto px-6 py-6 flex flex-col space-y-1">
             {menuItems.map((item) => (
               <div key={item.label}>
                 {item.isDropdown ? (
-                  <div className="border-b border-gray-200 pb-2">
+                  <div className="border-b border-[var(--primary-200)] pb-4 mb-4 last:border-0">
                     <button
-                      className="w-full text-left flex justify-between items-center text-[var(--text-dark)] font-semibold py-2"
-                      onClick={() => item.isOpen = !item.isOpen}
+                      className="w-full text-left flex justify-between items-center text-[var(--text-dark)] font-semibold py-2 transition-colors"
                     >
-                      <span>{item.label}</span>
-                      <i className="fa-solid fa-chevron-down text-xs"></i>
+                      <span className="uppercase tracking-wider text-sm">{item.label}</span>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
                     </button>
-                    <div className="mt-2 ml-4 space-y-2">
+                    <div className="mt-3 ml-4 space-y-2">
                       {item.dropdownItems?.map((dropdownItem) => (
                         <Link
                           key={dropdownItem.label}
                           to={dropdownItem.path}
-                          className="block py-2 text-[var(--text-body)] hover:text-[var(--accent-brand)]"
+                          className="block py-2 text-[var(--text-body)] hover:text-[var(--accent-brand)] transition-colors duration-200 text-sm"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
                           {dropdownItem.label}
@@ -159,9 +184,9 @@ const Header = () => {
                     </div>
                   </div>
                 ) : (
-                  <Link 
-                    to={item.path} 
-                    className="block py-2 text-[var(--text-dark)] hover:text-[var(--accent-brand)] font-semibold border-b border-gray-200"
+                  <Link
+                    to={item.path}
+                    className="block py-3 text-[var(--text-dark)] hover:text-[var(--accent-brand)] font-semibold border-b border-[var(--primary-200)] last:border-0 transition-colors duration-200 uppercase tracking-wider text-sm"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.label}
