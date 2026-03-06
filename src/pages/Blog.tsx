@@ -187,13 +187,13 @@ const Blog = () => {
         </section>
         
         {/* CTA Section */}
-        <section className="bg-[#003366] text-white p-8 rounded-sm">
+        <section className="bg-[var(--primary-900)] text-white p-8 rounded-sm">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-6 md:mb-0">
-               <h2 className="text-2xl md:text-3xl font-bold mb-2 font-['Montserrat']">
+               <h2 className="font-display text-2xl md:text-3xl font-semibold mb-2 text-white">
                   Subscribe to Our Newsletter
                 </h2>
-                <p className="text-white/80">
+                <p className="font-body text-white/80">
                   Get the latest China special oil industry news and technical insights delivered to your inbox
                 </p>
             </div>
@@ -201,9 +201,9 @@ const Blog = () => {
               <input
                 type="email"
                 placeholder="Your email address"
-                className="px-4 py-3 bg-white/10 text-white placeholder-white/60 border border-white/20 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] w-full sm:w-64"
+                className="px-4 py-3 bg-white/10 text-white placeholder-white/60 border border-white/20 rounded-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent-600)] w-full sm:w-64"
               />
-                <button className="inline-block bg-[#D4AF37] text-white px-6 py-3 rounded-sm font-semibold hover:bg-opacity-90 transition-all whitespace-nowrap">
+                <button className="inline-block bg-[var(--accent-600)] text-white px-6 py-3 rounded-sm font-medium hover:bg-[var(--accent-700)] transition-all duration-300 whitespace-nowrap">
                   Subscribe
                 </button>
             </div>
