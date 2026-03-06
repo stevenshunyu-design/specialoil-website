@@ -15,15 +15,19 @@ const BlogPost = () => {
     // 可以在这里添加SEO相关的meta标签设置
   }, [post]);
 
+  // 当 id 变化时，加载对应的文章
   useEffect(() => {
     // 等待 posts 加载完成
-    if (blogLoading) return;
+    if (blogLoading || !posts.length) return;
     
     if (id) {
       const foundPost = getPostById(id);
       if (foundPost) {
         setPost(foundPost);
+        // 滚动到页面顶部
+        window.scrollTo(0, 0);
       } else {
+        console.error('Post not found for id:', id, 'Available posts:', posts.map(p => p.id));
         toast.error('Article not found');
         navigate('/blog');
       }

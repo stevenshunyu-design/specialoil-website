@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BlogPost, AdminUser } from '../types/blog';
 import { sanityClient, queries, urlFor } from '../lib/sanity';
 
@@ -1186,12 +1186,12 @@ export function useBlog() {
   };
 
   // 获取单篇文章
-  const getPostById = (id: string): BlogPost | undefined => {
+  const getPostById = useCallback((id: string): BlogPost | undefined => {
     return posts.find(post => post.id === id);
-  };
+  }, [posts]);
 
   // 搜索文章
-  const searchPosts = (query: string): BlogPost[] => {
+  const searchPosts = useCallback((query: string): BlogPost[] => {
     const lowerQuery = query.toLowerCase();
     return posts.filter(post => 
       post.title.toLowerCase().includes(lowerQuery) ||
@@ -1199,7 +1199,7 @@ export function useBlog() {
       post.tags.some(tag => tag.toLowerCase().includes(lowerQuery)) ||
       post.category.toLowerCase().includes(lowerQuery)
     );
-  };
+  }, [posts]);
 
   // 管理员认证
   const authenticateAdmin = (username: string, password: string): boolean => {
