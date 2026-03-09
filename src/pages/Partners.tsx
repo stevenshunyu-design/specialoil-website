@@ -7,7 +7,7 @@ const partners = [
     name: 'PetroChina',
     chineseName: '中国石油',
     fullName: 'China National Petroleum Corporation',
-    logo: '/partners/petrochina.png', // 需要用户上传
+    logo: '/partners/petrochina.png',
     website: 'https://www.petrochina.com.cn',
     description: 'China\'s largest oil and gas producer and distributor, a global leader in energy production.',
     products: ['Transformer Oil', 'Hydraulic Oil', 'Industrial Lubricants', 'White Oil'],
@@ -19,7 +19,7 @@ const partners = [
     name: 'Sinopec',
     chineseName: '中国石化',
     fullName: 'China Petroleum & Chemical Corporation',
-    logo: '/partners/sinopec.png', // 需要用户上传
+    logo: '/partners/sinopec.png',
     website: 'https://www.sinopec.com',
     description: 'One of the world\'s largest integrated energy and chemical companies, leading in refining capacity.',
     products: ['Transformer Oil', 'Rubber Process Oil', 'TDAE', 'Specialty Oils'],
@@ -43,7 +43,7 @@ const partners = [
     name: 'Yanchang Petroleum',
     chineseName: '延长石油',
     fullName: 'Shaanxi Yanchang Petroleum Group',
-    logo: '/partners/yanchang.png', // 需要用户上传
+    logo: '/partners/yanchang.png',
     website: 'https://www.sxycpc.com',
     description: 'One of China\'s oldest oil companies, specializing in oilfield development and petrochemicals.',
     products: ['Industrial Oils', 'Transformer Oil', 'Lubricants'],
@@ -55,7 +55,7 @@ const partners = [
     name: 'Sinochem',
     chineseName: '中化集团',
     fullName: 'Sinochem Holdings Corporation',
-    logo: '/partners/sinochem.png', // 需要用户上传
+    logo: '/partners/sinochem.png',
     website: 'https://www.sinochem.com',
     description: 'A leading Chinese conglomerate in agriculture, energy, and chemical sectors.',
     products: ['Specialty Chemicals', 'Industrial Oils', 'Petrochemicals'],
@@ -64,34 +64,10 @@ const partners = [
   },
   {
     id: 6,
-    name: 'Great Wall Lubricant',
-    chineseName: '长城润滑油',
-    fullName: 'Sinopec Great Wall Lubricant',
-    logo: '/partners/greatwall.png', // 需要用户上传
-    website: 'https://www.sinopec.com',
-    description: 'Sinopec\'s premier lubricant brand, China\'s aerospace partner, trusted for high-quality industrial oils.',
-    products: ['Hydraulic Oil', 'Transformer Oil', 'Gear Oil', 'Industrial Lubricants'],
-    established: 1958,
-    headquarters: 'Beijing, China'
-  },
-  {
-    id: 7,
-    name: 'Kunlun Lubricant',
-    chineseName: '昆仑润滑',
-    fullName: 'Kunlun Lubricant (PetroChina)',
-    logo: '/partners/kunlun.png', // 需要用户上传
-    website: 'https://www.kunlun.com.cn',
-    description: 'PetroChina\'s premier lubricant brand, offering high-quality oils for industrial applications.',
-    products: ['Hydraulic Oil', 'Transformer Oil', 'Gear Oil', 'Industrial Lubricants'],
-    established: 2000,
-    headquarters: 'Beijing, China'
-  },
-  {
-    id: 8,
     name: 'Tongyi Lubricant',
     chineseName: '统一润滑油',
     fullName: 'Tongyi Petrochemical',
-    logo: '/partners/tongyi.png', // 需要用户上传
+    logo: '/partners/tongyi.png',
     website: 'https://www.tongyi.com',
     description: 'A leading independent lubricant brand in China, known for quality and innovation.',
     products: ['Hydraulic Oil', 'Industrial Lubricants', 'Marine Oils', 'Specialty Lubricants'],
