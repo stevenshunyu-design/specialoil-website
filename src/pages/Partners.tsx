@@ -61,18 +61,6 @@ const partners = [
     products: ['Specialty Chemicals', 'Industrial Oils', 'Petrochemicals'],
     established: 1950,
     headquarters: 'Beijing, China'
-  },
-  {
-    id: 6,
-    name: 'Tongyi Lubricant',
-    chineseName: '统一润滑油',
-    fullName: 'Tongyi Petrochemical',
-    logo: '/partners/tongyi.png',
-    website: 'https://www.tongyi.com',
-    description: 'A leading independent lubricant brand in China, known for quality and innovation.',
-    products: ['Hydraulic Oil', 'Industrial Lubricants', 'Marine Oils', 'Specialty Lubricants'],
-    established: 1993,
-    headquarters: 'Beijing, China'
   }
 ];
 
