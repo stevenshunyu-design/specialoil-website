@@ -465,7 +465,7 @@ const defaultBlogPosts: BlogPost[] = [
     `,
     category: 'Technical Information',
     tags: ['Technical Standards', 'Transformer Oil', 'IEC 60296', 'ASTM D3487', 'Quality'],
-    featuredImage: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&h=450&fit=crop',
+    featuredImage: 'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=800&h=450&fit=crop',
     publishedAt: '2025-01-08T08:00:00Z',
     author: 'Technical Team'
   },
@@ -1262,7 +1262,7 @@ export function useBlog() {
       try {
         // 检查数据版本，确保使用最新的博客数据
         const storedVersion = localStorage.getItem('blogPostsVersion');
-        const currentVersion = '2.2'; // 更新版本号以强制刷新数据（修复 CTA 样式）
+        const currentVersion = '2.3'; // 更新版本号以强制刷新数据（修复图片链接）
         const storedPosts = localStorage.getItem('blogPosts');
         
         if (storedPosts && storedVersion === currentVersion) {
