@@ -17,6 +17,8 @@ import Admin from "@/pages/Admin";
 import Partners from "@/pages/Partners";
 import { ArticleEditor } from "@/pages/Admin";
 import Login from "@/pages/Login";
+import Unsubscribe from "@/pages/Unsubscribe";
+import SubscribersAdmin from "@/pages/SubscribersAdmin";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
 export default function App() {
@@ -55,6 +57,8 @@ export default function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/new" element={<ArticleEditor />} />
           <Route path="/admin/edit/:id" element={<ArticleEditor />} />
+          <Route path="/admin/subscribers" element={<SubscribersAdmin />} />
+          <Route path="/unsubscribe" element={<Unsubscribe />} />
         </Routes>
       </main>
       <Footer />

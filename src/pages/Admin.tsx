@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams, Routes, Route } from 'react-router-dom';
+import { useNavigate, useParams, Routes, Route, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useBlog } from '../hooks/useBlog';
 import { BlogPost } from '../types/blog';
@@ -84,7 +84,7 @@ const ArticleList = () => {
 const Admin = () => {
   const navigate = useNavigate();
   const { isAuthenticated, setAuthenticated } = useBlog();
-  const [activeTab, setActiveTab] = useState<'articles' | 'inquiries'>('articles');
+  const [activeTab, setActiveTab] = useState<'articles' | 'inquiries' | 'subscribers'>('articles');
 
   // 检查是否已登录
   useEffect(() => {
@@ -141,6 +141,16 @@ const Admin = () => {
             >
               <i className="fa-solid fa-envelope mr-2"></i>Inquiries
             </button>
+            <button
+              onClick={() => setActiveTab('subscribers')}
+              className={`pb-4 px-1 text-sm font-medium border-b-2 transition-colors ${
+                activeTab === 'subscribers'
+                  ? 'border-[#003366] text-[#003366]'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <i className="fa-solid fa-users mr-2"></i>Subscribers
+            </button>
           </nav>
         </div>
 
@@ -161,13 +171,29 @@ const Admin = () => {
               </div>
               <ArticleList />
             </>
-          ) : (
+          ) : activeTab === 'inquiries' ? (
             <>
               <h2 className="text-2xl font-bold text-[#003366] font-['Montserrat'] mb-8">
                 Inquiry Management
               </h2>
               <InquiriesAdmin />
             </>
+          ) : (
+            <div className="text-center py-12">
+              <i className="fa-solid fa-users text-5xl text-[#D4AF37] mb-6"></i>
+              <h2 className="text-2xl font-bold text-[#003366] font-['Montserrat'] mb-4">
+                Newsletter Subscribers
+              </h2>
+              <p className="text-[#333333] mb-8 max-w-md mx-auto">
+                Manage your email subscribers, view subscription stats, and send newsletters.
+              </p>
+              <Link
+                to="/admin/subscribers"
+                className="inline-block bg-[#D4AF37] text-white px-6 py-3 rounded-sm font-semibold hover:bg-opacity-90 transition-all"
+              >
+                <i className="fa-solid fa-arrow-right mr-2"></i>Go to Subscriber Management
+              </Link>
+            </div>
           )}
         </div>
       </div>

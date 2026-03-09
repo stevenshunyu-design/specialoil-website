@@ -2,6 +2,11 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { getSupabaseClient } from './src/storage/database/supabase-client';
 import type { NewInquiry } from './src/storage/database/shared/schema';
+import { 
+  sendSubscriptionConfirmation, 
+  sendUnsubscribeConfirmation,
+  sendNewsletterToSubscribers
+} from './src/lib/email';
 
 const app = express();
 const PORT = process.env.API_PORT || 3001;
@@ -260,6 +265,8 @@ app.post('/api/subscribers', async (req: Request, res: Response) => {
       .eq('email', email)
       .single();
 
+    let isNewSubscription = false;
+
     if (existing) {
       if (existing.status === 'active') {
         return res.status(200).json({ 
@@ -277,27 +284,31 @@ app.post('/api/subscribers', async (req: Request, res: Response) => {
           console.error('Database error:', error);
           return res.status(500).json({ error: 'Failed to resubscribe' });
         }
-
-        return res.status(200).json({ 
-          success: true, 
-          message: 'Welcome back! You have been resubscribed.' 
-        });
       }
+    } else {
+      // 新订阅
+      const { error } = await client
+        .from('subscribers')
+        .insert({ email, status: 'active' });
+
+      if (error) {
+        console.error('Database error:', error);
+        return res.status(500).json({ error: 'Failed to subscribe' });
+      }
+      
+      isNewSubscription = true;
     }
 
-    // 新订阅
-    const { error } = await client
-      .from('subscribers')
-      .insert({ email, status: 'active' });
+    // 发送确认邮件（异步，不阻塞响应）
+    sendSubscriptionConfirmation(email).catch(err => 
+      console.error('Failed to send confirmation email:', err)
+    );
 
-    if (error) {
-      console.error('Database error:', error);
-      return res.status(500).json({ error: 'Failed to subscribe' });
-    }
-
-    res.status(201).json({ 
+    res.status(isNewSubscription ? 201 : 200).json({ 
       success: true, 
-      message: 'Thank you for subscribing!' 
+      message: isNewSubscription 
+        ? 'Thank you for subscribing! Please check your email for confirmation.' 
+        : 'Welcome back! You have been resubscribed.'
     });
   } catch (error) {
     console.error('Server error:', error);
@@ -329,7 +340,100 @@ app.post('/api/subscribers/unsubscribe', async (req: Request, res: Response) => 
       return res.status(500).json({ error: 'Failed to unsubscribe' });
     }
 
+    // 发送取消订阅确认邮件（异步）
+    sendUnsubscribeConfirmation(email).catch(err => 
+      console.error('Failed to send unsubscribe confirmation:', err)
+    );
+
     res.json({ success: true, message: 'You have been unsubscribed.' });
+  } catch (error) {
+    console.error('Server error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// 获取所有订阅者 API（管理员）
+app.get('/api/subscribers', async (req: Request, res: Response) => {
+  try {
+    const client = getSupabaseClient();
+    
+    const { data, error } = await client
+      .from('subscribers')
+      .select('*')
+      .order('subscribed_at', { ascending: false });
+
+    if (error) {
+      console.error('Database error:', error);
+      return res.status(500).json({ error: 'Failed to fetch subscribers' });
+    }
+
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error('Server error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// 删除订阅者 API（管理员）
+app.delete('/api/subscribers/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const client = getSupabaseClient();
+    
+    const { error } = await client
+      .from('subscribers')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('Database error:', error);
+      return res.status(500).json({ error: 'Failed to delete subscriber' });
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Server error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// 发送 Newsletter API（管理员）
+app.post('/api/newsletter/send', async (req: Request, res: Response) => {
+  try {
+    const { subject, articles, previewText } = req.body;
+
+    if (!subject || !articles || !Array.isArray(articles)) {
+      return res.status(400).json({ error: 'Subject and articles are required' });
+    }
+
+    const client = getSupabaseClient();
+    
+    // 获取所有活跃订阅者
+    const { data: subscribers, error } = await client
+      .from('subscribers')
+      .select('email')
+      .eq('status', 'active');
+
+    if (error) {
+      console.error('Database error:', error);
+      return res.status(500).json({ error: 'Failed to fetch subscribers' });
+    }
+
+    if (!subscribers || subscribers.length === 0) {
+      return res.status(400).json({ error: 'No active subscribers' });
+    }
+
+    const emails = subscribers.map(s => s.email);
+
+    // 批量发送邮件
+    const result = await sendNewsletterToSubscribers(emails, subject, articles, previewText);
+
+    res.json({ 
+      success: result.success, 
+      sentCount: result.sentCount,
+      totalSubscribers: emails.length,
+      errors: result.errors 
+    });
   } catch (error) {
     console.error('Server error:', error);
     res.status(500).json({ error: 'Internal server error' });
