@@ -1,16 +1,24 @@
-====================================
-  Hostinger 部署说明
-====================================
+# CN-SpecLube Chain Website Deployment
 
-1. 上传所有文件到 Hostinger Node.js 应用目录
+## Quick Deploy Steps
 
-2. 在 Hostinger 控制面板设置环境变量：
-   - SUPABASE_URL
-   - SUPABASE_ANON_KEY
-   - FEISHU_WEBHOOK_URL (可选)
+1. Upload all files to your server
+2. Create .env file from .env.example
+3. Run: npm install --production
+4. Run: pm2 start server.production.js --name specialoil
+5. Run: pm2 save
 
-3. 入口文件设置为: server.production.js
+## Required Environment Variables
 
-4. 点击"安装依赖"然后"启动应用"
+- SUPABASE_URL
+- SUPABASE_ANON_KEY
+- RESEND_API_KEY
+- FROM_EMAIL
+- SITE_URL
 
-详细文档: docs/HOSTINGER_NODEJS_DEPLOY.md
+## Troubleshooting
+
+If you see 503 error:
+1. Check if Node.js process is running: pm2 list
+2. Check logs: pm2 logs specialoil
+3. Test manually: node server.production.js
