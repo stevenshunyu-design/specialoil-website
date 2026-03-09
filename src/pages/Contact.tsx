@@ -256,8 +256,8 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-lg text-[#222222] mb-1">Email Us</h3>
                     <p className="text-[#333333] mb-2">For fastest response, email our international team</p>
-                    <a href="mailto:international@cnspecialoil.com" className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors">
-                      international@cnspecialoil.com
+                    <a href="mailto:steven.shunyu@gmail.com" className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors">
+                      steven.shunyu@gmail.com
                     </a>
                   </div>
                 </div>
@@ -269,8 +269,8 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-lg text-[#222222] mb-1">WhatsApp</h3>
                     <p className="text-[#333333] mb-2">Direct messaging available 24/7</p>
-                    <a href="https://wa.me/8613800138000" className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors">
-                      +86 138 0013 8000
+                    <a href="https://wa.me/8613793280176" className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors">
+                      +86 137 9328 0176
                     </a>
                   </div>
                 </div>
@@ -282,8 +282,8 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-lg text-[#222222] mb-1">Call Us</h3>
                     <p className="text-[#333333] mb-2">International sales hotline</p>
-                    <a href="tel:+8613800138000" className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors">
-                      +86 138 0013 8000
+                    <a href="tel:+8613793280176" className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors">
+                      +86 137 9328 0176
                     </a>
                   </div>
                 </div>
@@ -301,6 +301,20 @@ const Contact = () => {
                     </p>
                   </div>
                 </div>
+                
+                <div className="flex items-start">
+                  <div className="bg-[#003366] text-white rounded-full h-12 w-12 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                    <i className="fa-solid fa-location-dot"></i>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg text-[#222222] mb-1">Office Address</h3>
+                    <p className="text-[#333333]">
+                      10th Floor, No. 197, Songling Road<br />
+                      Laoshan District, Qingdao<br />
+                      Shandong, China
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
             
@@ -315,56 +329,25 @@ const Contact = () => {
                     <i className="fa-solid fa-user-tie"></i>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg text-[#222222]">David Chen</h3>
+                    <h3 className="font-semibold text-lg text-[#222222]">Steven Zhang</h3>
                     <p className="text-[#333333] mb-1">International Sales Director</p>
-                    <a href="mailto:david@cnspecialoil.com" className="text-[#003366] hover:text-[#D4AF37] transition-colors">
-                      david@cnspecialoil.com
+                    <a href="mailto:steven.shunyu@gmail.com" className="text-[#003366] hover:text-[#D4AF37] transition-colors">
+                      steven.shunyu@gmail.com
                     </a>
-                    <p className="text-[#333333] mt-1">Speaks: English, Spanish</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="w-16 h-16 rounded-full bg-[#D4AF37] flex items-center justify-center text-white text-2xl mr-4 flex-shrink-0">
-                    <i className="fa-solid fa-user-tie"></i>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg text-[#222222]">Sarah Liu</h3>
-                    <p className="text-[#333333] mb-1">Technical Support Manager</p>
-                    <a href="mailto:sarah@cnspecialoil.com" className="text-[#003366] hover:text-[#D4AF37] transition-colors">
-                      sarah@cnspecialoil.com
-                    </a>
-                    <p className="text-[#333333] mt-1">Speaks: English, German</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="w-16 h-16 rounded-full bg-[#D4AF37] flex items-center justify-center text-white text-2xl mr-4 flex-shrink-0">
-                    <i className="fa-solid fa-user-tie"></i>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg text-[#222222]">Michael Wang</h3>
-                    <p className="text-[#333333] mb-1">Logistics & Documentation</p>
-                    <a href="mailto:michael@cnspecialoil.com" className="text-[#003366] hover:text-[#D4AF37] transition-colors">
-                      michael@cnspecialoil.com
-                    </a>
-                    <p className="text-[#333333] mt-1">Speaks: English, French</p>
+                    <p className="text-[#333333] mt-1">Speaks: English, Chinese</p>
                   </div>
                 </div>
               </div>
               
               <div className="mt-8 flex space-x-4">
-                <a href="#" className="w-12 h-12 rounded-full bg-[#003366] text-white flex items-center justify-center hover:bg-[#D4AF37] transition-colors">
+                <a href="https://www.linkedin.com/in/shunyu-zhang-511354266/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#003366] text-white flex items-center justify-center hover:bg-[#D4AF37] transition-colors">
                   <i className="fa-brands fa-linkedin"></i>
                 </a>
-                <a href="#" className="w-12 h-12 rounded-full bg-[#003366] text-white flex items-center justify-center hover:bg-[#D4AF37] transition-colors">
-                  <i className="fa-brands fa-twitter"></i>
-                </a>
-                <a href="#" className="w-12 h-12 rounded-full bg-[#003366] text-white flex items-center justify-center hover:bg-[#D4AF37] transition-colors">
-                  <i className="fa-brands fa-youtube"></i>
-                </a>
-                <a href="https://wa.me/8613800138000" className="w-12 h-12 rounded-full bg-[#003366] text-white flex items-center justify-center hover:bg-[#D4AF37] transition-colors">
+                <a href="https://wa.me/8613793280176" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#003366] text-white flex items-center justify-center hover:bg-[#D4AF37] transition-colors">
                   <i className="fa-brands fa-whatsapp"></i>
+                </a>
+                <a href="mailto:steven.shunyu@gmail.com" className="w-12 h-12 rounded-full bg-[#003366] text-white flex items-center justify-center hover:bg-[#D4AF37] transition-colors">
+                  <i className="fa-solid fa-envelope"></i>
                 </a>
               </div>
             </div>
