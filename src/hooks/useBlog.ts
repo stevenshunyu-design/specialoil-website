@@ -1262,7 +1262,7 @@ export function useBlog() {
       try {
         // 检查数据版本，确保使用最新的博客数据
         const storedVersion = localStorage.getItem('blogPostsVersion');
-        const currentVersion = '2.0'; // 更新版本号以强制刷新数据
+        const currentVersion = '2.1'; // 更新版本号以强制刷新数据（添加 Haijiang 博客）
         const storedPosts = localStorage.getItem('blogPosts');
         
         if (storedPosts && storedVersion === currentVersion) {
