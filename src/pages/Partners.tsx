@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 
-// 合作伙伴数据 - 使用生成的 Logo 图片
+// 合作伙伴数据 - 使用真实 Logo 图片
 const partners = [
   {
     id: 1,
     name: 'PetroChina',
     chineseName: '中国石油',
     fullName: 'China National Petroleum Corporation',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/image/generate_image_5b3a17fb-9d3f-448a-8ba9-487a851ce4a9.jpeg?sign=1804576278-5c258db0a8-0-125ed34c7299f3ee54fb8e03c72990be33f3283f79dc7a2da32b900c1be490a9',
+    logo: '/partners/petrochina.png', // 需要用户上传
     website: 'https://www.petrochina.com.cn',
     description: 'China\'s largest oil and gas producer and distributor, a global leader in energy production.',
     products: ['Transformer Oil', 'Hydraulic Oil', 'Industrial Lubricants', 'White Oil'],
@@ -19,7 +19,7 @@ const partners = [
     name: 'Sinopec',
     chineseName: '中国石化',
     fullName: 'China Petroleum & Chemical Corporation',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/image/generate_image_26a27db9-ead1-4e27-bb21-ba84e0460952.jpeg?sign=1804576278-898873871e-0-3ace3573f26adbd4e37a9752edce8eaaaae7b5a8b2814eafa28b88688a7208e9',
+    logo: '/partners/sinopec.png', // 需要用户上传
     website: 'https://www.sinopec.com',
     description: 'One of the world\'s largest integrated energy and chemical companies, leading in refining capacity.',
     products: ['Transformer Oil', 'Rubber Process Oil', 'TDAE', 'Specialty Oils'],
@@ -31,7 +31,7 @@ const partners = [
     name: 'CNOOC',
     chineseName: '中国海油',
     fullName: 'China National Offshore Oil Corporation',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/image/generate_image_398aba18-c81f-49af-9973-63f789e33bb9.jpeg?sign=1804576280-c9b0c1b98d-0-0554f00a6a23f733edba692942bac43dec3fecfd4f6cf1a0b96708374295a9f8',
+    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/partners/cnooc_a36fc693.png?sign=1804576757-38e8a2ed30-0-49472ce53a49e2446d75297ab65d3603799d86c349905641e12c0bf99bd36111',
     website: 'https://www.cnooc.com.cn',
     description: 'China\'s largest offshore oil and gas producer, specializing in deep-sea exploration and production.',
     products: ['Transformer Oil', 'Marine Lubricants', 'Naphthenic Oils'],
@@ -43,7 +43,7 @@ const partners = [
     name: 'Yanchang Petroleum',
     chineseName: '延长石油',
     fullName: 'Shaanxi Yanchang Petroleum Group',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/image/generate_image_1660a289-47cc-4788-b769-12dffaf3481d.jpeg?sign=1804576279-9e29e57244-0-0336d5a50d9db8a0ab608a779cc7a29519cf0b98d2136e0b1990cd088f475eee',
+    logo: '/partners/yanchang.png', // 需要用户上传
     website: 'https://www.sxycpc.com',
     description: 'One of China\'s oldest oil companies, specializing in oilfield development and petrochemicals.',
     products: ['Industrial Oils', 'Transformer Oil', 'Lubricants'],
@@ -55,7 +55,7 @@ const partners = [
     name: 'Sinochem',
     chineseName: '中化集团',
     fullName: 'Sinochem Holdings Corporation',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/image/generate_image_a8647ca6-0e3d-48ea-8b85-929d56d4baae.jpeg?sign=1804576275-d4f5f184e4-0-9cd783c5a930adbd882f335847e81a276f9b40ca9331453d9afa7a09f877a68d',
+    logo: '/partners/sinochem.png', // 需要用户上传
     website: 'https://www.sinochem.com',
     description: 'A leading Chinese conglomerate in agriculture, energy, and chemical sectors.',
     products: ['Specialty Chemicals', 'Industrial Oils', 'Petrochemicals'],
@@ -67,7 +67,7 @@ const partners = [
     name: 'Great Wall Lubricant',
     chineseName: '长城润滑油',
     fullName: 'Sinopec Great Wall Lubricant',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/image/generate_image_8a6eb470-eb87-456b-bf6a-05dbe0f91bc0.jpeg?sign=1804576282-e90d4b2e6b-0-94f1bffdf352ca2c006a0139c7f070fedf1fa9b9799c3613c336a6adffa3d301',
+    logo: '/partners/greatwall.png', // 需要用户上传
     website: 'https://www.sinopec.com',
     description: 'Sinopec\'s premier lubricant brand, China\'s aerospace partner, trusted for high-quality industrial oils.',
     products: ['Hydraulic Oil', 'Transformer Oil', 'Gear Oil', 'Industrial Lubricants'],
@@ -79,7 +79,7 @@ const partners = [
     name: 'Kunlun Lubricant',
     chineseName: '昆仑润滑',
     fullName: 'Kunlun Lubricant (PetroChina)',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/image/generate_image_ecda8d77-7a7f-411f-9467-4bb5f0ef8190.jpeg?sign=1804576280-3ca3a0de9b-0-b80b5b53682f12141df2bd9b47da049e0ac113423ea8ab8f949b0c30284546a2',
+    logo: '/partners/kunlun.png', // 需要用户上传
     website: 'https://www.kunlun.com.cn',
     description: 'PetroChina\'s premier lubricant brand, offering high-quality oils for industrial applications.',
     products: ['Hydraulic Oil', 'Transformer Oil', 'Gear Oil', 'Industrial Lubricants'],
@@ -91,7 +91,7 @@ const partners = [
     name: 'Tongyi Lubricant',
     chineseName: '统一润滑油',
     fullName: 'Tongyi Petrochemical',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/image/generate_image_dfca9818-12e3-40ca-8044-1258e6e8a60b.jpeg?sign=1804576278-1ebb3a6936-0-50266f4666fbd64296960d2e845a6c08669249a8aa913de2f46da1a69fbf068b',
+    logo: '/partners/tongyi.png', // 需要用户上传
     website: 'https://www.tongyi.com',
     description: 'A leading independent lubricant brand in China, known for quality and innovation.',
     products: ['Hydraulic Oil', 'Industrial Lubricants', 'Marine Oils', 'Specialty Lubricants'],
