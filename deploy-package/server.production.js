@@ -376,16 +376,85 @@ app.post('/api/newsletter/send', async (req, res) => {
 
 const emailStyles = `
   <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: linear-gradient(135deg, #003366 0%, #004488 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
-    .header h1 { margin: 0; font-size: 28px; }
-    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
-    .button { display: inline-block; background: #D4AF37; color: white; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 20px 0; }
-    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-    .footer a { color: #003366; }
-    .article { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #D4AF37; }
-    .article h3 { margin: 0 0 10px; color: #003366; }
-    .article a { color: #D4AF37; text-decoration: none; }
+    /* 重置样式 */
+    body, html { margin: 0; padding: 0; width: 100% !important; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; }
+    body { background-color: #f0f2f5; }
+    
+    /* 容器 */
+    .email-container { max-width: 680px; margin: 0 auto; padding: 40px 20px; }
+    
+    /* 主卡片 */
+    .email-card { background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    
+    /* 头部 */
+    .email-header { background: linear-gradient(135deg, #003366 0%, #1a4d80 50%, #003366 100%); padding: 50px 40px; text-align: center; position: relative; overflow: hidden; }
+    .email-header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 50%); animation: pulse 3s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 0.8; } }
+    .email-header .logo { position: relative; z-index: 1; }
+    .email-header .logo-icon { width: 80px; height: 80px; background: rgba(212,175,55,0.2); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 2px solid rgba(212,175,55,0.4); }
+    .email-header .logo-icon span { font-size: 36px; }
+    .email-header h1 { color: #ffffff; font-size: 32px; font-weight: 700; margin: 0 0 12px; letter-spacing: -0.5px; position: relative; z-index: 1; }
+    .email-header .tagline { color: rgba(255,255,255,0.85); font-size: 16px; margin: 0; position: relative; z-index: 1; }
+    
+    /* 内容区域 */
+    .email-content { padding: 50px 40px; }
+    .email-content h2 { color: #003366; font-size: 26px; font-weight: 600; margin: 0 0 24px; letter-spacing: -0.3px; }
+    .email-content p { color: #4a5568; font-size: 16px; line-height: 1.8; margin: 0 0 20px; }
+    .email-content .greeting { font-size: 18px; color: #1a202c; }
+    
+    /* 特性列表 */
+    .feature-list { list-style: none; padding: 0; margin: 30px 0; }
+    .feature-list li { display: flex; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid #e2e8f0; }
+    .feature-list li:last-child { border-bottom: none; }
+    .feature-list .icon { width: 44px; height: 44px; background: linear-gradient(135deg, #f6f9fc 0%, #edf2f7 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 16px; flex-shrink: 0; font-size: 22px; }
+    .feature-list .text { flex: 1; }
+    .feature-list .text strong { color: #003366; font-size: 16px; display: block; margin-bottom: 4px; }
+    .feature-list .text span { color: #718096; font-size: 14px; }
+    
+    /* 按钮 */
+    .email-button { display: inline-block; background: linear-gradient(135deg, #D4AF37 0%, #c9a02e 100%); color: #ffffff !important; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 20px 0; box-shadow: 0 4px 14px rgba(212,175,55,0.35); transition: all 0.3s ease; }
+    .email-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,175,55,0.45); }
+    
+    /* 文章卡片 */
+    .article-card { background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 12px; padding: 24px; margin: 20px 0; border-left: 4px solid #D4AF37; transition: all 0.3s ease; }
+    .article-card:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .article-card h3 { color: #003366; font-size: 18px; font-weight: 600; margin: 0 0 12px; }
+    .article-card h3 a { color: #003366; text-decoration: none; }
+    .article-card h3 a:hover { color: #D4AF37; }
+    .article-card p { color: #64748b; font-size: 15px; margin: 0 0 16px; line-height: 1.7; }
+    .article-card .read-more { color: #D4AF37; text-decoration: none; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; }
+    .article-card .read-more:hover { color: #c9a02e; }
+    .article-card .read-more::after { content: ' →'; margin-left: 4px; transition: transform 0.2s; }
+    .article-card .read-more:hover::after { transform: translateX(4px); }
+    
+    /* 分隔线 */
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, #e2e8f0, transparent); margin: 40px 0; }
+    
+    /* 签名 */
+    .signature { text-align: center; padding: 30px 0 0; }
+    .signature p { color: #718096; font-size: 15px; margin: 0 0 8px; }
+    .signature .team-name { color: #003366; font-weight: 600; font-size: 16px; }
+    
+    /* 页脚 */
+    .email-footer { background: #1a202c; padding: 40px; text-align: center; }
+    .email-footer .social-links { margin-bottom: 24px; }
+    .email-footer .social-links a { display: inline-block; width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 8px; line-height: 40px; text-decoration: none; transition: all 0.3s ease; }
+    .email-footer .social-links a:hover { background: #D4AF37; transform: translateY(-2px); }
+    .email-footer p { color: rgba(255,255,255,0.6); font-size: 13px; margin: 0 0 12px; line-height: 1.6; }
+    .email-footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    .email-footer a:hover { color: #D4AF37; }
+    .email-footer .footer-links { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .email-footer .footer-links a { margin: 0 16px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    /* 响应式 */
+    @media only screen and (max-width: 600px) {
+      .email-container { padding: 20px 10px; }
+      .email-header { padding: 40px 24px; }
+      .email-header h1 { font-size: 26px; }
+      .email-content { padding: 32px 24px; }
+      .email-content h2 { font-size: 22px; }
+      .email-footer { padding: 32px 24px; }
+    }
   </style>
 `;
 
@@ -398,25 +467,71 @@ async function sendSubscriptionConfirmation(email) {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: `Welcome to SpecialOil Newsletter! 📧`,
-      html: `<!DOCTYPE html><html><head>${emailStyles}</head><body>
-        <div class="header"><h1>🏭 SpecialOil</h1><p style="margin:10px 0 0;opacity:0.9;">Your Trusted China Special Oil Partner</p></div>
-        <div class="content">
-          <h2>Welcome to Our Newsletter!</h2>
-          <p>Thank you for subscribing to the <strong>SpecialOil</strong> newsletter.</p>
-          <p>You'll now receive:</p>
-          <ul>
-            <li>📊 Latest China special oil industry news</li>
-            <li>🔧 Technical insights and product updates</li>
-            <li>📈 Market analysis and price trends</li>
-            <li>🎁 Exclusive offers and promotions</li>
-          </ul>
-          <p style="margin-top:30px;">Stay tuned for our next update!</p>
-          <p>Best regards,<br><strong>The SpecialOil Team</strong></p>
-        </div>
-        <div class="footer">
-          <p>You're receiving this email because you subscribed to our newsletter.</p>
-          <p><a href="${unsubscribeUrl}">Unsubscribe</a> | <a href="${SITE_URL}">Visit Website</a></p>
+      subject: `Welcome to SpecialOil Newsletter 📧`,
+      html: `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">${emailStyles}</head><body>
+        <div class="email-container">
+          <div class="email-card">
+            <div class="email-header">
+              <div class="logo">
+                <div class="logo-icon"><span>🏭</span></div>
+                <h1>SpecialOil</h1>
+                <p class="tagline">Your Trusted China Special Oil Partner</p>
+              </div>
+            </div>
+            <div class="email-content">
+              <h2>Welcome to Our Newsletter!</h2>
+              <p class="greeting">Thank you for subscribing! You're now part of an exclusive community receiving the latest insights from China's special oil industry.</p>
+              
+              <div class="divider"></div>
+              
+              <p>Here's what you can expect:</p>
+              <ul class="feature-list">
+                <li>
+                  <div class="icon">📊</div>
+                  <div class="text">
+                    <strong>Industry News</strong>
+                    <span>Latest updates from China's special oil market</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="icon">🔧</div>
+                  <div class="text">
+                    <strong>Technical Insights</strong>
+                    <span>Expert analysis and product developments</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="icon">📈</div>
+                  <div class="text">
+                    <strong>Market Analysis</strong>
+                    <span>Price trends and market forecasts</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="icon">🎁</div>
+                  <div class="text">
+                    <strong>Exclusive Offers</strong>
+                    <span>Special promotions for our subscribers</span>
+                  </div>
+                </li>
+              </ul>
+              
+              <div class="divider"></div>
+              
+              <div class="signature">
+                <p>We're excited to have you on board!</p>
+                <p class="team-name">The SpecialOil Team</p>
+              </div>
+            </div>
+            <div class="email-footer">
+              <p>You're receiving this email because you subscribed to our newsletter.</p>
+              <div class="footer-links">
+                <a href="${unsubscribeUrl}">Unsubscribe</a>
+                <a href="${SITE_URL}">Visit Website</a>
+                <a href="${SITE_URL}/contact">Contact Us</a>
+              </div>
+            </div>
+          </div>
         </div>
       </body></html>`
     });
@@ -440,14 +555,43 @@ async function sendUnsubscribeConfirmation(email) {
       from: FROM_EMAIL,
       to: email,
       subject: `You've been unsubscribed from SpecialOil Newsletter`,
-      html: `<!DOCTYPE html><html><head>${emailStyles}</head><body>
-        <div class="header"><h1>🏭 SpecialOil</h1></div>
-        <div class="content">
-          <h2>Unsubscribe Confirmation</h2>
-          <p>You have been successfully unsubscribed from our newsletter.</p>
-          <p>We're sorry to see you go! If you change your mind, you can always resubscribe:</p>
-          <a href="${resubscribeUrl}" class="button">Resubscribe</a>
-          <p>Thank you for being part of our community.</p>
+      html: `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">${emailStyles}</head><body>
+        <div class="email-container">
+          <div class="email-card">
+            <div class="email-header">
+              <div class="logo">
+                <div class="logo-icon"><span>🏭</span></div>
+                <h1>SpecialOil</h1>
+              </div>
+            </div>
+            <div class="email-content">
+              <h2>Unsubscribe Confirmation</h2>
+              <p class="greeting">You have been successfully unsubscribed from our newsletter.</p>
+              <p>We're sorry to see you go. Your feedback is valuable to us - if you have a moment, please let us know why you decided to unsubscribe.</p>
+              
+              <div class="divider"></div>
+              
+              <p style="text-align: center;">Changed your mind? You can always come back!</p>
+              <p style="text-align: center;"><a href="${resubscribeUrl}" class="email-button">Resubscribe</a></p>
+              
+              <div class="divider"></div>
+              
+              <div class="signature">
+                <p>Thank you for being part of our community.</p>
+                <p class="team-name">The SpecialOil Team</p>
+              </div>
+            </div>
+            <div class="email-footer">
+              <p>You're receiving this email because you unsubscribed from our newsletter.</p>
+              <div class="footer-links">
+                <a href="${SITE_URL}">Visit Website</a>
+                <a href="${SITE_URL}/contact">Contact Us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </body></html>`
+    });
           <p>Best regards,<br><strong>The SpecialOil Team</strong></p>
         </div>
         <div class="footer"><p><a href="${SITE_URL}">Visit Website</a></p></div>
@@ -471,25 +615,48 @@ async function sendNewsletterToSubscribers(subscribers, subject, articles, previ
   
   for (const email of subscribers) {
     const unsubscribeUrl = `${SITE_URL}/unsubscribe?email=${encodeURIComponent(email)}`;
-    const articlesHTML = articles.map(a => `<div class="article"><h3><a href="${a.url}">${a.title}</a></h3><p>${a.summary}</p><a href="${a.url}" style="color:#D4AF37">Read more →</a></div>`).join('');
+    const articlesHTML = articles.map(a => `
+      <div class="article-card">
+        <h3><a href="${a.url}">${a.title}</a></h3>
+        <p>${a.summary}</p>
+        <a href="${a.url}" class="read-more">Read full article</a>
+      </div>
+    `).join('');
     
     try {
       const { error } = await resend.emails.send({
         from: FROM_EMAIL,
         to: email,
         subject: subject,
-        html: `<!DOCTYPE html><html><head>${emailStyles}</head><body>
-          <div class="header"><h1>🏭 SpecialOil</h1><p style="margin:10px 0 0;opacity:0.9">Newsletter</p></div>
-          <div class="content">
-            <h2>${subject}</h2>
-            ${previewText ? `<p style="color:#666;font-style:italic">${previewText}</p>` : ''}
-            ${articlesHTML}
-            <p style="margin-top:30px">Stay connected with us!</p>
-            <p>Best regards,<br><strong>The SpecialOil Team</strong></p>
-          </div>
-          <div class="footer">
-            <p>You're receiving this email because you subscribed to our newsletter.</p>
-            <p><a href="${unsubscribeUrl}">Unsubscribe</a> | <a href="${SITE_URL}">Visit Website</a></p>
+        html: `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">${emailStyles}</head><body>
+          <div class="email-container">
+            <div class="email-card">
+              <div class="email-header">
+                <div class="logo">
+                  <div class="logo-icon"><span>🏭</span></div>
+                  <h1>SpecialOil</h1>
+                  <p class="tagline">Newsletter</p>
+                </div>
+              </div>
+              <div class="email-content">
+                <h2 style="text-align: center;">${subject}</h2>
+                ${previewText ? `<p style="text-align: center; color: #64748b; font-style: italic; font-size: 16px;">${previewText}</p><div class="divider"></div>` : ''}
+                ${articlesHTML}
+                <div class="divider"></div>
+                <div class="signature">
+                  <p>Stay connected with us!</p>
+                  <p class="team-name">The SpecialOil Team</p>
+                </div>
+              </div>
+              <div class="email-footer">
+                <p>You're receiving this email because you subscribed to our newsletter.</p>
+                <div class="footer-links">
+                  <a href="${unsubscribeUrl}">Unsubscribe</a>
+                  <a href="${SITE_URL}">Visit Website</a>
+                  <a href="${SITE_URL}/contact">Contact Us</a>
+                </div>
+              </div>
+            </div>
           </div>
         </body></html>`
       });
