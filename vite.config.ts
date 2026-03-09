@@ -21,5 +21,11 @@ export default defineConfig({
       clientPort: 443,
       timeout: 30000,
     },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    },
   },
 });

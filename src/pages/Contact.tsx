@@ -44,8 +44,20 @@ const Contact = () => {
       
       setIsSubmitting(true);
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // 提交到后端 API
+      const response = await fetch('/api/inquiries', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit inquiry');
+      }
       
       // Show success toast
       toast.success('Thank you for your inquiry! Our team will contact you within 24 hours.');
@@ -65,6 +77,8 @@ const Contact = () => {
       if (error instanceof z.ZodError) {
         const firstError = error.errors[0];
         toast.error(firstError.message);
+      } else if (error instanceof Error) {
+        toast.error(error.message);
       } else {
         toast.error('An error occurred. Please try again later.');
       }

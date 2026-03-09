@@ -4,6 +4,7 @@ import { useNavigate, useParams, Routes, Route } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useBlog } from '../hooks/useBlog';
 import { BlogPost } from '../types/blog';
+import InquiriesAdmin from './InquiriesAdmin';
 
 // 文章列表组件
 const ArticleList = () => {
@@ -83,6 +84,7 @@ const ArticleList = () => {
 const Admin = () => {
   const navigate = useNavigate();
   const { isAuthenticated, setAuthenticated } = useBlog();
+  const [activeTab, setActiveTab] = useState<'articles' | 'inquiries'>('articles');
 
   // 检查是否已登录
   useEffect(() => {
@@ -101,37 +103,72 @@ const Admin = () => {
     <div className="min-h-screen bg-white pt-24 pb-16">
       <div className="container mx-auto px-4">
         {/* 页面头部 */}
-        <header className="mb-12 flex flex-col md:flex-row justify-between items-center">
+        <header className="mb-8 flex flex-col md:flex-row justify-between items-center">
           <div>
-              <h1 className="text-3xl font-bold text-[#003366] font-['Montserrat']">
-                Blog Admin Panel
-              </h1>
-              <p className="text-[#333333]">Manage your blog articles</p>
+            <h1 className="text-3xl font-bold text-[#003366] font-['Montserrat']">
+              Admin Panel
+            </h1>
+            <p className="text-[#333333]">Manage your content and inquiries</p>
           </div>
           <button 
             onClick={handleLogout}
             className="mt-4 md:mt-0 inline-block bg-red-600 text-white px-6 py-2 rounded-sm font-semibold hover:bg-opacity-90 transition-all"
           >
-                     <i className="fa-solid fa-sign-out-alt mr-2"></i>Logout
+            <i className="fa-solid fa-sign-out-alt mr-2"></i>Logout
           </button>
         </header>
 
-        {/* 管理内容区域 */}
-        <div className="bg-[#F4F6F9] p-8 rounded-sm mb-12">
-          <div className="flex justify-between items-center mb-8">
-               <h2 className="text-2xl font-bold text-[#003366] font-['Montserrat']">
-                 Article Management
-               </h2>
-            <button 
-              onClick={() => navigate('/admin/new')}
-              className="inline-block bg-[#D4AF37] text-white px-6 py-3 rounded-sm font-semibold hover:bg-opacity-90 transition-all"
+        {/* 选项卡导航 */}
+        <div className="mb-6 border-b border-gray-200">
+          <nav className="flex gap-8">
+            <button
+              onClick={() => setActiveTab('articles')}
+              className={`pb-4 px-1 text-sm font-medium border-b-2 transition-colors ${
+                activeTab === 'articles'
+                  ? 'border-[#003366] text-[#003366]'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
             >
-                     <i className="fa-solid fa-plus mr-2"></i>New Article
+              <i className="fa-solid fa-file-lines mr-2"></i>Articles
             </button>
-          </div>
-          
-          {/* 文章列表 */}
-          <ArticleList />
+            <button
+              onClick={() => setActiveTab('inquiries')}
+              className={`pb-4 px-1 text-sm font-medium border-b-2 transition-colors ${
+                activeTab === 'inquiries'
+                  ? 'border-[#003366] text-[#003366]'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <i className="fa-solid fa-envelope mr-2"></i>Inquiries
+            </button>
+          </nav>
+        </div>
+
+        {/* 管理内容区域 */}
+        <div className="bg-[#F4F6F9] p-8 rounded-sm">
+          {activeTab === 'articles' ? (
+            <>
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-bold text-[#003366] font-['Montserrat']">
+                  Article Management
+                </h2>
+                <button 
+                  onClick={() => navigate('/admin/new')}
+                  className="inline-block bg-[#D4AF37] text-white px-6 py-3 rounded-sm font-semibold hover:bg-opacity-90 transition-all"
+                >
+                  <i className="fa-solid fa-plus mr-2"></i>New Article
+                </button>
+              </div>
+              <ArticleList />
+            </>
+          ) : (
+            <>
+              <h2 className="text-2xl font-bold text-[#003366] font-['Montserrat'] mb-8">
+                Inquiry Management
+              </h2>
+              <InquiriesAdmin />
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -222,7 +259,7 @@ export const ArticleEditor = () => {
           toast.success('文章创建成功');
         } else {
           // 更新文章
-          const success = updatePost(id, postData);
+          const success = updatePost(id!, postData);
           if (success) {
             toast.success('文章更新成功');
           } else {
