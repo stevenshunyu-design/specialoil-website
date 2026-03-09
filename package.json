@@ -5,12 +5,13 @@
   "scripts": {
     "start": "node server.production.js",
     "build": "vite build",
-    "postinstall": "echo 'Dependencies installed'"
+    "postinstall": "pnpm approve-builds esbuild || true"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "esbuild": "^0.25.0",
     "express": "^4.18.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -27,7 +28,10 @@
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.7.2",
-    "vite": "^7.2.4",
+    "vite": "^6.0.0",
     "vite-tsconfig-paths": "^5.1.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   }
 }
