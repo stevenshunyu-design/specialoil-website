@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useBlog } from '../hooks/useBlog';
 import BlogCard from '../components/BlogCard';
-import { SuccessModal, ErrorModal } from '@/components/ToastModal';
+import { SubscribeSuccessModal, SubscribeErrorModal } from '@/components/ToastModal';
 
 const Blog = () => {
   // 所有Hooks必须放在组件顶部，确保每次渲染都以相同顺序调用
@@ -17,6 +17,7 @@ const Blog = () => {
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   
   // 分类列表
@@ -57,6 +58,7 @@ const Blog = () => {
       }
       
       setSubscriberEmail('');
+      setSuccessMessage(result.message || 'Thank you for subscribing! Please check your email for confirmation.');
       setShowSuccessModal(true);
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Failed to subscribe');
@@ -262,11 +264,12 @@ const Blog = () => {
       </div>
       
       {/* Modals */}
-      <SuccessModal 
+      <SubscribeSuccessModal 
         isOpen={showSuccessModal} 
-        onClose={() => setShowSuccessModal(false)} 
+        onClose={() => setShowSuccessModal(false)}
+        message={successMessage}
       />
-      <ErrorModal 
+      <SubscribeErrorModal 
         isOpen={showErrorModal} 
         onClose={() => setShowErrorModal(false)}
         message={errorMessage}

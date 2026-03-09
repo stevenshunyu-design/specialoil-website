@@ -122,7 +122,7 @@ export function ToastModal({
   );
 }
 
-// Success Modal Component
+// Success Modal Component (用于询盘)
 export function SuccessModal({ 
   isOpen, 
   onClose 
@@ -157,6 +157,48 @@ export function ErrorModal({
       type="error"
       title="Submission Failed"
       message={message || "Something went wrong. Please try again later or contact us directly."}
+      onClose={onClose}
+    />
+  );
+}
+
+// Subscribe Success Modal Component (用于订阅)
+export function SubscribeSuccessModal({ 
+  isOpen, 
+  onClose,
+  message 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void;
+  message?: string;
+}) {
+  return (
+    <ToastModal
+      isOpen={isOpen}
+      type="success"
+      title="Subscription Successful!"
+      message={message || "Thank you for subscribing! Please check your email for confirmation."}
+      onClose={onClose}
+    />
+  );
+}
+
+// Subscribe Error Modal Component
+export function SubscribeErrorModal({ 
+  isOpen, 
+  onClose,
+  message 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void;
+  message?: string;
+}) {
+  return (
+    <ToastModal
+      isOpen={isOpen}
+      type="error"
+      title="Subscription Failed"
+      message={message || "Something went wrong. Please try again later."}
       onClose={onClose}
     />
   );
