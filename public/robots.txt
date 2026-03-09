@@ -1,0 +1,25 @@
+# robots.txt for cnspecialtyoils.com
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://cnspecialtyoils.com/sitemap.xml
+
+# Disallow admin and login pages
+Disallow: /admin
+Disallow: /login
+Disallow: /api/
+
+# Allow all crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Sogou
+Allow: /
