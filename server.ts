@@ -236,6 +236,106 @@ app.delete('/api/inquiries/:id', async (req: Request, res: Response) => {
   }
 });
 
+// 订阅 Newsletter API
+app.post('/api/subscribers', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    // 验证邮箱
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email address' });
+    }
+
+    const client = getSupabaseClient();
+    
+    // 检查是否已订阅
+    const { data: existing } = await client
+      .from('subscribers')
+      .select('id, status')
+      .eq('email', email)
+      .single();
+
+    if (existing) {
+      if (existing.status === 'active') {
+        return res.status(200).json({ 
+          success: true, 
+          message: 'You are already subscribed!' 
+        });
+      } else {
+        // 重新激活订阅
+        const { error } = await client
+          .from('subscribers')
+          .update({ status: 'active', unsubscribed_at: null })
+          .eq('id', existing.id);
+
+        if (error) {
+          console.error('Database error:', error);
+          return res.status(500).json({ error: 'Failed to resubscribe' });
+        }
+
+        return res.status(200).json({ 
+          success: true, 
+          message: 'Welcome back! You have been resubscribed.' 
+        });
+      }
+    }
+
+    // 新订阅
+    const { error } = await client
+      .from('subscribers')
+      .insert({ email, status: 'active' });
+
+    if (error) {
+      console.error('Database error:', error);
+      return res.status(500).json({ error: 'Failed to subscribe' });
+    }
+
+    res.status(201).json({ 
+      success: true, 
+      message: 'Thank you for subscribing!' 
+    });
+  } catch (error) {
+    console.error('Server error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// 取消订阅 API
+app.post('/api/subscribers/unsubscribe', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    const client = getSupabaseClient();
+    
+    const { error } = await client
+      .from('subscribers')
+      .update({ 
+        status: 'unsubscribed', 
+        unsubscribed_at: new Date().toISOString() 
+      })
+      .eq('email', email);
+
+    if (error) {
+      console.error('Database error:', error);
+      return res.status(500).json({ error: 'Failed to unsubscribe' });
+    }
+
+    res.json({ success: true, message: 'You have been unsubscribed.' });
+  } catch (error) {
+    console.error('Server error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // 健康检查
 app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok' });

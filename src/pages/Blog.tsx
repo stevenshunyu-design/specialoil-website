@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useBlog } from '../hooks/useBlog';
 import BlogCard from '../components/BlogCard';
+import { SuccessModal, ErrorModal } from '@/components/ToastModal';
 
 const Blog = () => {
   // 所有Hooks必须放在组件顶部，确保每次渲染都以相同顺序调用
@@ -10,6 +11,13 @@ const Blog = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPosts, setFilteredPosts] = useState(posts);
   const [activeCategory, setActiveCategory] = useState('All');
+  
+  // Newsletter 订阅状态
+  const [subscriberEmail, setSubscriberEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   
   // 分类列表
   const categories = ['All', 'Industry News', 'Technical Information', 'Market Analysis', 'Product Updates'];
@@ -22,6 +30,41 @@ const Blog = () => {
       setFilteredPosts(posts);
     }
   }, [searchQuery, posts, searchPosts]);
+  
+  // Newsletter 订阅处理
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!subscriberEmail.trim()) {
+      setErrorMessage('Please enter your email address');
+      setShowErrorModal(true);
+      return;
+    }
+    
+    setIsSubscribing(true);
+    
+    try {
+      const response = await fetch('/api/subscribers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: subscriberEmail.trim() }),
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to subscribe');
+      }
+      
+      setSubscriberEmail('');
+      setShowSuccessModal(true);
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to subscribe');
+      setShowErrorModal(true);
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -197,19 +240,37 @@ const Blog = () => {
                   Get the latest China special oil industry news and technical insights delivered to your inbox
                 </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4">
               <input
                 type="email"
                 placeholder="Your email address"
+                value={subscriberEmail}
+                onChange={(e) => setSubscriberEmail(e.target.value)}
                 className="px-4 py-3 bg-white/10 text-white placeholder-white/60 border border-white/20 rounded-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent-600)] w-full sm:w-64"
+                disabled={isSubscribing}
               />
-                <button className="inline-block bg-[var(--accent-600)] text-white px-6 py-3 rounded-sm font-medium hover:bg-[var(--accent-700)] transition-all duration-300 whitespace-nowrap">
-                  Subscribe
+                <button 
+                  type="submit"
+                  disabled={isSubscribing}
+                  className="inline-block bg-[var(--accent-600)] text-white px-6 py-3 rounded-sm font-medium hover:bg-[var(--accent-700)] transition-all duration-300 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubscribing ? 'Subscribing...' : 'Subscribe'}
                 </button>
-            </div>
+            </form>
           </div>
         </section>
       </div>
+      
+      {/* Modals */}
+      <SuccessModal 
+        isOpen={showSuccessModal} 
+        onClose={() => setShowSuccessModal(false)} 
+      />
+      <ErrorModal 
+        isOpen={showErrorModal} 
+        onClose={() => setShowErrorModal(false)}
+        message={errorMessage}
+      />
       
       {/* Mobile Sticky Footer */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg flex">
