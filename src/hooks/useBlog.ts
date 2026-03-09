@@ -9,6 +9,155 @@ const USE_SANITY = SANITY_PROJECT_ID && SANITY_PROJECT_ID !== 'your-project-id-h
 // 真实行业数据 - 博客文章
 const defaultBlogPosts: BlogPost[] = [
   {
+    id: '9',
+    title: 'Powering the Future Grid: CNOOC "Haijiang" Naphthenic Transformer Oil – The Superior Insulation Strategy',
+    excerpt: 'Discover CNOOC "Haijiang" Naphthenic Transformer Oil – refined from pure marine naphthenic crude oil (only 2% of global reserves), delivering superior insulation, cooling, and extreme-temperature reliability for modern power grids.',
+    content: `
+      <h2>The Heartbeat of Global Energy Grids</h2>
+      <p>In the modern power industry, the stable operation of transformers is the heartbeat of global energy grids. As voltage levels rise and operating environments become increasingly severe, the demand for high-performance transformer oil has never been more critical.</p>
+      
+      <p>Backed by <strong>China National Offshore Oil Corporation (CNOOC)</strong>—a Fortune Global 500 giant—the <strong>"Haijiang" Naphthenic Transformer Oil</strong> emerges as the ultimate solution for superior insulation, cooling, and extreme-temperature reliability.</p>
+      
+      <p>At <a href="https://cnspecialtyoils.com" style="color:#D4AF37;font-weight:600;">cnspecialtyoils.com</a>, we are proud to bring this world-class product to international markets, connecting global buyers with China's finest special oil innovations.</p>
+      
+      <h3>The 2% Global Rarity: The Naphthenic Advantage</h3>
+      <p>Not all transformer oils are created equal. While standard paraffinic oils require complex dewaxing and are prone to sludge formation, "Haijiang" is refined from <strong>pure marine naphthenic crude oil</strong>, a precious resource that accounts for only <strong>2% of global crude reserves</strong>.</p>
+      
+      <p>This unique molecular structure provides "Haijiang" with inherent advantages that set it apart from conventional transformer oils:</p>
+      
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:12px;text-align:left;">Advantage</th>
+          <th style="border:1px solid #ddd;padding:12px;text-align:left;">Description</th>
+          <th style="border:1px solid #ddd;padding:12px;text-align:left;">Benefit</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:12px;"><strong>Naturally Low Pour Point</strong></td>
+          <td style="border:1px solid #ddd;padding:12px;">No pour point depressants needed</td>
+          <td style="border:1px solid #ddd;padding:12px;">Exceptional low-temperature fluidity. Premium grades (U-40℃, I-40℃) flow smoothly in harsh winter conditions</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:12px;"><strong>Outstanding Solubility</strong></td>
+          <td style="border:1px solid #ddd;padding:12px;">High cyclic hydrocarbon content</td>
+          <td style="border:1px solid #ddd;padding:12px;">Naturally dissolves oxidation byproducts, prevents sludge formation, keeps transformer core clean</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:12px;"><strong>Exceptional Heat Dissipation</strong></td>
+          <td style="border:1px solid #ddd;padding:12px;">Superior thermal conductivity</td>
+          <td style="border:1px solid #ddd;padding:12px;">Rapid heat transfer extends lifespan of transformer's solid insulation (paper/cellulose)</td>
+        </tr>
+      </table>
+      
+      <h3>Uncompromising Quality: Certified by Global Authorities</h3>
+      <p>Quality is the cornerstone of the "Haijiang" brand. Manufactured by <strong>CNOOC's dedicated Bohai Bay processing base</strong> (China Offshore Bitumen Co., Ltd.), every drop of our transformer oil undergoes rigorous quality assurance.</p>
+      
+      <p>Our products strictly adhere to and exceed global standards:</p>
+      <ul>
+        <li><strong>IEC 60296:</strong> International Electrotechnical Commission standard for transformer oils</li>
+        <li><strong>ASTM D3487:</strong> American Society for Testing and Materials specification</li>
+        <li><strong>GB 2536-2025:</strong> China's latest national standard (aligned with IEC 60296:2020)</li>
+      </ul>
+      
+      <p>We don't just claim excellence; we prove it. "Haijiang" Transformer Oil has passed comprehensive inspection and certification by world-renowned third-party institutions:</p>
+      
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin:20px 0;">
+        <div style="flex:1;min-width:150px;background:#f8f9fa;padding:20px;border-radius:8px;text-align:center;border-left:4px solid #D4AF37;">
+          <strong style="font-size:18px;color:#003366;">SGS</strong>
+          <p style="margin:5px 0 0;color:#666;">Global Testing & Certification</p>
+        </div>
+        <div style="flex:1;min-width:150px;background:#f8f9fa;padding:20px;border-radius:8px;text-align:center;border-left:4px solid #D4AF37;">
+          <strong style="font-size:18px;color:#003366;">Doble Engineering</strong>
+          <p style="margin:5px 0 0;color:#666;">USA – Power Systems Testing</p>
+        </div>
+        <div style="flex:1;min-width:150px;background:#f8f9fa;padding:20px;border-radius:8px;text-align:center;border-left:4px solid #D4AF37;">
+          <strong style="font-size:18px;color:#003366;">Xi'an Thermal Power</strong>
+          <p style="margin:5px 0 0;color:#666;">Research Institute</p>
+        </div>
+      </div>
+      
+      <h3>Product Portfolio: Tailored for Every Climate</h3>
+      <p>Whether your grid operates in tropical heat or arctic cold, "Haijiang" has a specific formulation to ensure uninterrupted power transmission.</p>
+      
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:12px;">Grade</th>
+          <th style="border:1px solid #ddd;padding:12px;">Pour Point</th>
+          <th style="border:1px solid #ddd;padding:12px;">Application</th>
+          <th style="border:1px solid #ddd;padding:12px;">Key Features</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:12px;"><strong>Standard Grade</strong><br>I-10℃, I-20℃</td>
+          <td style="border:1px solid #ddd;padding:12px;">≤-10°C / ≤-20°C</td>
+          <td style="border:1px solid #ddd;padding:12px;">General climate zones</td>
+          <td style="border:1px solid #ddd;padding:12px;">Superior oxidation stability, excellent dielectric strength</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #ddd;padding:12px;"><strong>Special & Ultra Grade</strong><br>U-30℃, U-40℃</td>
+          <td style="border:1px solid #ddd;padding:12px;">≤-30°C / ≤-40°C</td>
+          <td style="border:1px solid #ddd;padding:12px;">Ultra-high-voltage (UHV) equipment, extreme cold regions</td>
+          <td style="border:1px solid #ddd;padding:12px;">Optimal viscosity at -40°C, premium insulation performance</td>
+        </tr>
+      </table>
+      
+      <h3>Partner with a Global Energy Leader</h3>
+      <p>Choosing "Haijiang" means partnering with <strong>CNOOC</strong>, a company with a proven track record of <em>Patriotism, Commitment, and Innovation</em>. With state-of-the-art production facilities, a stable global supply chain, and a commitment to sustainable energy development, we are ready to power your infrastructure worldwide.</p>
+      
+      <p>Through <a href="https://cnspecialtyoils.com" style="color:#D4AF37;font-weight:600;">cnspecialtyoils.com</a>, international buyers can now access this premium naphthenic transformer oil with:</p>
+      
+      <ul>
+        <li><strong>Competitive Pricing:</strong> Direct from CNOOC's production facilities</li>
+        <li><strong>Complete Documentation:</strong> COA, COC, SDS, and third-party test reports</li>
+        <li><strong>Flexible Order Volumes:</strong> From pilot samples to bulk shipments</li>
+        <li><strong>Global Logistics Support:</strong> Experienced export team handling international delivery</li>
+        <li><strong>Technical Support:</strong> Expert guidance for product selection and application</li>
+      </ul>
+      
+      <h3>Why Source Through cnspecialtyoils.com?</h3>
+      <p>As China's leading special oil sourcing platform, <a href="https://cnspecialtyoils.com" style="color:#D4AF37;font-weight:600;">cnspecialtyoils.com</a> connects global buyers with verified Chinese special oil manufacturers. Our platform offers:</p>
+      
+      <div style="background:linear-gradient(135deg,#f8f9fa 0%,#e9ecef 100%);padding:25px;border-radius:8px;margin:20px 0;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+          <div style="text-align:center;">
+            <div style="font-size:32px;color:#D4AF37;margin-bottom:10px;">✓</div>
+            <strong style="color:#003366;">Verified Suppliers</strong>
+            <p style="font-size:14px;color:#666;margin-top:5px;">Direct partnerships with major Chinese oil companies</p>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:32px;color:#D4AF37;margin-bottom:10px;">✓</div>
+            <strong style="color:#003366;">Quality Assurance</strong>
+            <p style="font-size:14px;color:#666;margin-top:5px;">Third-party testing and certification available</p>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:32px;color:#D4AF37;margin-bottom:10px;">✓</div>
+            <strong style="color:#003366;">Transparent Pricing</strong>
+            <p style="font-size:14px;color:#666;margin-top:5px;">Competitive factory-direct pricing</p>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:32px;color:#D4AF37;margin-bottom:10px;">✓</div>
+            <strong style="color:#003366;">Global Delivery</strong>
+            <p style="font-size:14px;color:#666;margin-top:5px;">Reliable logistics to destinations worldwide</p>
+          </div>
+        </div>
+      </div>
+      
+      <h3>Secure Your Supply Today</h3>
+      <p>Ready to power your infrastructure with the world's finest naphthenic transformer oil? <a href="https://cnspecialtyoils.com/contact" style="color:#D4AF37;font-weight:600;">Contact our team</a> to discuss your requirements, request technical specifications, or arrange sample testing.</p>
+      
+      <p><strong>Don't compromise on quality when it comes to your critical power infrastructure.</strong> Choose "Haijiang" – the 2% global rarity that delivers 100% reliability.</p>
+      
+      <div style="background:#003366;color:white;padding:25px;border-radius:8px;margin:20px 0;text-align:center;">
+        <h4 style="margin:0 0 10px;font-size:20px;">Request a Quote for "Haijiang" Transformer Oil</h4>
+        <p style="margin:0 0 15px;opacity:0.9;">Get competitive pricing for CNOOC's premium naphthenic transformer oil</p>
+        <a href="https://cnspecialtyoils.com/contact" style="display:inline-block;background:#D4AF37;color:#003366;padding:12px 30px;border-radius:4px;text-decoration:none;font-weight:600;">Contact Us Now</a>
+      </div>
+    `,
+    category: 'Product Updates',
+    tags: ['Transformer Oil', 'CNOOC', 'Haijiang', 'Naphthenic Oil', 'Power Grid', 'UHV'],
+    featuredImage: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&h=450&fit=crop',
+    publishedAt: '2025-01-18T08:00:00Z',
+    author: 'Product Team'
+  },
+  {
     id: '1',
     title: '2025 China Special Oil Market Report: Industry Reaches ¥3,862 Billion',
     excerpt: 'China\'s special oil industry market size reached 3,862 billion RMB in 2024, with exports growing 12% year-on-year. Comprehensive analysis of production capacity, regional distribution, and future trends.',
