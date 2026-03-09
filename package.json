@@ -34,10 +34,11 @@
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.7.2",
-    "vite": "^6.0.0",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite": "^5.4.0",
+    "vite-tsconfig-paths": "^5.1.4",
+    "esbuild-wasm": "^0.25.0"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "ignoredBuiltDependencies": ["esbuild"]
   }
 }
