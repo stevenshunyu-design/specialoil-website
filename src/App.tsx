@@ -17,10 +17,12 @@ import Admin from "@/pages/Admin";
 import Partners from "@/pages/Partners";
 import { ArticleEditor } from "@/pages/Admin";
 import Login from "@/pages/Login";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
+      <ScrollToTop />
       <Toaster 
         position="top-center"
         toastOptions={{
