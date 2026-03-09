@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
 import Home from "@/pages/Home";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -20,6 +21,19 @@ import Login from "@/pages/Login";
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: '#fff',
+            border: '1px solid #e5e7eb',
+            padding: '16px 24px',
+            fontSize: '15px',
+            fontWeight: '500',
+          },
+          className: 'shadow-lg',
+        }}
+      />
       <Header />
       <main className="flex-grow">
         <Routes>

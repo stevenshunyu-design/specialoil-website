@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import { toast } from 'sonner';
 import { z } from 'zod';
+import { SuccessModal, ErrorModal } from '@/components/ToastModal';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +15,9 @@ const Contact = () => {
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   
   // Form validation schema
   const contactFormSchema = z.object({
@@ -59,8 +62,8 @@ const Contact = () => {
         throw new Error(result.error || 'Failed to submit inquiry');
       }
       
-      // Show success toast
-      toast.success('Thank you for your inquiry! Our team will contact you within 24 hours.');
+      // Show success modal
+      setShowSuccessModal(true);
       
       // Reset form
       setFormData({
@@ -74,14 +77,14 @@ const Contact = () => {
       });
       
     } catch (error) {
+      let errorMsg = 'An error occurred. Please try again later.';
       if (error instanceof z.ZodError) {
-        const firstError = error.errors[0];
-        toast.error(firstError.message);
+        errorMsg = error.errors[0].message;
       } else if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error('An error occurred. Please try again later.');
+        errorMsg = error.message;
       }
+      setErrorMessage(errorMsg);
+      setShowErrorModal(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -419,6 +422,19 @@ const Contact = () => {
           <span>WhatsApp</span>
         </a>
       </div>
+
+      {/* Success Modal */}
+      <SuccessModal 
+        isOpen={showSuccessModal} 
+        onClose={() => setShowSuccessModal(false)} 
+      />
+
+      {/* Error Modal */}
+      <ErrorModal 
+        isOpen={showErrorModal} 
+        onClose={() => setShowErrorModal(false)}
+        message={errorMessage}
+      />
     </div>
   );
 };
