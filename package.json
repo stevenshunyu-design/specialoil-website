@@ -4,19 +4,25 @@
   "type": "module",
   "scripts": {
     "start": "node server.production.js",
-    "build": "vite build",
-    "postinstall": "pnpm approve-builds esbuild || true"
+    "build": "vite build"
   },
   "dependencies": {
+    "@sanity/client": "^7.16.0",
+    "@sanity/image-url": "^2.0.3",
     "@supabase/supabase-js": "^2.39.0",
+    "clsx": "^2.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "esbuild": "^0.25.0",
     "express": "^4.18.2",
+    "framer-motion": "^12.9.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.3.0",
-    "sonner": "^2.0.2"
+    "recharts": "^2.15.1",
+    "sonner": "^2.0.2",
+    "tailwind-merge": "^3.0.2",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
