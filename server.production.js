@@ -592,11 +592,6 @@ async function sendUnsubscribeConfirmation(email) {
         </div>
       </body></html>`
     });
-          <p>Best regards,<br><strong>The SpecialOil Team</strong></p>
-        </div>
-        <div class="footer"><p><a href="${SITE_URL}">Visit Website</a></p></div>
-      </body></html>`
-    });
     
     if (error) { console.error('Email error:', error); return false; }
     console.log('Unsubscribe email sent:', data?.id);
