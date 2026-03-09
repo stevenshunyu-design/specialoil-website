@@ -35,6 +35,7 @@ const Header = () => {
   const menuItems = [
     { label: 'Home', path: '/' },
     { label: 'About', path: '/about' },
+    { label: 'Partners', path: '/partners' },
     {
       label: 'Products',
       path: '/products',

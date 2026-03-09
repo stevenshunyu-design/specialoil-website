@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route } from "react-router-dom";
 import Home from "@/pages/Home";
 import Header from "@/components/Header";
@@ -14,6 +13,7 @@ import Contact from "@/pages/Contact";
 import Blog from "@/pages/Blog";
 import BlogPost from "@/pages/BlogPost";
 import Admin from "@/pages/Admin";
+import Partners from "@/pages/Partners";
 import { ArticleEditor } from "@/pages/Admin";
 import Login from "@/pages/Login";
 
@@ -25,6 +25,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/partners" element={<Partners />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/transformer-oil" element={<TransformerOil />} />
           <Route path="/products/rubber-process-oil" element={<RubberProcessOil />} />
