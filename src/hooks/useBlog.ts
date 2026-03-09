@@ -145,9 +145,9 @@ const defaultBlogPosts: BlogPost[] = [
       
       <p><strong>Don't compromise on quality when it comes to your critical power infrastructure.</strong> Choose "Haijiang" – the 2% global rarity that delivers 100% reliability.</p>
       
-      <div style="background:#003366;color:white;padding:25px;border-radius:8px;margin:20px 0;text-align:center;">
-        <h4 style="margin:0 0 10px;font-size:20px;">Request a Quote for "Haijiang" Transformer Oil</h4>
-        <p style="margin:0 0 15px;opacity:0.9;">Get competitive pricing for CNOOC's premium naphthenic transformer oil</p>
+      <div style="background:#003366;padding:25px;border-radius:8px;margin:20px 0;text-align:center;">
+        <h4 style="margin:0 0 10px;font-size:20px;color:#D4AF37 !important;">Request a Quote for "Haijiang" Transformer Oil</h4>
+        <p style="margin:0 0 15px;color:white !important;opacity:0.9;">Get competitive pricing for CNOOC's premium naphthenic transformer oil</p>
         <a href="https://cnspecialtyoils.com/contact" style="display:inline-block;background:#D4AF37;color:#003366;padding:12px 30px;border-radius:4px;text-decoration:none;font-weight:600;">Contact Us Now</a>
       </div>
     `,
@@ -1262,7 +1262,7 @@ export function useBlog() {
       try {
         // 检查数据版本，确保使用最新的博客数据
         const storedVersion = localStorage.getItem('blogPostsVersion');
-        const currentVersion = '2.1'; // 更新版本号以强制刷新数据（添加 Haijiang 博客）
+        const currentVersion = '2.2'; // 更新版本号以强制刷新数据（修复 CTA 样式）
         const storedPosts = localStorage.getItem('blogPosts');
         
         if (storedPosts && storedVersion === currentVersion) {
