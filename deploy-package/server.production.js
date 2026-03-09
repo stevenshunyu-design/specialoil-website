@@ -3,6 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createClient } from '@supabase/supabase-js';
+import { Resend } from 'resend';
 import 'dotenv/config';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -13,6 +14,11 @@ const app = express();
 // Hostinger 会自动分配端口
 const PORT = process.env.PORT || 3000;
 
+// 邮件配置
+const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@specialoil.com';
+const SITE_URL = process.env.SITE_URL || 'https://specialoil.com';
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+
 console.log('========================================');
 console.log('Starting server...');
 console.log('__dirname:', __dirname);
@@ -20,6 +26,7 @@ console.log('PORT:', PORT);
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? 'SET' : 'NOT SET');
 console.log('SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
+console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'SET' : 'NOT SET');
 console.log('========================================');
 
 // 初始化 Supabase 客户端
@@ -241,6 +248,8 @@ app.post('/api/subscribers', async (req, res) => {
       .eq('email', email)
       .single();
     
+    let isNewSubscription = false;
+    
     if (existing) {
       if (existing.status === 'active') {
         return res.status(200).json({ success: true, message: 'You are already subscribed!' });
@@ -251,19 +260,251 @@ app.post('/api/subscribers', async (req, res) => {
           .update({ status: 'active', unsubscribed_at: null })
           .eq('id', existing.id);
         if (error) return res.status(500).json({ error: 'Failed to resubscribe' });
-        return res.status(200).json({ success: true, message: 'Welcome back! You have been resubscribed.' });
       }
+    } else {
+      // 新订阅
+      const { error } = await supabase.from('subscribers').insert({ email, status: 'active' });
+      if (error) return res.status(500).json({ error: 'Failed to subscribe' });
+      isNewSubscription = true;
     }
     
-    // 新订阅
-    const { error } = await supabase.from('subscribers').insert({ email, status: 'active' });
-    if (error) return res.status(500).json({ error: 'Failed to subscribe' });
+    // 发送确认邮件（异步）
+    sendSubscriptionConfirmation(email).catch(err => console.error('Email error:', err));
     
-    res.status(201).json({ success: true, message: 'Thank you for subscribing!' });
+    res.status(isNewSubscription ? 201 : 200).json({ 
+      success: true, 
+      message: isNewSubscription 
+        ? 'Thank you for subscribing! Please check your email for confirmation.' 
+        : 'Welcome back! You have been resubscribed.'
+    });
   } catch (error) {
     res.status(500).json({ error: 'Internal error', details: error.message });
   }
 });
+
+// 取消订阅 API
+app.post('/api/subscribers/unsubscribe', async (req, res) => {
+  try {
+    if (!supabase) return res.status(500).json({ error: 'Database not configured' });
+    
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: 'Email is required' });
+    
+    const { error } = await supabase
+      .from('subscribers')
+      .update({ status: 'unsubscribed', unsubscribed_at: new Date().toISOString() })
+      .eq('email', email);
+    
+    if (error) return res.status(500).json({ error: 'Failed to unsubscribe' });
+    
+    // 发送确认邮件（异步）
+    sendUnsubscribeConfirmation(email).catch(err => console.error('Email error:', err));
+    
+    res.json({ success: true, message: 'You have been unsubscribed.' });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal error', details: error.message });
+  }
+});
+
+// 获取所有订阅者（管理员）
+app.get('/api/subscribers', async (req, res) => {
+  try {
+    if (!supabase) return res.status(500).json({ error: 'Database not configured' });
+    
+    const { data, error } = await supabase
+      .from('subscribers')
+      .select('*')
+      .order('subscribed_at', { ascending: false });
+    
+    if (error) return res.status(500).json({ error: 'Failed to fetch subscribers' });
+    res.json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal error', details: error.message });
+  }
+});
+
+// 删除订阅者（管理员）
+app.delete('/api/subscribers/:id', async (req, res) => {
+  try {
+    if (!supabase) return res.status(500).json({ error: 'Database not configured' });
+    
+    const { id } = req.params;
+    const { error } = await supabase.from('subscribers').delete().eq('id', id);
+    
+    if (error) return res.status(500).json({ error: 'Failed to delete subscriber' });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal error', details: error.message });
+  }
+});
+
+// 发送 Newsletter（管理员）
+app.post('/api/newsletter/send', async (req, res) => {
+  try {
+    if (!supabase) return res.status(500).json({ error: 'Database not configured' });
+    
+    const { subject, articles, previewText } = req.body;
+    if (!subject || !articles || !Array.isArray(articles)) {
+      return res.status(400).json({ error: 'Subject and articles are required' });
+    }
+    
+    const { data: subscribers, error } = await supabase
+      .from('subscribers')
+      .select('email')
+      .eq('status', 'active');
+    
+    if (error) return res.status(500).json({ error: 'Failed to fetch subscribers' });
+    if (!subscribers || subscribers.length === 0) {
+      return res.status(400).json({ error: 'No active subscribers' });
+    }
+    
+    const emails = subscribers.map(s => s.email);
+    const result = await sendNewsletterToSubscribers(emails, subject, articles, previewText);
+    
+    res.json({ 
+      success: result.success, 
+      sentCount: result.sentCount,
+      totalSubscribers: emails.length,
+      errors: result.errors 
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal error', details: error.message });
+  }
+});
+
+// ========== 邮件发送函数 ==========
+
+const emailStyles = `
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #003366 0%, #004488 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+    .header h1 { margin: 0; font-size: 28px; }
+    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+    .button { display: inline-block; background: #D4AF37; color: white; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 20px 0; }
+    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+    .footer a { color: #003366; }
+    .article { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #D4AF37; }
+    .article h3 { margin: 0 0 10px; color: #003366; }
+    .article a { color: #D4AF37; text-decoration: none; }
+  </style>
+`;
+
+async function sendSubscriptionConfirmation(email) {
+  if (!resend) { console.log('Resend not configured'); return false; }
+  
+  const unsubscribeUrl = `${SITE_URL}/unsubscribe?email=${encodeURIComponent(email)}`;
+  
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: `Welcome to SpecialOil Newsletter! 📧`,
+      html: `<!DOCTYPE html><html><head>${emailStyles}</head><body>
+        <div class="header"><h1>🏭 SpecialOil</h1><p style="margin:10px 0 0;opacity:0.9;">Your Trusted China Special Oil Partner</p></div>
+        <div class="content">
+          <h2>Welcome to Our Newsletter!</h2>
+          <p>Thank you for subscribing to the <strong>SpecialOil</strong> newsletter.</p>
+          <p>You'll now receive:</p>
+          <ul>
+            <li>📊 Latest China special oil industry news</li>
+            <li>🔧 Technical insights and product updates</li>
+            <li>📈 Market analysis and price trends</li>
+            <li>🎁 Exclusive offers and promotions</li>
+          </ul>
+          <p style="margin-top:30px;">Stay tuned for our next update!</p>
+          <p>Best regards,<br><strong>The SpecialOil Team</strong></p>
+        </div>
+        <div class="footer">
+          <p>You're receiving this email because you subscribed to our newsletter.</p>
+          <p><a href="${unsubscribeUrl}">Unsubscribe</a> | <a href="${SITE_URL}">Visit Website</a></p>
+        </div>
+      </body></html>`
+    });
+    
+    if (error) { console.error('Email error:', error); return false; }
+    console.log('Subscription email sent:', data?.id);
+    return true;
+  } catch (error) {
+    console.error('Email error:', error);
+    return false;
+  }
+}
+
+async function sendUnsubscribeConfirmation(email) {
+  if (!resend) { console.log('Resend not configured'); return false; }
+  
+  const resubscribeUrl = `${SITE_URL}/blog`;
+  
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: `You've been unsubscribed from SpecialOil Newsletter`,
+      html: `<!DOCTYPE html><html><head>${emailStyles}</head><body>
+        <div class="header"><h1>🏭 SpecialOil</h1></div>
+        <div class="content">
+          <h2>Unsubscribe Confirmation</h2>
+          <p>You have been successfully unsubscribed from our newsletter.</p>
+          <p>We're sorry to see you go! If you change your mind, you can always resubscribe:</p>
+          <a href="${resubscribeUrl}" class="button">Resubscribe</a>
+          <p>Thank you for being part of our community.</p>
+          <p>Best regards,<br><strong>The SpecialOil Team</strong></p>
+        </div>
+        <div class="footer"><p><a href="${SITE_URL}">Visit Website</a></p></div>
+      </body></html>`
+    });
+    
+    if (error) { console.error('Email error:', error); return false; }
+    console.log('Unsubscribe email sent:', data?.id);
+    return true;
+  } catch (error) {
+    console.error('Email error:', error);
+    return false;
+  }
+}
+
+async function sendNewsletterToSubscribers(subscribers, subject, articles, previewText) {
+  if (!resend) return { success: false, sentCount: 0, errors: ['Resend not configured'] };
+  
+  const errors = [];
+  let sentCount = 0;
+  
+  for (const email of subscribers) {
+    const unsubscribeUrl = `${SITE_URL}/unsubscribe?email=${encodeURIComponent(email)}`;
+    const articlesHTML = articles.map(a => `<div class="article"><h3><a href="${a.url}">${a.title}</a></h3><p>${a.summary}</p><a href="${a.url}" style="color:#D4AF37">Read more →</a></div>`).join('');
+    
+    try {
+      const { error } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: email,
+        subject: subject,
+        html: `<!DOCTYPE html><html><head>${emailStyles}</head><body>
+          <div class="header"><h1>🏭 SpecialOil</h1><p style="margin:10px 0 0;opacity:0.9">Newsletter</p></div>
+          <div class="content">
+            <h2>${subject}</h2>
+            ${previewText ? `<p style="color:#666;font-style:italic">${previewText}</p>` : ''}
+            ${articlesHTML}
+            <p style="margin-top:30px">Stay connected with us!</p>
+            <p>Best regards,<br><strong>The SpecialOil Team</strong></p>
+          </div>
+          <div class="footer">
+            <p>You're receiving this email because you subscribed to our newsletter.</p>
+            <p><a href="${unsubscribeUrl}">Unsubscribe</a> | <a href="${SITE_URL}">Visit Website</a></p>
+          </div>
+        </body></html>`
+      });
+      
+      if (error) { errors.push(`${email}: ${error.message}`); }
+      else { sentCount++; }
+      
+      if (sentCount % 10 === 0) await new Promise(r => setTimeout(r, 1000));
+    } catch (err) {
+      errors.push(`${email}: ${err.message}`);
+    }
+  }
+  
+  return { success: sentCount > 0, sentCount, errors };
+}
 
 // SPA 回退路由
 app.get('*', (_req, res) => {
