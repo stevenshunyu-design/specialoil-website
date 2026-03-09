@@ -217,6 +217,54 @@ app.delete('/api/inquiries/:id', async (req, res) => {
   }
 });
 
+// ========== Newsletter 订阅 API ==========
+
+app.post('/api/subscribers', async (req, res) => {
+  try {
+    if (!supabase) return res.status(500).json({ error: 'Database not configured' });
+    
+    const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email address' });
+    }
+    
+    // 检查是否已订阅
+    const { data: existing } = await supabase
+      .from('subscribers')
+      .select('id, status')
+      .eq('email', email)
+      .single();
+    
+    if (existing) {
+      if (existing.status === 'active') {
+        return res.status(200).json({ success: true, message: 'You are already subscribed!' });
+      } else {
+        // 重新激活
+        const { error } = await supabase
+          .from('subscribers')
+          .update({ status: 'active', unsubscribed_at: null })
+          .eq('id', existing.id);
+        if (error) return res.status(500).json({ error: 'Failed to resubscribe' });
+        return res.status(200).json({ success: true, message: 'Welcome back! You have been resubscribed.' });
+      }
+    }
+    
+    // 新订阅
+    const { error } = await supabase.from('subscribers').insert({ email, status: 'active' });
+    if (error) return res.status(500).json({ error: 'Failed to subscribe' });
+    
+    res.status(201).json({ success: true, message: 'Thank you for subscribing!' });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal error', details: error.message });
+  }
+});
+
 // SPA 回退路由
 app.get('*', (_req, res) => {
   const indexPath = path.join(__dirname, 'dist', 'index.html');
