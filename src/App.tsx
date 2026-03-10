@@ -19,11 +19,32 @@ import { ArticleEditor } from "@/pages/Admin";
 import Login from "@/pages/Login";
 import Unsubscribe from "@/pages/Unsubscribe";
 import SubscribersAdmin from "@/pages/SubscribersAdmin";
+import AdminChat from "@/pages/AdminChat";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
 import CookiePolicy from "@/pages/CookiePolicy";
 import ChatWidget from "@/components/ChatWidget";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { useLocation } from "react-router-dom";
+
+// Layout wrapper component
+function AppLayout({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+  const isAdminChat = location.pathname === '/admin/chat';
+  
+  if (isAdminChat) {
+    return <>{children}</>;
+  }
+  
+  return (
+    <>
+      <Header />
+      <main className="flex-grow">{children}</main>
+      <Footer />
+      <ChatWidget />
+    </>
+  );
+}
 
 export default function App() {
   return (
@@ -42,8 +63,7 @@ export default function App() {
           className: 'shadow-lg',
         }}
       />
-      <Header />
-      <main className="flex-grow">
+      <AppLayout>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -62,14 +82,13 @@ export default function App() {
           <Route path="/admin/new" element={<ArticleEditor />} />
           <Route path="/admin/edit/:id" element={<ArticleEditor />} />
           <Route path="/admin/subscribers" element={<SubscribersAdmin />} />
+          <Route path="/admin/chat" element={<AdminChat />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
         </Routes>
-      </main>
-      <Footer />
-      <ChatWidget position="bottom-right" />
+      </AppLayout>
     </div>
   );
 }
