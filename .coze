@@ -8,5 +8,5 @@ deps = ["git"]
 
 [deploy]
 build = ["bash","./scripts/build.sh"]
-run = ["node", "server.production.js"]
+run = ["node", "server.production.cjs"]
 deps = ["git"]
