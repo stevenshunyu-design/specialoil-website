@@ -26,9 +26,9 @@ const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KE
 const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET;
 
 // 飞书配置
-const FEISHU_APP_ID = process.env.FEISHU_APP_ID;
-const FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET;
-const FEISHU_WEBHOOK_URL = process.env.FEISHU_WEBHOOK_URL;
+const FEISHU_APP_ID = process.env.FEISHU_CHAT_APP_ID || process.env.FEISHU_APP_ID;
+const FEISHU_APP_SECRET = process.env.FEISHU_CHAT_APP_SECRET || process.env.FEISHU_APP_SECRET;
+const FEISHU_WEBHOOK_URL = process.env.FEISHU_CHAT_WEBHOOK || process.env.FEISHU_WEBHOOK_URL;
 
 console.log('========================================');
 console.log('Starting server with security features...');

@@ -23,7 +23,7 @@ app.use(cors());
 app.use(express.json());
 
 // ==================== 环境变量配置 ====================
-const FEISHU_WEBHOOK_URL = process.env.FEISHU_WEBHOOK_URL;
+const FEISHU_WEBHOOK_URL = process.env.FEISHU_CHAT_WEBHOOK || process.env.FEISHU_WEBHOOK_URL;
 const FEISHU_APP_ID = process.env.FEISHU_APP_ID;
 const FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
