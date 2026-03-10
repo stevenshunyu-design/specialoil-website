@@ -246,7 +246,7 @@ const ChatWidget = () => {
                 <div
                   className={`max-w-[80%] px-4 py-2 rounded-2xl ${
                     msg.role === 'user'
-                      ? 'bg-[#003366] text-white rounded-br-md'
+                      ? 'bg-[#003366] rounded-br-md'
                       : msg.role === 'system'
                       ? 'bg-yellow-100 text-yellow-800 text-sm'
                       : 'bg-white text-gray-800 shadow-sm border border-gray-100 rounded-bl-md'
@@ -255,7 +255,7 @@ const ChatWidget = () => {
                   {msg.sender_name && msg.role === 'admin' && (
                     <p className="text-xs text-[#D4AF37] font-medium mb-1">{msg.sender_name}</p>
                   )}
-                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  <p className={`text-sm whitespace-pre-wrap ${msg.role === 'user' ? 'text-white' : ''}`}>{msg.content}</p>
                 </div>
               </div>
             ))}
