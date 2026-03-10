@@ -829,12 +829,13 @@ app.get("*", (req, res) => {
     res.status(404).send("Application not built. Please run build first.");
   }
 });
-httpServer.listen(PORT, () => {
+httpServer.listen(Number(PORT), "0.0.0.0", () => {
   console.log(`========================================`);
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on http://0.0.0.0:${PORT}`);
   console.log(`WebSocket: /socket.io/`);
   console.log(`Feishu webhook: POST /feishu/webhook`);
   console.log(`========================================`);
+  console.log(`✅ Server ready to accept connections`);
   if (FEISHU_APP_ID && FEISHU_APP_SECRET) {
     getFeishuAccessToken().then((token) => {
       if (token) {

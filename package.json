@@ -2,8 +2,9 @@
   "name": "specialoil",
   "version": "1.0.0",
   "type": "module",
+  "main": "app.js",
   "scripts": {
-    "start": "node server.production.js",
+    "start": "node app.js",
     "build": "vite build"
   },
   "dependencies": {
