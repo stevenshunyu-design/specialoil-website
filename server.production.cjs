@@ -96,8 +96,8 @@ var require_package = __commonJS({
 // node_modules/.pnpm/dotenv@16.6.1/node_modules/dotenv/lib/main.js
 var require_main = __commonJS({
   "node_modules/.pnpm/dotenv@16.6.1/node_modules/dotenv/lib/main.js"(exports2, module2) {
-    var fs = require("fs");
-    var path = require("path");
+    var fs2 = require("fs");
+    var path2 = require("path");
     var os = require("os");
     var crypto = require("crypto");
     var packageJson = require_package();
@@ -205,7 +205,7 @@ var require_main = __commonJS({
       if (options && options.path && options.path.length > 0) {
         if (Array.isArray(options.path)) {
           for (const filepath of options.path) {
-            if (fs.existsSync(filepath)) {
+            if (fs2.existsSync(filepath)) {
               possibleVaultPath = filepath.endsWith(".vault") ? filepath : `${filepath}.vault`;
             }
           }
@@ -213,15 +213,15 @@ var require_main = __commonJS({
           possibleVaultPath = options.path.endsWith(".vault") ? options.path : `${options.path}.vault`;
         }
       } else {
-        possibleVaultPath = path.resolve(process.cwd(), ".env.vault");
+        possibleVaultPath = path2.resolve(process.cwd(), ".env.vault");
       }
-      if (fs.existsSync(possibleVaultPath)) {
+      if (fs2.existsSync(possibleVaultPath)) {
         return possibleVaultPath;
       }
       return null;
     }
     function _resolveHome(envPath) {
-      return envPath[0] === "~" ? path.join(os.homedir(), envPath.slice(1)) : envPath;
+      return envPath[0] === "~" ? path2.join(os.homedir(), envPath.slice(1)) : envPath;
     }
     function _configVault(options) {
       const debug = Boolean(options && options.debug);
@@ -238,7 +238,7 @@ var require_main = __commonJS({
       return { parsed };
     }
     function configDotenv(options) {
-      const dotenvPath = path.resolve(process.cwd(), ".env");
+      const dotenvPath = path2.resolve(process.cwd(), ".env");
       let encoding = "utf8";
       const debug = Boolean(options && options.debug);
       const quiet = options && "quiet" in options ? options.quiet : true;
@@ -262,13 +262,13 @@ var require_main = __commonJS({
       }
       let lastError;
       const parsedAll = {};
-      for (const path2 of optionPaths) {
+      for (const path3 of optionPaths) {
         try {
-          const parsed = DotenvModule.parse(fs.readFileSync(path2, { encoding }));
+          const parsed = DotenvModule.parse(fs2.readFileSync(path3, { encoding }));
           DotenvModule.populate(parsedAll, parsed, options);
         } catch (e) {
           if (debug) {
-            _debug(`Failed to load ${path2} ${e.message}`);
+            _debug(`Failed to load ${path3} ${e.message}`);
           }
           lastError = e;
         }
@@ -283,7 +283,7 @@ var require_main = __commonJS({
         const shortPaths = [];
         for (const filePath of optionPaths) {
           try {
-            const relative = path.relative(process.cwd(), filePath);
+            const relative = path2.relative(process.cwd(), filePath);
             shortPaths.push(relative);
           } catch (e) {
             if (debug) {
@@ -540,6 +540,9 @@ function getSupabaseClient(token) {
 })();
 
 // server.ts
+var import_path = __toESM(require("path"), 1);
+var import_fs = __toESM(require("fs"), 1);
+var distPath = process.env.NODE_ENV === "production" ? import_path.default.join(__dirname, "dist") : import_path.default.join(process.cwd(), "dist");
 var app = (0, import_express.default)();
 var httpServer = (0, import_http.createServer)(app);
 var PORT = process.env.PORT || 3001;
@@ -553,6 +556,12 @@ var io = new import_socket.Server(httpServer, {
 });
 app.use((0, import_cors.default)());
 app.use(import_express.default.json());
+app.use(import_express.default.static(distPath, {
+  index: false,
+  // 禁止自动返回 index.html，让 SPA 路由处理
+  maxAge: "1d"
+  // 静态资源缓存
+}));
 var FEISHU_WEBHOOK_URL = process.env.FEISHU_CHAT_WEBHOOK || process.env.FEISHU_WEBHOOK_URL;
 var FEISHU_APP_ID = process.env.FEISHU_APP_ID || process.env.FEISHU_CHAT_APP_ID;
 var FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET || process.env.FEISHU_CHAT_APP_SECRET;
@@ -1225,6 +1234,17 @@ app.get("/api/health", (_req, res) => {
     feishu: FEISHU_APP_ID ? "configured" : "not configured",
     appId: FEISHU_APP_ID
   });
+});
+app.get("*", (req, res) => {
+  if (req.path.startsWith("/api/") || req.path.startsWith("/feishu/")) {
+    return res.status(404).json({ error: "Not found" });
+  }
+  const indexPath = import_path.default.join(distPath, "index.html");
+  if (import_fs.default.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send("Application not built. Please run build first.");
+  }
 });
 httpServer.listen(PORT, () => {
   console.log(`========================================`);

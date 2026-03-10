@@ -4,6 +4,13 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { getSupabaseClient } from './src/storage/database/supabase-client';
 import 'dotenv/config';
+import path from 'path';
+import fs from 'fs';
+
+// 在 CommonJS 环境中 __dirname 可用，ESM 需要动态获取
+const distPath = process.env.NODE_ENV === 'production' 
+  ? path.join(__dirname, 'dist') 
+  : path.join(process.cwd(), 'dist');
 
 const app = express();
 const httpServer = createServer(app);
@@ -21,6 +28,12 @@ const io = new Server(httpServer, {
 
 app.use(cors());
 app.use(express.json());
+
+// 静态文件服务 - 生产环境提供前端构建产物
+app.use(express.static(distPath, { 
+  index: false, // 禁止自动返回 index.html，让 SPA 路由处理
+  maxAge: '1d' // 静态资源缓存
+}));
 
 // ==================== 环境变量配置 ====================
 const FEISHU_WEBHOOK_URL = process.env.FEISHU_CHAT_WEBHOOK || process.env.FEISHU_WEBHOOK_URL;
@@ -920,6 +933,22 @@ app.get('/api/health', (_req: Request, res: Response) => {
     feishu: FEISHU_APP_ID ? 'configured' : 'not configured',
     appId: FEISHU_APP_ID
   });
+});
+
+// SPA 路由回退 - 所有非 API 路由返回 index.html
+app.get('*', (req: Request, res: Response) => {
+  // 如果是 API 请求但路由不存在，返回 404
+  if (req.path.startsWith('/api/') || req.path.startsWith('/feishu/')) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  
+  // 其他请求返回 index.html（SPA 路由）
+  const indexPath = path.join(distPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send('Application not built. Please run build first.');
+  }
 });
 
 // 启动服务器
