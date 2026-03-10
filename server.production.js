@@ -999,16 +999,35 @@ async function notifyHumanSupportRequest(sessionId, messages, userEmail, custome
   const customerEmail = customerInfo?.email || userEmail || 'Not provided';
   const customerPhone = customerInfo?.phone || 'Not provided';
   
+  // Generate timestamp for easy reference
+  const timestamp = new Date().toLocaleString('en-US', { 
+    timeZone: 'Asia/Shanghai',
+    month: 'short', 
+    day: 'numeric', 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  });
+  
   const card = {
     msg_type: 'interactive',
     card: {
-      header: { title: { tag: 'plain_text', content: `🔔 New Customer Inquiry ${customerNo}` }, template: 'blue' },
+      config: { wide_screen_mode: true },
+      header: { 
+        title: { tag: 'plain_text', content: `🔔 New Customer ${customerNo}` }, 
+        template: 'blue' 
+      },
       elements: [
-        { tag: 'div', text: { tag: 'lark_md', content: `**Customer Info**\n👤 Name: ${customerName}\n📧 Email: ${customerEmail}\n📱 Phone: ${customerPhone}` } },
-        { tag: 'divider' },
-        { tag: 'div', text: { tag: 'lark_md', content: `**Recent Messages**\n${lastMessages}` } },
-        { tag: 'divider' },
-        { tag: 'note', elements: [{ tag: 'plain_text', content: `Reply format: /reply ${shortId} Your reply message` }] }
+        { 
+          tag: 'div', 
+          fields: [
+            { is_short: true, text: { tag: 'lark_md', content: `**Name**\n${customerName}` } },
+            { is_short: true, text: { tag: 'lark_md', content: `**Time**\n${timestamp}` } },
+            { is_short: true, text: { tag: 'lark_md', content: `**Email**\n${customerEmail}` } },
+            { is_short: true, text: { tag: 'lark_md', content: `**Phone**\n${customerPhone}` } }
+          ]
+        },
+        { tag: 'hr' },
+        { tag: 'note', text: { tag: 'lark_md', content: `**Session ID:** \`${shortId}\`\n\n📝 **Reply:** \`/reply ${shortId} Your message here\`` } }
       ]
     }
   };
@@ -1083,6 +1102,141 @@ app.get('/api/chat/messages', apiLimiter, async (req, res) => {
   } catch (error) {
     console.error('Get messages error:', error);
     res.status(500).json({ error: 'Failed to get messages' });
+  }
+});
+
+// 获取所有活跃会话 API - 用于客服工作台
+app.get('/api/chat/sessions', apiLimiter, async (req, res) => {
+  try {
+    if (!supabase) {
+      return res.json({ success: true, data: [] });
+    }
+
+    const { data: sessions, error } = await supabase
+      .from('chat_sessions')
+      .select('*')
+      .in('status', ['waiting', 'active'])
+      .order('updated_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching sessions:', error);
+      return res.json({ success: true, data: [] });
+    }
+
+    // Get customer info from messages for each session
+    const sessionsWithInfo = await Promise.all((sessions || []).map(async (session) => {
+      const { data: messages } = await supabase
+        .from('chat_messages')
+        .select('message')
+        .eq('session_id', session.id)
+        .eq('sender_type', 'visitor')
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      return {
+        ...session,
+        last_message: messages?.[0]?.message || ''
+      };
+    }));
+
+    res.json({ success: true, data: sessionsWithInfo });
+  } catch (error) {
+    console.error('Get sessions error:', error);
+    res.status(500).json({ error: 'Failed to get sessions' });
+  }
+});
+
+// 获取会话消息 API - 用于客服工作台
+app.get('/api/chat/sessions/:sessionId/messages', apiLimiter, async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+
+    if (!supabase) {
+      return res.json({ success: true, data: [] });
+    }
+
+    const { data: messages, error } = await supabase
+      .from('chat_messages')
+      .select('*')
+      .eq('session_id', sessionId)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching messages:', error);
+      return res.json({ success: true, data: [] });
+    }
+
+    res.json({ success: true, data: messages || [] });
+  } catch (error) {
+    console.error('Get session messages error:', error);
+    res.status(500).json({ error: 'Failed to get messages' });
+  }
+});
+
+// 管理员发送消息 API
+app.post('/api/chat/admin/message', apiLimiter, async (req, res) => {
+  try {
+    const { sessionId, message, adminName } = req.body;
+
+    if (!sessionId || !message) {
+      return res.status(400).json({ error: 'Session ID and message are required' });
+    }
+
+    if (!supabase) {
+      return res.status(500).json({ error: 'Database not configured' });
+    }
+
+    // Save message to database
+    const { error: insertError } = await supabase
+      .from('chat_messages')
+      .insert({
+        session_id: sessionId,
+        sender_type: 'admin',
+        sender_name: adminName || 'Support',
+        message: message
+      });
+
+    if (insertError) {
+      console.error('Error saving admin message:', insertError);
+      return res.status(500).json({ error: 'Failed to save message' });
+    }
+
+    // Update session updated_at
+    await supabase
+      .from('chat_sessions')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', sessionId);
+
+    res.json({ success: true, message: 'Message sent' });
+  } catch (error) {
+    console.error('Admin message error:', error);
+    res.status(500).json({ error: 'Failed to send message' });
+  }
+});
+
+// 关闭会话 API
+app.post('/api/chat/sessions/:sessionId/close', apiLimiter, async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+
+    if (!supabase) {
+      return res.status(500).json({ error: 'Database not configured' });
+    }
+
+    const { error } = await supabase
+      .from('chat_sessions')
+      .update({ status: 'closed', updated_at: new Date().toISOString() })
+      .eq('id', sessionId);
+
+    if (error) {
+      console.error('Error closing session:', error);
+      return res.status(500).json({ error: 'Failed to close session' });
+    }
+
+    res.json({ success: true, message: 'Session closed' });
+  } catch (error) {
+    console.error('Close session error:', error);
+    res.status(500).json({ error: 'Failed to close session' });
   }
 });
 

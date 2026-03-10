@@ -461,6 +461,125 @@ app.get('/api/chat/messages', async (req: Request, res: Response) => {
   }
 });
 
+// 获取所有活跃会话 API - 用于客服工作台
+app.get('/api/chat/sessions', async (req: Request, res: Response) => {
+  try {
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.json({ success: true, data: [] });
+    }
+
+    const { data: sessions, error } = await client
+      .from('chat_sessions')
+      .select('*')
+      .in('status', ['waiting', 'active'])
+      .order('updated_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching sessions:', error);
+      return res.json({ success: true, data: [] });
+    }
+
+    res.json({ success: true, data: sessions || [] });
+  } catch (error) {
+    console.error('Get sessions error:', error);
+    res.status(500).json({ error: 'Failed to get sessions' });
+  }
+});
+
+// 获取会话消息 API - 用于客服工作台
+app.get('/api/chat/sessions/:sessionId/messages', async (req: Request, res: Response) => {
+  try {
+    const { sessionId } = req.params;
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.json({ success: true, data: [] });
+    }
+
+    const { data: messages, error } = await client
+      .from('chat_messages')
+      .select('*')
+      .eq('session_id', sessionId)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching messages:', error);
+      return res.json({ success: true, data: [] });
+    }
+
+    res.json({ success: true, data: messages || [] });
+  } catch (error) {
+    console.error('Get session messages error:', error);
+    res.status(500).json({ error: 'Failed to get messages' });
+  }
+});
+
+// 管理员发送消息 API
+app.post('/api/chat/admin/message', async (req: Request, res: Response) => {
+  try {
+    const { sessionId, message, adminName } = req.body;
+
+    if (!sessionId || !message) {
+      return res.status(400).json({ error: 'Session ID and message are required' });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ error: 'Database not configured' });
+    }
+
+    const { error: insertError } = await client
+      .from('chat_messages')
+      .insert({
+        session_id: sessionId,
+        sender_type: 'admin',
+        sender_name: adminName || 'Support',
+        message: message
+      });
+
+    if (insertError) {
+      console.error('Error saving admin message:', insertError);
+      return res.status(500).json({ error: 'Failed to save message' });
+    }
+
+    await client
+      .from('chat_sessions')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', sessionId);
+
+    res.json({ success: true, message: 'Message sent' });
+  } catch (error) {
+    console.error('Admin message error:', error);
+    res.status(500).json({ error: 'Failed to send message' });
+  }
+});
+
+// 关闭会话 API
+app.post('/api/chat/sessions/:sessionId/close', async (req: Request, res: Response) => {
+  try {
+    const { sessionId } = req.params;
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ error: 'Database not configured' });
+    }
+
+    const { error } = await client
+      .from('chat_sessions')
+      .update({ status: 'closed', updated_at: new Date().toISOString() })
+      .eq('id', sessionId);
+
+    if (error) {
+      console.error('Error closing session:', error);
+      return res.status(500).json({ error: 'Failed to close session' });
+    }
+
+    res.json({ success: true, message: 'Session closed' });
+  } catch (error) {
+    console.error('Close session error:', error);
+    res.status(500).json({ error: 'Failed to close session' });
+  }
+});
+
 // 人工客服消息 API - 将用户消息转发到飞书
 app.post('/api/chat/human', async (req: Request, res: Response) => {
   try {
