@@ -195,6 +195,11 @@ const ChatWidget = () => {
         if (data.needsHuman) {
           setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
           setChatMode('human');
+          // 保存 session ID 用于轮询消息
+          if (data.sessionId) {
+            setSession({ id: data.sessionId, visitor_id: visitorId.current, status: 'active' });
+            console.log('Session created:', data.sessionId);
+          }
         } else {
           setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
         }
@@ -262,13 +267,15 @@ const ChatWidget = () => {
       });
 
       const data = await response.json();
-      if (data.isHumanHandoff) {
+      // 后端返回 needsHuman 或 isHumanHandoff
+      if (data.needsHuman || data.isHumanHandoff) {
         setMessages(prev => [...prev, {
           role: 'assistant',
           content: data.response
         }]);
         if (data.sessionId) {
           setSession({ id: data.sessionId, visitor_id: visitorId.current, status: 'active' });
+          console.log('Session created:', data.sessionId);
         }
       }
     } catch (error) {

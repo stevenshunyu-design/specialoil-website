@@ -49053,17 +49053,29 @@ function needsHumanAgent(message) {
 app.get("/api/chat/messages", async (req, res) => {
   try {
     const { sessionId, after } = req.query;
+    console.log(`\u{1F4E8} Polling messages for session: ${sessionId}`);
     if (!sessionId) {
       return res.status(400).json({ error: "Session ID is required" });
     }
     const client = getSupabaseClient();
     if (!client) {
+      console.log("\u26A0\uFE0F Database not configured");
       return res.json({ messages: [] });
     }
-    const { data: sessions } = await client.from("chat_sessions").select("id").eq("status", "active");
-    const targetSession = sessions?.find((s) => s.id.startsWith(sessionId));
-    if (!targetSession) {
-      return res.json({ messages: [] });
+    let targetSession = null;
+    const { data: exactSession } = await client.from("chat_sessions").select("id, status").eq("id", sessionId).single();
+    if (exactSession) {
+      targetSession = exactSession;
+      console.log(`\u2705 Found exact session: ${targetSession.id}`);
+    } else {
+      const { data: sessions } = await client.from("chat_sessions").select("id, status").eq("status", "active");
+      targetSession = sessions?.find((s) => s.id.startsWith(sessionId));
+      if (targetSession) {
+        console.log(`\u2705 Found session by prefix match: ${targetSession.id}`);
+      } else {
+        console.log(`\u26A0\uFE0F Session not found: ${sessionId}`);
+        return res.json({ messages: [] });
+      }
     }
     let query = client.from("chat_messages").select("*").eq("session_id", targetSession.id).order("created_at", { ascending: true });
     if (after) {
@@ -49077,6 +49089,7 @@ app.get("/api/chat/messages", async (req, res) => {
       console.error("Error fetching messages:", error);
       return res.json({ messages: [] });
     }
+    console.log(`\u{1F4EC} Returning ${messages?.length || 0} messages`);
     res.json({ messages: messages || [] });
   } catch (error) {
     console.error("Get messages error:", error);

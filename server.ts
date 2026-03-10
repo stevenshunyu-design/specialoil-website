@@ -590,25 +590,46 @@ app.get('/api/chat/messages', async (req: Request, res: Response) => {
   try {
     const { sessionId, after } = req.query;
     
+    console.log(`📨 Polling messages for session: ${sessionId}`);
+    
     if (!sessionId) {
       return res.status(400).json({ error: 'Session ID is required' });
     }
 
     const client = getSupabaseClient();
     if (!client) {
+      console.log('⚠️ Database not configured');
       return res.json({ messages: [] });
     }
 
-    // Find session by partial ID match
-    const { data: sessions } = await client
-      .from('chat_sessions')
-      .select('id')
-      .eq('status', 'active');
-
-    const targetSession = sessions?.find(s => s.id.startsWith(sessionId as string));
+    // 先尝试精确匹配，再尝试前缀匹配
+    let targetSession = null;
     
-    if (!targetSession) {
-      return res.json({ messages: [] });
+    // 精确匹配
+    const { data: exactSession } = await client
+      .from('chat_sessions')
+      .select('id, status')
+      .eq('id', sessionId as string)
+      .single();
+    
+    if (exactSession) {
+      targetSession = exactSession;
+      console.log(`✅ Found exact session: ${targetSession.id}`);
+    } else {
+      // 前缀匹配
+      const { data: sessions } = await client
+        .from('chat_sessions')
+        .select('id, status')
+        .eq('status', 'active');
+
+      targetSession = sessions?.find(s => s.id.startsWith(sessionId as string));
+      
+      if (targetSession) {
+        console.log(`✅ Found session by prefix match: ${targetSession.id}`);
+      } else {
+        console.log(`⚠️ Session not found: ${sessionId}`);
+        return res.json({ messages: [] });
+      }
     }
 
     // Get messages after the specified ID
@@ -637,6 +658,7 @@ app.get('/api/chat/messages', async (req: Request, res: Response) => {
       return res.json({ messages: [] });
     }
 
+    console.log(`📬 Returning ${messages?.length || 0} messages`);
     res.json({ messages: messages || [] });
   } catch (error) {
     console.error('Get messages error:', error);
