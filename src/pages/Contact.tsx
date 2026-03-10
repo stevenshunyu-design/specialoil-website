@@ -1,7 +1,26 @@
-import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { z } from 'zod';
 import { SuccessModal, ErrorModal } from '@/components/ToastModal';
+
+// hCaptcha site key (public key)
+const HCAPTCHA_SITE_KEY = import.meta.env.VITE_HCAPTCHA_SITE_KEY || '';
+
+declare global {
+  interface Window {
+    hcaptcha?: {
+      render: (container: string | HTMLElement, options: {
+        sitekey: string;
+        callback?: (token: string) => void;
+        'error-callback'?: () => void;
+        theme?: 'light' | 'dark';
+        size?: 'normal' | 'compact' | 'invisible';
+      }) => string;
+      reset: (widgetId?: string) => void;
+      getResponse: (widgetId?: string) => string;
+      execute: (widgetId?: string) => void;
+    };
+  }
+}
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -11,24 +30,83 @@ const Contact = () => {
     productCategory: '',
     portOfDestination: '',
     estimatedQuantity: '',
-    message: ''
+    message: '',
+    // Honeypot fields - hidden from users, bots will fill them
+    website: '',
+    phone: '',
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [captchaToken, setCaptchaToken] = useState('');
+  const [captchaLoaded, setCaptchaLoaded] = useState(false);
+  const [captchaWidgetId, setCaptchaWidgetId] = useState<string | null>(null);
+  
+  // Track form open time for timing validation
+  const formOpenTime = useRef(Date.now());
+  const captchaContainerRef = useRef<HTMLDivElement>(null);
   
   // Form validation schema
   const contactFormSchema = z.object({
-    name: z.string().min(1, { message: 'Name is required' }),
-    company: z.string().min(1, { message: 'Company is required' }),
-    email: z.string().email({ message: 'Invalid email address' }),
+    name: z.string().min(1, { message: 'Name is required' }).max(100),
+    company: z.string().min(1, { message: 'Company is required' }).max(200),
+    email: z.string().email({ message: 'Invalid email address' }).max(254),
     productCategory: z.string().optional(),
-    portOfDestination: z.string().min(1, { message: 'Port of Destination is required for CIF quote' }),
+    portOfDestination: z.string().min(1, { message: 'Port of Destination is required for CIF quote' }).max(200),
     estimatedQuantity: z.string().optional(),
-    message: z.string().optional()
+    message: z.string().max(2000).optional()
   });
+  
+  // Load hCaptcha script
+  useEffect(() => {
+    const loadHcaptcha = () => {
+      if (window.hcaptcha) {
+        setCaptchaLoaded(true);
+        return;
+      }
+      
+      const script = document.createElement('script');
+      script.src = 'https://js.hcaptcha.com/1/api.js';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        setCaptchaLoaded(true);
+      };
+      script.onerror = () => {
+        console.error('Failed to load hCaptcha script');
+      };
+      document.head.appendChild(script);
+    };
+    
+    loadHcaptcha();
+    
+    return () => {
+      formOpenTime.current = Date.now();
+    };
+  }, []);
+  
+  // Render hCaptcha widget when loaded
+  useEffect(() => {
+    if (captchaLoaded && window.hcaptcha && captchaContainerRef.current && !captchaWidgetId) {
+      try {
+        const widgetId = window.hcaptcha.render(captchaContainerRef.current, {
+          sitekey: HCAPTCHA_SITE_KEY || '10000000-ffff-ffff-ffff-000000000001', // Test key fallback
+          theme: 'light',
+          callback: (token: string) => {
+            setCaptchaToken(token);
+          },
+          'error-callback': () => {
+            setErrorMessage('Captcha verification failed. Please try again.');
+          }
+        });
+        setCaptchaWidgetId(widgetId);
+      } catch (error) {
+        console.error('hCaptcha render error:', error);
+      }
+    }
+  }, [captchaLoaded, captchaWidgetId]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -41,11 +119,39 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Check honeypot fields (if filled, it's likely a bot)
+    if (formData.website || formData.phone) {
+      console.log('Honeypot triggered - likely bot submission');
+      // Return success to confuse bots
+      setShowSuccessModal(true);
+      return;
+    }
+    
     // Validate form data
     try {
       contactFormSchema.parse(formData);
       
+      // Check if captcha is completed (skip in test mode)
+      if (HCAPTCHA_SITE_KEY && !captchaToken) {
+        setErrorMessage('Please complete the security verification.');
+        setShowErrorModal(true);
+        return;
+      }
+      
       setIsSubmitting(true);
+      
+      // Prepare submission data
+      const submissionData = {
+        name: formData.name.trim(),
+        company: formData.company.trim(),
+        email: formData.email.trim(),
+        productCategory: formData.productCategory || undefined,
+        portOfDestination: formData.portOfDestination.trim(),
+        estimatedQuantity: formData.estimatedQuantity || undefined,
+        message: formData.message?.trim() || undefined,
+        captchaToken,
+        _startTime: formOpenTime.current,
+      };
       
       // 提交到后端 API
       const response = await fetch('/api/inquiries', {
@@ -53,7 +159,7 @@ const Contact = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       });
       
       const result = await response.json();
@@ -73,8 +179,17 @@ const Contact = () => {
         productCategory: '',
         portOfDestination: '',
         estimatedQuantity: '',
-        message: ''
+        message: '',
+        website: '',
+        phone: '',
       });
+      setCaptchaToken('');
+      formOpenTime.current = Date.now();
+      
+      // Reset captcha
+      if (window.hcaptcha && captchaWidgetId) {
+        window.hcaptcha.reset(captchaWidgetId);
+      }
       
     } catch (error) {
       let errorMsg = 'An error occurred. Please try again later.';
@@ -135,6 +250,8 @@ const Contact = () => {
                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
                     placeholder="Your full name"
                     required
+                    maxLength={100}
+                    autoComplete="name"
                   />
                 </div>
                 
@@ -151,6 +268,8 @@ const Contact = () => {
                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
                     placeholder="Your company"
                     required
+                    maxLength={200}
+                    autoComplete="organization"
                   />
                 </div>
               </div>
@@ -168,6 +287,8 @@ const Contact = () => {
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
                   placeholder="your.email@company.com"
                   required
+                  maxLength={254}
+                  autoComplete="email"
                 />
               </div>
               
@@ -205,6 +326,7 @@ const Contact = () => {
                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
                     placeholder="For CIF/CFR quote"
                     required
+                    maxLength={200}
                   />
                 </div>
               </div>
@@ -221,6 +343,7 @@ const Contact = () => {
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
                   placeholder="e.g. 500 drums, 20 containers, 100 MT"
+                  maxLength={100}
                 />
               </div>
               
@@ -234,15 +357,48 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors resize-none"
                   placeholder="Tell us about your specific requirements, technical specifications, or any questions"
+                  maxLength={2000}
                 ></textarea>
+              </div>
+              
+              {/* Honeypot fields - hidden from real users */}
+              <div className="hidden" aria-hidden="true">
+                <input
+                  type="text"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="absolute opacity-0 pointer-events-none"
+                />
+                <input
+                  type="text"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="absolute opacity-0 pointer-events-none"
+                />
+              </div>
+              
+              {/* hCaptcha */}
+              <div className="flex justify-center">
+                <div 
+                  ref={captchaContainerRef} 
+                  className="h-captcha"
+                  data-sitekey={HCAPTCHA_SITE_KEY}
+                  data-theme="light"
+                ></div>
               </div>
               
               <div className="text-center">
                 <button
                   type="submit"
-                  className="inline-block bg-[#D4AF37] text-white px-8 py-3 rounded-sm font-semibold hover:bg-opacity-90 transition-all"
+                  className="inline-block bg-[#D4AF37] text-white px-8 py-3 rounded-sm font-semibold hover:bg-opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
@@ -255,6 +411,19 @@ const Contact = () => {
                   )}
                 </button>
               </div>
+              
+              <p className="text-xs text-gray-500 text-center mt-4">
+                <i className="fa-solid fa-shield-halved mr-1"></i>
+                This form is protected by hCaptcha and its{' '}
+                <a href="https://www.hcaptcha.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#003366]">
+                  Privacy Policy
+                </a>{' '}
+                and{' '}
+                <a href="https://www.hcaptcha.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#003366]">
+                  Terms of Service
+                </a>{' '}
+                apply.
+              </p>
             </form>
           </div>
           
@@ -417,7 +586,7 @@ const Contact = () => {
           <i className="fa-solid fa-phone mr-2"></i>
           <span>Call Us</span>
         </a>
-        <a href="https://wa.me/8613800138000" className="flex-1 py-4 bg-[#D4AF37] text-white flex items-center justify-center">
+        <a href="https://wa.me/8613793280176" className="flex-1 py-4 bg-[#D4AF37] text-white flex items-center justify-center">
           <i className="fa-brands fa-whatsapp mr-2"></i>
           <span>WhatsApp</span>
         </a>

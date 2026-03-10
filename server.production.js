@@ -4,6 +4,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import 'dotenv/config';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,14 +21,15 @@ const FROM_EMAIL = process.env.FROM_EMAIL || 'steven.shunyu@gmail.com';
 const SITE_URL = process.env.SITE_URL || 'https://specialoil.com';
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
+// hCaptcha 配置
+const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET;
+
 console.log('========================================');
-console.log('Starting server...');
-console.log('__dirname:', __dirname);
+console.log('Starting server with security features...');
 console.log('PORT:', PORT);
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? 'SET' : 'NOT SET');
-console.log('SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
-console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'SET' : 'NOT SET');
+console.log('HCAPTCHA_SECRET:', HCAPTCHA_SECRET ? 'SET' : 'NOT SET');
 console.log('========================================');
 
 // 初始化 Supabase 客户端
@@ -39,6 +42,179 @@ const supabase = supabaseUrl && supabaseKey
 
 // 飞书 Webhook URL
 const FEISHU_WEBHOOK_URL = process.env.FEISHU_WEBHOOK_URL;
+
+// ========== 安全中间件 ==========
+
+// Helmet 安全头
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://js.hcaptcha.com", "https://newassets.hcaptcha.com"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://fonts.googleapis.com"],
+      imgSrc: ["'self'", "data:", "https:", "http:"],
+      connectSrc: ["'self'", "https://api.hcaptcha.com", "https://hcaptcha.com", "https://*.supabase.co"],
+      frameSrc: ["'self'", "https://newassets.hcaptcha.com"],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+  xssFilter: true,
+  noSniff: true,
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+}));
+
+// CORS 配置
+const allowedOrigins = [
+  'https://specialoil.com',
+  'https://www.specialoil.com',
+  'http://localhost:5000',
+  'http://localhost:3000',
+  'http://localhost:3001',
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // 允许无origin的请求（如移动应用、Postman）
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    // 开发环境允许所有localhost
+    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
+
+// 全局速率限制
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15分钟
+  max: 200, // 每个IP最多200个请求
+  message: { error: 'Too many requests, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => {
+    return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || 'unknown';
+  },
+});
+app.use(globalLimiter);
+
+// API 严格速率限制
+const apiLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1小时
+  max: 50, // 每个IP每小时最多50次API调用
+  message: { error: 'API rate limit exceeded. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => {
+    return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || 'unknown';
+  },
+});
+
+// 表单提交严格速率限制
+const formLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1小时
+  max: 5, // 每个IP每小时最多5次表单提交
+  message: { error: 'Too many form submissions. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => {
+    return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || 'unknown';
+  },
+});
+
+// 解析 JSON
+app.use(express.json({ limit: '10kb' })); // 限制请求体大小
+
+// 静态文件服务
+import fs from 'fs';
+const distPath = path.join(__dirname, 'dist');
+console.log('Static files path:', distPath);
+
+if (fs.existsSync(distPath)) {
+  console.log('dist directory exists');
+  app.use(express.static(distPath));
+} else {
+  console.log('WARNING: dist directory NOT found at', distPath);
+}
+
+// ========== 安全辅助函数 ==========
+
+// 输入清理函数
+function sanitizeInput(str, maxLength = 500) {
+  if (!str || typeof str !== 'string') return '';
+  // 移除危险字符，保留基本字符
+  return str
+    .substring(0, maxLength)
+    .replace(/[<>]/g, '') // 移除可能的HTML标签
+    .replace(/javascript:/gi, '')
+    .replace(/on\w+=/gi, '')
+    .trim();
+}
+
+// 验证邮箱格式
+function isValidEmail(email) {
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return emailRegex.test(email) && email.length <= 254;
+}
+
+// hCaptcha 验证
+async function verifyHcaptcha(token, ip) {
+  if (!HCAPTCHA_SECRET) {
+    console.log('hCaptcha secret not configured, skipping verification');
+    return { success: true };
+  }
+
+  if (!token) {
+    return { success: false, error: 'Captcha token is required' };
+  }
+
+  try {
+    const response = await fetch('https://api.hcaptcha.com/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${encodeURIComponent(HCAPTCHA_SECRET)}&response=${encodeURIComponent(token)}&remoteip=${encodeURIComponent(ip || '')}`,
+    });
+
+    const result = await response.json();
+    
+    if (!result.success) {
+      console.log('hCaptcha verification failed:', result['error-codes']);
+      return { success: false, error: 'Captcha verification failed', codes: result['error-codes'] };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('hCaptcha verification error:', error);
+    return { success: false, error: 'Captcha verification error' };
+  }
+}
+
+// 检查honeypot字段（机器人会填写隐藏字段）
+function checkHoneypot(body) {
+  const honeypotFields = ['website', 'url', 'phone', 'fax', 'address'];
+  for (const field of honeypotFields) {
+    if (body[field] && body[field].trim() !== '') {
+      console.log('Honeypot triggered:', field);
+      return false;
+    }
+  }
+  return true;
+}
+
+// 检查提交时间（太快可能是机器人）
+function checkSubmissionTiming(startTime) {
+  const minTime = 2000; // 最少2秒
+  const elapsed = Date.now() - startTime;
+  return elapsed >= minTime;
+}
 
 // 发送飞书通知
 async function sendFeishuNotification(inquiry) {
@@ -81,22 +257,6 @@ async function sendFeishuNotification(inquiry) {
   }
 }
 
-// 中间件
-app.use(cors());
-app.use(express.json());
-
-// 静态文件服务
-import fs from 'fs';
-const distPath = path.join(__dirname, 'dist');
-console.log('Static files path:', distPath);
-
-if (fs.existsSync(distPath)) {
-  console.log('dist directory exists');
-  app.use(express.static(distPath));
-} else {
-  console.log('WARNING: dist directory NOT found at', distPath);
-}
-
 // ========== API 路由 ==========
 
 app.get('/api/health', (_req, res) => {
@@ -105,25 +265,51 @@ app.get('/api/health', (_req, res) => {
     timestamp: new Date().toISOString(), 
     env: process.env.NODE_ENV,
     supabase: supabase ? 'configured' : 'NOT configured',
-    supabaseUrl: supabaseUrl ? 'SET' : 'NOT SET',
-    supabaseKey: supabaseKey ? 'SET' : 'NOT SET'
+    hcaptcha: HCAPTCHA_SECRET ? 'configured' : 'NOT configured'
   });
 });
 
-app.post('/api/inquiries', async (req, res) => {
-  console.log('Received inquiry request:', req.body);
+app.post('/api/inquiries', formLimiter, async (req, res) => {
+  const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || 'unknown';
+  console.log(`[${new Date().toISOString()}] Inquiry request from IP: ${clientIp}`);
   
   try {
     if (!supabase) {
       console.error('Supabase not configured');
-      return res.status(500).json({ error: 'Database not configured', details: 'SUPABASE_URL or SUPABASE_ANON_KEY not set' });
+      return res.status(500).json({ error: 'Database not configured' });
     }
 
-    const { name, company, email, productCategory, portOfDestination, estimatedQuantity, message } = req.body;
+    // 检查 honeypot
+    if (!checkHoneypot(req.body)) {
+      console.log('Honeypot detected, rejecting request');
+      // 返回成功状态以迷惑机器人
+      return res.status(201).json({ success: true, message: 'Inquiry submitted successfully' });
+    }
+
+    // 检查提交时间
+    const startTime = parseInt(req.body._startTime || '0', 10);
+    if (startTime && !checkSubmissionTiming(startTime)) {
+      console.log('Submission too fast, likely a bot');
+      return res.status(400).json({ error: 'Submission too fast. Please try again.' });
+    }
+
+    // 验证 hCaptcha
+    const captchaResult = await verifyHcaptcha(req.body.captchaToken, clientIp);
+    if (!captchaResult.success) {
+      return res.status(400).json({ error: captchaResult.error || 'Captcha verification failed' });
+    }
+
+    // 清理和验证输入
+    const name = sanitizeInput(req.body.name, 100);
+    const company = sanitizeInput(req.body.company, 200);
+    const email = sanitizeInput(req.body.email, 254);
+    const productCategory = sanitizeInput(req.body.productCategory, 50);
+    const portOfDestination = sanitizeInput(req.body.portOfDestination, 200);
+    const estimatedQuantity = sanitizeInput(req.body.estimatedQuantity, 100);
+    const message = sanitizeInput(req.body.message, 2000);
 
     // 验证必填字段
     if (!name || !company || !email || !portOfDestination) {
-      console.error('Missing required fields:', { name: !!name, company: !!company, email: !!email, portOfDestination: !!portOfDestination });
       return res.status(400).json({ 
         error: 'Missing required fields',
         required: ['name', 'company', 'email', 'portOfDestination'] 
@@ -131,8 +317,7 @@ app.post('/api/inquiries', async (req, res) => {
     }
 
     // 验证邮箱格式
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!isValidEmail(email)) {
       return res.status(400).json({ error: 'Invalid email address' });
     }
 
@@ -144,10 +329,11 @@ app.post('/api/inquiries', async (req, res) => {
       port_of_destination: portOfDestination,
       estimated_quantity: estimatedQuantity || null,
       message: message || null,
-      status: 'new'
+      status: 'new',
+      ip_address: clientIp
     };
     
-    console.log('Inserting data:', insertData);
+    console.log('Inserting data (sanitized):', { ...insertData, message: insertData.message?.substring(0, 50) + '...' });
 
     const { data, error } = await supabase
       .from('inquiries')
@@ -157,10 +343,10 @@ app.post('/api/inquiries', async (req, res) => {
 
     if (error) {
       console.error('Supabase insert error:', error);
-      return res.status(500).json({ error: 'Failed to save', details: error.message, code: error.code });
+      return res.status(500).json({ error: 'Failed to save', details: error.message });
     }
 
-    console.log('Insert successful:', data);
+    console.log('Insert successful:', data.id);
 
     // 发送飞书通知（异步）
     sendFeishuNotification({
@@ -173,14 +359,14 @@ app.post('/api/inquiries', async (req, res) => {
       message
     }).catch(err => console.error('Feishu notification error:', err));
 
-    res.status(201).json({ success: true, message: 'Inquiry submitted successfully', data });
+    res.status(201).json({ success: true, message: 'Inquiry submitted successfully', data: { id: data.id } });
   } catch (error) {
     console.error('Server error:', error);
-    res.status(500).json({ error: 'Internal error', details: error.message });
+    res.status(500).json({ error: 'Internal error' });
   }
 });
 
-app.get('/api/inquiries', async (_req, res) => {
+app.get('/api/inquiries', apiLimiter, async (_req, res) => {
   try {
     if (!supabase) {
       return res.status(500).json({ error: 'Database not configured' });
@@ -188,56 +374,62 @@ app.get('/api/inquiries', async (_req, res) => {
     const { data, error } = await supabase.from('inquiries').select('*').order('created_at', { ascending: false });
     if (error) {
       console.error('Fetch error:', error);
-      return res.status(500).json({ error: 'Failed to fetch', details: error.message });
+      return res.status(500).json({ error: 'Failed to fetch' });
     }
     res.json({ data });
   } catch (error) {
-    res.status(500).json({ error: 'Internal error', details: error.message });
+    res.status(500).json({ error: 'Internal error' });
   }
 });
 
-app.patch('/api/inquiries/:id', async (req, res) => {
+app.patch('/api/inquiries/:id', apiLimiter, async (req, res) => {
   try {
     if (!supabase) return res.status(500).json({ error: 'Database not configured' });
     const { id } = req.params;
     const { status, notes } = req.body;
     const updateData = { updated_at: new Date().toISOString() };
-    if (status) updateData.status = status;
-    if (notes !== undefined) updateData.notes = notes;
+    if (status) updateData.status = sanitizeInput(status, 20);
+    if (notes !== undefined) updateData.notes = sanitizeInput(notes, 1000);
     const { data, error } = await supabase.from('inquiries').update(updateData).eq('id', id).select().single();
-    if (error) return res.status(500).json({ error: 'Failed to update', details: error.message });
+    if (error) return res.status(500).json({ error: 'Failed to update' });
     res.json({ success: true, data });
   } catch (error) {
-    res.status(500).json({ error: 'Internal error', details: error.message });
+    res.status(500).json({ error: 'Internal error' });
   }
 });
 
-app.delete('/api/inquiries/:id', async (req, res) => {
+app.delete('/api/inquiries/:id', apiLimiter, async (req, res) => {
   try {
     if (!supabase) return res.status(500).json({ error: 'Database not configured' });
     const { id } = req.params;
     const { error } = await supabase.from('inquiries').delete().eq('id', id);
-    if (error) return res.status(500).json({ error: 'Failed to delete', details: error.message });
+    if (error) return res.status(500).json({ error: 'Failed to delete' });
     res.json({ success: true });
   } catch (error) {
-    res.status(500).json({ error: 'Internal error', details: error.message });
+    res.status(500).json({ error: 'Internal error' });
   }
 });
 
 // ========== Newsletter 订阅 API ==========
 
-app.post('/api/subscribers', async (req, res) => {
+app.post('/api/subscribers', formLimiter, async (req, res) => {
+  const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || 'unknown';
+  
   try {
     if (!supabase) return res.status(500).json({ error: 'Database not configured' });
     
-    const { email } = req.body;
+    // 检查 honeypot
+    if (!checkHoneypot(req.body)) {
+      return res.status(201).json({ success: true, message: 'Thank you for subscribing!' });
+    }
+    
+    const email = sanitizeInput(req.body.email, 254);
     
     if (!email) {
       return res.status(400).json({ error: 'Email is required' });
     }
     
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!isValidEmail(email)) {
       return res.status(400).json({ error: 'Invalid email address' });
     }
     
@@ -254,7 +446,6 @@ app.post('/api/subscribers', async (req, res) => {
       if (existing.status === 'active') {
         return res.status(200).json({ success: true, message: 'You are already subscribed!' });
       } else {
-        // 重新激活
         const { error } = await supabase
           .from('subscribers')
           .update({ status: 'active', unsubscribed_at: null })
@@ -262,8 +453,11 @@ app.post('/api/subscribers', async (req, res) => {
         if (error) return res.status(500).json({ error: 'Failed to resubscribe' });
       }
     } else {
-      // 新订阅
-      const { error } = await supabase.from('subscribers').insert({ email, status: 'active' });
+      const { error } = await supabase.from('subscribers').insert({ 
+        email, 
+        status: 'active',
+        ip_address: clientIp 
+      });
       if (error) return res.status(500).json({ error: 'Failed to subscribe' });
       isNewSubscription = true;
     }
@@ -278,7 +472,7 @@ app.post('/api/subscribers', async (req, res) => {
         : 'Welcome back! You have been resubscribed.'
     });
   } catch (error) {
-    res.status(500).json({ error: 'Internal error', details: error.message });
+    res.status(500).json({ error: 'Internal error' });
   }
 });
 
@@ -287,7 +481,7 @@ app.post('/api/subscribers/unsubscribe', async (req, res) => {
   try {
     if (!supabase) return res.status(500).json({ error: 'Database not configured' });
     
-    const { email } = req.body;
+    const email = sanitizeInput(req.body.email, 254);
     if (!email) return res.status(400).json({ error: 'Email is required' });
     
     const { error } = await supabase
@@ -297,34 +491,33 @@ app.post('/api/subscribers/unsubscribe', async (req, res) => {
     
     if (error) return res.status(500).json({ error: 'Failed to unsubscribe' });
     
-    // 发送确认邮件（异步）
     sendUnsubscribeConfirmation(email).catch(err => console.error('Email error:', err));
     
     res.json({ success: true, message: 'You have been unsubscribed.' });
   } catch (error) {
-    res.status(500).json({ error: 'Internal error', details: error.message });
+    res.status(500).json({ error: 'Internal error' });
   }
 });
 
 // 获取所有订阅者（管理员）
-app.get('/api/subscribers', async (req, res) => {
+app.get('/api/subscribers', apiLimiter, async (req, res) => {
   try {
     if (!supabase) return res.status(500).json({ error: 'Database not configured' });
     
     const { data, error } = await supabase
       .from('subscribers')
-      .select('*')
+      .select('id, email, status, subscribed_at, unsubscribed_at')
       .order('subscribed_at', { ascending: false });
     
     if (error) return res.status(500).json({ error: 'Failed to fetch subscribers' });
     res.json({ success: true, data });
   } catch (error) {
-    res.status(500).json({ error: 'Internal error', details: error.message });
+    res.status(500).json({ error: 'Internal error' });
   }
 });
 
 // 删除订阅者（管理员）
-app.delete('/api/subscribers/:id', async (req, res) => {
+app.delete('/api/subscribers/:id', apiLimiter, async (req, res) => {
   try {
     if (!supabase) return res.status(500).json({ error: 'Database not configured' });
     
@@ -334,12 +527,12 @@ app.delete('/api/subscribers/:id', async (req, res) => {
     if (error) return res.status(500).json({ error: 'Failed to delete subscriber' });
     res.json({ success: true });
   } catch (error) {
-    res.status(500).json({ error: 'Internal error', details: error.message });
+    res.status(500).json({ error: 'Internal error' });
   }
 });
 
 // 发送 Newsletter（管理员）
-app.post('/api/newsletter/send', async (req, res) => {
+app.post('/api/newsletter/send', apiLimiter, async (req, res) => {
   try {
     if (!supabase) return res.status(500).json({ error: 'Database not configured' });
     
@@ -359,7 +552,16 @@ app.post('/api/newsletter/send', async (req, res) => {
     }
     
     const emails = subscribers.map(s => s.email);
-    const result = await sendNewsletterToSubscribers(emails, subject, articles, previewText);
+    const sanitizedSubject = sanitizeInput(subject, 200);
+    const sanitizedPreview = sanitizeInput(previewText, 300);
+    const sanitizedArticles = articles.map(a => ({
+      ...a,
+      title: sanitizeInput(a.title, 200),
+      excerpt: sanitizeInput(a.excerpt, 500),
+      url: a.url
+    }));
+    
+    const result = await sendNewsletterToSubscribers(emails, sanitizedSubject, sanitizedArticles, sanitizedPreview);
     
     res.json({ 
       success: result.success, 
@@ -368,7 +570,7 @@ app.post('/api/newsletter/send', async (req, res) => {
       errors: result.errors 
     });
   } catch (error) {
-    res.status(500).json({ error: 'Internal error', details: error.message });
+    res.status(500).json({ error: 'Internal error' });
   }
 });
 
@@ -376,33 +578,21 @@ app.post('/api/newsletter/send', async (req, res) => {
 
 const emailStyles = `
   <style>
-    /* 重置样式 */
     body, html { margin: 0; padding: 0; width: 100% !important; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; }
     body { background-color: #f0f2f5; }
-    
-    /* 容器 */
     .email-container { max-width: 680px; margin: 0 auto; padding: 40px 20px; }
-    
-    /* 主卡片 */
     .email-card { background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
-    
-    /* 头部 */
     .email-header { background: linear-gradient(135deg, #003366 0%, #1a4d80 50%, #003366 100%); padding: 50px 40px; text-align: center; position: relative; overflow: hidden; }
-    .email-header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 50%); animation: pulse 3s ease-in-out infinite; }
-    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 0.8; } }
+    .email-header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 50%); }
     .email-header .logo { position: relative; z-index: 1; }
     .email-header .logo-icon { width: 80px; height: 80px; background: rgba(212,175,55,0.2); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 2px solid rgba(212,175,55,0.4); }
     .email-header .logo-icon span { font-size: 36px; }
     .email-header h1 { color: #ffffff; font-size: 32px; font-weight: 700; margin: 0 0 12px; letter-spacing: -0.5px; position: relative; z-index: 1; }
     .email-header .tagline { color: rgba(255,255,255,0.85); font-size: 16px; margin: 0; position: relative; z-index: 1; }
-    
-    /* 内容区域 */
     .email-content { padding: 50px 40px; }
     .email-content h2 { color: #003366; font-size: 26px; font-weight: 600; margin: 0 0 24px; letter-spacing: -0.3px; }
     .email-content p { color: #4a5568; font-size: 16px; line-height: 1.8; margin: 0 0 20px; }
     .email-content .greeting { font-size: 18px; color: #1a202c; }
-    
-    /* 特性列表 */
     .feature-list { list-style: none; padding: 0; margin: 30px 0; }
     .feature-list li { display: flex; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid #e2e8f0; }
     .feature-list li:last-child { border-bottom: none; }
@@ -410,43 +600,21 @@ const emailStyles = `
     .feature-list .text { flex: 1; }
     .feature-list .text strong { color: #003366; font-size: 16px; display: block; margin-bottom: 4px; }
     .feature-list .text span { color: #718096; font-size: 14px; }
-    
-    /* 按钮 */
-    .email-button { display: inline-block; background: linear-gradient(135deg, #D4AF37 0%, #c9a02e 100%); color: #ffffff !important; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 20px 0; box-shadow: 0 4px 14px rgba(212,175,55,0.35); transition: all 0.3s ease; }
-    .email-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,175,55,0.45); }
-    
-    /* 文章卡片 */
-    .article-card { background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 12px; padding: 24px; margin: 20px 0; border-left: 4px solid #D4AF37; transition: all 0.3s ease; }
-    .article-card:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .email-button { display: inline-block; background: linear-gradient(135deg, #D4AF37 0%, #c9a02e 100%); color: #ffffff !important; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 20px 0; box-shadow: 0 4px 14px rgba(212,175,55,0.35); }
+    .article-card { background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 12px; padding: 24px; margin: 20px 0; border-left: 4px solid #D4AF37; }
     .article-card h3 { color: #003366; font-size: 18px; font-weight: 600; margin: 0 0 12px; }
     .article-card h3 a { color: #003366; text-decoration: none; }
-    .article-card h3 a:hover { color: #D4AF37; }
     .article-card p { color: #64748b; font-size: 15px; margin: 0 0 16px; line-height: 1.7; }
     .article-card .read-more { color: #D4AF37; text-decoration: none; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; }
-    .article-card .read-more:hover { color: #c9a02e; }
-    .article-card .read-more::after { content: ' →'; margin-left: 4px; transition: transform 0.2s; }
-    .article-card .read-more:hover::after { transform: translateX(4px); }
-    
-    /* 分隔线 */
     .divider { height: 1px; background: linear-gradient(90deg, transparent, #e2e8f0, transparent); margin: 40px 0; }
-    
-    /* 签名 */
     .signature { text-align: center; padding: 30px 0 0; }
     .signature p { color: #718096; font-size: 15px; margin: 0 0 8px; }
     .signature .team-name { color: #003366; font-weight: 600; font-size: 16px; }
-    
-    /* 页脚 */
     .email-footer { background: #1a202c; padding: 40px; text-align: center; }
-    .email-footer .social-links { margin-bottom: 24px; }
-    .email-footer .social-links a { display: inline-block; width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 8px; line-height: 40px; text-decoration: none; transition: all 0.3s ease; }
-    .email-footer .social-links a:hover { background: #D4AF37; transform: translateY(-2px); }
     .email-footer p { color: rgba(255,255,255,0.6); font-size: 13px; margin: 0 0 12px; line-height: 1.6; }
     .email-footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
-    .email-footer a:hover { color: #D4AF37; }
     .email-footer .footer-links { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
     .email-footer .footer-links a { margin: 0 16px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-    
-    /* 响应式 */
     @media only screen and (max-width: 600px) {
       .email-container { padding: 20px 10px; }
       .email-header { padding: 40px 24px; }
@@ -467,7 +635,7 @@ async function sendSubscriptionConfirmation(email) {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: `Welcome to SpecialOil Newsletter 📧`,
+      subject: `Welcome to SpecialOil Newsletter`,
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">${emailStyles}</head><body>
         <div class="email-container">
           <div class="email-card">
@@ -481,43 +649,15 @@ async function sendSubscriptionConfirmation(email) {
             <div class="email-content">
               <h2>Welcome to Our Newsletter!</h2>
               <p class="greeting">Thank you for subscribing! You're now part of an exclusive community receiving the latest insights from China's special oil industry.</p>
-              
               <div class="divider"></div>
-              
               <p>Here's what you can expect:</p>
               <ul class="feature-list">
-                <li>
-                  <div class="icon">📊</div>
-                  <div class="text">
-                    <strong>Industry News</strong>
-                    <span>Latest updates from China's special oil market</span>
-                  </div>
-                </li>
-                <li>
-                  <div class="icon">🔧</div>
-                  <div class="text">
-                    <strong>Technical Insights</strong>
-                    <span>Expert analysis and product developments</span>
-                  </div>
-                </li>
-                <li>
-                  <div class="icon">📈</div>
-                  <div class="text">
-                    <strong>Market Analysis</strong>
-                    <span>Price trends and market forecasts</span>
-                  </div>
-                </li>
-                <li>
-                  <div class="icon">🎁</div>
-                  <div class="text">
-                    <strong>Exclusive Offers</strong>
-                    <span>Special promotions for our subscribers</span>
-                  </div>
-                </li>
+                <li><div class="icon">📊</div><div class="text"><strong>Industry News</strong><span>Latest updates from China's special oil market</span></div></li>
+                <li><div class="icon">🔧</div><div class="text"><strong>Technical Insights</strong><span>Expert analysis and product developments</span></div></li>
+                <li><div class="icon">📈</div><div class="text"><strong>Market Analysis</strong><span>Price trends and market forecasts</span></div></li>
+                <li><div class="icon">🎁</div><div class="text"><strong>Exclusive Offers</strong><span>Special promotions for our subscribers</span></div></li>
               </ul>
-              
               <div class="divider"></div>
-              
               <div class="signature">
                 <p>We're excited to have you on board!</p>
                 <p class="team-name">The SpecialOil Team</p>
@@ -528,7 +668,6 @@ async function sendSubscriptionConfirmation(email) {
               <div class="footer-links">
                 <a href="${unsubscribeUrl}">Unsubscribe</a>
                 <a href="${SITE_URL}">Visit Website</a>
-                <a href="${SITE_URL}/contact">Contact Us</a>
               </div>
             </div>
           </div>
@@ -548,10 +687,10 @@ async function sendSubscriptionConfirmation(email) {
 async function sendUnsubscribeConfirmation(email) {
   if (!resend) { console.log('Resend not configured'); return false; }
   
-  const resubscribeUrl = `${SITE_URL}/blog`;
+  const subscribeUrl = `${SITE_URL}/`;
   
   try {
-    const { data, error } = await resend.emails.send({
+    await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: `You've been unsubscribed from SpecialOil Newsletter`,
@@ -562,39 +701,27 @@ async function sendUnsubscribeConfirmation(email) {
               <div class="logo">
                 <div class="logo-icon"><span>🏭</span></div>
                 <h1>SpecialOil</h1>
+                <p class="tagline">Your Trusted China Special Oil Partner</p>
               </div>
             </div>
             <div class="email-content">
-              <h2>Unsubscribe Confirmation</h2>
-              <p class="greeting">You have been successfully unsubscribed from our newsletter.</p>
-              <p>We're sorry to see you go. Your feedback is valuable to us - if you have a moment, please let us know why you decided to unsubscribe.</p>
-              
+              <h2>Unsubscribed Successfully</h2>
+              <p class="greeting">You have been successfully unsubscribed from our newsletter. We're sorry to see you go!</p>
               <div class="divider"></div>
-              
-              <p style="text-align: center;">Changed your mind? You can always come back!</p>
-              <p style="text-align: center;"><a href="${resubscribeUrl}" class="email-button">Resubscribe</a></p>
-              
-              <div class="divider"></div>
-              
+              <p>If you change your mind, you can always resubscribe on our website.</p>
+              <a href="${subscribeUrl}" class="email-button">Visit Website</a>
               <div class="signature">
-                <p>Thank you for being part of our community.</p>
+                <p>Thank you for your time with us.</p>
                 <p class="team-name">The SpecialOil Team</p>
               </div>
             </div>
             <div class="email-footer">
-              <p>You're receiving this email because you unsubscribed from our newsletter.</p>
-              <div class="footer-links">
-                <a href="${SITE_URL}">Visit Website</a>
-                <a href="${SITE_URL}/contact">Contact Us</a>
-              </div>
+              <p>This email was sent to ${email}</p>
             </div>
           </div>
         </div>
       </body></html>`
     });
-    
-    if (error) { console.error('Email error:', error); return false; }
-    console.log('Unsubscribe email sent:', data?.id);
     return true;
   } catch (error) {
     console.error('Email error:', error);
@@ -602,24 +729,25 @@ async function sendUnsubscribeConfirmation(email) {
   }
 }
 
-async function sendNewsletterToSubscribers(subscribers, subject, articles, previewText) {
-  if (!resend) return { success: false, sentCount: 0, errors: ['Resend not configured'] };
+async function sendNewsletterToSubscribers(emails, subject, articles, previewText) {
+  if (!resend) { console.log('Resend not configured'); return { success: false, sentCount: 0, errors: ['Resend not configured'] }; }
   
-  const errors = [];
   let sentCount = 0;
+  const errors = [];
   
-  for (const email of subscribers) {
+  for (const email of emails) {
     const unsubscribeUrl = `${SITE_URL}/unsubscribe?email=${encodeURIComponent(email)}`;
-    const articlesHTML = articles.map(a => `
+    
+    const articlesHtml = articles.map(article => `
       <div class="article-card">
-        <h3><a href="${a.url}">${a.title}</a></h3>
-        <p>${a.summary}</p>
-        <a href="${a.url}" class="read-more">Read full article</a>
+        <h3><a href="${article.url}">${article.title}</a></h3>
+        <p>${article.excerpt}</p>
+        <a href="${article.url}" class="read-more">Read more</a>
       </div>
     `).join('');
     
     try {
-      const { error } = await resend.emails.send({
+      await resend.emails.send({
         from: FROM_EMAIL,
         to: email,
         subject: subject,
@@ -630,16 +758,16 @@ async function sendNewsletterToSubscribers(subscribers, subject, articles, previ
                 <div class="logo">
                   <div class="logo-icon"><span>🏭</span></div>
                   <h1>SpecialOil</h1>
-                  <p class="tagline">Newsletter</p>
+                  <p class="tagline">Your Trusted China Special Oil Partner</p>
                 </div>
               </div>
               <div class="email-content">
-                <h2 style="text-align: center;">${subject}</h2>
-                ${previewText ? `<p style="text-align: center; color: #64748b; font-style: italic; font-size: 16px;">${previewText}</p><div class="divider"></div>` : ''}
-                ${articlesHTML}
+                <h2>${subject}</h2>
+                ${previewText ? `<p class="greeting">${previewText}</p><div class="divider"></div>` : ''}
+                ${articlesHtml}
                 <div class="divider"></div>
                 <div class="signature">
-                  <p>Stay connected with us!</p>
+                  <p>Thank you for reading!</p>
                   <p class="team-name">The SpecialOil Team</p>
                 </div>
               </div>
@@ -648,40 +776,40 @@ async function sendNewsletterToSubscribers(subscribers, subject, articles, previ
                 <div class="footer-links">
                   <a href="${unsubscribeUrl}">Unsubscribe</a>
                   <a href="${SITE_URL}">Visit Website</a>
-                  <a href="${SITE_URL}/contact">Contact Us</a>
                 </div>
               </div>
             </div>
           </div>
         </body></html>`
       });
-      
-      if (error) { errors.push(`${email}: ${error.message}`); }
-      else { sentCount++; }
-      
-      if (sentCount % 10 === 0) await new Promise(r => setTimeout(r, 1000));
-    } catch (err) {
-      errors.push(`${email}: ${err.message}`);
+      sentCount++;
+    } catch (error) {
+      errors.push(`${email}: ${error.message}`);
     }
   }
   
   return { success: sentCount > 0, sentCount, errors };
 }
 
-// SPA 回退路由
+// ========== SPA 回退路由 ==========
 app.get('*', (_req, res) => {
   const indexPath = path.join(__dirname, 'dist', 'index.html');
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
-    res.status(404).send('Not found');
+    res.status(404).send('Application not built. Please run build first.');
   }
 });
 
-// 启动服务器
+// ========== 启动服务器 ==========
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`Supabase: ${supabase ? 'configured' : 'NOT configured'}`);
-  console.log(`Feishu: ${FEISHU_WEBHOOK_URL ? 'configured' : 'NOT configured'}`);
+  console.log(`========================================`);
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Security features enabled:`);
+  console.log(`  - Helmet security headers`);
+  console.log(`  - Rate limiting (global: 200/15min, API: 50/hr, Form: 5/hr)`);
+  console.log(`  - Input sanitization`);
+  console.log(`  - Honeypot protection`);
+  console.log(`  - hCaptcha verification: ${HCAPTCHA_SECRET ? 'ENABLED' : 'DISABLED'}`);
+  console.log(`========================================`);
 });
