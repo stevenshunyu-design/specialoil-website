@@ -6,7 +6,7 @@ const resend = process.env.RESEND_API_KEY
   : null;
 
 // 发件人地址
-const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@specialoil.com';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'steven.shunyu@gmail.com';
 const SITE_NAME = 'SpecialOil';
 const SITE_URL = process.env.SITE_URL || 'https://specialoil.com';
 

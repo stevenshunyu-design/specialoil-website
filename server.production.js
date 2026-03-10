@@ -15,7 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 邮件配置
-const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@specialoil.com';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'steven.shunyu@gmail.com';
 const SITE_URL = process.env.SITE_URL || 'https://specialoil.com';
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
