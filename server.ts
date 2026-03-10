@@ -445,6 +445,214 @@ app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok' });
 });
 
+// AI 聊天 API
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const OPENAI_API_HOST = process.env.OPENAI_API_HOST || 'api.openai.com';
+
+// 网站知识库上下文
+const WEBSITE_KNOWLEDGE = `
+You are an AI customer service assistant for Zhongrun Special Oil (Chinese Special Oil Supply Platform). 
+
+About the Company:
+- We are a leading Chinese supplier of specialty lubricants and oils
+- Products include: Transformer Oil, Rubber Process Oil, White Oil, Finished Lubricants
+- Services: Quality assurance, global logistics, custom solutions
+
+Key Products:
+1. Transformer Oil: High-grade insulating oil for electrical transformers
+2. Rubber Process Oil: Various types (Naphthenic, Paraffinic, Aromatic) for rubber manufacturing
+3. White Oil: Food-grade and pharmaceutical-grade white oils
+4. Finished Lubricants: Automotive, industrial, and marine lubricants
+
+Contact Information:
+- Email: steven.shunyu@gmail.com
+- Phone: +8613793280176
+- Website: SpecialOil platform
+
+Key Services:
+- Quality certification (ISO standards)
+- Global shipping logistics
+- Custom product development
+- Technical support
+
+When to Transfer to Human Agent:
+If the user asks about: pricing, complex technical specifications, custom orders, complaints, partnership inquiries, or explicitly requests human agent - say: "I'll connect you with our team. Please provide your email so our specialist can contact you."
+`;
+
+// 检测是否需要人工客服
+function needsHumanAgent(message: string): boolean {
+  const keywords = [
+    'price', 'pricing', 'quote', 'quotation', 'cost',
+    'discount', 'negotiate', 'complaint', 'complain',
+    'human', 'agent', 'person', 'speak to', 'talk to',
+    'manager', 'supervisor', 'urgent', 'emergency',
+    'custom order', 'special order', 'partnership',
+    'bulk order', 'wholesale', 'distributor'
+  ];
+  
+  const lowerMessage = message.toLowerCase();
+  return keywords.some(keyword => lowerMessage.includes(keyword));
+}
+
+app.post('/api/chat', async (req: Request, res: Response) => {
+  try {
+    const { message, history = [] } = req.body;
+
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    // 检查是否需要人工客服（在 API key 检查之前）
+    if (needsHumanAgent(message)) {
+      // 发送飞书通知
+      if (FEISHU_WEBHOOK_URL) {
+        try {
+          await fetch(FEISHU_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              msg_type: 'interactive',
+              card: {
+                header: {
+                  title: { tag: 'plain_text', content: '🔔 Customer Service Request' },
+                  template: 'red'
+                },
+                elements: [
+                  {
+                    tag: 'div',
+                    text: { tag: 'lark_md', content: `**Message:**\n${message}` }
+                  },
+                  {
+                    tag: 'div',
+                    text: { tag: 'lark_md', content: '**Action Required:** Customer requested human assistance' }
+                  }
+                ]
+              }
+            })
+          });
+        } catch (err) {
+          console.error('Failed to send Feishu notification:', err);
+        }
+      }
+
+      return res.json({
+        response: "I'll connect you with our team. Please provide your email so our specialist can contact you.",
+        needsEmail: true
+      });
+    }
+
+    if (!OPENAI_API_KEY) {
+      console.error('OPENAI_API_KEY not configured');
+      return res.status(500).json({ error: 'AI service not configured' });
+    }
+
+    // 调用 OpenAI API
+    const response = await fetch(`https://${OPENAI_API_HOST}/v1/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          { role: 'system', content: WEBSITE_KNOWLEDGE },
+          ...history.map((h: { role: string; content: string }) => ({
+            role: h.role,
+            content: h.content
+          })),
+          { role: 'user', content: message }
+        ],
+        max_tokens: 500,
+        temperature: 0.7
+      })
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('OpenAI API error:', errorText);
+      return res.status(500).json({ error: 'AI service error' });
+    }
+
+    const data = await response.json();
+    const aiResponse = data.choices?.[0]?.message?.content || 'Sorry, I could not process your request.';
+
+    res.json({ response: aiResponse });
+  } catch (error) {
+    console.error('Chat API error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// 提交客户邮箱（人工客服后）
+app.post('/api/chat/email', async (req: Request, res: Response) => {
+  try {
+    const { email, message } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    // 验证邮箱格式
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email address' });
+    }
+
+    // 发送飞书通知
+    if (FEISHU_WEBHOOK_URL) {
+      try {
+        await fetch(FEISHU_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            msg_type: 'interactive',
+            card: {
+              header: {
+                title: { tag: 'plain_text', content: '📧 Customer Email Collected' },
+                template: 'green'
+              },
+              elements: [
+                {
+                  tag: 'div',
+                  fields: [
+                    { is_short: true, text: { tag: 'lark_md', content: `**Email:**\n${email}` } }
+                  ]
+                },
+                {
+                  tag: 'div',
+                  text: { tag: 'lark_md', content: `**Original Message:**\n${message || 'N/A'}` }
+                },
+                {
+                  tag: 'action',
+                  actions: [
+                    {
+                      tag: 'button',
+                      text: { tag: 'plain_text', content: 'Reply via Email' },
+                      type: 'primary',
+                      url: `mailto:${email}`
+                    }
+                  ]
+                }
+              ]
+            }
+          })
+        });
+      } catch (err) {
+        console.error('Failed to send Feishu notification:', err);
+      }
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Thank you! Our team will contact you soon.' 
+    });
+  } catch (error) {
+    console.error('Email submission error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`API server running on port ${PORT}`);
 });

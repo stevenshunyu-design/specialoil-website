@@ -21,13 +21,13 @@ const ChatWidget = ({ position = 'bottom-right' }: ChatWidgetProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // 欢迎消息
+  // Welcome message
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       setMessages([
         {
           role: 'assistant',
-          content: '您好！我是CN-SpecLube的AI助手 🤖\n\n我可以帮您了解我们的产品：\n• 变压器油\n• 橡胶操作油\n• 成品润滑油\n• 基础油\n\n请问有什么可以帮您的？',
+          content: 'Hello! I\'m CN-SpecLube\'s AI Assistant 🤖\n\nI can help you with:\n• Transformer Oil\n• Rubber Process Oil\n• Finished Lubricants\n• Base Oil\n\nHow can I assist you today?',
           timestamp: new Date()
         }
       ]);
@@ -115,33 +115,33 @@ const ChatWidget = ({ position = 'bottom-right' }: ChatWidgetProps) => {
       setShowEmailInput(false);
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: `感谢您提供邮箱：${userEmail}\n\n我们的客服团队会尽快联系您！`,
+        content: `Thank you! Your email (${userEmail}) has been recorded.\n\nOur support team will contact you soon!`,
         timestamp: new Date()
       }]);
     }
   };
 
-  // 快捷问题
+  // Quick questions
   const quickQuestions = [
-    '你们有哪些产品？',
-    '变压器油价格',
-    '如何联系你们？',
-    '转人工客服'
+    'What products do you offer?',
+    'Transformer oil price',
+    'How to contact you?',
+    'Human support'
   ];
 
   return (
     <div className={`fixed z-50 ${position === 'bottom-right' ? 'right-6 bottom-6' : 'left-6 bottom-6'}`}>
-      {/* 聊天窗口 */}
+      {/* Chat Window */}
       {isOpen && (
         <div className="mb-4 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col" style={{ maxHeight: 'calc(100vh - 120px)' }}>
-          {/* 头部 */}
+          {/* Header */}
           <div className="bg-gradient-to-r from-[#003366] to-[#1a4d80] text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-[#D4AF37] rounded-full flex items-center justify-center">
                 <i className="fa-solid fa-robot text-white"></i>
               </div>
               <div>
-                <h3 className="font-semibold text-sm">AI 助手</h3>
+                <h3 className="font-semibold text-sm">AI Assistant</h3>
                 <p className="text-xs text-white/70">CN-SpecLube</p>
               </div>
             </div>
@@ -153,7 +153,7 @@ const ChatWidget = ({ position = 'bottom-right' }: ChatWidgetProps) => {
             </button>
           </div>
 
-          {/* 消息区域 */}
+          {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50" style={{ minHeight: '300px', maxHeight: '400px' }}>
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -184,10 +184,10 @@ const ChatWidget = ({ position = 'bottom-right' }: ChatWidgetProps) => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* 快捷问题 */}
+          {/* Quick Questions */}
           {messages.length <= 2 && (
             <div className="px-4 py-2 border-t border-gray-100 bg-white">
-              <p className="text-xs text-gray-500 mb-2">快捷问题：</p>
+              <p className="text-xs text-gray-500 mb-2">Quick Questions:</p>
               <div className="flex flex-wrap gap-2">
                 {quickQuestions.map((q, idx) => (
                   <button
@@ -205,10 +205,10 @@ const ChatWidget = ({ position = 'bottom-right' }: ChatWidgetProps) => {
             </div>
           )}
 
-          {/* 邮箱输入 */}
+          {/* Email Input */}
           {showEmailInput && (
             <div className="px-4 py-3 border-t border-gray-100 bg-yellow-50">
-              <p className="text-xs text-gray-600 mb-2">请留下您的邮箱，客服会联系您：</p>
+              <p className="text-xs text-gray-600 mb-2">Please leave your email, our team will contact you:</p>
               <div className="flex gap-2">
                 <input
                   type="email"
@@ -221,13 +221,13 @@ const ChatWidget = ({ position = 'bottom-right' }: ChatWidgetProps) => {
                   onClick={submitEmail}
                   className="px-4 py-2 bg-[#D4AF37] text-white text-sm rounded-lg hover:bg-opacity-90 transition-colors"
                 >
-                  提交
+                  Submit
                 </button>
               </div>
             </div>
           )}
 
-          {/* 输入区域 */}
+          {/* Input Area */}
           <div className="p-4 border-t border-gray-100 bg-white">
             <div className="flex gap-2">
               <input
@@ -236,7 +236,7 @@ const ChatWidget = ({ position = 'bottom-right' }: ChatWidgetProps) => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="输入您的问题..."
+                placeholder="Type your question..."
                 className="flex-1 px-4 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
                 disabled={isLoading}
               />
@@ -255,7 +255,7 @@ const ChatWidget = ({ position = 'bottom-right' }: ChatWidgetProps) => {
         </div>
       )}
 
-      {/* 聊天按钮 */}
+      {/* Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 ${
@@ -271,7 +271,7 @@ const ChatWidget = ({ position = 'bottom-right' }: ChatWidgetProps) => {
         )}
       </button>
 
-      {/* 未读提示（仅当关闭时显示） */}
+      {/* Unread Badge (only when closed) */}
       {!isOpen && (
         <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#D4AF37] rounded-full flex items-center justify-center">
           <span className="text-white text-xs">1</span>
