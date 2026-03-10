@@ -269,7 +269,7 @@ const Partners = () => {
 
       {/* Mobile Sticky Footer */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex shadow-lg">
-        <a href="tel:+8612345678910" className="flex-1 py-4 bg-[#003366] text-white flex items-center justify-center font-medium">
+        <a href="tel:+8613793280176" className="flex-1 py-4 bg-[#003366] text-white flex items-center justify-center font-medium">
           <i className="fa-solid fa-phone mr-2"></i>
           <span>Call Us</span>
         </a>

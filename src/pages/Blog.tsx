@@ -277,7 +277,7 @@ const Blog = () => {
       
       {/* Mobile Sticky Footer */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg flex">
-        <a href="tel:+8613800138000" className="flex-1 py-4 bg-[#003366] text-white flex items-center justify-center">
+        <a href="tel:+8613793280176" className="flex-1 py-4 bg-[#003366] text-white flex items-center justify-center">
           <i className="fa-solid fa-phone mr-2"></i>
           <span>Contact Us</span>
         </a>
