@@ -228,7 +228,7 @@ const ChatWidget = () => {
     <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end max-w-[calc(100vw-2rem)]">
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-4 w-[calc(100vw-2rem)] sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200 animate-slideUp max-h-[80vh] sm:max-h-[600px]">
+        <div className="mb-4 w-[calc(100vw-2rem)] sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200 animate-slideUp" style={{ maxHeight: '90vh' }}>
           {/* Header */}
           <div className="bg-gradient-to-r from-[#003366] via-[#004080] to-[#003366] text-white p-3 sm:p-4 relative overflow-hidden flex-shrink-0">
             {/* Decorative elements */}
@@ -265,7 +265,7 @@ const ChatWidget = () => {
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 bg-gradient-to-b from-gray-50 to-white min-h-[200px] sm:min-h-[320px] max-h-[40vh] sm:max-h-[420px]">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 bg-gradient-to-b from-gray-50 to-white" style={{ minHeight: '250px', maxHeight: '50vh' }}>
             {messages.map((msg, index) => (
               <div
                 key={index}
