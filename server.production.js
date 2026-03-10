@@ -328,8 +328,7 @@ app.post('/api/inquiries', formLimiter, async (req, res) => {
       port_of_destination: portOfDestination,
       estimated_quantity: estimatedQuantity || null,
       message: message || null,
-      status: 'new',
-      ip_address: clientIp
+      status: 'new'
     };
     
     console.log('Inserting data (sanitized):', { ...insertData, message: insertData.message?.substring(0, 50) + '...' });
@@ -454,8 +453,7 @@ app.post('/api/subscribers', formLimiter, async (req, res) => {
     } else {
       const { error } = await supabase.from('subscribers').insert({ 
         email, 
-        status: 'active',
-        ip_address: clientIp 
+        status: 'active'
       });
       if (error) return res.status(500).json({ error: 'Failed to subscribe' });
       isNewSubscription = true;
