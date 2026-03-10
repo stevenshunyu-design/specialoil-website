@@ -7,7 +7,7 @@ import 'dotenv/config';
 
 const app = express();
 const httpServer = createServer(app);
-const PORT = process.env.API_PORT || 3001;
+const PORT = process.env.PORT || 5000;
 
 // Socket.io 配置
 const io = new Server(httpServer, {
@@ -24,8 +24,8 @@ app.use(express.json());
 
 // ==================== 环境变量配置 ====================
 const FEISHU_WEBHOOK_URL = process.env.FEISHU_CHAT_WEBHOOK || process.env.FEISHU_WEBHOOK_URL;
-const FEISHU_APP_ID = process.env.FEISHU_APP_ID;
-const FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET;
+const FEISHU_APP_ID = process.env.FEISHU_APP_ID || process.env.FEISHU_CHAT_APP_ID;
+const FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET || process.env.FEISHU_CHAT_APP_SECRET;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_API_HOST = process.env.OPENAI_API_HOST || 'api.openai.com';
 
