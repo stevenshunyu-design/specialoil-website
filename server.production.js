@@ -145,10 +145,10 @@ app.post('/feishu/webhook', express.json(), async (req, res) => {
           message: replyMessage
         });
         console.log(`✅ Reply saved: ${replyMessage}`);
-        if (senderId) await sendFeishuMessage(senderId, `✅ 消息已保存`);
+        if (senderId) await sendFeishuMessage(senderId, `✅ Message saved`);
       } else {
         console.log(`Session not found: ${sessionShortId}`);
-        if (senderId) await sendFeishuMessage(senderId, `❌ 未找到会话: ${sessionShortId}`);
+        if (senderId) await sendFeishuMessage(senderId, `❌ Session not found: ${sessionShortId}`);
       }
     }
   }
@@ -1002,13 +1002,13 @@ async function notifyHumanSupportRequest(sessionId, messages, userEmail, custome
   const card = {
     msg_type: 'interactive',
     card: {
-      header: { title: { tag: 'plain_text', content: `🔔 新客户咨询 ${customerNo}` }, template: 'blue' },
+      header: { title: { tag: 'plain_text', content: `🔔 New Customer Inquiry ${customerNo}` }, template: 'blue' },
       elements: [
-        { tag: 'div', text: { tag: 'lark_md', content: `**客户信息**\n👤 姓名：${customerName}\n📧 邮箱：${customerEmail}\n📱 电话：${customerPhone}` } },
+        { tag: 'div', text: { tag: 'lark_md', content: `**Customer Info**\n👤 Name: ${customerName}\n📧 Email: ${customerEmail}\n📱 Phone: ${customerPhone}` } },
         { tag: 'divider' },
-        { tag: 'div', text: { tag: 'lark_md', content: `**最近对话**\n${lastMessages}` } },
+        { tag: 'div', text: { tag: 'lark_md', content: `**Recent Messages**\n${lastMessages}` } },
         { tag: 'divider' },
-        { tag: 'note', elements: [{ tag: 'plain_text', content: `回复格式: /reply ${shortId} 您的回复内容` }] }
+        { tag: 'note', elements: [{ tag: 'plain_text', content: `Reply format: /reply ${shortId} Your reply message` }] }
       ]
     }
   };
@@ -1046,11 +1046,11 @@ app.post('/api/chat/human', apiLimiter, async (req, res) => {
       const card = {
         msg_type: 'interactive',
         card: {
-          header: { title: { tag: 'plain_text', content: `💬 客户 ${customerNo} 新消息` }, template: 'green' },
+          header: { title: { tag: 'plain_text', content: `💬 Customer ${customerNo} New Message` }, template: 'green' },
           elements: [
-            { tag: 'div', text: { tag: 'lark_md', content: `**消息内容**\n${message}` } },
-            { tag: 'div', text: { tag: 'lark_md', content: `**时间**\n${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}` } },
-            { tag: 'note', elements: [{ tag: 'plain_text', content: `回复格式: /reply ${shortId} 您的回复内容` }] }
+            { tag: 'div', text: { tag: 'lark_md', content: `**Message**\n${message}` } },
+            { tag: 'div', text: { tag: 'lark_md', content: `**Time**\n${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai' })}` } },
+            { tag: 'note', elements: [{ tag: 'plain_text', content: `Reply format: /reply ${shortId} Your reply message` }] }
           ]
         }
       };

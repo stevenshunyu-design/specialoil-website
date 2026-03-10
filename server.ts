@@ -497,11 +497,11 @@ app.post('/api/chat', async (req: Request, res: Response) => {
         const card = {
           msg_type: 'interactive',
           card: {
-            header: { title: { tag: 'plain_text', content: `🔔 新客户咨询 ${customerNo}` }, template: 'blue' },
+            header: { title: { tag: 'plain_text', content: `🔔 New Customer Inquiry ${customerNo}` }, template: 'blue' },
             elements: [
-              { tag: 'div', text: { tag: 'lark_md', content: `**客户信息**\n👤 姓名：${customerName}\n📧 邮箱：${customerEmail}\n📱 电话：${customerPhone}` } },
+              { tag: 'div', text: { tag: 'lark_md', content: `**Customer Info**\n👤 Name: ${customerName}\n📧 Email: ${customerEmail}\n📱 Phone: ${customerPhone}` } },
               { tag: 'divider' },
-              { tag: 'note', elements: [{ tag: 'plain_text', content: `回复格式: /reply ${shortId} 您的回复内容` }] }
+              { tag: 'note', elements: [{ tag: 'plain_text', content: `Reply format: /reply ${shortId} Your reply message` }] }
             ]
           }
         };
