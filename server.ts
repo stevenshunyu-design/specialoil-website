@@ -763,7 +763,7 @@ app.post('/api/chat/sessions/:sessionId/close', async (req: Request, res: Respon
   }
 });
 
-// 人工客服消息 API - 将用户消息转发到飞书
+// 人工客服消息 API - 用户发送消息（转人工后使用）
 app.post('/api/chat/human', async (req: Request, res: Response) => {
   try {
     const { message, sessionId } = req.body;
@@ -772,67 +772,44 @@ app.post('/api/chat/human', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    const sid = sessionId || `human_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-    // 发送消息到飞书群通知客服
-    if (FEISHU_WEBHOOK_URL) {
-      const shortId = sid.substring(0, 8);
-      const card = {
-        msg_type: 'interactive',
-        card: {
-          header: { title: { tag: 'plain_text', content: '💬 新客户消息' }, template: 'blue' },
-          elements: [
-            { tag: 'div', text: { tag: 'lark_md', content: `**会话ID**\n${shortId}` } },
-            { tag: 'div', text: { tag: 'lark_md', content: `**消息内容**\n${message}` } },
-            { tag: 'div', text: { tag: 'lark_md', content: `**时间**\n${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}` } },
-            { tag: 'note', elements: [{ tag: 'plain_text', content: `回复格式: /reply ${shortId} 您的回复内容` }] }
-          ]
-        }
-      };
-
-      try {
-        await fetch(FEISHU_WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(card)
-        });
-        console.log(`✅ Human chat message sent to Feishu: ${shortId}`);
-      } catch (error) {
-        console.error('Error sending to Feishu:', error);
-      }
+    if (!sessionId) {
+      return res.status(400).json({ error: 'Session ID is required' });
     }
 
-    // 保存到 Supabase
+    // 保存消息到数据库
     const client = getSupabaseClient();
-    if (client) {
-      // 检查会话是否存在
-      const { data: existingSession } = await client
-        .from('chat_sessions')
-        .select('*')
-        .eq('id', sid)
-        .single();
-
-      if (!existingSession) {
-        // 创建新会话
-        await client.from('chat_sessions').insert({
-          id: sid,
-          visitor_id: sid,
-          status: 'active'
-        });
-      }
-
-      // 保存消息
-      await client.from('chat_messages').insert({
-        session_id: sid,
-        sender_type: 'visitor',
-        message: message
-      });
+    if (!client) {
+      return res.status(500).json({ error: 'Database not configured' });
     }
+
+    // 检查会话是否存在
+    const { data: existingSession } = await client
+      .from('chat_sessions')
+      .select('*')
+      .eq('id', sessionId)
+      .single();
+
+    if (!existingSession) {
+      return res.status(404).json({ error: 'Session not found' });
+    }
+
+    // 保存用户消息
+    await client.from('chat_messages').insert({
+      session_id: sessionId,
+      sender_type: 'visitor',
+      sender_name: existingSession.visitor_name || 'Visitor',
+      message: message
+    });
+
+    // 更新会话时间
+    await client
+      .from('chat_sessions')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', sessionId);
 
     res.json({
       success: true,
-      session: { id: sid, status: 'active' },
-      message: 'Message sent to support team'
+      message: 'Message sent'
     });
   } catch (error) {
     console.error('Human chat error:', error);
@@ -846,23 +823,74 @@ app.post('/api/chat', async (req: Request, res: Response) => {
     if (!message) return res.status(400).json({ error: 'Message required' });
 
     if (needsHumanAgent(message)) {
-      // 发送通知到飞书
-      if (FEISHU_WEBHOOK_URL) {
-        const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        const shortId = sessionId.substring(0, 8);
-        const customerNo = customerInfo?.customerNo || `#${shortId}`;
-        const customerName = customerInfo?.name || 'Unknown';
-        const customerEmail = customerInfo?.email || 'Not provided';
-        const customerPhone = customerInfo?.phone || 'Not provided';
+      // 创建会话 ID
+      const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const shortId = sessionId.substring(0, 8);
+      const customerNo = customerInfo?.customerNo || `#${shortId}`;
+      const customerName = customerInfo?.name || 'Unknown';
+      const customerEmail = customerInfo?.email || 'Not provided';
+      const customerPhone = customerInfo?.phone || 'Not provided';
+      
+      // 获取 Supabase 客户端
+      const client = getSupabaseClient();
+      
+      // 保存会话到数据库
+      if (client) {
+        await client.from('chat_sessions').insert({
+          id: sessionId,
+          visitor_id: sessionId,
+          visitor_name: customerName,
+          visitor_email: customerEmail,
+          visitor_phone: customerPhone,
+          customer_no: customerNo,
+          status: 'active'
+        });
         
-        const card = {
+        // 保存用户消息
+        await client.from('chat_messages').insert({
+          session_id: sessionId,
+          sender_type: 'visitor',
+          sender_name: customerName,
+          message: message
+        });
+        console.log(`✅ Session saved: ${customerNo}`);
+      }
+      
+      // 发送飞书通知 - 提醒管理员去后台查看
+      if (FEISHU_WEBHOOK_URL) {
+        const notification = {
           msg_type: 'interactive',
           card: {
-            header: { title: { tag: 'plain_text', content: `🔔 New Customer Inquiry ${customerNo}` }, template: 'blue' },
+            header: { 
+              title: { tag: 'plain_text', content: `🔔 新客户咨询 ${customerNo}` }, 
+              template: 'blue' 
+            },
             elements: [
-              { tag: 'div', text: { tag: 'lark_md', content: `**Customer Info**\n👤 Name: ${customerName}\n📧 Email: ${customerEmail}\n📱 Phone: ${customerPhone}` } },
+              { 
+                tag: 'div', 
+                text: { 
+                  tag: 'lark_md', 
+                  content: `**客户信息**\n👤 姓名: ${customerName}\n📧 邮箱: ${customerEmail}\n📱 电话: ${customerPhone}\n💬 消息: ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}` 
+                } 
+              },
               { tag: 'divider' },
-              { tag: 'note', elements: [{ tag: 'plain_text', content: `Reply format: /reply ${shortId} Your reply message` }] }
+              { 
+                tag: 'action', 
+                actions: [
+                  {
+                    tag: 'button',
+                    text: { tag: 'plain_text', content: '前往后台回复' },
+                    url: `${process.env.SITE_URL || 'https://cnspecialtyoils.com'}/admin/chat`,
+                    type: 'primary'
+                  }
+                ]
+              },
+              { 
+                tag: 'note', 
+                elements: [
+                  { tag: 'plain_text', content: `请登录后台客服系统回复客户消息` }
+                ] 
+              }
             ]
           }
         };
@@ -871,23 +899,18 @@ app.post('/api/chat', async (req: Request, res: Response) => {
           await fetch(FEISHU_WEBHOOK_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(card)
+            body: JSON.stringify(notification)
           });
           console.log(`✅ Feishu notification sent: ${customerNo}`);
         } catch (error) {
           console.error('Feishu notification error:', error);
         }
-        
-        return res.json({
-          response: "I'll connect you with a human agent. Please wait...",
-          needsHuman: true,
-          sessionId: sessionId
-        });
       }
-      
+
       return res.json({
         response: "I'll connect you with a human agent. Please wait...",
-        needsHuman: true
+        needsHuman: true,
+        sessionId: sessionId
       });
     }
 
@@ -974,12 +997,14 @@ app.get('*', (req: Request, res: Response) => {
 });
 
 // 启动服务器
-httpServer.listen(PORT, () => {
+// 监听 0.0.0.0 确保反向代理正确转发请求
+httpServer.listen(Number(PORT), '0.0.0.0', () => {
   console.log(`========================================`);
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on http://0.0.0.0:${PORT}`);
   console.log(`WebSocket: /socket.io/`);
   console.log(`Feishu webhook: POST /feishu/webhook`);
   console.log(`========================================`);
+  console.log(`✅ Server ready to accept connections`);
   
   // 测试飞书连接
   if (FEISHU_APP_ID && FEISHU_APP_SECRET) {
