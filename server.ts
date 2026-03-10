@@ -3,7 +3,6 @@ import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { getSupabaseClient } from './src/storage/database/supabase-client';
-import type { NewInquiry } from './src/storage/database/shared/schema';
 import { 
   sendSubscriptionConfirmation, 
   sendUnsubscribeConfirmation,
@@ -27,10 +26,191 @@ const io = new Server(httpServer, {
 app.use(cors());
 app.use(express.json());
 
-// 飞书 Webhook URL
+// ==================== 环境变量配置 ====================
 const FEISHU_WEBHOOK_URL = process.env.FEISHU_WEBHOOK_URL;
+const FEISHU_APP_ID = process.env.FEISHU_APP_ID;
+const FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_API_HOST = process.env.OPENAI_API_HOST || 'api.openai.com';
+
+// ==================== 飞书机器人配置 ====================
+let feishuAccessToken: string | null = null;
+let tokenExpireTime = 0;
+
+// 飞书消息 ID 与会话 ID 的映射
+const messageSessionMap = new Map<string, string>();
+
+// 获取飞书 access_token
+async function getFeishuAccessToken(): Promise<string | null> {
+  // 检查缓存是否有效
+  if (feishuAccessToken && Date.now() < tokenExpireTime) {
+    return feishuAccessToken;
+  }
+
+  if (!FEISHU_APP_ID || !FEISHU_APP_SECRET) {
+    console.log('Feishu app credentials not configured');
+    return null;
+  }
+
+  try {
+    const response = await fetch('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        app_id: FEISHU_APP_ID,
+        app_secret: FEISHU_APP_SECRET
+      })
+    });
+
+    const data = await response.json();
+    
+    if (data.code === 0) {
+      feishuAccessToken = data.tenant_access_token;
+      tokenExpireTime = Date.now() + (data.expire - 300) * 1000; // 提前5分钟过期
+      return feishuAccessToken;
+    } else {
+      console.error('Failed to get Feishu token:', data);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error getting Feishu token:', error);
+    return null;
+  }
+}
+
+// 发送飞书消息（私聊）
+async function sendFeishuPrivateMessage(openId: string, message: string, sessionId: string): Promise<boolean> {
+  const token = await getFeishuAccessToken();
+  if (!token) return false;
+
+  try {
+    const response = await fetch('https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        receive_id: openId,
+        msg_type: 'text',
+        content: JSON.stringify({ text: message })
+      })
+    });
+
+    const data = await response.json();
+    
+    if (data.code === 0) {
+      // 保存消息 ID 与会话 ID 的映射
+      const messageId = data.data?.message_id;
+      if (messageId) {
+        messageSessionMap.set(messageId, sessionId);
+      }
+      return true;
+    } else {
+      console.error('Failed to send Feishu message:', data);
+      return false;
+    }
+  } catch (error) {
+    console.error('Error sending Feishu message:', error);
+    return false;
+  }
+}
+
+// 发送飞书卡片消息
+async function sendFeishuCardMessage(openId: string, sessionId: string, visitorName: string, message: string): Promise<boolean> {
+  const token = await getFeishuAccessToken();
+  if (!token) return false;
+
+  try {
+    const response = await fetch('https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        receive_id: openId,
+        msg_type: 'interactive',
+        content: JSON.stringify({
+          type: 'chat_card',
+          elements: [
+            {
+              tag: 'div',
+              text: {
+                tag: 'lark_md',
+                content: `**👤 ${visitorName}**\n\n${message}`
+              }
+            },
+            {
+              tag: 'action',
+              actions: [
+                {
+                  tag: 'input',
+                  placeholder: { tag: 'plain_text', content: 'Type your reply...' },
+                  name: `reply_${sessionId}`
+                }
+              ]
+            }
+          ]
+        })
+      })
+    });
+
+    const data = await response.json();
+    return data.code === 0;
+  } catch (error) {
+    console.error('Error sending Feishu card:', error);
+    return false;
+  }
+}
+
+// 发送飞书群消息（使用 Webhook）
+async function sendFeishuGroupMessage(sessionId: string, visitorName: string, visitorEmail: string | null, message: string): Promise<boolean> {
+  if (!FEISHU_WEBHOOK_URL) {
+    console.log('Feishu webhook not configured');
+    return false;
+  }
+
+  try {
+    const response = await fetch(FEISHU_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        msg_type: 'interactive',
+        card: {
+          header: {
+            title: { tag: 'plain_text', content: `💬 Chat: ${visitorName || 'Visitor'}` },
+            template: 'blue'
+          },
+          elements: [
+            {
+              tag: 'div',
+              fields: [
+                { is_short: true, text: { tag: 'lark_md', content: `**Session:**\n${sessionId.substring(0, 8)}` } },
+                { is_short: true, text: { tag: 'lark_md', content: `**Email:**\n${visitorEmail || 'N/A'}` } }
+              ]
+            },
+            {
+              tag: 'div',
+              text: { tag: 'lark_md', content: `**Message:**\n${message}` }
+            },
+            {
+              tag: 'note',
+              elements: [
+                { tag: 'plain_text', content: `Reply format: /reply ${sessionId.substring(0, 8)} your message` }
+              ]
+            }
+          ]
+        }
+      })
+    });
+
+    return response.ok;
+  } catch (error) {
+    console.error('Error sending Feishu group message:', error);
+    return false;
+  }
+}
 
 // ==================== 类型定义 ====================
 interface ChatSession {
@@ -39,44 +219,25 @@ interface ChatSession {
   visitor_name: string | null;
   visitor_email: string | null;
   status: 'waiting' | 'active' | 'closed';
+  feishu_message_id?: string | null;
   created_at: string;
   updated_at: string;
 }
 
-interface ChatMessage {
-  id: string;
-  session_id: string;
-  sender_type: 'visitor' | 'admin';
-  sender_name: string;
-  message: string;
-  created_at: string;
-}
-
 // ==================== Socket.io 连接管理 ====================
-const connectedAdmins = new Set<string>();
 const connectedVisitors = new Map<string, string>(); // visitorId -> socketId
+const sessionSocketMap = new Map<string, string>(); // sessionId -> socketId
 
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
 
-  // 管理员连接
-  socket.on('admin:join', (adminId: string) => {
-    connectedAdmins.add(socket.id);
-    socket.join('admin-room');
-    console.log('Admin joined:', adminId);
-    
-    // 发送等待中的会话列表
-    broadcastWaitingSessions();
-  });
-
   // 访客连接
   socket.on('visitor:join', async (data: { visitorId: string; name?: string; email?: string }) => {
     const { visitorId, name, email } = data;
-    
-    // 检查是否有现有会话
     const client = getSupabaseClient();
     let session: ChatSession | null = null;
     
+    // 检查现有会话
     const { data: existingSession } = await client
       .from('chat_sessions')
       .select('*')
@@ -109,19 +270,11 @@ io.on('connection', (socket) => {
     if (session) {
       socket.join(`session:${session.id}`);
       connectedVisitors.set(visitorId, socket.id);
+      sessionSocketMap.set(session.id, socket.id);
       socket.data.visitorId = visitorId;
       socket.data.sessionId = session.id;
 
-      // 发送会话信息给访客
       socket.emit('session:created', session);
-
-      // 通知管理员有新的等待会话
-      if (session.status === 'waiting') {
-        io.to('admin-room').emit('session:waiting', session);
-        
-        // 发送飞书通知
-        sendFeishuNewChatNotification(session, name);
-      }
 
       // 发送历史消息
       const { data: messages } = await client
@@ -131,6 +284,17 @@ io.on('connection', (socket) => {
         .order('created_at', { ascending: true });
 
       socket.emit('messages:history', messages || []);
+
+      // 如果是等待状态，通知管理员（飞书）
+      if (session.status === 'waiting') {
+        // 更新为活跃状态（表示已连接）
+        await client
+          .from('chat_sessions')
+          .update({ status: 'active' })
+          .eq('id', session.id);
+        
+        socket.emit('session:active', { message: 'Connected to support' });
+      }
     }
   });
 
@@ -152,71 +316,33 @@ io.on('connection', (socket) => {
       .single();
 
     if (!error && savedMessage) {
-      // 发送给访客确认
       socket.emit('message:received', savedMessage);
       
-      // 发送给管理员
-      io.to('admin-room').emit('message:new', savedMessage);
-      
+      // 获取会话信息
+      const { data: session } = await client
+        .from('chat_sessions')
+        .select('*')
+        .eq('id', sessionId)
+        .single();
+
+      if (session) {
+        // 发送到飞书
+        const visitorName = session.visitor_name || 'Visitor';
+        const visitorEmail = session.visitor_email;
+        
+        await sendFeishuGroupMessage(
+          sessionId, 
+          visitorName, 
+          visitorEmail,
+          message
+        );
+      }
+
       // 更新会话时间
       await client
         .from('chat_sessions')
         .update({ updated_at: new Date().toISOString() })
         .eq('id', sessionId);
-    }
-  });
-
-  // 管理员发送消息
-  socket.on('admin:message', async (data: { sessionId: string; message: string; adminName: string }) => {
-    const { sessionId, message, adminName } = data;
-    const client = getSupabaseClient();
-
-    // 保存消息
-    const { data: savedMessage, error } = await client
-      .from('chat_messages')
-      .insert({
-        session_id: sessionId,
-        sender_type: 'admin',
-        sender_name: adminName || 'Support',
-        message: message
-      })
-      .select()
-      .single();
-
-    if (!error && savedMessage) {
-      // 发送给管理员确认
-      socket.emit('message:received', savedMessage);
-      
-      // 发送给访客
-      io.to(`session:${sessionId}`).emit('message:new', savedMessage);
-      
-      // 更新会话时间
-      await client
-        .from('chat_sessions')
-        .update({ updated_at: new Date().toISOString() })
-        .eq('id', sessionId);
-    }
-  });
-
-  // 管理员接管会话
-  socket.on('admin:takeover', async (data: { sessionId: string; adminId: string }) => {
-    const { sessionId, adminId } = data;
-    const client = getSupabaseClient();
-
-    const { error } = await client
-      .from('chat_sessions')
-      .update({ status: 'active' })
-      .eq('id', sessionId);
-
-    if (!error) {
-      // 通知访客
-      io.to(`session:${sessionId}`).emit('session:active', { adminId });
-      
-      // 通知其他管理员
-      socket.to('admin-room').emit('session:taken', { sessionId, adminId });
-      
-      // 更新等待列表
-      broadcastWaitingSessions();
     }
   });
 
@@ -229,79 +355,111 @@ io.on('connection', (socket) => {
       .update({ status: 'closed' })
       .eq('id', sessionId);
 
-    io.to(`session:${sessionId}`).emit('session:closed');
-    broadcastWaitingSessions();
+    socket.emit('session:closed');
+    sessionSocketMap.delete(sessionId);
   });
 
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id);
-    connectedAdmins.delete(socket.id);
-    
     if (socket.data.visitorId) {
       connectedVisitors.delete(socket.data.visitorId);
+    }
+    if (socket.data.sessionId) {
+      sessionSocketMap.delete(socket.data.sessionId);
     }
   });
 });
 
-// 广播等待中的会话
-async function broadcastWaitingSessions() {
-  const client = getSupabaseClient();
-  
-  const { data: sessions } = await client
-    .from('chat_sessions')
-    .select('*')
-    .eq('status', 'waiting')
-    .order('created_at', { ascending: true });
+// ==================== 飞书 Webhook 接收消息 ====================
 
-  io.to('admin-room').emit('sessions:waiting', sessions || []);
-}
+// 飞书事件推送端点
+app.post('/feishu/webhook', async (req: Request, res: Response) => {
+  const { type, challenge, event, header } = req.body;
 
-// 发送飞书新聊天通知
-async function sendFeishuNewChatNotification(session: ChatSession, visitorName?: string) {
-  if (!FEISHU_WEBHOOK_URL) return;
-
-  try {
-    await fetch(FEISHU_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        msg_type: 'interactive',
-        card: {
-          header: {
-            title: { tag: 'plain_text', content: '💬 New Chat Request' },
-            template: 'blue'
-          },
-          elements: [
-            {
-              tag: 'div',
-              fields: [
-                { is_short: true, text: { tag: 'lark_md', content: `**Session ID:**\n${session.id.substring(0, 8)}` } },
-                { is_short: true, text: { tag: 'lark_md', content: `**Visitor:**\n${visitorName || 'Anonymous'}` } }
-              ]
-            },
-            {
-              tag: 'div',
-              text: { tag: 'lark_md', content: `**Time:** ${new Date().toLocaleString()}` }
-            },
-            {
-              tag: 'action',
-              actions: [
-                {
-                  tag: 'button',
-                  text: { tag: 'plain_text', content: 'Open Admin Panel' },
-                  type: 'primary',
-                  url: `${process.env.SITE_URL || 'http://localhost:5000'}/admin/chat`
-                }
-              ]
-            }
-          ]
-        }
-      })
-    });
-  } catch (err) {
-    console.error('Failed to send Feishu notification:', err);
+  // URL 验证
+  if (type === 'url_verification') {
+    return res.json({ challenge });
   }
-}
+
+  // 处理消息事件
+  if (event?.message) {
+    const message = event.message;
+    const content = JSON.parse(message.content || '{}');
+    const senderId = event.sender?.sender_id?.open_id;
+    
+    // 忽略机器人自己发送的消息
+    if (event.sender?.sender_id?.user_id === FEISHU_APP_ID) {
+      return res.json({ code: 0 });
+    }
+
+    const messageText = content.text || '';
+
+    // 检查是否是回复格式: /reply <session_id> <message>
+    const replyMatch = messageText.match(/^\/reply\s+(\w+)\s+(.+)/i);
+    
+    if (replyMatch) {
+      const sessionShortId = replyMatch[1];
+      const replyMessage = replyMatch[2];
+
+      const client = getSupabaseClient();
+      
+      // 查找对应会话
+      const { data: sessions } = await client
+        .from('chat_sessions')
+        .select('*')
+        .eq('status', 'active');
+
+      const targetSession = sessions?.find((s: ChatSession) => 
+        s.id.startsWith(sessionShortId)
+      );
+
+      if (targetSession) {
+        // 保存消息
+        await client
+          .from('chat_messages')
+          .insert({
+            session_id: targetSession.id,
+            sender_type: 'admin',
+            sender_name: 'Support',
+            message: replyMessage
+          });
+
+        // 发送给访客
+        const socketId = sessionSocketMap.get(targetSession.id);
+        if (socketId) {
+          io.to(`session:${targetSession.id}`).emit('message:new', {
+            id: Date.now().toString(),
+            session_id: targetSession.id,
+            sender_type: 'admin',
+            sender_name: 'Support',
+            message: replyMessage,
+            created_at: new Date().toISOString()
+          });
+        }
+
+        // 确认已发送
+        await sendFeishuPrivateMessage(senderId, `✅ Message sent to visitor: ${replyMessage}`, targetSession.id);
+      } else {
+        await sendFeishuPrivateMessage(senderId, `❌ Session not found: ${sessionShortId}`, '');
+      }
+    } else {
+      // 普通消息，记录或处理
+      console.log('Received Feishu message:', messageText);
+    }
+  }
+
+  res.json({ code: 0 });
+});
+
+// 飞书卡片回调（处理按钮点击等）
+app.post('/feishu/card', async (req: Request, res: Response) => {
+  const { action, open_id } = req.body;
+  
+  // 处理卡片回调
+  console.log('Feishu card callback:', req.body);
+  
+  res.json({ code: 0 });
+});
 
 // ==================== 原有 API 路由 ====================
 
@@ -315,74 +473,42 @@ async function sendFeishuNotification(inquiry: {
   estimatedQuantity: string | null;
   message: string | null;
 }) {
-  if (!FEISHU_WEBHOOK_URL) {
-    console.log('Feishu webhook URL not configured, skipping notification');
-    return;
-  }
+  if (!FEISHU_WEBHOOK_URL) return;
 
-  const card = {
-    msg_type: 'interactive',
-    card: {
-      header: {
-        title: {
-          tag: 'plain_text',
-          content: '🔔 新询盘通知'
-        },
-        template: 'blue'
-      },
-      elements: [
-        {
-          tag: 'div',
-          fields: [
-            { is_short: true, text: { tag: 'lark_md', content: `**联系人**\n${inquiry.name}` } },
-            { is_short: true, text: { tag: 'lark_md', content: `**公司**\n${inquiry.company}` } }
-          ]
-        },
-        {
-          tag: 'div',
-          fields: [
-            { is_short: true, text: { tag: 'lark_md', content: `**邮箱**\n${inquiry.email}` } },
-            { is_short: true, text: { tag: 'lark_md', content: `**产品类型**\n${inquiry.productCategory || '未指定'}` } }
-          ]
-        },
-        {
-          tag: 'div',
-          fields: [
-            { is_short: true, text: { tag: 'lark_md', content: `**目的港**\n${inquiry.portOfDestination}` } },
-            { is_short: true, text: { tag: 'lark_md', content: `**预估数量**\n${inquiry.estimatedQuantity || '未指定'}` } }
-          ]
-        },
-        {
-          tag: 'div',
-          text: { tag: 'lark_md', content: `**备注信息**\n${inquiry.message || '无'}` }
-        },
-        {
-          tag: 'action',
-          actions: [
+  try {
+    await fetch(FEISHU_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        msg_type: 'interactive',
+        card: {
+          header: {
+            title: { tag: 'plain_text', content: '🔔 新询盘通知' },
+            template: 'blue'
+          },
+          elements: [
             {
-              tag: 'button',
-              text: { tag: 'plain_text', content: '查看详情' },
-              type: 'primary',
-              url: `${process.env.SITE_URL || 'http://localhost:5000'}/admin/inquiries`
+              tag: 'div',
+              fields: [
+                { is_short: true, text: { tag: 'lark_md', content: `**联系人**\n${inquiry.name}` } },
+                { is_short: true, text: { tag: 'lark_md', content: `**公司**\n${inquiry.company}` } }
+              ]
+            },
+            {
+              tag: 'div',
+              fields: [
+                { is_short: true, text: { tag: 'lark_md', content: `**邮箱**\n${inquiry.email}` } },
+                { is_short: true, text: { tag: 'lark_md', content: `**产品**\n${inquiry.productCategory || '未指定'}` } }
+              ]
+            },
+            {
+              tag: 'div',
+              text: { tag: 'lark_md', content: `**备注**\n${inquiry.message || '无'}` }
             }
           ]
         }
-      ]
-    }
-  };
-
-  try {
-    const response = await fetch(FEISHU_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(card)
+      })
     });
-    
-    if (!response.ok) {
-      console.error('Failed to send Feishu notification:', await response.text());
-    } else {
-      console.log('Feishu notification sent successfully');
-    }
   } catch (error) {
     console.error('Error sending Feishu notification:', error);
   }
@@ -410,9 +536,7 @@ app.post('/api/inquiries', async (req: Request, res: Response) => {
     const { data, error } = await client
       .from('inquiries')
       .insert({
-        name,
-        company,
-        email,
+        name, company, email,
         product_category: productCategory,
         port_of_destination: portOfDestination,
         estimated_quantity: estimatedQuantity,
@@ -423,27 +547,19 @@ app.post('/api/inquiries', async (req: Request, res: Response) => {
       .single();
 
     if (error) {
-      console.error('Database error:', error);
       return res.status(500).json({ error: 'Failed to save inquiry' });
     }
 
     sendFeishuNotification({
-      name,
-      company,
-      email,
+      name, company, email,
       productCategory: productCategory || null,
       portOfDestination,
       estimatedQuantity: estimatedQuantity || null,
       message: message || null
     }).catch(err => console.error('Feishu notification error:', err));
 
-    res.status(201).json({ 
-      success: true, 
-      message: 'Inquiry submitted successfully',
-      data 
-    });
+    res.status(201).json({ success: true, data });
   } catch (error) {
-    console.error('Server error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -452,16 +568,12 @@ app.post('/api/inquiries', async (req: Request, res: Response) => {
 app.get('/api/inquiries', async (req: Request, res: Response) => {
   try {
     const client = getSupabaseClient();
-    
     const { data, error } = await client
       .from('inquiries')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (error) {
-      return res.status(500).json({ error: 'Failed to fetch inquiries' });
-    }
-
+    if (error) return res.status(500).json({ error: 'Failed to fetch inquiries' });
     res.json({ data });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -473,7 +585,6 @@ app.patch('/api/inquiries/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { status, notes } = req.body;
-
     const client = getSupabaseClient();
     
     const updateData: Record<string, unknown> = { updated_at: new Date().toISOString() };
@@ -487,10 +598,7 @@ app.patch('/api/inquiries/:id', async (req: Request, res: Response) => {
       .select()
       .single();
 
-    if (error) {
-      return res.status(500).json({ error: 'Failed to update inquiry' });
-    }
-
+    if (error) return res.status(500).json({ error: 'Failed to update inquiry' });
     res.json({ success: true, data });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -502,16 +610,9 @@ app.delete('/api/inquiries/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const client = getSupabaseClient();
-    
-    const { error } = await client
-      .from('inquiries')
-      .delete()
-      .eq('id', id);
+    const { error } = await client.from('inquiries').delete().eq('id', id);
 
-    if (error) {
-      return res.status(500).json({ error: 'Failed to delete inquiry' });
-    }
-
+    if (error) return res.status(500).json({ error: 'Failed to delete inquiry' });
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -522,18 +623,12 @@ app.delete('/api/inquiries/:id', async (req: Request, res: Response) => {
 app.post('/api/subscribers', async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
-
-    if (!email) {
-      return res.status(400).json({ error: 'Email is required' });
-    }
+    if (!email) return res.status(400).json({ error: 'Email is required' });
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({ error: 'Invalid email address' });
-    }
+    if (!emailRegex.test(email)) return res.status(400).json({ error: 'Invalid email address' });
 
     const client = getSupabaseClient();
-    
     const { data: existing } = await client
       .from('subscribers')
       .select('id, status')
@@ -544,41 +639,20 @@ app.post('/api/subscribers', async (req: Request, res: Response) => {
 
     if (existing) {
       if (existing.status === 'active') {
-        return res.status(200).json({ 
-          success: true, 
-          message: 'You are already subscribed!' 
-        });
-      } else {
-        const { error } = await client
-          .from('subscribers')
-          .update({ status: 'active', unsubscribed_at: null })
-          .eq('id', existing.id);
-
-        if (error) {
-          return res.status(500).json({ error: 'Failed to resubscribe' });
-        }
+        return res.status(200).json({ success: true, message: 'Already subscribed!' });
       }
+      await client.from('subscribers').update({ status: 'active' }).eq('id', existing.id);
     } else {
-      const { error } = await client
-        .from('subscribers')
-        .insert({ email, status: 'active' });
-
-      if (error) {
-        return res.status(500).json({ error: 'Failed to subscribe' });
-      }
-      
+      const { error } = await client.from('subscribers').insert({ email, status: 'active' });
+      if (error) return res.status(500).json({ error: 'Failed to subscribe' });
       isNewSubscription = true;
     }
 
-    sendSubscriptionConfirmation(email).catch(err => 
-      console.error('Failed to send confirmation email:', err)
-    );
+    sendSubscriptionConfirmation(email).catch(err => console.error('Email error:', err));
 
     res.status(isNewSubscription ? 201 : 200).json({ 
       success: true, 
-      message: isNewSubscription 
-        ? 'Thank you for subscribing!' 
-        : 'Welcome back!'
+      message: isNewSubscription ? 'Thank you for subscribing!' : 'Welcome back!'
     });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -589,49 +663,31 @@ app.post('/api/subscribers', async (req: Request, res: Response) => {
 app.post('/api/subscribers/unsubscribe', async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
-
-    if (!email) {
-      return res.status(400).json({ error: 'Email is required' });
-    }
+    if (!email) return res.status(400).json({ error: 'Email is required' });
 
     const client = getSupabaseClient();
-    
-    const { error } = await client
+    await client
       .from('subscribers')
-      .update({ 
-        status: 'unsubscribed', 
-        unsubscribed_at: new Date().toISOString() 
-      })
+      .update({ status: 'unsubscribed', unsubscribed_at: new Date().toISOString() })
       .eq('email', email);
 
-    if (error) {
-      return res.status(500).json({ error: 'Failed to unsubscribe' });
-    }
-
-    sendUnsubscribeConfirmation(email).catch(err => 
-      console.error('Failed to send unsubscribe confirmation:', err)
-    );
-
-    res.json({ success: true, message: 'You have been unsubscribed.' });
+    sendUnsubscribeConfirmation(email).catch(err => console.error('Email error:', err));
+    res.json({ success: true, message: 'Unsubscribed.' });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// 获取订阅者列表
+// 获取订阅者
 app.get('/api/subscribers', async (req: Request, res: Response) => {
   try {
     const client = getSupabaseClient();
-    
     const { data, error } = await client
       .from('subscribers')
       .select('*')
       .order('subscribed_at', { ascending: false });
 
-    if (error) {
-      return res.status(500).json({ error: 'Failed to fetch subscribers' });
-    }
-
+    if (error) return res.status(500).json({ error: 'Failed to fetch' });
     res.json({ success: true, data });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -643,16 +699,7 @@ app.delete('/api/subscribers/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const client = getSupabaseClient();
-    
-    const { error } = await client
-      .from('subscribers')
-      .delete()
-      .eq('id', id);
-
-    if (error) {
-      return res.status(500).json({ error: 'Failed to delete subscriber' });
-    }
-
+    await client.from('subscribers').delete().eq('id', id);
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -663,35 +710,20 @@ app.delete('/api/subscribers/:id', async (req: Request, res: Response) => {
 app.post('/api/newsletter/send', async (req: Request, res: Response) => {
   try {
     const { subject, articles, previewText } = req.body;
-
-    if (!subject || !articles || !Array.isArray(articles)) {
-      return res.status(400).json({ error: 'Subject and articles are required' });
-    }
+    if (!subject || !articles) return res.status(400).json({ error: 'Subject and articles required' });
 
     const client = getSupabaseClient();
-    
-    const { data: subscribers, error } = await client
+    const { data: subscribers } = await client
       .from('subscribers')
       .select('email')
       .eq('status', 'active');
 
-    if (error) {
-      return res.status(500).json({ error: 'Failed to fetch subscribers' });
-    }
-
-    if (!subscribers || subscribers.length === 0) {
-      return res.status(400).json({ error: 'No active subscribers' });
-    }
+    if (!subscribers?.length) return res.status(400).json({ error: 'No subscribers' });
 
     const emails = subscribers.map(s => s.email);
     const result = await sendNewsletterToSubscribers(emails, subject, articles, previewText);
 
-    res.json({ 
-      success: result.success, 
-      sentCount: result.sentCount,
-      totalSubscribers: emails.length,
-      errors: result.errors 
-    });
+    res.json({ success: result.success, sentCount: result.sentCount, errors: result.errors });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -700,25 +732,9 @@ app.post('/api/newsletter/send', async (req: Request, res: Response) => {
 // ==================== AI 聊天 API ====================
 
 const WEBSITE_KNOWLEDGE = `
-You are an AI customer service assistant for Zhongrun Special Oil (Chinese Special Oil Supply Platform). 
-
-About the Company:
-- We are a leading Chinese supplier of specialty lubricants and oils
-- Products include: Transformer Oil, Rubber Process Oil, White Oil, Finished Lubricants
-- Services: Quality assurance, global logistics, custom solutions
-
-Key Products:
-1. Transformer Oil: High-grade insulating oil for electrical transformers
-2. Rubber Process Oil: Various types for rubber manufacturing
-3. White Oil: Food-grade and pharmaceutical-grade white oils
-4. Finished Lubricants: Automotive, industrial, and marine lubricants
-
-Contact Information:
-- Email: steven.shunyu@gmail.com
-- Phone: +8613793280176
-
-When to Transfer to Human Agent:
-If the user asks about: pricing, quotes, custom orders, complaints, partnership, or requests human agent - tell them you will connect them to a human agent.
+You are an AI assistant for Zhongrun Special Oil. Products: Transformer Oil, Rubber Process Oil, White Oil, Finished Lubricants.
+Contact: steven.shunyu@gmail.com, +8613793280176
+Transfer to human agent if user asks about: pricing, quotes, custom orders, complaints, partnership.
 `;
 
 function needsHumanAgent(message: string): boolean {
@@ -730,20 +746,14 @@ function needsHumanAgent(message: string): boolean {
     'custom order', 'special order', 'partnership',
     'bulk order', 'wholesale', 'distributor'
   ];
-  
-  const lowerMessage = message.toLowerCase();
-  return keywords.some(keyword => lowerMessage.includes(keyword));
+  return keywords.some(k => message.toLowerCase().includes(k));
 }
 
 app.post('/api/chat', async (req: Request, res: Response) => {
   try {
-    const { message, history = [] } = req.body;
+    const { message } = req.body;
+    if (!message) return res.status(400).json({ error: 'Message required' });
 
-    if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
-    }
-
-    // 检查是否需要人工客服
     if (needsHumanAgent(message)) {
       return res.json({
         response: "I'll connect you with a human agent. Please wait...",
@@ -752,7 +762,7 @@ app.post('/api/chat', async (req: Request, res: Response) => {
     }
 
     if (!OPENAI_API_KEY) {
-      return res.status(500).json({ error: 'AI service not configured' });
+      return res.status(500).json({ error: 'AI not configured' });
     }
 
     const response = await fetch(`https://${OPENAI_API_HOST}/v1/chat/completions`, {
@@ -765,69 +775,47 @@ app.post('/api/chat', async (req: Request, res: Response) => {
         model: 'gpt-3.5-turbo',
         messages: [
           { role: 'system', content: WEBSITE_KNOWLEDGE },
-          ...history.map((h: { role: string; content: string }) => ({
-            role: h.role,
-            content: h.content
-          })),
           { role: 'user', content: message }
         ],
-        max_tokens: 500,
-        temperature: 0.7
+        max_tokens: 500
       })
     });
 
-    if (!response.ok) {
-      return res.status(500).json({ error: 'AI service error' });
-    }
-
     const data = await response.json();
-    const aiResponse = data.choices?.[0]?.message?.content || 'Sorry, I could not process your request.';
-
-    res.json({ response: aiResponse });
+    res.json({ response: data.choices?.[0]?.message?.content || 'Sorry, error occurred.' });
   } catch (error) {
-    console.error('Chat API error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 // ==================== 聊天会话 API ====================
 
-// 获取所有会话
 app.get('/api/chat/sessions', async (req: Request, res: Response) => {
   try {
     const client = getSupabaseClient();
-    
     const { data, error } = await client
       .from('chat_sessions')
       .select('*')
       .order('updated_at', { ascending: false });
 
-    if (error) {
-      return res.status(500).json({ error: 'Failed to fetch sessions' });
-    }
-
+    if (error) return res.status(500).json({ error: 'Failed to fetch' });
     res.json({ success: true, data });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// 获取会话消息
 app.get('/api/chat/sessions/:sessionId/messages', async (req: Request, res: Response) => {
   try {
     const { sessionId } = req.params;
     const client = getSupabaseClient();
-    
     const { data, error } = await client
       .from('chat_messages')
       .select('*')
       .eq('session_id', sessionId)
       .order('created_at', { ascending: true });
 
-    if (error) {
-      return res.status(500).json({ error: 'Failed to fetch messages' });
-    }
-
+    if (error) return res.status(500).json({ error: 'Failed to fetch' });
     res.json({ success: true, data });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -841,5 +829,6 @@ app.get('/api/health', (_req: Request, res: Response) => {
 
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`WebSocket enabled at /socket.io/`);
+  console.log(`WebSocket: /socket.io/`);
+  console.log(`Feishu webhook: /feishu/webhook`);
 });
