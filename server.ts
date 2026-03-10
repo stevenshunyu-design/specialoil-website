@@ -6,6 +6,7 @@ import { getSupabaseClient } from './src/storage/database/supabase-client';
 import 'dotenv/config';
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 
 // 全局错误处理 - 防止进程崩溃
 process.on('uncaughtException', (error) => {
@@ -16,7 +17,10 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
-// 在 CommonJS 环境中 __dirname 可用，ESM 需要动态获取
+// ESM 环境中获取 __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const distPath = process.env.NODE_ENV === 'production' 
   ? path.join(__dirname, 'dist') 
   : path.join(process.cwd(), 'dist');
