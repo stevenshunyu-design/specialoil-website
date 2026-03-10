@@ -249,24 +249,24 @@ const Footer = () => {
             © {currentYear} CN-SpecLube Chain. All rights reserved.
           </p>
           <div className="flex flex-wrap gap-6 justify-center">
-            <a
-              href="#"
+            <Link
+              to="/privacy-policy"
               className="font-body text-white/50 hover:text-white text-sm transition-colors duration-300"
             >
               Privacy Policy
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/terms-of-service"
               className="font-body text-white/50 hover:text-white text-sm transition-colors duration-300"
             >
               Terms of Service
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/cookie-policy"
               className="font-body text-white/50 hover:text-white text-sm transition-colors duration-300"
             >
               Cookie Policy
-            </a>
+            </Link>
             <a
               href="#"
               className="font-body text-white/50 hover:text-white text-sm transition-colors duration-300"

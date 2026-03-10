@@ -19,6 +19,9 @@ import { ArticleEditor } from "@/pages/Admin";
 import Login from "@/pages/Login";
 import Unsubscribe from "@/pages/Unsubscribe";
 import SubscribersAdmin from "@/pages/SubscribersAdmin";
+import PrivacyPolicy from "@/pages/PrivacyPolicy";
+import TermsOfService from "@/pages/TermsOfService";
+import CookiePolicy from "@/pages/CookiePolicy";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
 export default function App() {
@@ -59,6 +62,9 @@ export default function App() {
           <Route path="/admin/edit/:id" element={<ArticleEditor />} />
           <Route path="/admin/subscribers" element={<SubscribersAdmin />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
         </Routes>
       </main>
       <Footer />
