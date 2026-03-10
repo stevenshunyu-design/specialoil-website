@@ -26,6 +26,7 @@ app.use(express.json());
 const FEISHU_WEBHOOK_URL = process.env.FEISHU_CHAT_WEBHOOK || process.env.FEISHU_WEBHOOK_URL;
 const FEISHU_APP_ID = process.env.FEISHU_APP_ID || process.env.FEISHU_CHAT_APP_ID;
 const FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET || process.env.FEISHU_CHAT_APP_SECRET;
+const FEISHU_CHAT_ID = process.env.FEISHU_CHAT_ID;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_API_HOST = process.env.OPENAI_API_HOST || 'api.openai.com';
 
@@ -33,6 +34,7 @@ console.log('========================================');
 console.log('Server Configuration:');
 console.log('FEISHU_APP_ID:', FEISHU_APP_ID || 'NOT SET');
 console.log('FEISHU_APP_SECRET:', FEISHU_APP_SECRET ? 'SET' : 'NOT SET');
+console.log('FEISHU_CHAT_ID:', FEISHU_CHAT_ID || 'NOT SET');
 console.log('OPENAI_API_KEY:', OPENAI_API_KEY ? 'SET' : 'NOT SET');
 console.log('========================================');
 
@@ -151,6 +153,93 @@ async function sendFeishuGroupMessage(sessionId: string, visitorName: string, vi
   }
 }
 
+// 发送飞书群消息（使用 API，支持话题回复）
+async function sendFeishuChatMessage(
+  sessionId: string, 
+  customerNo: string,
+  customerName: string, 
+  customerEmail: string, 
+  customerPhone: string,
+  message: string,
+  rootMessageId?: string
+): Promise<{ success: boolean; messageId?: string }> {
+  const token = await getFeishuAccessToken();
+  
+  // 如果没有配置 API，回退到 Webhook
+  if (!token || !FEISHU_CHAT_ID) {
+    console.log('Feishu API not configured, falling back to webhook');
+    const webhookSuccess = await sendFeishuGroupMessage(sessionId, customerName, customerEmail, message);
+    return { success: webhookSuccess };
+  }
+
+  const shortId = sessionId.substring(0, 8);
+  const timestamp = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+
+  // 构建消息卡片
+  const card = {
+    config: { wide_screen_mode: true },
+    header: { 
+      title: { tag: 'plain_text', content: rootMessageId ? `💬 ${customerNo}` : `🔔 新客户咨询 ${customerNo}` }, 
+      template: 'blue' 
+    },
+    elements: [
+      { 
+        tag: 'div', 
+        fields: [
+          { is_short: true, text: { tag: 'lark_md', content: `**客户姓名**\n${customerName}` } },
+          { is_short: true, text: { tag: 'lark_md', content: `**时间**\n${timestamp}` } },
+          { is_short: true, text: { tag: 'lark_md', content: `**邮箱**\n${customerEmail || '未提供'}` } },
+          { is_short: true, text: { tag: 'lark_md', content: `**电话**\n${customerPhone || '未提供'}` } }
+        ]
+      },
+      { tag: 'hr' },
+      { tag: 'div', text: { tag: 'lark_md', content: `**消息内容**\n${message}` } },
+      { tag: 'hr' },
+      { tag: 'note', text: { tag: 'lark_md', content: rootMessageId ? `💬 直接在话题下回复客户` : `💬 直接在话题下回复客户` } }
+    ]
+  };
+
+  try {
+    // 构建请求体
+    const requestBody: any = {
+      receive_id: FEISHU_CHAT_ID,
+      msg_type: 'interactive',
+      content: JSON.stringify(card)
+    };
+
+    // 如果有 rootMessageId，则作为话题回复
+    if (rootMessageId) {
+      requestBody.root_id = rootMessageId;
+    }
+
+    const response = await fetch('https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id', {
+      method: 'POST',
+      headers: { 
+        'Authorization': `Bearer ${token}`, 
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify(requestBody)
+    });
+    
+    const data = await response.json();
+    
+    if (data.code === 0 && data.data?.message_id) {
+      console.log(`✅ Feishu message sent: ${data.data.message_id}`);
+      return { success: true, messageId: data.data.message_id };
+    } else {
+      console.error('Feishu API error:', data);
+      // 回退到 Webhook
+      const webhookSuccess = await sendFeishuGroupMessage(sessionId, customerName, customerEmail, message);
+      return { success: webhookSuccess };
+    }
+  } catch (error) {
+    console.error('Error sending Feishu API message:', error);
+    // 回退到 Webhook
+    const webhookSuccess = await sendFeishuGroupMessage(sessionId, customerName, customerEmail, message);
+    return { success: webhookSuccess };
+  }
+}
+
 // ==================== 类型定义 ====================
 interface ChatSession {
   id: string;
@@ -248,10 +337,32 @@ io.on('connection', (socket) => {
 
       if (session) {
         const visitorName = session.visitor_name || 'Visitor';
-        const visitorEmail = session.visitor_email;
+        const visitorEmail = session.visitor_email || 'Not provided';
+        const visitorPhone = session.visitor_phone || 'Not provided';
+        const customerNo = session.customer_no || `#${sessionId.substring(0, 8)}`;
+        const rootMessageId = session.feishu_root_message_id;
         
         console.log(`Sending message to Feishu for session ${sessionId}`);
-        await sendFeishuGroupMessage(sessionId, visitorName, visitorEmail, message);
+        
+        // 使用 API 发送消息（支持话题回复）
+        const result = await sendFeishuChatMessage(
+          sessionId,
+          customerNo,
+          visitorName,
+          visitorEmail,
+          visitorPhone,
+          message,
+          rootMessageId // 如果有 root_message_id，则作为话题回复
+        );
+        
+        // 如果是第一条消息且成功获取了 message_id，保存到数据库
+        if (result.success && result.messageId && !rootMessageId) {
+          await client
+            .from('chat_sessions')
+            .update({ feishu_root_message_id: result.messageId })
+            .eq('id', sessionId);
+          console.log(`✅ Saved root message ID: ${result.messageId}`);
+        }
       }
 
       await client
@@ -279,7 +390,6 @@ io.on('connection', (socket) => {
 
 app.post('/feishu/webhook', async (req: Request, res: Response) => {
   console.log('=== Received Feishu webhook ===');
-  console.log('Headers:', JSON.stringify(req.headers, null, 2));
   console.log('Body:', JSON.stringify(req.body, null, 2));
   
   const { type, challenge, event } = req.body;
@@ -294,6 +404,8 @@ app.post('/feishu/webhook', async (req: Request, res: Response) => {
   if (event?.message) {
     const message = event.message;
     const senderId = event.sender?.sender_id?.open_id;
+    const rootId = message.root_id; // 话题根消息ID
+    const parentId = message.parent_id; // 父消息ID
     
     // 解析消息内容
     let messageText = '';
@@ -304,17 +416,53 @@ app.post('/feishu/webhook', async (req: Request, res: Response) => {
       messageText = message.content || '';
     }
     
-    console.log(`Feishu message from ${senderId}: ${messageText}`);
+    console.log(`Feishu message from ${senderId}: ${messageText}, root_id: ${rootId}, parent_id: ${parentId}`);
     
-    // 检查是否是回复格式: /reply <session_id> <message>
+    const client = getSupabaseClient();
+    
+    // 方式1：通过 root_id 查找会话（话题回复）
+    if (rootId) {
+      console.log(`Looking for session with feishu_root_message_id: ${rootId}`);
+      const { data: sessionByRootId } = await client
+        .from('chat_sessions')
+        .select('*')
+        .eq('feishu_root_message_id', rootId)
+        .eq('status', 'active')
+        .single();
+
+      if (sessionByRootId) {
+        console.log(`Found session ${sessionByRootId.id} by root_id`);
+        
+        // 保存消息
+        await client.from('chat_messages').insert({
+          session_id: sessionByRootId.id,
+          sender_type: 'admin',
+          sender_name: 'Support',
+          message: messageText
+        });
+
+        // 发送给访客
+        io.to(`session:${sessionByRootId.id}`).emit('message:new', {
+          id: Date.now().toString(),
+          session_id: sessionByRootId.id,
+          sender_type: 'admin',
+          sender_name: 'Support',
+          message: messageText,
+          created_at: new Date().toISOString()
+        });
+
+        console.log(`✅ Topic reply sent to visitor: ${messageText}`);
+        return res.status(200).json({ code: 0, msg: 'success' });
+      }
+    }
+    
+    // 方式2：命令格式 /reply <session_id> <message>（兼容旧方式）
     const replyMatch = messageText.match(/^\/reply\s+(\w+)\s+(.+)/is);
     
     if (replyMatch) {
       const sessionShortId = replyMatch[1];
       const replyMessage = replyMatch[2];
 
-      const client = getSupabaseClient();
-      
       // 查找对应会话
       const { data: sessions } = await client
         .from('chat_sessions')

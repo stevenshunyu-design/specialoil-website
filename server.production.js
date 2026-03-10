@@ -19015,12 +19015,14 @@ app.use(express.json());
 var FEISHU_WEBHOOK_URL = process.env.FEISHU_CHAT_WEBHOOK || process.env.FEISHU_WEBHOOK_URL;
 var FEISHU_APP_ID = process.env.FEISHU_APP_ID || process.env.FEISHU_CHAT_APP_ID;
 var FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET || process.env.FEISHU_CHAT_APP_SECRET;
+var FEISHU_CHAT_ID = process.env.FEISHU_CHAT_ID;
 var OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 var OPENAI_API_HOST = process.env.OPENAI_API_HOST || "api.openai.com";
 console.log("========================================");
 console.log("Server Configuration:");
 console.log("FEISHU_APP_ID:", FEISHU_APP_ID || "NOT SET");
 console.log("FEISHU_APP_SECRET:", FEISHU_APP_SECRET ? "SET" : "NOT SET");
+console.log("FEISHU_CHAT_ID:", FEISHU_CHAT_ID || "NOT SET");
 console.log("OPENAI_API_KEY:", OPENAI_API_KEY ? "SET" : "NOT SET");
 console.log("========================================");
 var feishuAccessToken = null;
@@ -19125,6 +19127,74 @@ ${message}` }
     return false;
   }
 }
+async function sendFeishuChatMessage(sessionId, customerNo, customerName, customerEmail, customerPhone, message, rootMessageId) {
+  const token = await getFeishuAccessToken();
+  if (!token || !FEISHU_CHAT_ID) {
+    console.log("Feishu API not configured, falling back to webhook");
+    const webhookSuccess = await sendFeishuGroupMessage(sessionId, customerName, customerEmail, message);
+    return { success: webhookSuccess };
+  }
+  const shortId = sessionId.substring(0, 8);
+  const timestamp = (/* @__PURE__ */ new Date()).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
+  const card = {
+    config: { wide_screen_mode: true },
+    header: {
+      title: { tag: "plain_text", content: rootMessageId ? `\u{1F4AC} ${customerNo}` : `\u{1F514} \u65B0\u5BA2\u6237\u54A8\u8BE2 ${customerNo}` },
+      template: "blue"
+    },
+    elements: [
+      {
+        tag: "div",
+        fields: [
+          { is_short: true, text: { tag: "lark_md", content: `**\u5BA2\u6237\u59D3\u540D**
+${customerName}` } },
+          { is_short: true, text: { tag: "lark_md", content: `**\u65F6\u95F4**
+${timestamp}` } },
+          { is_short: true, text: { tag: "lark_md", content: `**\u90AE\u7BB1**
+${customerEmail || "\u672A\u63D0\u4F9B"}` } },
+          { is_short: true, text: { tag: "lark_md", content: `**\u7535\u8BDD**
+${customerPhone || "\u672A\u63D0\u4F9B"}` } }
+        ]
+      },
+      { tag: "hr" },
+      { tag: "div", text: { tag: "lark_md", content: `**\u6D88\u606F\u5185\u5BB9**
+${message}` } },
+      { tag: "hr" },
+      { tag: "note", text: { tag: "lark_md", content: rootMessageId ? `\u{1F4AC} \u76F4\u63A5\u5728\u8BDD\u9898\u4E0B\u56DE\u590D\u5BA2\u6237` : `\u{1F4AC} \u76F4\u63A5\u5728\u8BDD\u9898\u4E0B\u56DE\u590D\u5BA2\u6237` } }
+    ]
+  };
+  try {
+    const requestBody = {
+      receive_id: FEISHU_CHAT_ID,
+      msg_type: "interactive",
+      content: JSON.stringify(card)
+    };
+    if (rootMessageId) {
+      requestBody.root_id = rootMessageId;
+    }
+    const response = await fetch("https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(requestBody)
+    });
+    const data = await response.json();
+    if (data.code === 0 && data.data?.message_id) {
+      console.log(`\u2705 Feishu message sent: ${data.data.message_id}`);
+      return { success: true, messageId: data.data.message_id };
+    } else {
+      console.error("Feishu API error:", data);
+      const webhookSuccess = await sendFeishuGroupMessage(sessionId, customerName, customerEmail, message);
+      return { success: webhookSuccess };
+    }
+  } catch (error) {
+    console.error("Error sending Feishu API message:", error);
+    const webhookSuccess = await sendFeishuGroupMessage(sessionId, customerName, customerEmail, message);
+    return { success: webhookSuccess };
+  }
+}
 var connectedVisitors = /* @__PURE__ */ new Map();
 var sessionSocketMap = /* @__PURE__ */ new Map();
 io2.on("connection", (socket) => {
@@ -19173,9 +19243,25 @@ io2.on("connection", (socket) => {
       const { data: session } = await client.from("chat_sessions").select("*").eq("id", sessionId).single();
       if (session) {
         const visitorName = session.visitor_name || "Visitor";
-        const visitorEmail = session.visitor_email;
+        const visitorEmail = session.visitor_email || "Not provided";
+        const visitorPhone = session.visitor_phone || "Not provided";
+        const customerNo = session.customer_no || `#${sessionId.substring(0, 8)}`;
+        const rootMessageId = session.feishu_root_message_id;
         console.log(`Sending message to Feishu for session ${sessionId}`);
-        await sendFeishuGroupMessage(sessionId, visitorName, visitorEmail, message);
+        const result = await sendFeishuChatMessage(
+          sessionId,
+          customerNo,
+          visitorName,
+          visitorEmail,
+          visitorPhone,
+          message,
+          rootMessageId
+          // 如果有 root_message_id，则作为话题回复
+        );
+        if (result.success && result.messageId && !rootMessageId) {
+          await client.from("chat_sessions").update({ feishu_root_message_id: result.messageId }).eq("id", sessionId);
+          console.log(`\u2705 Saved root message ID: ${result.messageId}`);
+        }
       }
       await client.from("chat_sessions").update({ updated_at: (/* @__PURE__ */ new Date()).toISOString() }).eq("id", sessionId);
     }
@@ -19194,7 +19280,6 @@ io2.on("connection", (socket) => {
 });
 app.post("/feishu/webhook", async (req, res) => {
   console.log("=== Received Feishu webhook ===");
-  console.log("Headers:", JSON.stringify(req.headers, null, 2));
   console.log("Body:", JSON.stringify(req.body, null, 2));
   const { type, challenge, event } = req.body;
   if (type === "url_verification") {
@@ -19204,6 +19289,8 @@ app.post("/feishu/webhook", async (req, res) => {
   if (event?.message) {
     const message = event.message;
     const senderId = event.sender?.sender_id?.open_id;
+    const rootId = message.root_id;
+    const parentId = message.parent_id;
     let messageText = "";
     try {
       const content = JSON.parse(message.content || "{}");
@@ -19211,12 +19298,35 @@ app.post("/feishu/webhook", async (req, res) => {
     } catch {
       messageText = message.content || "";
     }
-    console.log(`Feishu message from ${senderId}: ${messageText}`);
+    console.log(`Feishu message from ${senderId}: ${messageText}, root_id: ${rootId}, parent_id: ${parentId}`);
+    const client = getSupabaseClient();
+    if (rootId) {
+      console.log(`Looking for session with feishu_root_message_id: ${rootId}`);
+      const { data: sessionByRootId } = await client.from("chat_sessions").select("*").eq("feishu_root_message_id", rootId).eq("status", "active").single();
+      if (sessionByRootId) {
+        console.log(`Found session ${sessionByRootId.id} by root_id`);
+        await client.from("chat_messages").insert({
+          session_id: sessionByRootId.id,
+          sender_type: "admin",
+          sender_name: "Support",
+          message: messageText
+        });
+        io2.to(`session:${sessionByRootId.id}`).emit("message:new", {
+          id: Date.now().toString(),
+          session_id: sessionByRootId.id,
+          sender_type: "admin",
+          sender_name: "Support",
+          message: messageText,
+          created_at: (/* @__PURE__ */ new Date()).toISOString()
+        });
+        console.log(`\u2705 Topic reply sent to visitor: ${messageText}`);
+        return res.status(200).json({ code: 0, msg: "success" });
+      }
+    }
     const replyMatch = messageText.match(/^\/reply\s+(\w+)\s+(.+)/is);
     if (replyMatch) {
       const sessionShortId = replyMatch[1];
       const replyMessage = replyMatch[2];
-      const client = getSupabaseClient();
       const { data: sessions } = await client.from("chat_sessions").select("*").eq("status", "active");
       const targetSession = sessions?.find(
         (s) => s.id.startsWith(sessionShortId)
