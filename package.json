@@ -7,6 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.59.0",
     "@sanity/client": "^7.16.0",
     "@sanity/image-url": "^2.0.3",
     "@supabase/supabase-js": "^2.39.0",

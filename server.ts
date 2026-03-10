@@ -31,30 +31,25 @@ const OPENAI_API_HOST = process.env.OPENAI_API_HOST || 'api.openai.com';
 
 console.log('========================================');
 console.log('Server Configuration:');
-console.log('FEISHU_WEBHOOK_URL:', FEISHU_WEBHOOK_URL ? 'SET' : 'NOT SET');
 console.log('FEISHU_APP_ID:', FEISHU_APP_ID || 'NOT SET');
 console.log('FEISHU_APP_SECRET:', FEISHU_APP_SECRET ? 'SET' : 'NOT SET');
 console.log('OPENAI_API_KEY:', OPENAI_API_KEY ? 'SET' : 'NOT SET');
 console.log('========================================');
 
-// ==================== 飞书机器人配置 ====================
+// ==================== 飞书 Token 管理 ====================
 let feishuAccessToken: string | null = null;
 let tokenExpireTime = 0;
 
-// 获取飞书 access_token
 async function getFeishuAccessToken(): Promise<string | null> {
-  // 检查缓存是否有效
   if (feishuAccessToken && Date.now() < tokenExpireTime) {
     return feishuAccessToken;
   }
 
   if (!FEISHU_APP_ID || !FEISHU_APP_SECRET) {
-    console.log('Feishu app credentials not configured');
     return null;
   }
 
   try {
-    console.log('Requesting Feishu access token...');
     const response = await fetch('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -65,17 +60,14 @@ async function getFeishuAccessToken(): Promise<string | null> {
     });
 
     const data = await response.json();
-    console.log('Feishu token response:', data);
     
     if (data.code === 0) {
       feishuAccessToken = data.tenant_access_token;
-      tokenExpireTime = Date.now() + (data.expire - 300) * 1000; // 提前5分钟过期
-      console.log('Feishu access token obtained successfully');
+      tokenExpireTime = Date.now() + (data.expire - 300) * 1000;
+      console.log('✅ Feishu access token obtained');
       return feishuAccessToken;
-    } else {
-      console.error('Failed to get Feishu token:', data);
-      return null;
     }
+    return null;
   } catch (error) {
     console.error('Error getting Feishu token:', error);
     return null;
@@ -83,7 +75,7 @@ async function getFeishuAccessToken(): Promise<string | null> {
 }
 
 // 发送飞书私聊消息
-async function sendFeishuPrivateMessage(openId: string, message: string): Promise<boolean> {
+async function sendFeishuMessage(openId: string, message: string): Promise<boolean> {
   const token = await getFeishuAccessToken();
   if (!token) return false;
 
@@ -152,8 +144,6 @@ async function sendFeishuGroupMessage(sessionId: string, visitorName: string, vi
       })
     });
 
-    const result = await response.json();
-    console.log('Feishu webhook response:', result);
     return response.ok;
   } catch (error) {
     console.error('Error sending Feishu group message:', error);
@@ -173,19 +163,17 @@ interface ChatSession {
 }
 
 // ==================== Socket.io 连接管理 ====================
-const connectedVisitors = new Map<string, string>(); // visitorId -> socketId
-const sessionSocketMap = new Map<string, string>(); // sessionId -> socketId
+const connectedVisitors = new Map<string, string>();
+const sessionSocketMap = new Map<string, string>();
 
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
 
-  // 访客连接
   socket.on('visitor:join', async (data: { visitorId: string; name?: string; email?: string }) => {
     const { visitorId, name, email } = data;
     const client = getSupabaseClient();
     let session: ChatSession | null = null;
     
-    // 检查现有会话
     const { data: existingSession } = await client
       .from('chat_sessions')
       .select('*')
@@ -198,7 +186,6 @@ io.on('connection', (socket) => {
     if (existingSession) {
       session = existingSession as ChatSession;
     } else {
-      // 创建新会话
       const { data: newSession, error } = await client
         .from('chat_sessions')
         .insert({
@@ -224,7 +211,6 @@ io.on('connection', (socket) => {
 
       socket.emit('session:created', session);
 
-      // 发送历史消息
       const { data: messages } = await client
         .from('chat_messages')
         .select('*')
@@ -236,12 +222,10 @@ io.on('connection', (socket) => {
     }
   });
 
-  // 访客发送消息
   socket.on('visitor:message', async (data: { sessionId: string; message: string }) => {
     const { sessionId, message } = data;
     const client = getSupabaseClient();
 
-    // 保存消息
     const { data: savedMessage, error } = await client
       .from('chat_messages')
       .insert({
@@ -256,7 +240,6 @@ io.on('connection', (socket) => {
     if (!error && savedMessage) {
       socket.emit('message:received', savedMessage);
       
-      // 获取会话信息
       const { data: session } = await client
         .from('chat_sessions')
         .select('*')
@@ -264,7 +247,6 @@ io.on('connection', (socket) => {
         .single();
 
       if (session) {
-        // 发送到飞书
         const visitorName = session.visitor_name || 'Visitor';
         const visitorEmail = session.visitor_email;
         
@@ -272,7 +254,6 @@ io.on('connection', (socket) => {
         await sendFeishuGroupMessage(sessionId, visitorName, visitorEmail, message);
       }
 
-      // 更新会话时间
       await client
         .from('chat_sessions')
         .update({ updated_at: new Date().toISOString() })
@@ -280,42 +261,33 @@ io.on('connection', (socket) => {
     }
   });
 
-  // 关闭会话
   socket.on('session:close', async (sessionId: string) => {
     const client = getSupabaseClient();
-    
-    await client
-      .from('chat_sessions')
-      .update({ status: 'closed' })
-      .eq('id', sessionId);
-
+    await client.from('chat_sessions').update({ status: 'closed' }).eq('id', sessionId);
     socket.emit('session:closed');
     sessionSocketMap.delete(sessionId);
   });
 
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id);
-    if (socket.data.visitorId) {
-      connectedVisitors.delete(socket.data.visitorId);
-    }
-    if (socket.data.sessionId) {
-      sessionSocketMap.delete(socket.data.sessionId);
-    }
+    if (socket.data.visitorId) connectedVisitors.delete(socket.data.visitorId);
+    if (socket.data.sessionId) sessionSocketMap.delete(socket.data.sessionId);
   });
 });
 
-// ==================== 飞书 Webhook 接收消息 ====================
+// ==================== 飞书 Webhook 端点 ====================
 
-// 飞书事件推送端点
 app.post('/feishu/webhook', async (req: Request, res: Response) => {
-  console.log('Received Feishu webhook:', JSON.stringify(req.body, null, 2));
+  console.log('=== Received Feishu webhook ===');
+  console.log('Headers:', JSON.stringify(req.headers, null, 2));
+  console.log('Body:', JSON.stringify(req.body, null, 2));
   
   const { type, challenge, event } = req.body;
 
-  // URL 验证
+  // URL 验证 - 必须返回 JSON 格式
   if (type === 'url_verification') {
-    console.log('URL verification challenge:', challenge);
-    return res.json({ challenge });
+    console.log('URL verification, challenge:', challenge);
+    return res.status(200).json({ challenge });
   }
 
   // 处理消息事件
@@ -333,7 +305,7 @@ app.post('/feishu/webhook', async (req: Request, res: Response) => {
     }
     
     console.log(`Feishu message from ${senderId}: ${messageText}`);
-
+    
     // 检查是否是回复格式: /reply <session_id> <message>
     const replyMatch = messageText.match(/^\/reply\s+(\w+)\s+(.+)/is);
     
@@ -357,14 +329,12 @@ app.post('/feishu/webhook', async (req: Request, res: Response) => {
         console.log(`Found session ${targetSession.id} for reply`);
         
         // 保存消息
-        await client
-          .from('chat_messages')
-          .insert({
-            session_id: targetSession.id,
-            sender_type: 'admin',
-            sender_name: 'Support',
-            message: replyMessage
-          });
+        await client.from('chat_messages').insert({
+          session_id: targetSession.id,
+          sender_type: 'admin',
+          sender_name: 'Support',
+          message: replyMessage
+        });
 
         // 发送给访客
         io.to(`session:${targetSession.id}`).emit('message:new', {
@@ -376,26 +346,30 @@ app.post('/feishu/webhook', async (req: Request, res: Response) => {
           created_at: new Date().toISOString()
         });
 
-        console.log(`Reply sent to visitor: ${replyMessage}`);
+        console.log(`✅ Reply sent to visitor: ${replyMessage}`);
+        
+        // 确认发送成功
+        if (senderId) {
+          await sendFeishuMessage(senderId, `✅ 消息已发送给访客`);
+        }
       } else {
         console.log(`Session not found: ${sessionShortId}`);
         if (senderId) {
-          await sendFeishuPrivateMessage(senderId, `❌ 未找到会话: ${sessionShortId}`);
+          await sendFeishuMessage(senderId, `❌ 未找到会话: ${sessionShortId}`);
         }
       }
     }
   }
 
-  res.json({ code: 0 });
+  res.status(200).json({ code: 0, msg: 'success' });
 });
 
-// 飞书卡片回调
-app.post('/feishu/card', async (req: Request, res: Response) => {
-  console.log('Feishu card callback:', req.body);
-  res.json({ code: 0 });
+// GET 请求处理（用于测试）
+app.get('/feishu/webhook', (req: Request, res: Response) => {
+  res.status(200).json({ status: 'ok', message: 'Feishu webhook endpoint is working' });
 });
 
-// ==================== AI 聊天 API ====================
+// ==================== API 路由 ====================
 
 const WEBSITE_KNOWLEDGE = `
 You are an AI assistant for Zhongrun Special Oil (Chinese Special Oil Supply Platform).
@@ -411,7 +385,7 @@ Contact Information:
 - Website: https://cnspecialtyoils.com
 
 When to Transfer to Human Agent:
-If user asks about: pricing, quotes, custom orders, complaints, partnership, bulk orders, or explicitly requests human help - tell them you will connect them to a human agent.
+If user asks about: pricing, quotes, custom orders, complaints, partnership, bulk orders, or requests human help.
 `;
 
 function needsHumanAgent(message: string): boolean {
@@ -421,7 +395,7 @@ function needsHumanAgent(message: string): boolean {
     'human', 'agent', 'person', 'speak to', 'talk to',
     'manager', 'supervisor', 'urgent', 'emergency',
     'custom order', 'special order', 'partnership',
-    'bulk order', 'wholesale', 'distributor', '合作', '报价', '价格'
+    'bulk order', 'wholesale', 'distributor'
   ];
   return keywords.some(k => message.toLowerCase().includes(k));
 }
@@ -431,7 +405,6 @@ app.post('/api/chat', async (req: Request, res: Response) => {
     const { message } = req.body;
     if (!message) return res.status(400).json({ error: 'Message required' });
 
-    // 检查是否需要人工客服
     if (needsHumanAgent(message)) {
       return res.json({
         response: "I'll connect you with a human agent. Please wait...",
@@ -467,8 +440,6 @@ app.post('/api/chat', async (req: Request, res: Response) => {
   }
 });
 
-// ==================== 聊天会话 API ====================
-
 app.get('/api/chat/sessions', async (req: Request, res: Response) => {
   try {
     const client = getSupabaseClient();
@@ -476,7 +447,6 @@ app.get('/api/chat/sessions', async (req: Request, res: Response) => {
       .from('chat_sessions')
       .select('*')
       .order('updated_at', { ascending: false });
-
     if (error) return res.status(500).json({ error: 'Failed to fetch' });
     res.json({ success: true, data });
   } catch (error) {
@@ -493,7 +463,6 @@ app.get('/api/chat/sessions/:sessionId/messages', async (req: Request, res: Resp
       .select('*')
       .eq('session_id', sessionId)
       .order('created_at', { ascending: true });
-
     if (error) return res.status(500).json({ error: 'Failed to fetch' });
     res.json({ success: true, data });
   } catch (error) {
@@ -501,23 +470,27 @@ app.get('/api/chat/sessions/:sessionId/messages', async (req: Request, res: Resp
   }
 });
 
-// 健康检查
 app.get('/api/health', (_req: Request, res: Response) => {
-  res.json({ status: 'ok', feishu: FEISHU_APP_ID ? 'configured' : 'not configured' });
+  res.json({ 
+    status: 'ok', 
+    feishu: FEISHU_APP_ID ? 'configured' : 'not configured',
+    appId: FEISHU_APP_ID
+  });
 });
 
+// 启动服务器
 httpServer.listen(PORT, () => {
+  console.log(`========================================`);
   console.log(`Server running on port ${PORT}`);
   console.log(`WebSocket: /socket.io/`);
   console.log(`Feishu webhook: POST /feishu/webhook`);
+  console.log(`========================================`);
   
   // 测试飞书连接
   if (FEISHU_APP_ID && FEISHU_APP_SECRET) {
     getFeishuAccessToken().then(token => {
       if (token) {
         console.log('✅ Feishu bot connected successfully');
-      } else {
-        console.log('❌ Feishu bot connection failed');
       }
     });
   }
