@@ -48508,13 +48508,17 @@ if (shouldShowDeprecationWarning()) console.warn("\u26A0\uFE0F  Node.js 18 and b
 import { execSync } from "child_process";
 var envLoaded = false;
 function loadEnv() {
-  if (envLoaded || process.env.COZE_SUPABASE_URL && process.env.COZE_SUPABASE_ANON_KEY) {
+  const hasUrl = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
+  const hasKey = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  if (envLoaded || hasUrl && hasKey) {
     return;
   }
   try {
     try {
       require_main4().config();
-      if (process.env.COZE_SUPABASE_URL && process.env.COZE_SUPABASE_ANON_KEY) {
+      const hasUrlNow = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
+      const hasKeyNow = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+      if (hasUrlNow && hasKeyNow) {
         envLoaded = true;
         return;
       }
@@ -48559,13 +48563,13 @@ except Exception as e:
 }
 function getSupabaseCredentials() {
   loadEnv();
-  const url = process.env.COZE_SUPABASE_URL;
-  const anonKey = process.env.COZE_SUPABASE_ANON_KEY;
+  const url = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
+  const anonKey = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
   if (!url) {
-    throw new Error("COZE_SUPABASE_URL is not set");
+    throw new Error("SUPABASE_URL is not set");
   }
   if (!anonKey) {
-    throw new Error("COZE_SUPABASE_ANON_KEY is not set");
+    throw new Error("SUPABASE_ANON_KEY is not set");
   }
   return { url, anonKey };
 }
