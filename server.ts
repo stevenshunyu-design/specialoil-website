@@ -402,6 +402,83 @@ function needsHumanAgent(message: string): boolean {
   return keywords.some(k => message.toLowerCase().includes(k));
 }
 
+// 人工客服消息 API - 将用户消息转发到飞书
+app.post('/api/chat/human', async (req: Request, res: Response) => {
+  try {
+    const { message, sessionId } = req.body;
+    
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    const sid = sessionId || `human_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+    // 发送消息到飞书群通知客服
+    if (FEISHU_WEBHOOK_URL) {
+      const shortId = sid.substring(0, 8);
+      const card = {
+        msg_type: 'interactive',
+        card: {
+          header: { title: { tag: 'plain_text', content: '💬 新客户消息' }, template: 'blue' },
+          elements: [
+            { tag: 'div', text: { tag: 'lark_md', content: `**会话ID**\n${shortId}` } },
+            { tag: 'div', text: { tag: 'lark_md', content: `**消息内容**\n${message}` } },
+            { tag: 'div', text: { tag: 'lark_md', content: `**时间**\n${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}` } },
+            { tag: 'note', elements: [{ tag: 'plain_text', content: `回复格式: /reply ${shortId} 您的回复内容` }] }
+          ]
+        }
+      };
+
+      try {
+        await fetch(FEISHU_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(card)
+        });
+        console.log(`✅ Human chat message sent to Feishu: ${shortId}`);
+      } catch (error) {
+        console.error('Error sending to Feishu:', error);
+      }
+    }
+
+    // 保存到 Supabase
+    const client = getSupabaseClient();
+    if (client) {
+      // 检查会话是否存在
+      const { data: existingSession } = await client
+        .from('chat_sessions')
+        .select('*')
+        .eq('id', sid)
+        .single();
+
+      if (!existingSession) {
+        // 创建新会话
+        await client.from('chat_sessions').insert({
+          id: sid,
+          visitor_id: sid,
+          status: 'active'
+        });
+      }
+
+      // 保存消息
+      await client.from('chat_messages').insert({
+        session_id: sid,
+        sender_type: 'visitor',
+        message: message
+      });
+    }
+
+    res.json({
+      success: true,
+      session: { id: sid, status: 'active' },
+      message: 'Message sent to support team'
+    });
+  } catch (error) {
+    console.error('Human chat error:', error);
+    res.status(500).json({ error: 'Failed to send message' });
+  }
+});
+
 app.post('/api/chat', async (req: Request, res: Response) => {
   try {
     const { message } = req.body;

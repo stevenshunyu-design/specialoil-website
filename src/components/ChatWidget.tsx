@@ -152,14 +152,36 @@ const ChatWidget = () => {
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setIsLoading(true);
 
-    if (chatMode === 'human' && socketRef.current && session) {
-      // Send via WebSocket
-      socketRef.current.emit('visitor:message', {
-        sessionId: session.id,
-        message: userMessage
-      });
+    if (chatMode === 'human') {
+      // 人工客服模式 - 通过 API 发送消息并通知飞书
+      try {
+        const response = await fetch('/api/chat/human', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: userMessage,
+            sessionId: session?.id || visitorId.current
+          })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          // 消息已发送，等待客服回复
+          setSession(data.session);
+        } else {
+          setMessages(prev => [...prev, {
+            role: 'system',
+            content: '⚠️ Message sent but waiting for agent. We will respond shortly.'
+          }]);
+        }
+      } catch (error) {
+        console.error('Error sending message to human support:', error);
+        setMessages(prev => [...prev, {
+          role: 'system',
+          content: '⚠️ Failed to send message. Please try again.'
+        }]);
+      }
       setIsLoading(false);
-      // Keep focus on input after sending
       focusInput();
     } else {
       // AI mode
@@ -206,12 +228,40 @@ const ChatWidget = () => {
   };
 
   // Switch to human support
-  const switchToHumanSupport = () => {
+  const switchToHumanSupport = async () => {
     setChatMode('human');
     setMessages(prev => [...prev, {
       role: 'system',
       content: '🔄 Switching to human support... Please wait while we connect you to an agent.'
     }]);
+    setIsLoading(true);
+
+    // 通知后端发送飞书消息
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'I need human support',
+          history: messages.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content }))
+        })
+      });
+
+      const data = await response.json();
+      if (data.isHumanHandoff) {
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: data.response
+        }]);
+      }
+    } catch (error) {
+      console.error('Error requesting human support:', error);
+      setMessages(prev => [...prev, {
+        role: 'system',
+        content: '⚠️ Failed to connect to human support. Please try again or contact us directly.'
+      }]);
+    }
+    setIsLoading(false);
   };
 
   // Welcome message when chat opens first time
