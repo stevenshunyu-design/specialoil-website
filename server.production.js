@@ -25,12 +25,18 @@ const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KE
 // hCaptcha 配置
 const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET;
 
+// 飞书配置
+const FEISHU_APP_ID = process.env.FEISHU_APP_ID;
+const FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET;
+const FEISHU_WEBHOOK_URL = process.env.FEISHU_WEBHOOK_URL;
+
 console.log('========================================');
 console.log('Starting server with security features...');
 console.log('PORT:', PORT);
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? 'SET' : 'NOT SET');
 console.log('HCAPTCHA_SECRET:', HCAPTCHA_SECRET ? 'SET' : 'NOT SET');
+console.log('FEISHU_APP_ID:', FEISHU_APP_ID || 'NOT SET');
 console.log('========================================');
 
 // 初始化 Supabase 客户端
@@ -41,8 +47,120 @@ const supabase = supabaseUrl && supabaseKey
   ? createClient(supabaseUrl, supabaseKey)
   : null;
 
-// 飞书 Webhook URL
-const FEISHU_WEBHOOK_URL = process.env.FEISHU_WEBHOOK_URL;
+// ========== 飞书 Webhook 端点（必须在所有中间件之前！）==========
+// 飞书 Token 管理
+let feishuAccessToken = null;
+let tokenExpireTime = 0;
+
+async function getFeishuAccessToken() {
+  if (feishuAccessToken && Date.now() < tokenExpireTime) {
+    return feishuAccessToken;
+  }
+  if (!FEISHU_APP_ID || !FEISHU_APP_SECRET) return null;
+
+  try {
+    const response = await fetch('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ app_id: FEISHU_APP_ID, app_secret: FEISHU_APP_SECRET })
+    });
+    const data = await response.json();
+    if (data.code === 0) {
+      feishuAccessToken = data.tenant_access_token;
+      tokenExpireTime = Date.now() + (data.expire - 300) * 1000;
+      return feishuAccessToken;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error getting Feishu token:', error);
+    return null;
+  }
+}
+
+async function sendFeishuMessage(openId, message) {
+  const token = await getFeishuAccessToken();
+  if (!token) return false;
+  try {
+    const response = await fetch('https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ receive_id: openId, msg_type: 'text', content: JSON.stringify({ text: message }) })
+    });
+    const data = await response.json();
+    return data.code === 0;
+  } catch (error) {
+    console.error('Error sending Feishu message:', error);
+    return false;
+  }
+}
+
+// 飞书 Webhook - 必须在最前面，不经过任何中间件
+app.post('/feishu/webhook', express.json(), async (req, res) => {
+  console.log('=== Feishu Webhook ===');
+  console.log('Body:', JSON.stringify(req.body));
+  
+  const { type, challenge, event } = req.body;
+
+  // URL 验证 - 直接返回纯JSON
+  if (type === 'url_verification') {
+    console.log('URL verification, returning challenge:', challenge);
+    res.setHeader('Content-Type', 'application/json');
+    return res.status(200).send(JSON.stringify({ challenge }));
+  }
+
+  // 处理消息事件
+  if (event?.message) {
+    const message = event.message;
+    const senderId = event.sender?.sender_id?.open_id;
+    
+    let messageText = '';
+    try {
+      const content = JSON.parse(message.content || '{}');
+      messageText = content.text || '';
+    } catch {
+      messageText = message.content || '';
+    }
+    
+    console.log(`Feishu message from ${senderId}: ${messageText}`);
+    
+    // 检查是否是回复格式
+    const replyMatch = messageText.match(/^\/reply\s+(\w+)\s+(.+)/is);
+    
+    if (replyMatch && supabase) {
+      const sessionShortId = replyMatch[1];
+      const replyMessage = replyMatch[2];
+
+      const { data: sessions } = await supabase
+        .from('chat_sessions')
+        .select('*')
+        .eq('status', 'active');
+
+      const targetSession = sessions?.find(s => s.id.startsWith(sessionShortId));
+
+      if (targetSession) {
+        await supabase.from('chat_messages').insert({
+          session_id: targetSession.id,
+          sender_type: 'admin',
+          sender_name: 'Support',
+          message: replyMessage
+        });
+        console.log(`✅ Reply saved: ${replyMessage}`);
+        if (senderId) await sendFeishuMessage(senderId, `✅ 消息已保存`);
+      } else {
+        console.log(`Session not found: ${sessionShortId}`);
+        if (senderId) await sendFeishuMessage(senderId, `❌ 未找到会话: ${sessionShortId}`);
+      }
+    }
+  }
+
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).send(JSON.stringify({ code: 0, msg: 'success' }));
+});
+
+app.get('/feishu/webhook', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).send(JSON.stringify({ status: 'ok', message: 'Feishu webhook endpoint' }));
+});
 
 // ========== 安全中间件 ==========
 
@@ -1023,158 +1141,6 @@ ${WEBSITE_KNOWLEDGE}
     console.error('Chat API error:', error);
     res.status(500).json({ error: 'Internal error' });
   }
-});
-
-// ========== 飞书 Webhook 端点 ==========
-const FEISHU_APP_ID = process.env.FEISHU_APP_ID;
-const FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET;
-
-// 飞书 Token 管理
-let feishuAccessToken = null;
-let tokenExpireTime = 0;
-
-async function getFeishuAccessToken() {
-  if (feishuAccessToken && Date.now() < tokenExpireTime) {
-    return feishuAccessToken;
-  }
-
-  if (!FEISHU_APP_ID || !FEISHU_APP_SECRET) {
-    return null;
-  }
-
-  try {
-    const response = await fetch('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        app_id: FEISHU_APP_ID,
-        app_secret: FEISHU_APP_SECRET
-      })
-    });
-
-    const data = await response.json();
-    
-    if (data.code === 0) {
-      feishuAccessToken = data.tenant_access_token;
-      tokenExpireTime = Date.now() + (data.expire - 300) * 1000;
-      console.log('✅ Feishu access token obtained');
-      return feishuAccessToken;
-    }
-    return null;
-  } catch (error) {
-    console.error('Error getting Feishu token:', error);
-    return null;
-  }
-}
-
-// 发送飞书私聊消息
-async function sendFeishuMessage(openId, message) {
-  const token = await getFeishuAccessToken();
-  if (!token) return false;
-
-  try {
-    const response = await fetch('https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        receive_id: openId,
-        msg_type: 'text',
-        content: JSON.stringify({ text: message })
-      })
-    });
-
-    const data = await response.json();
-    return data.code === 0;
-  } catch (error) {
-    console.error('Error sending Feishu message:', error);
-    return false;
-  }
-}
-
-// 飞书 Webhook 端点
-app.post('/feishu/webhook', async (req, res) => {
-  console.log('=== Received Feishu webhook ===');
-  console.log('Body:', JSON.stringify(req.body, null, 2));
-  
-  const { type, challenge, event } = req.body;
-
-  // URL 验证
-  if (type === 'url_verification') {
-    console.log('URL verification, challenge:', challenge);
-    return res.status(200).json({ challenge });
-  }
-
-  // 处理消息事件
-  if (event?.message) {
-    const message = event.message;
-    const senderId = event.sender?.sender_id?.open_id;
-    
-    // 解析消息内容
-    let messageText = '';
-    try {
-      const content = JSON.parse(message.content || '{}');
-      messageText = content.text || '';
-    } catch {
-      messageText = message.content || '';
-    }
-    
-    console.log(`Feishu message from ${senderId}: ${messageText}`);
-    
-    // 检查是否是回复格式: /reply <session_id> <message>
-    const replyMatch = messageText.match(/^\/reply\s+(\w+)\s+(.+)/is);
-    
-    if (replyMatch) {
-      const sessionShortId = replyMatch[1];
-      const replyMessage = replyMatch[2];
-
-      // 查找对应会话
-      const { data: sessions } = await supabase
-        .from('chat_sessions')
-        .select('*')
-        .eq('status', 'active');
-
-      const targetSession = sessions?.find(s => 
-        s.id.startsWith(sessionShortId)
-      );
-
-      if (targetSession) {
-        console.log(`Found session ${targetSession.id} for reply`);
-        
-        // 保存消息
-        await supabase.from('chat_messages').insert({
-          session_id: targetSession.id,
-          sender_type: 'admin',
-          sender_name: 'Support',
-          message: replyMessage
-        });
-
-        // 注意: 这里需要WebSocket通知访客
-        // 由于生产环境可能没有WebSocket, 消息会保存在数据库中
-        // 访客下次刷新时会获取历史消息
-
-        console.log(`✅ Reply saved to database: ${replyMessage}`);
-        
-        if (senderId) {
-          await sendFeishuMessage(senderId, `✅ 消息已保存，访客将在下次连接时收到`);
-        }
-      } else {
-        console.log(`Session not found: ${sessionShortId}`);
-        if (senderId) {
-          await sendFeishuMessage(senderId, `❌ 未找到会话: ${sessionShortId}`);
-        }
-      }
-    }
-  }
-
-  res.status(200).json({ code: 0, msg: 'success' });
-});
-
-// GET 请求处理
-app.get('/feishu/webhook', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'Feishu webhook endpoint is working' });
 });
 
 // ========== SPA 回退路由 ==========
