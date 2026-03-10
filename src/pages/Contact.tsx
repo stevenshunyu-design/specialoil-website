@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { SuccessModal, ErrorModal } from '@/components/ToastModal';
 
 // hCaptcha site key (public key)
-const HCAPTCHA_SITE_KEY = import.meta.env.VITE_HCAPTCHA_SITE_KEY || '';
+const HCAPTCHA_SITE_KEY = import.meta.env.VITE_HCAPTCHA_SITE_KEY || '80a2bfa8-da8c-4326-bada-a5e8ad02727e';
 
 declare global {
   interface Window {
@@ -92,7 +92,7 @@ const Contact = () => {
     if (captchaLoaded && window.hcaptcha && captchaContainerRef.current && !captchaWidgetId) {
       try {
         const widgetId = window.hcaptcha.render(captchaContainerRef.current, {
-          sitekey: HCAPTCHA_SITE_KEY || '10000000-ffff-ffff-ffff-000000000001', // Test key fallback
+          sitekey: HCAPTCHA_SITE_KEY,
           theme: 'light',
           callback: (token: string) => {
             setCaptchaToken(token);
