@@ -66,6 +66,10 @@ app.use(helmet({
   referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
 }));
 
+// 信任反向代理（Hostinger 使用代理）
+// 设置为 1 表示信任第一层代理，设置为 true 表示信任所有代理
+app.set('trust proxy', 1);
+
 // CORS 配置
 const allowedOrigins = [
   'https://specialoil.com',
