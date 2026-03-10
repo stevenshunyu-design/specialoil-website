@@ -13,11 +13,8 @@ export FEISHU_CHAT_ID="${FEISHU_CHAT_ID}"
 # 安装依赖
 pnpm install
 
-# 设置端口为5000
-export PORT=5000
-
-# 启动 API 服务器（后台运行）
+# 启动 API 服务器（后台运行，端口3001）
 npx tsx server.ts &
 
-# 启动 Vite 开发服务器（使用不同端口避免冲突）
-npx vite --port 5001 --host
+# 启动 Vite 开发服务器（端口5000，预览系统期望的端口）
+npx vite --port 5000 --host

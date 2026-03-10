@@ -19001,7 +19001,7 @@ function getSupabaseClient(token) {
 // server.ts
 var app = express();
 var httpServer = createServer(app);
-var PORT = process.env.PORT || 5e3;
+var PORT = process.env.PORT || 3001;
 var io2 = new Server(httpServer, {
   cors: {
     origin: ["http://localhost:5000", "http://localhost:3000", process.env.SITE_URL].filter(Boolean),
