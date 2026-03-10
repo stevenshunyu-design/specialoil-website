@@ -481,10 +481,49 @@ app.post('/api/chat/human', async (req: Request, res: Response) => {
 
 app.post('/api/chat', async (req: Request, res: Response) => {
   try {
-    const { message } = req.body;
+    const { message, customerInfo } = req.body;
     if (!message) return res.status(400).json({ error: 'Message required' });
 
     if (needsHumanAgent(message)) {
+      // 发送通知到飞书
+      if (FEISHU_WEBHOOK_URL) {
+        const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        const shortId = sessionId.substring(0, 8);
+        const customerNo = customerInfo?.customerNo || `#${shortId}`;
+        const customerName = customerInfo?.name || 'Unknown';
+        const customerEmail = customerInfo?.email || 'Not provided';
+        const customerPhone = customerInfo?.phone || 'Not provided';
+        
+        const card = {
+          msg_type: 'interactive',
+          card: {
+            header: { title: { tag: 'plain_text', content: `🔔 新客户咨询 ${customerNo}` }, template: 'blue' },
+            elements: [
+              { tag: 'div', text: { tag: 'lark_md', content: `**客户信息**\n👤 姓名：${customerName}\n📧 邮箱：${customerEmail}\n📱 电话：${customerPhone}` } },
+              { tag: 'divider' },
+              { tag: 'note', elements: [{ tag: 'plain_text', content: `回复格式: /reply ${shortId} 您的回复内容` }] }
+            ]
+          }
+        };
+        
+        try {
+          await fetch(FEISHU_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(card)
+          });
+          console.log(`✅ Feishu notification sent: ${customerNo}`);
+        } catch (error) {
+          console.error('Feishu notification error:', error);
+        }
+        
+        return res.json({
+          response: "I'll connect you with a human agent. Please wait...",
+          needsHuman: true,
+          sessionId: sessionId
+        });
+      }
+      
       return res.json({
         response: "I'll connect you with a human agent. Please wait...",
         needsHuman: true

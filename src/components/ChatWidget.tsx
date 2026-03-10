@@ -15,6 +15,12 @@ interface ChatSession {
   status: 'waiting' | 'active' | 'closed';
 }
 
+interface CustomerInfo {
+  name: string;
+  email: string;
+  phone: string;
+}
+
 const QUICK_QUESTIONS = [
   "What products do you offer?",
   "Tell me about Transformer Oil",
@@ -32,14 +38,26 @@ const getVisitorId = () => {
   return visitorId;
 };
 
+// Get or generate customer sequence number
+const getCustomerSequence = () => {
+  let seq = localStorage.getItem('customer_seq');
+  if (!seq) {
+    seq = Math.floor(Math.random() * 9000 + 1000).toString(); // 4位随机数
+    localStorage.setItem('customer_seq', seq);
+  }
+  return seq;
+};
+
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [chatMode, setChatMode] = useState<'ai' | 'human'>('ai');
+  const [chatMode, setChatMode] = useState<'ai' | 'human' | 'form'>('ai');
   const [session, setSession] = useState<ChatSession | null>(null);
   const [isWaitingForAgent, setIsWaitingForAgent] = useState(false);
+  const [showCustomerForm, setShowCustomerForm] = useState(false);
+  const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({ name: '', email: '', phone: '' });
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const socketRef = useRef<Socket | null>(null);
@@ -155,12 +173,17 @@ const ChatWidget = () => {
     if (chatMode === 'human') {
       // 人工客服模式 - 通过 API 发送消息并通知飞书
       try {
+        const customerSeq = getCustomerSequence();
         const response = await fetch('/api/chat/human', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             message: userMessage,
-            sessionId: session?.id || visitorId.current
+            sessionId: session?.id || visitorId.current,
+            customerInfo: {
+              ...customerInfo,
+              customerNo: `#${customerSeq}`
+            }
           })
         });
 
@@ -227,14 +250,29 @@ const ChatWidget = () => {
     focusInput();
   };
 
-  // Switch to human support
-  const switchToHumanSupport = async () => {
+  // Switch to human support - 显示客户信息表单
+  const switchToHumanSupport = () => {
+    setChatMode('form');
+    setShowCustomerForm(true);
+  };
+
+  // 提交客户信息并连接人工客服
+  const submitCustomerInfo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!customerInfo.name.trim()) {
+      return;
+    }
+
     setChatMode('human');
+    setShowCustomerForm(false);
     setMessages(prev => [...prev, {
       role: 'system',
-      content: '🔄 Switching to human support... Please wait while we connect you to an agent.'
+      content: `🔄 Connecting you to human support, ${customerInfo.name}... Please wait.`
     }]);
     setIsLoading(true);
+
+    const customerSeq = getCustomerSequence();
 
     // 通知后端发送飞书消息
     try {
@@ -243,7 +281,11 @@ const ChatWidget = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: 'I need human support',
-          history: messages.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content }))
+          history: messages.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content })),
+          customerInfo: {
+            ...customerInfo,
+            customerNo: `#${customerSeq}`
+          }
         })
       });
 
@@ -253,6 +295,9 @@ const ChatWidget = () => {
           role: 'assistant',
           content: data.response
         }]);
+        if (data.sessionId) {
+          setSession({ id: data.sessionId, visitor_id: visitorId.current, status: 'active' });
+        }
       }
     } catch (error) {
       console.error('Error requesting human support:', error);
@@ -367,6 +412,59 @@ const ChatWidget = () => {
             )}
             <div ref={messagesEndRef} />
           </div>
+
+          {/* Customer Info Form (shown when switching to human support) */}
+          {showCustomerForm && (
+            <div className="px-4 py-4 border-t border-gray-100 bg-white flex-shrink-0">
+              <div className="text-center mb-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-[#D4AF37] to-[#B8960C] rounded-full flex items-center justify-center mx-auto mb-2">
+                  <i className="fa-solid fa-user text-white"></i>
+                </div>
+                <h4 className="font-semibold text-gray-800 text-sm">Contact Information</h4>
+                <p className="text-xs text-gray-500">So our agent can identify you</p>
+              </div>
+              <form onSubmit={submitCustomerInfo} className="space-y-2">
+                <input
+                  type="text"
+                  placeholder="Your Name *"
+                  value={customerInfo.name}
+                  onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50"
+                  required
+                />
+                <input
+                  type="email"
+                  placeholder="Email (optional)"
+                  value={customerInfo.email}
+                  onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50"
+                />
+                <input
+                  type="tel"
+                  placeholder="Phone / WhatsApp (optional)"
+                  value={customerInfo.phone}
+                  onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50"
+                />
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => { setShowCustomerForm(false); setChatMode('ai'); }}
+                    className="flex-1 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={!customerInfo.name.trim()}
+                    className="flex-1 py-2 bg-gradient-to-r from-[#003366] to-[#004080] text-white rounded-lg text-sm hover:shadow-md transition-all disabled:opacity-50"
+                  >
+                    Connect
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
 
           {/* Quick Questions (only in AI mode with few messages) */}
           {chatMode === 'ai' && messages.length <= 2 && (
