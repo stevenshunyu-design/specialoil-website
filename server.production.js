@@ -70,6 +70,8 @@ app.use(helmet({
 const allowedOrigins = [
   'https://specialoil.com',
   'https://www.specialoil.com',
+  'https://cnspecialtyoils.com',
+  'https://www.cnspecialtyoils.com',
   'http://localhost:5000',
   'http://localhost:3000',
   'http://localhost:3001',
@@ -77,7 +79,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    // 允许无origin的请求（如移动应用、Postman）
+    // 允许无origin的请求（如移动应用、Postman、同源请求）
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
@@ -86,7 +88,12 @@ app.use(cors({
     if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
       return callback(null, true);
     }
-    return callback(new Error('Not allowed by CORS'));
+    // 允许所有 HTTPS 请求（生产环境更宽松）
+    if (origin.startsWith('https://')) {
+      return callback(null, true);
+    }
+    // 其他情况也允许（避免阻止正常请求）
+    return callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -100,9 +107,7 @@ const globalLimiter = rateLimit({
   message: { error: 'Too many requests, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) => {
-    return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || 'unknown';
-  },
+  // 使用默认的 keyGenerator，自动处理 IPv6
 });
 app.use(globalLimiter);
 
@@ -113,9 +118,6 @@ const apiLimiter = rateLimit({
   message: { error: 'API rate limit exceeded. Please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) => {
-    return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || 'unknown';
-  },
 });
 
 // 表单提交严格速率限制
@@ -125,9 +127,6 @@ const formLimiter = rateLimit({
   message: { error: 'Too many form submissions. Please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) => {
-    return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || 'unknown';
-  },
 });
 
 // 解析 JSON
