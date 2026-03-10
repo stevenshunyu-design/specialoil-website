@@ -22,6 +22,7 @@ import SubscribersAdmin from "@/pages/SubscribersAdmin";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
 import CookiePolicy from "@/pages/CookiePolicy";
+import ChatWidget from "@/components/ChatWidget";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
 export default function App() {
@@ -68,6 +69,7 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+      <ChatWidget position="bottom-right" />
     </div>
   );
 }

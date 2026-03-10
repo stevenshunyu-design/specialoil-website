@@ -788,6 +788,243 @@ async function sendNewsletterToSubscribers(emails, subject, articles, previewTex
   return { success: sentCount > 0, sentCount, errors };
 }
 
+// ========== AI 聊天助手 API ==========
+
+// OpenAI API 配置
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const OPENAI_API_HOST = process.env.OPENAI_API_HOST || 'api.chatanywhere.tech';
+
+// 网站知识库 - 用于AI理解网站内容
+const WEBSITE_KNOWLEDGE = `
+# CN-SpecLube Chain - 中国特种润滑油供应链平台
+
+## 公司简介
+CN-SpecLube Chain 是中国领先的特种润滑油供应链平台，专注于为中国及全球客户提供高品质的工业润滑油原料及成品。
+
+## 主要产品
+1. **变压器油 (Transformer Oil)**
+   - 用于电力变压器、互感器等电气设备
+   - 规格：25#、45#等
+   - 符合IEC 60296、ASTM D3487标准
+
+2. **橡胶操作油 (Rubber Process Oil)**
+   - DAE (Distillate Aromatic Extract) 蒸馏芳烃抽出油
+   - TDAE (Treated Distillate Aromatic Extract) 处理芳烃抽出油
+   - RAE (Residual Aromatic Extract) 残渣芳烃抽出油
+   - 用于橡胶轮胎、胶管、胶带等产品
+
+3. **成品润滑油**
+   - 液压油 (Hydraulic Oil)
+   - 齿轮油 (Gear Oil)
+   - 透平油 (Turbine Oil)
+   - 导热油 (Heat Transfer Oil)
+
+4. **基础油**
+   - SN系列矿物基础油
+   - 白油 (White Oil)
+   - 环烷油 (Naphthenic Oil)
+
+## 服务内容
+- **产品采购**: 协助客户从中国采购优质润滑油原料
+- **质量检测**: 提供第三方检测报告，确保产品质量
+- **物流服务**: 提供FOB、CIF、CFR等多种贸易条款
+- **技术支持**: 提供产品应用技术指导
+
+## 贸易条款
+- 支持EXW、FOB、CIF、CFR、DAP、DDP等Incoterms
+- 最小起订量：根据产品不同，一般为1个集装箱或50桶
+- 付款方式：T/T、L/C
+
+## 质量认证
+- ISO 9001 质量管理体系认证
+- ISO 14001 环境管理体系认证
+- 产品符合ASTM、DIN、IEC等国际标准
+- 欧盟REACH合规
+
+## 联系方式
+- **邮箱**: steven.shunyu@gmail.com
+- **电话/WhatsApp**: +86 137 9328 0176
+- **地址**: 中国山东省青岛市崂山区松岭路197号10层
+- **工作时间**: 周一至周五 9:00-18:00 (GMT+8)
+
+## 常见问题
+1. **起订量**: 根据产品不同，一般最小起订量为1个20尺集装箱或100桶
+2. **交货期**: 常规产品7-14天，定制产品需要协商
+3. **样品**: 可以提供免费样品，客户承担运费
+4. **付款**: 支持T/T(30%定金+70%发货前付款)或信用证
+5. **运输**: 可以安排海运到全球主要港口
+
+## 公司优势
+- 10年+ 行业经验
+- 中国本土采购渠道
+- 严格质量控制体系
+- 专业团队支持
+- 快速响应(24小时内回复)
+`;
+
+// 聊天会话存储（简单的内存存储，生产环境应使用数据库）
+const chatSessions = new Map();
+
+// 发送人工客服请求到飞书
+async function notifyHumanSupportRequest(sessionId, messages, userEmail) {
+  if (!FEISHU_WEBHOOK_URL) {
+    console.log('Feishu webhook not configured');
+    return false;
+  }
+
+  const lastMessages = messages.slice(-5).map(m => `${m.role}: ${m.content}`).join('\n');
+  
+  const card = {
+    msg_type: 'interactive',
+    card: {
+      header: { title: { tag: 'plain_text', content: '🤖 AI助手转人工请求' }, template: 'orange' },
+      elements: [
+        { tag: 'div', text: { tag: 'lark_md', content: `**会话ID**\n${sessionId}` } },
+        { tag: 'div', text: { tag: 'lark_md', content: `**客户邮箱**\n${userEmail || '未提供'}` } },
+        { tag: 'div', text: { tag: 'lark_md', content: `**最近对话**\n${lastMessages}` } },
+        { tag: 'action', actions: [
+          { tag: 'button', text: { tag: 'plain_text', content: '联系客户' }, url: `mailto:${userEmail || ''}`, type: 'primary' }
+        ]}
+      ]
+    }
+  };
+
+  try {
+    const response = await fetch(FEISHU_WEBHOOK_URL, { 
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify(card) 
+    });
+    return response.ok;
+  } catch (error) {
+    console.error('Feishu notification error:', error);
+    return false;
+  }
+}
+
+// AI 聊天 API
+app.post('/api/chat', apiLimiter, async (req, res) => {
+  try {
+    const { message, sessionId, userEmail } = req.body;
+    
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    // 创建或获取会话
+    const sid = sessionId || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    if (!chatSessions.has(sid)) {
+      chatSessions.set(sid, {
+        messages: [],
+        createdAt: new Date().toISOString(),
+        userEmail: userEmail
+      });
+    }
+    
+    const session = chatSessions.get(sid);
+    
+    // 更新用户邮箱（如果提供）
+    if (userEmail && !session.userEmail) {
+      session.userEmail = userEmail;
+    }
+    
+    // 添加用户消息到会话
+    session.messages.push({ role: 'user', content: message });
+    
+    // 检查是否请求人工客服
+    const humanKeywords = ['人工', '真人', '人工客服', '真人客服', '转人工', '客服', 'human', 'agent', 'support'];
+    const isHumanRequest = humanKeywords.some(keyword => 
+      message.toLowerCase().includes(keyword)
+    );
+    
+    if (isHumanRequest) {
+      // 发送通知到飞书
+      await notifyHumanSupportRequest(sid, session.messages, session.userEmail);
+      
+      return res.json({
+        success: true,
+        sessionId: sid,
+        response: '好的，我已经为您转接人工客服。我们的客服团队会尽快通过邮件或WhatsApp联系您。\n\n如需紧急联系，请直接联系：\n📧 邮箱：steven.shunyu@gmail.com\n📱 WhatsApp：+86 137 9328 0176',
+        isHumanHandoff: true
+      });
+    }
+    
+    // 如果没有配置OpenAI API Key，返回默认响应
+    if (!OPENAI_API_KEY) {
+      console.log('OpenAI API key not configured');
+      return res.json({
+        success: true,
+        sessionId: sid,
+        response: '感谢您的咨询！我是CN-SpecLube的AI助手。\n\n我可以为您介绍我们的产品：变压器油、橡胶操作油、成品润滑油等。\n\n如需详细报价，请联系我们：\n📧 steven.shunyu@gmail.com\n📱 +86 137 9328 0176\n\n或者输入"人工"转接人工客服。'
+      });
+    }
+    
+    // 调用 OpenAI API
+    const systemPrompt = `你是CN-SpecLube Chain的AI客服助手，专注于中国特种润滑油产品。
+
+你的职责：
+1. 回答关于公司产品、服务的问题
+2. 协助客户了解产品规格、价格范围
+3. 引导客户提交询盘或联系人工客服
+
+重要信息：
+${WEBSITE_KNOWLEDGE}
+
+回答规则：
+- 用中文回答（如果用户用英文提问，可以用英文回答）
+- 简洁专业，避免过长回复
+- 如果涉及具体价格，引导客户提交询盘
+- 如果客户需要详细技术参数或报价，建议联系人工客服
+- 如果客户要求人工服务，回复"请输入'人工'转接人工客服"
+- 始终保持友好、专业的态度`;
+
+    // 构建消息历史（保留最近10条）
+    const recentMessages = session.messages.slice(-10);
+    
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      ...recentMessages
+    ];
+    
+    const openaiResponse = await fetch(`https://${OPENAI_API_HOST}/v1/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: messages,
+        max_tokens: 500,
+        temperature: 0.7
+      })
+    });
+    
+    if (!openaiResponse.ok) {
+      const errorText = await openaiResponse.text();
+      console.error('OpenAI API error:', errorText);
+      return res.status(500).json({ error: 'AI service error' });
+    }
+    
+    const result = await openaiResponse.json();
+    const aiResponse = result.choices[0]?.message?.content || '抱歉，我暂时无法回答您的问题。请联系人工客服。';
+    
+    // 添加AI回复到会话
+    session.messages.push({ role: 'assistant', content: aiResponse });
+    
+    res.json({
+      success: true,
+      sessionId: sid,
+      response: aiResponse
+    });
+    
+  } catch (error) {
+    console.error('Chat API error:', error);
+    res.status(500).json({ error: 'Internal error' });
+  }
+});
+
 // ========== SPA 回退路由 ==========
 app.get('*', (_req, res) => {
   const indexPath = path.join(__dirname, 'dist', 'index.html');
