@@ -542,7 +542,21 @@ function getSupabaseClient(token) {
 // server.ts
 var import_path = __toESM(require("path"), 1);
 var import_fs = __toESM(require("fs"), 1);
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught Exception:", error);
+});
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+});
 var distPath = process.env.NODE_ENV === "production" ? import_path.default.join(__dirname, "dist") : import_path.default.join(process.cwd(), "dist");
+console.log("========================================");
+console.log("Starting server with security features...");
+console.log("PORT:", process.env.PORT || 3001);
+console.log("NODE_ENV:", process.env.NODE_ENV || "development");
+console.log("SUPABASE_URL:", process.env.SUPABASE_URL ? "SET" : "NOT SET");
+console.log("Static files path:", distPath);
+console.log("dist directory exists:", import_fs.default.existsSync(distPath));
+console.log("========================================");
 var app = (0, import_express.default)();
 var httpServer = (0, import_http.createServer)(app);
 var PORT = process.env.PORT || 3001;

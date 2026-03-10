@@ -7,10 +7,28 @@ import 'dotenv/config';
 import path from 'path';
 import fs from 'fs';
 
+// 全局错误处理 - 防止进程崩溃
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 // 在 CommonJS 环境中 __dirname 可用，ESM 需要动态获取
 const distPath = process.env.NODE_ENV === 'production' 
   ? path.join(__dirname, 'dist') 
   : path.join(process.cwd(), 'dist');
+
+console.log('========================================');
+console.log('Starting server with security features...');
+console.log('PORT:', process.env.PORT || 3001);
+console.log('NODE_ENV:', process.env.NODE_ENV || 'development');
+console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? 'SET' : 'NOT SET');
+console.log('Static files path:', distPath);
+console.log('dist directory exists:', fs.existsSync(distPath));
+console.log('========================================');
 
 const app = express();
 const httpServer = createServer(app);
