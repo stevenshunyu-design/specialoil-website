@@ -38,6 +38,9 @@ importers:
       framer-motion:
         specifier: ^12.9.2
         version: 12.35.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      hcaptcha:
+        specifier: ^0.2.0
+        version: 0.2.0
       helmet:
         specifier: ^8.1.0
         version: 8.1.0
@@ -1203,6 +1206,9 @@ packages:
   hasown@2.0.2:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
+
+  hcaptcha@0.2.0:
+    resolution: {integrity: sha512-x25z3RoEa9oqfyuQsgk2olc+LCNVDAJaGKUP1qFhpAybB6qjqOf4qB2y1E3LJpXDvM229JWEywc6iWnzWvGjNw==}
 
   helmet@8.1.0:
     resolution: {integrity: sha512-jOiHyAZsmnr8LqoPGmCjYAaiuWwjAPLgY8ZX2XrmHawt99/u1y6RgrZMTeoPfpUbV96HOalYgz1qzkRbw54Pmg==}
@@ -2799,6 +2805,8 @@ snapshots:
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
+
+  hcaptcha@0.2.0: {}
 
   helmet@8.1.0: {}
 

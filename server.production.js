@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import { verify as verifyHcaptchaLib } from 'hcaptcha';
 import 'dotenv/config';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -169,7 +170,7 @@ function isValidEmail(email) {
 }
 
 // hCaptcha 验证
-async function verifyHcaptcha(token, ip) {
+async function validateHcaptcha(token, _ip) {
   if (!HCAPTCHA_SECRET) {
     console.log('hCaptcha secret not configured, skipping verification');
     return { success: true };
@@ -180,19 +181,14 @@ async function verifyHcaptcha(token, ip) {
   }
 
   try {
-    const response = await fetch('https://api.hcaptcha.com/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `secret=${encodeURIComponent(HCAPTCHA_SECRET)}&response=${encodeURIComponent(token)}&remoteip=${encodeURIComponent(ip || '')}`,
-    });
-
-    const result = await response.json();
+    const result = await verifyHcaptchaLib(HCAPTCHA_SECRET, token);
     
     if (!result.success) {
       console.log('hCaptcha verification failed:', result['error-codes']);
       return { success: false, error: 'Captcha verification failed', codes: result['error-codes'] };
     }
 
+    console.log('hCaptcha verification successful');
     return { success: true };
   } catch (error) {
     console.error('hCaptcha verification error:', error);
@@ -297,7 +293,7 @@ app.post('/api/inquiries', formLimiter, async (req, res) => {
     }
 
     // 验证 hCaptcha
-    const captchaResult = await verifyHcaptcha(req.body.captchaToken, clientIp);
+    const captchaResult = await validateHcaptcha(req.body.captchaToken, clientIp);
     if (!captchaResult.success) {
       return res.status(400).json({ error: captchaResult.error || 'Captcha verification failed' });
     }
