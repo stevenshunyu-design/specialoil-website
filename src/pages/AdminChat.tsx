@@ -52,13 +52,16 @@ const AdminChat = () => {
     }
   }, []);
 
-  // Fetch sessions periodically
+  // Fetch sessions periodically - including closed sessions for history
   const fetchSessions = useCallback(async () => {
     try {
       const response = await fetch('/api/chat/sessions');
       const data = await response.json();
       if (data.success) {
-        setSessions(data.data.filter((s: ChatSession) => s.status !== 'closed'));
+        // Show all sessions including closed ones, sorted by updated_at desc
+        setSessions(data.data.sort((a: ChatSession, b: ChatSession) => 
+          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+        ));
       }
     } catch (err) {
       console.error('Failed to fetch sessions:', err);
@@ -296,14 +299,20 @@ const AdminChat = () => {
                 <div className="flex items-center gap-3">
                   <div className="relative flex-shrink-0">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      session.status === 'waiting' 
+                      session.status === 'closed'
+                        ? 'bg-slate-500/20 text-slate-400'
+                        : session.status === 'waiting' 
                         ? 'bg-amber-500/20 text-amber-400' 
                         : 'bg-emerald-500/20 text-emerald-400'
                     }`}>
                       <i className="fa-solid fa-user text-sm"></i>
                     </div>
                     <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-slate-800 ${
-                      session.status === 'waiting' ? 'bg-amber-400' : 'bg-emerald-400'
+                      session.status === 'closed' 
+                        ? 'bg-slate-500' 
+                        : session.status === 'waiting' 
+                        ? 'bg-amber-400' 
+                        : 'bg-emerald-400'
                     }`}></span>
                   </div>
                   {!sidebarCollapsed && (
@@ -313,7 +322,9 @@ const AdminChat = () => {
                           {session.visitor_name || session.customer_no || `#${session.id.substring(0, 4)}`}
                         </span>
                         <span className={`text-xs px-2 py-0.5 rounded-full ${
-                          session.status === 'waiting' 
+                          session.status === 'closed'
+                            ? 'bg-slate-500/20 text-slate-400'
+                            : session.status === 'waiting' 
                             ? 'bg-amber-500/20 text-amber-400' 
                             : 'bg-emerald-500/20 text-emerald-400'
                         }`}>
@@ -373,19 +384,23 @@ const AdminChat = () => {
               </div>
               <div className="flex items-center gap-2">
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  selectedSession.status === 'waiting' 
+                  selectedSession.status === 'closed'
+                    ? 'bg-slate-100 text-slate-600'
+                    : selectedSession.status === 'waiting' 
                     ? 'bg-amber-100 text-amber-700' 
                     : 'bg-emerald-100 text-emerald-700'
                 }`}>
-                  {selectedSession.status === 'waiting' ? '⏳ Waiting' : '🟢 Active'}
+                  {selectedSession.status === 'closed' ? '🔒 Closed' : selectedSession.status === 'waiting' ? '⏳ Waiting' : '🟢 Active'}
                 </span>
-                <button
-                  onClick={closeSession}
-                  className="px-4 py-2 bg-red-50 text-red-600 rounded-xl text-sm font-medium hover:bg-red-100 transition-colors flex items-center gap-2"
-                >
-                  <i className="fa-solid fa-times"></i>
-                  Close
-                </button>
+                {selectedSession.status !== 'closed' && (
+                  <button
+                    onClick={closeSession}
+                    className="px-4 py-2 bg-red-50 text-red-600 rounded-xl text-sm font-medium hover:bg-red-100 transition-colors flex items-center gap-2"
+                  >
+                    <i className="fa-solid fa-times"></i>
+                    Close
+                  </button>
+                )}
               </div>
             </div>
 
@@ -417,10 +432,10 @@ const AdminChat = () => {
                       <div className={`px-4 py-3 rounded-2xl ${
                         msg.sender_type === 'visitor'
                           ? 'bg-white text-slate-800 rounded-bl-md shadow-sm border border-slate-100'
-                          : 'bg-gradient-to-br from-[#003366] to-[#004080] text-white rounded-br-md shadow-lg'
+                          : 'bg-[#003366] text-white rounded-br-md shadow-lg'
                       }`}>
                         {msg.sender_type === 'admin' && (
-                          <p className="text-xs text-white/60 mb-1 font-medium">{msg.sender_name}</p>
+                          <p className="text-xs text-[#D4AF37] mb-1 font-semibold">{msg.sender_name}</p>
                         )}
                         <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.message}</p>
                         <p className={`text-xs mt-1 ${

@@ -89,9 +89,17 @@ const ChatWidget = () => {
           }));
           
           setMessages(prev => {
-            // Filter out duplicates
-            const existingIds = new Set(prev.map(m => m.id));
-            const uniqueNew = newMessages.filter((m: Message) => !existingIds.has(m.id));
+            // Filter out duplicates - check both ID and content+role combination
+            const existingIds = new Set(prev.map(m => m.id).filter(Boolean));
+            const existingContentKeys = new Set(prev.map(m => `${m.role}:${m.content}`));
+            const uniqueNew = newMessages.filter((m: Message) => {
+              // Skip if ID already exists
+              if (m.id && existingIds.has(m.id)) return false;
+              // Skip if same role and content already exists (for temp messages without ID)
+              const contentKey = `${m.role}:${m.content}`;
+              if (existingContentKeys.has(contentKey)) return false;
+              return true;
+            });
             return [...prev, ...uniqueNew];
           });
           
@@ -138,8 +146,9 @@ const ChatWidget = () => {
     if (!inputValue.trim() || isLoading) return;
 
     const userMessage = inputValue.trim();
+    const tempId = `temp_${Date.now()}`; // Temporary ID for deduplication
     setInputValue('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    setMessages(prev => [...prev, { id: tempId, role: 'user', content: userMessage }]);
     setIsLoading(true);
 
     if (chatMode === 'human') {
