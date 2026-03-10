@@ -402,6 +402,65 @@ function needsHumanAgent(message: string): boolean {
   return keywords.some(k => message.toLowerCase().includes(k));
 }
 
+// 获取会话消息 API - 用于前端轮询获取客服回复
+app.get('/api/chat/messages', async (req: Request, res: Response) => {
+  try {
+    const { sessionId, after } = req.query;
+    
+    if (!sessionId) {
+      return res.status(400).json({ error: 'Session ID is required' });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.json({ messages: [] });
+    }
+
+    // Find session by partial ID match
+    const { data: sessions } = await client
+      .from('chat_sessions')
+      .select('id')
+      .eq('status', 'active');
+
+    const targetSession = sessions?.find(s => s.id.startsWith(sessionId as string));
+    
+    if (!targetSession) {
+      return res.json({ messages: [] });
+    }
+
+    // Get messages after the specified ID
+    let query = client
+      .from('chat_messages')
+      .select('*')
+      .eq('session_id', targetSession.id)
+      .order('created_at', { ascending: true });
+
+    if (after) {
+      const { data: afterMessage } = await client
+        .from('chat_messages')
+        .select('created_at')
+        .eq('id', after)
+        .single();
+      
+      if (afterMessage) {
+        query = query.gt('created_at', afterMessage.created_at);
+      }
+    }
+
+    const { data: messages, error } = await query;
+
+    if (error) {
+      console.error('Error fetching messages:', error);
+      return res.json({ messages: [] });
+    }
+
+    res.json({ messages: messages || [] });
+  } catch (error) {
+    console.error('Get messages error:', error);
+    res.status(500).json({ error: 'Failed to get messages' });
+  }
+});
+
 // 人工客服消息 API - 将用户消息转发到飞书
 app.post('/api/chat/human', async (req: Request, res: Response) => {
   try {

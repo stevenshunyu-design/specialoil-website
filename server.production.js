@@ -1027,6 +1027,65 @@ async function notifyHumanSupportRequest(sessionId, messages, userEmail, custome
   }
 }
 
+// 获取会话消息 API - 用于前端轮询获取客服回复
+app.get('/api/chat/messages', apiLimiter, async (req, res) => {
+  try {
+    const { sessionId, after } = req.query;
+    
+    if (!sessionId) {
+      return res.status(400).json({ error: 'Session ID is required' });
+    }
+
+    if (!supabase) {
+      return res.json({ messages: [] });
+    }
+
+    // Find session by partial ID match
+    const { data: sessions } = await supabase
+      .from('chat_sessions')
+      .select('id')
+      .eq('status', 'active');
+
+    const targetSession = sessions?.find(s => s.id.startsWith(String(sessionId)));
+    
+    if (!targetSession) {
+      return res.json({ messages: [] });
+    }
+
+    // Get messages after the specified ID
+    let query = supabase
+      .from('chat_messages')
+      .select('*')
+      .eq('session_id', targetSession.id)
+      .order('created_at', { ascending: true });
+
+    if (after) {
+      // Get messages with ID greater than 'after'
+      const { data: afterMessage } = await supabase
+        .from('chat_messages')
+        .select('created_at')
+        .eq('id', after)
+        .single();
+      
+      if (afterMessage) {
+        query = query.gt('created_at', afterMessage.created_at);
+      }
+    }
+
+    const { data: messages, error } = await query;
+
+    if (error) {
+      console.error('Error fetching messages:', error);
+      return res.json({ messages: [] });
+    }
+
+    res.json({ messages: messages || [] });
+  } catch (error) {
+    console.error('Get messages error:', error);
+    res.status(500).json({ error: 'Failed to get messages' });
+  }
+});
+
 // 人工客服消息 API - 将用户消息转发到飞书
 app.post('/api/chat/human', apiLimiter, async (req, res) => {
   try {

@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { io, Socket } from 'socket.io-client';
 
 interface Message {
   id?: string;
@@ -58,9 +57,10 @@ const ChatWidget = () => {
   const [isWaitingForAgent, setIsWaitingForAgent] = useState(false);
   const [showCustomerForm, setShowCustomerForm] = useState(false);
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({ name: '', email: '', phone: '' });
+  const [lastMessageId, setLastMessageId] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const socketRef = useRef<Socket | null>(null);
+  const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const visitorId = useRef(getVisitorId());
 
   const scrollToBottom = useCallback(() => {
@@ -71,85 +71,57 @@ const ChatWidget = () => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
-  // Initialize socket connection when in human mode
-  useEffect(() => {
-    if (chatMode === 'human' && isOpen && !socketRef.current) {
-      const socket = io({
-        path: '/socket.io/',
-        transports: ['websocket', 'polling']
-      });
-
-      socket.on('connect', () => {
-        console.log('Connected to chat server');
-        socket.emit('visitor:join', { 
-          visitorId: visitorId.current 
-        });
-      });
-
-      socket.on('session:created', (newSession: ChatSession) => {
-        setSession(newSession);
-        if (newSession.status === 'waiting') {
-          setIsWaitingForAgent(true);
-          setMessages(prev => [...prev, {
-            role: 'system',
-            content: '🔄 Connecting you to a human agent... Please wait.'
-          }]);
+  // Poll for new messages when in human mode
+  const pollForNewMessages = useCallback(async () => {
+    if (!session?.id) return;
+    
+    try {
+      const response = await fetch(`/api/chat/messages?sessionId=${session.id}&after=${lastMessageId}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.messages && data.messages.length > 0) {
+          const newMessages = data.messages.map((msg: any) => ({
+            id: msg.id,
+            role: msg.sender_type === 'visitor' ? 'user' : 'admin' as 'user' | 'admin',
+            content: msg.message,
+            sender_name: msg.sender_name,
+            created_at: msg.created_at
+          }));
+          
+          setMessages(prev => {
+            // Filter out duplicates
+            const existingIds = new Set(prev.map(m => m.id));
+            const uniqueNew = newMessages.filter((m: Message) => !existingIds.has(m.id));
+            return [...prev, ...uniqueNew];
+          });
+          
+          // Update last message ID
+          if (data.messages.length > 0) {
+            setLastMessageId(data.messages[data.messages.length - 1].id);
+          }
         }
-      });
-
-      socket.on('session:active', () => {
-        setIsWaitingForAgent(false);
-        setMessages(prev => [...prev, {
-          role: 'system',
-          content: '✅ A support agent has joined the chat.'
-        }]);
-      });
-
-      socket.on('messages:history', (history: Message[]) => {
-        const formattedHistory = history.map((msg: any) => ({
-          id: msg.id,
-          role: (msg.sender_type === 'visitor' ? 'user' : 'admin') as 'user' | 'admin',
-          content: msg.message,
-          sender_name: msg.sender_name,
-          created_at: msg.created_at
-        }));
-        setMessages(prev => [...prev, ...formattedHistory]);
-      });
-
-      socket.on('message:new', (msg: any) => {
-        const formattedMsg: Message = {
-          id: msg.id,
-          role: (msg.sender_type === 'visitor' ? 'user' : 'admin') as 'user' | 'admin',
-          content: msg.message,
-          sender_name: msg.sender_name,
-          created_at: msg.created_at
-        };
-        setMessages(prev => [...prev, formattedMsg]);
-      });
-
-      socket.on('session:closed', () => {
-        setMessages(prev => [...prev, {
-          role: 'system',
-          content: 'Chat session has ended. Thank you for contacting us!'
-        }]);
-        setChatMode('ai');
-        setSession(null);
-      });
-
-      socket.on('disconnect', () => {
-        console.log('Disconnected from chat server');
-      });
-
-      socketRef.current = socket;
+      }
+    } catch (error) {
+      console.error('Error polling messages:', error);
     }
+  }, [session?.id, lastMessageId]);
 
+  // Start polling when in human mode with a session
+  useEffect(() => {
+    if (chatMode === 'human' && session?.id && isOpen) {
+      // Poll every 3 seconds
+      pollIntervalRef.current = setInterval(pollForNewMessages, 3000);
+      // Also poll immediately
+      pollForNewMessages();
+    }
+    
     return () => {
-      if (socketRef.current && chatMode !== 'human') {
-        socketRef.current.disconnect();
-        socketRef.current = null;
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current);
+        pollIntervalRef.current = null;
       }
     };
-  }, [chatMode, isOpen]);
+  }, [chatMode, session?.id, isOpen, pollForNewMessages]);
 
   // Focus input when chat opens or after sending message
   const focusInput = useCallback(() => {
