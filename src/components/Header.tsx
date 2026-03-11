@@ -1,9 +1,11 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 
 const Header = () => {
+  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
@@ -34,23 +36,23 @@ const Header = () => {
   };
 
   const menuItems = [
-    { label: 'Home', path: '/' },
-    { label: 'About', path: '/about' },
-    { label: 'Partners', path: '/partners' },
+    { label: t('nav.home'), path: '/' },
+    { label: t('nav.about'), path: '/about' },
+    { label: t('nav.partners', 'Partners'), path: '/partners' },
     {
-      label: 'Products',
+      label: t('nav.products'),
       path: '/products',
       isDropdown: true,
       dropdownItems: [
-        { label: 'Transformer Oil', path: '/products/transformer-oil' },
-        { label: 'Rubber Process Oil', path: '/products/rubber-process-oil' },
-        { label: 'Finished Lubricants', path: '/products/finished-lubricants' }
+        { label: t('products.categories.transformer.title'), path: '/products/transformer-oil' },
+        { label: t('products.categories.rubber.title'), path: '/products/rubber-process-oil' },
+        { label: t('products.categories.lubricants.title'), path: '/products/finished-lubricants' }
       ]
     },
-    { label: 'Logistics', path: '/logistics' },
-    { label: 'Quality', path: '/quality' },
-    { label: 'Blog', path: '/blog' },
-    { label: 'Contact', path: '/contact' }
+    { label: t('nav.logistics'), path: '/logistics' },
+    { label: t('nav.quality'), path: '/quality' },
+    { label: t('nav.blog', 'Blog'), path: '/blog' },
+    { label: t('nav.contact'), path: '/contact' }
   ];
 
   return (

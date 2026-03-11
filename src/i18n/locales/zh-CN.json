@@ -20,6 +20,8 @@
     "quality": "质量保证",
     "logistics": "物流服务",
     "contact": "联系我们",
+    "blog": "博客",
+    "partners": "合作伙伴",
     "selectLanguage": "选择语言"
   },
   "footer": {
@@ -39,6 +41,7 @@
       "cta": "索取报价"
     },
     "slides": {
+      "cta": "了解更多",
       "slide1": {
         "title": "中国优质特种油来源",
         "subtitle": "连接全球买家与中国最佳制造商"
@@ -87,6 +90,10 @@
       "logistics": {
         "title": "快速交货",
         "description": "高效物流解决方案"
+      },
+      "support": {
+        "title": "24/7 支持",
+        "description": "技术支持"
       }
     },
     "products": {

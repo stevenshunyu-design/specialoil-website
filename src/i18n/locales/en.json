@@ -20,6 +20,8 @@
     "quality": "Quality",
     "logistics": "Logistics",
     "contact": "Contact",
+    "blog": "Blog",
+    "partners": "Partners",
     "selectLanguage": "Select Language"
   },
   "footer": {
@@ -39,6 +41,7 @@
       "cta": "Request a Quote"
     },
     "slides": {
+      "cta": "Learn More",
       "slide1": {
         "title": "China's Premium Special Oil Source",
         "subtitle": "Connecting Global Buyers with China's Best Manufacturers"
@@ -87,6 +90,10 @@
       "logistics": {
         "title": "Fast Delivery",
         "description": "Efficient logistics solutions"
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "Technical assistance"
       }
     },
     "products": {

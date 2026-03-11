@@ -1,8 +1,10 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+  const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // Auto slide change
@@ -16,25 +18,25 @@ const Home = () => {
   const slides = [
     {
       id: 1,
-      title: "China's Premium Special Oil Source",
-      subtitle: "Connecting Global Buyers with China's Best Manufacturers",
-      ctaText: "Explore Our Products",
+      title: t('home.slides.slide1.title'),
+      subtitle: t('home.slides.slide1.subtitle'),
+      ctaText: t('home.slides.cta', 'Explore Our Products'),
       ctaLink: "/products",
       imageUrl: "https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_16_9&prompt=Bohai%20Bay%20offshore%20drilling%20platform%20silhouette%2C%20deep%20blue%20color%2C%20industrial%20cinematic%20style%2C%20high%20contrast&sign=e81f5a5b6e3ca6e1f132b9baed80513c"
     },
     {
       id: 2,
-      title: "High-Quality Special Oil",
-      subtitle: "Compliant with Global Standards & Specifications",
-      ctaText: "View Technical Specs",
+      title: t('home.slides.slide2.title'),
+      subtitle: t('home.slides.slide2.subtitle'),
+      ctaText: t('home.slides.cta', 'View Technical Specs'),
       ctaLink: "/products/finished-lubricants",
       imageUrl: "https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_16_9&prompt=Golden%20lubricating%20oil%20pouring%20into%20machinery%20close%20up%2C%20industrial%20cinematic%20style%2C%20high%20contrast%2C%20blue%20and%20gold%20lighting&sign=e98dda1f40b359abeede5161ae03c5d4"
     },
     {
       id: 3,
-      title: "Seamless Global Logistics",
-      subtitle: "Reliable Shipping to 50+ Countries Worldwide",
-      ctaText: "Check Logistics",
+      title: t('home.slides.slide3.title'),
+      subtitle: t('home.slides.slide3.subtitle'),
+      ctaText: t('home.slides.cta', 'Check Logistics'),
       ctaLink: "/logistics",
       imageUrl: "/iso-tanks-port.jpg?v=4"
     }
@@ -43,8 +45,8 @@ const Home = () => {
   const features = [
     {
       icon: "fa-certificate",
-      title: "ISO 9001 Certified",
-      description: "Quality management system excellence"
+      title: t('home.features.quality.title'),
+      description: t('home.features.quality.description')
     },
     {
       icon: "fa-globe",
@@ -53,18 +55,18 @@ const Home = () => {
     },
     {
       icon: "fa-shield-halved",
-      title: "Quality Standards",
-      description: "International compliance"
+      title: t('home.features.standards.title'),
+      description: t('home.features.standards.description')
     },
     {
       icon: "fa-truck-fast",
-      title: "Reliable Supply",
-      description: "Stable logistics network"
+      title: t('home.features.logistics.title'),
+      description: t('home.features.logistics.description')
     },
     {
       icon: "fa-headset",
-      title: "24/7 Support",
-      description: "Technical assistance"
+      title: t('home.features.support.title', '24/7 Support'),
+      description: t('home.features.support.description', 'Technical assistance')
     }
   ];
 
