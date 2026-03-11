@@ -507,5 +507,94 @@
       "contact": "お問い合わせ",
       "whatsapp": "WhatsApp"
     }
+  },
+  "partners": {
+    "hero": {
+      "title": "戦略的パートナー",
+      "subtitle": "中国有数の特殊油メーカーと協力し、プレミアム品質の製品を提供"
+    },
+    "intro": {
+      "title": "サプライチェーンネットワーク",
+      "description": "中国で最も信頼される特殊油メーカーと強固なパートナーシップを構築しています。これらの協力関係により、国際基準に準拠した一貫した高品質製品を世界中のお客様に提供できます。",
+      "qualityAssured": "品質保証",
+      "directSourcing": "直接調達",
+      "reliableSupply": "安定供給"
+    },
+    "partners": {
+      "petrochina": {
+        "name": "中国石油",
+        "chineseName": "中国石油",
+        "fullName": "China National Petroleum Corporation",
+        "description": "中国最大の石油・ガス生産・販売企業であり、エネルギー生産の世界的リーダー。",
+        "products": ["変圧器油", "作動油", "工業用潤滑油", "白油"],
+        "headquarters": "中国・北京",
+        "established": "1988年設立"
+      },
+      "sinopec": {
+        "name": "中国石化",
+        "chineseName": "中国石化",
+        "fullName": "China Petroleum & Chemical Corporation",
+        "description": "世界最大の統合エネルギー・化学企業の一つであり、精製能力でリーダー的立場。",
+        "products": ["変圧器油", "ゴム油", "TDAE", "特殊油"],
+        "headquarters": "中国・北京",
+        "established": "2000年設立"
+      },
+      "cnooc": {
+        "name": "中国海油",
+        "chineseName": "中国海油",
+        "fullName": "China National Offshore Oil Corporation",
+        "description": "中国最大の海洋石油・ガス生産企業であり、深海探査・生産を専門とする。",
+        "products": ["変圧器油", "船舶用潤滑油", "ナフテン系油"],
+        "headquarters": "中国・北京",
+        "established": "1982年設立"
+      },
+      "yanchang": {
+        "name": "延長石油",
+        "chineseName": "延长石油",
+        "fullName": "Shaanxi Yanchang Petroleum Group",
+        "description": "中国で最も歴史ある石油企業の一つであり、油田開発・石油化学を専門とする。",
+        "products": ["工業用油", "変圧器油", "潤滑油"],
+        "headquarters": "中国・西安",
+        "established": "1905年設立"
+      },
+      "sinochem": {
+        "name": "中化集団",
+        "chineseName": "中化集团",
+        "fullName": "Sinochem Holdings Corporation",
+        "description": "農業、エネルギー、化学分野における中国有数のコングロマリット。",
+        "products": ["特殊化学品", "工業用油", "石油化学製品"],
+        "headquarters": "中国・北京",
+        "established": "1950年設立"
+      }
+    },
+    "whyChooseUs": {
+      "title": "パートナーが当社を選ぶ理由",
+      "partnership": {
+        "title": "長期的パートナーシップ",
+        "description": "メーカーと永続的な関係を構築し、安定したサプライチェーンと一貫した品質を確保します。"
+      },
+      "globalAccess": {
+        "title": "グローバル市場アクセス",
+        "description": "中国のメーカーと国際的なバイヤーを結びつけ、グローバルなリーチを拡大します。"
+      },
+      "standards": {
+        "title": "品質基準",
+        "description": "すべてのパートナーは厳格な国際品質認証と基準を満たしています。"
+      }
+    },
+    "certifications": {
+      "title": "パートナー認証",
+      "items": ["ISO 9001", "ISO 14001", "ISO 45001", "API", "EU REACH", "ASTM", "DIN", "GB規格"]
+    },
+    "cta": {
+      "title": "パートナーになることにご興味がありますか？",
+      "description": "品質の高いメーカーのネットワークを常に拡大しています。パートナーシップの機会についてご相談ください。",
+      "contactButton": "お問い合わせ",
+      "viewProducts": "製品を見る"
+    },
+    "mobile": {
+      "call": "電話する",
+      "whatsapp": "WhatsApp"
+    }
   }
 }

@@ -507,5 +507,94 @@
       "contact": "Contate-nos",
       "whatsapp": "WhatsApp"
     }
+  },
+  "partners": {
+    "hero": {
+      "title": "Parceiros Estratégicos",
+      "subtitle": "Colaborando com os principais fabricantes de óleos especiais da China para fornecer produtos de qualidade premium"
+    },
+    "intro": {
+      "title": "Nossa Rede de Cadeia de Suprimentos",
+      "description": "Estabelecemos sólidas parcerias com os fabricantes de óleos especiais mais renomados da China. Essas colaborações garantem que possamos fornecer aos nossos clientes globais produtos consistentes e de alta qualidade que atendam aos padrões internacionais.",
+      "qualityAssured": "Qualidade Garantida",
+      "directSourcing": "Fornecimento Direto",
+      "reliableSupply": "Fornecimento Confiável"
+    },
+    "partners": {
+      "petrochina": {
+        "name": "PetroChina",
+        "chineseName": "中国石油",
+        "fullName": "China National Petroleum Corporation",
+        "description": "O maior produtor e distribuidor de petróleo e gás da China, líder global na produção de energia.",
+        "products": ["Óleo para Transformadores", "Óleo Hidráulico", "Lubrificantes Industriais", "Óleo Branco"],
+        "headquarters": "Pequim, China",
+        "established": "Fundada em 1988"
+      },
+      "sinopec": {
+        "name": "Sinopec",
+        "chineseName": "中国石化",
+        "fullName": "China Petroleum & Chemical Corporation",
+        "description": "Uma das maiores empresas integradas de energia e química do mundo, líder em capacidade de refino.",
+        "products": ["Óleo para Transformadores", "Óleo para Borracha", "TDAE", "Óleos Especiais"],
+        "headquarters": "Pequim, China",
+        "established": "Fundada em 2000"
+      },
+      "cnooc": {
+        "name": "CNOOC",
+        "chineseName": "中国海油",
+        "fullName": "China National Offshore Oil Corporation",
+        "description": "O maior produtor de petróleo e gás offshore da China, especializado em exploração e produção em águas profundas.",
+        "products": ["Óleo para Transformadores", "Lubrificantes Marinhos", "Óleos Naftênicos"],
+        "headquarters": "Pequim, China",
+        "established": "Fundada em 1982"
+      },
+      "yanchang": {
+        "name": "Yanchang Petroleum",
+        "chineseName": "延长石油",
+        "fullName": "Shaanxi Yanchang Petroleum Group",
+        "description": "Uma das mais antigas empresas petrolíferas da China, especializada em desenvolvimento de campos petrolíferos e petroquímica.",
+        "products": ["Óleos Industriais", "Óleo para Transformadores", "Lubrificantes"],
+        "headquarters": "Xi'an, China",
+        "established": "Fundada em 1905"
+      },
+      "sinochem": {
+        "name": "Sinochem",
+        "chineseName": "中化集团",
+        "fullName": "Sinochem Holdings Corporation",
+        "description": "Um conglomerado chinês líder nos setores agrícola, energético e químico.",
+        "products": ["Produtos Químicos Especiais", "Óleos Industriais", "Petroquímicos"],
+        "headquarters": "Pequim, China",
+        "established": "Fundada em 1950"
+      }
+    },
+    "whyChooseUs": {
+      "title": "Por Que Nossos Parceiros Nos Escolhem",
+      "partnership": {
+        "title": "Parceria de Longo Prazo",
+        "description": "Construímos relacionamentos duradouros com fabricantes, garantindo cadeias de suprimentos estáveis e qualidade consistente."
+      },
+      "globalAccess": {
+        "title": "Acesso ao Mercado Global",
+        "description": "Conectamos fabricantes chineses com compradores internacionais, expandindo seu alcance global."
+      },
+      "standards": {
+        "title": "Padrões de Qualidade",
+        "description": "Todos os nossos parceiros atendem a rigorosas certificações e padrões de qualidade internacional."
+      }
+    },
+    "certifications": {
+      "title": "Certificações de Parceiros",
+      "items": ["ISO 9001", "ISO 14001", "ISO 45001", "API", "EU REACH", "ASTM", "DIN", "Padrões GB"]
+    },
+    "cta": {
+      "title": "Interessado em Tornar-se um Parceiro?",
+      "description": "Estamos sempre buscando expandir nossa rede de fabricantes de qualidade. Entre em contato para discutir oportunidades de parceria.",
+      "contactButton": "Contate-nos",
+      "viewProducts": "Ver Produtos"
+    },
+    "mobile": {
+      "call": "Ligue para Nós",
+      "whatsapp": "WhatsApp"
+    }
   }
 }

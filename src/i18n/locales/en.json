@@ -309,127 +309,600 @@
     "title": "Transformer Oil",
     "subtitle": "High-Performance Insulating Oils",
     "hero": {
-      "title": "Premium Transformer Oil",
-      "subtitle": "High-Performance Insulating Oils for Electrical Equipment"
+      "tag": "Premium Transformer Oil",
+      "title": "SpecVolt™ Series",
+      "subtitle": "Engineered for the most demanding high-voltage applications"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "specifications": "Specifications",
+      "applications": "Applications",
+      "benefits": "Benefits",
+      "packaging": "Packaging"
     },
     "overview": {
-      "title": "Product Overview",
-      "description": "We provide transformer oils from leading Chinese manufacturers, featuring excellent electrical insulation properties, thermal stability, and oxidation resistance for modern power systems."
-    },
-    "features": {
-      "title": "Key Performance Characteristics",
+      "title": "Superior Transformer Protection",
+      "description1": "SpecVolt™ Transformer Oils are premium naphthenic-based lubricants specifically designed to provide exceptional insulation, cooling, and protection for high-voltage transformers and electrical equipment.",
+      "description2": "We source transformer oils from leading Chinese manufacturers, offering products with naturally low sulfur content and superior dielectric properties. Our supply chain services ensure consistent quality and reliable performance for demanding applications.",
+      "keyFeatures": "Key Performance Characteristics",
       "feature1": {
-        "title": "Excellent Insulation",
-        "description": "High dielectric strength for reliable electrical insulation"
+        "title": "Zero Corrosive Sulfur",
+        "description": "Prevents copper corrosion in transformers"
       },
       "feature2": {
-        "title": "Thermal Stability",
-        "description": "Superior heat dissipation and thermal performance"
+        "title": "Arctic Reliability",
+        "description": "Performs down to -45°C"
       },
       "feature3": {
-        "title": "Oxidation Resistance",
-        "description": "Extended service life with minimal degradation"
+        "title": "Low Moisture Content",
+        "description": "Enhanced dielectric strength"
       },
       "feature4": {
-        "title": "Low Temperature Flow",
-        "description": "Excellent cold weather performance"
+        "title": "Thermal Stability",
+        "description": "Resists oxidation at high temperatures"
+      },
+      "requestQuote": "Request a Quote",
+      "downloadDatasheet": "Download Datasheet"
+    },
+    "specifications": {
+      "title": "Product Specifications",
+      "description": "SpecVolt™ Transformer Oils are available in three premium grades, each designed to meet specific application requirements and operating conditions. All grades meet or exceed international standards for transformer oils.",
+      "table": {
+        "grade": "Product Grade",
+        "viscosity": "Viscosity (40°C)",
+        "pourPoint": "Pour Point",
+        "dielectricStrength": "Dielectric Strength"
+      },
+      "grades": {
+        "i20x": {
+          "name": "SpecVolt I-20X",
+          "viscosity": "10-12 cSt",
+          "pourPoint": "-22°C",
+          "dielectric": ">70kV"
+        },
+        "i30x": {
+          "name": "SpecVolt I-30X",
+          "viscosity": "9-11 cSt",
+          "pourPoint": "-30°C",
+          "dielectric": ">70kV"
+        },
+        "i40x": {
+          "name": "SpecVolt I-40X",
+          "viscosity": "<12 cSt",
+          "pourPoint": "-45°C",
+          "dielectric": ">70kV"
+        }
+      },
+      "technical": {
+        "title": "Technical Specifications",
+        "baseOilType": "Base Oil Type:",
+        "baseOilValue": "Naphthenic",
+        "flashPoint": "Flash Point (COC):",
+        "flashPointValue": "> 140°C",
+        "firePoint": "Fire Point (COC):",
+        "firePointValue": "> 160°C",
+        "acidity": "Acidity (TAN):",
+        "acidityValue": "< 0.03 mg KOH/g",
+        "interfacialTension": "Interfacial Tension:",
+        "interfacialTensionValue": "> 35 mN/m",
+        "resistivity": "Resistivity (90°C):",
+        "resistivityValue": "> 10^12 Ω·m",
+        "oxidationStability": "Oxidation Stability:",
+        "oxidationStabilityValue": "Excellent"
+      },
+      "compliance": {
+        "title": "Compliance Standards",
+        "items": ["ASTM D3487", "IEC 60296", "BS 148", "GB 2536", "TOST compliant", "PCB-free", "RoHS compliant"]
       }
     },
     "applications": {
       "title": "Applications",
-      "item1": "Power transformers",
-      "item2": "Distribution transformers",
-      "item3": "Instrument transformers",
-      "item4": "Circuit breakers"
+      "description": "SpecVolt™ Transformer Oils are designed for use in a wide range of electrical equipment where excellent insulation properties, heat transfer capabilities, and oxidation resistance are critical requirements.",
+      "items": {
+        "highVoltage": {
+          "title": "High-Voltage Transformers",
+          "description": "Ideal for power generation and transmission transformers operating under extreme conditions."
+        },
+        "distribution": {
+          "title": "Distribution Transformers",
+          "description": "Provides excellent protection for medium and low voltage distribution networks."
+        },
+        "instrument": {
+          "title": "Instrument Transformers",
+          "description": "Ensures reliable performance for current and voltage transformers in metering systems."
+        },
+        "switchgear": {
+          "title": "Switchgear Equipment",
+          "description": "Offers superior insulation and cooling properties for circuit breakers and switchgear."
+        }
+      },
+      "recommendedTitle": "Recommended Applications by Grade",
+      "recommendedTable": {
+        "grade": "Product Grade",
+        "bestApplications": "Best Applications",
+        "operatingEnvironment": "Operating Environment",
+        "i20x": {
+          "applications": "Distribution transformers, medium-voltage equipment",
+          "environment": "Temperate climates, standard applications"
+        },
+        "i30x": {
+          "applications": "Power transformers, industrial applications",
+          "environment": "Cold climates, outdoor installations"
+        },
+        "i40x": {
+          "applications": "High-voltage transformers, critical applications",
+          "environment": "Extremely cold climates, Arctic regions"
+        }
+      }
+    },
+    "benefits": {
+      "title": "Performance Benefits",
+      "description": "SpecVolt™ Transformer Oils provide numerous advantages over conventional transformer oils, helping to extend equipment life, improve reliability, and reduce maintenance costs.",
+      "performance": {
+        "dielectric": {
+          "title": "Enhanced Dielectric Strength",
+          "description": "Superior insulation properties that maintain system integrity under high voltage stress."
+        },
+        "serviceLife": {
+          "title": "Extended Service Life",
+          "description": "Excellent oxidation resistance that extends oil life and reduces maintenance frequency."
+        },
+        "heatTransfer": {
+          "title": "Superior Heat Transfer",
+          "description": "Optimized thermal properties that improve cooling efficiency and reduce hot spots."
+        },
+        "protection": {
+          "title": "Equipment Protection",
+          "description": "Zero corrosive sulfur formulation that prevents copper corrosion and sludge formation."
+        }
+      },
+      "economic": {
+        "title": "Economic Benefits",
+        "items": [
+          "Reduced maintenance costs due to extended oil life",
+          "Lower equipment replacement costs through better protection",
+          "Minimized downtime and improved system reliability",
+          "Energy efficiency improvements through optimized cooling",
+          "Long-term cost savings compared to conventional oils"
+        ]
+      },
+      "environmental": {
+        "title": "Environmental Benefits",
+        "items": [
+          "Naturally low sulfur content reduces environmental impact",
+          "Extended oil life reduces waste generation and disposal needs",
+          "Compliant with international environmental regulations",
+          "Recyclable product that supports circular economy principles"
+        ],
+        "contactButton": "Contact Our Technical Team"
+      }
+    },
+    "packaging": {
+      "title": "Packaging & Delivery",
+      "description": "SpecVolt™ Transformer Oils are available in a variety of packaging options to meet your specific requirements, from small containers for maintenance to bulk deliveries for large installations.",
+      "options": {
+        "bucket18L": {
+          "title": "18L Plastic Bucket",
+          "description": "Ideal for small maintenance jobs and topping up",
+          "capacity": "18L / 5 Gal"
+        },
+        "drum200L": {
+          "title": "200L Steel Drum",
+          "description": "Perfect for medium-sized installations and projects",
+          "capacity": "200L / 55 Gal"
+        },
+        "ibc1000L": {
+          "title": "1000L IBC Tank",
+          "description": "For larger industrial applications and projects",
+          "capacity": "1000L / 275 Gal"
+        }
+      },
+      "bulkTitle": "Bulk Delivery Options",
+      "bulkDescription": "For large volume requirements, we offer bulk delivery options to minimize packaging waste and reduce costs:",
+      "bulkOptions": {
+        "tanker": {
+          "title": "Tanker Trucks",
+          "description": "Bulk road transport for deliveries within 500km of our facilities"
+        },
+        "isoTank": {
+          "title": "ISO Tank Containers",
+          "description": "26,000L stainless steel tanks for international shipping"
+        }
+      },
+      "learnMoreLogistics": "Learn More About Our Logistics"
+    },
+    "relatedProducts": {
+      "title": "Related Products",
+      "rubberOil": {
+        "series": "SpecFlex™ Series",
+        "title": "Rubber Process Oil",
+        "description": "High solvency naphthenic oils for rubber compounding and tire manufacturing.",
+        "viewProduct": "View Product"
+      },
+      "hydraulicOil": {
+        "series": "SpecLube™ Series",
+        "title": "Hydraulic Oil",
+        "description": "High-performance hydraulic oils for industrial and mobile equipment.",
+        "viewProduct": "View Product"
+      }
     },
     "cta": {
       "title": "Need Technical Specifications?",
       "description": "Contact our team for detailed product information and pricing",
       "button": "Request Technical Data"
+    },
+    "mobile": {
+      "contact": "Contact Us",
+      "whatsapp": "WhatsApp"
     }
   },
   "rubberProcessOil": {
     "title": "Rubber Process Oil",
     "hero": {
-      "title": "Rubber Process Oil",
-      "subtitle": "Superior Rubber Processing Solutions"
+      "tag": "Premium Rubber Process Oil",
+      "title": "SpecFlex™ Series",
+      "subtitle": "Engineered for superior rubber processing and end-product performance"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "specifications": "Specifications",
+      "applications": "Applications",
+      "benefits": "Benefits",
+      "packaging": "Packaging"
     },
     "overview": {
-      "title": "Product Overview",
-      "description": "We provide rubber process oils from trusted Chinese producers, featuring high solvency (Cn% > 35%) and excellent compatibility with various rubber types. Our end-to-end solutions support seamless procurement for specialized industrial applications."
-    },
-    "features": {
-      "title": "Key Performance Characteristics",
+      "title": "Superior Rubber Processing Solutions",
+      "description1": "SpecFlex™ Rubber Process Oils are premium naphthenic-based oils specifically designed to enhance the processing and performance of rubber compounds.",
+      "description2": "We provide rubber process oils from trusted Chinese producers, featuring high solvency (Cn% > 35%) and excellent compatibility with various rubber types. Our end-to-end solutions support seamless procurement for specialized industrial applications.",
+      "keyFeatures": "Key Performance Characteristics",
       "feature1": {
         "title": "High Solvency",
-        "description": "Excellent compatibility with rubber compounds"
+        "description": "Cn% > 35% for excellent rubber penetration"
       },
       "feature2": {
-        "title": "Thermal Stability",
-        "description": "Consistent performance under processing conditions"
+        "title": "EU REACH Compliant",
+        "description": "Low PAHs content for regulatory compliance"
       },
       "feature3": {
-        "title": "Color Stability",
-        "description": "Maintains product appearance and quality"
+        "title": "Low Pour Point",
+        "description": "Excellent cold temperature performance"
       },
       "feature4": {
-        "title": "Low Volatility",
-        "description": "Reduced emissions during processing"
+        "title": "Oxidation Stability",
+        "description": "Resists degradation during processing"
+      },
+      "requestQuote": "Request a Quote",
+      "downloadDatasheet": "Download Datasheet"
+    },
+    "specifications": {
+      "title": "Product Specifications",
+      "description": "SpecFlex™ Rubber Process Oils are available in three carefully formulated grades to meet the specific requirements of different rubber applications, from shoe soles to high-performance tires.",
+      "table": {
+        "grade": "Product Grade",
+        "application": "Recommended Application",
+        "solvency": "Solvency (Cn%)",
+        "viscosity": "Viscosity (40°C)"
+      },
+      "grades": {
+        "4006": {
+          "name": "SpecFlex 4006",
+          "application": "EPDM & Shoe Soles",
+          "solvency": "Cn% > 35%",
+          "viscosity": "60-70 cSt"
+        },
+        "4010": {
+          "name": "SpecFlex 4010",
+          "application": "High-performance Tires",
+          "solvency": "Cn% > 35%",
+          "viscosity": "90-110 cSt"
+        },
+        "4016": {
+          "name": "SpecFlex 4016",
+          "application": "Conveyor Belts",
+          "solvency": "Cn% > 35%",
+          "viscosity": "150-170 cSt"
+        }
+      },
+      "technical": {
+        "title": "Technical Specifications",
+        "baseOilType": "Base Oil Type:",
+        "baseOilValue": "Naphthenic",
+        "flashPoint": "Flash Point (COC):",
+        "flashPointValue": "> 200°C",
+        "pourPoint": "Pour Point:",
+        "pourPointValue": "< -15°C",
+        "anilinePoint": "Aniline Point:",
+        "anilinePointValue": "< 80°C",
+        "sulfurContent": "Sulfur Content:",
+        "sulfurContentValue": "< 0.5%",
+        "color": "Color (Saybolt):",
+        "colorValue": "+20 to +30",
+        "density": "Density (15°C):",
+        "densityValue": "0.91-0.95 g/cm³"
+      },
+      "compliance": {
+        "title": "Regulatory Compliance",
+        "items": ["EU REACH Regulation (EC 1907/2006)", "Low PAHs (Polycyclic Aromatic Hydrocarbons)", "RoHS Compliant", "FDA 21 CFR 178.3620(a) for indirect food contact", "Non-carcinogenic (as per IARC guidelines)", "ISO 9001 Quality Management System", "ISO 14001 Environmental Management System"]
       }
     },
     "applications": {
       "title": "Applications",
-      "item1": "Tire manufacturing",
-      "item2": "Industrial rubber products",
-      "item3": "Automotive components",
-      "item4": "Sealants and adhesives"
+      "description": "SpecFlex™ Rubber Process Oils are designed for use in a wide range of rubber products and applications, providing excellent processing properties and enhancing end-product performance.",
+      "shoeSoles": {
+        "title": "Shoe Soles & Footwear",
+        "description": "SpecFlex 4006 provides excellent flexibility and durability for shoe soles and other footwear components.",
+        "recommended": "Recommended Grade: SpecFlex 4006"
+      },
+      "tires": {
+        "title": "Tires & Automotive",
+        "description": "SpecFlex 4010 offers superior performance for high-performance tires, providing excellent grip and wear resistance.",
+        "recommended": "Recommended Grade: SpecFlex 4010"
+      },
+      "industrialBelts": {
+        "title": "Industrial Belts",
+        "description": "SpecFlex 4016 is ideal for conveyor belts and industrial rubber products requiring high durability and strength.",
+        "recommended": "Recommended Grade: SpecFlex 4016"
+      },
+      "otherTitle": "Other Applications",
+      "otherApps": {
+        "seals": {
+          "title": "Seals & Gaskets",
+          "description": "Provides excellent flexibility and resistance to environmental factors"
+        },
+        "cable": {
+          "title": "Cable & Wire Insulation",
+          "description": "Enhances electrical properties and flexibility of rubber insulation"
+        },
+        "automotive": {
+          "title": "Automotive Components",
+          "description": "Ideal for weather strips, hoses, and other automotive rubber parts"
+        },
+        "construction": {
+          "title": "Building & Construction",
+          "description": "Suitable for gaskets, roofing membranes, and waterproofing materials"
+        }
+      }
+    },
+    "benefits": {
+      "title": "Performance Benefits",
+      "description": "SpecFlex™ Rubber Process Oils provide numerous advantages in rubber processing and end-product performance, helping manufacturers achieve better quality and efficiency.",
+      "items": {
+        "processing": {
+          "title": "Enhanced Processing",
+          "description": "Improves rubber flow properties and mold filling during processing."
+        },
+        "compatibility": {
+          "title": "Excellent Compatibility",
+          "description": "Compatible with natural rubber and various synthetic rubber types."
+        },
+        "flexibility": {
+          "title": "Improved Flexibility",
+          "description": "Enhances the flexibility and low-temperature properties of rubber products."
+        },
+        "color": {
+          "title": "Color Stability",
+          "description": "Minimal impact on the color of finished rubber products."
+        }
+      },
+      "processingAdvantages": {
+        "title": "Processing Advantages",
+        "items": ["Improved dispersion of fillers and additives", "Reduced energy consumption during mixing", "Lower processing temperatures and cycle times", "Enhanced mold flow and cavity filling", "Reduced scrap rates and production waste"]
+      },
+      "endProduct": {
+        "title": "End-Product Improvements",
+        "items": ["Enhanced flexibility and low-temperature properties", "Improved tensile strength and elongation", "Superior resistance to aging and environmental factors", "Consistent quality and performance batch-to-batch", "Compliance with international regulatory standards"],
+        "contactButton": "Contact Our Technical Team"
+      }
+    },
+    "packaging": {
+      "title": "Packaging & Delivery",
+      "description": "SpecFlex™ Rubber Process Oils are available in a variety of packaging options to meet your specific production requirements, from small batches to large-scale manufacturing needs.",
+      "options": {
+        "bucket18L": {
+          "title": "18L Plastic Bucket",
+          "description": "Perfect for small-batch production and testing",
+          "capacity": "18L / 5 Gal"
+        },
+        "drum200L": {
+          "title": "200L Steel Drum",
+          "description": "Ideal for medium-sized manufacturing operations",
+          "capacity": "200L / 55 Gal"
+        },
+        "ibc1000L": {
+          "title": "1000L IBC Tank",
+          "description": "For large-scale production facilities",
+          "capacity": "1000L / 275 Gal"
+        }
+      },
+      "learnMoreLogistics": "Learn More About Our Logistics"
     },
     "cta": {
       "title": "Need Technical Specifications?",
       "description": "Contact our team for detailed product information",
       "button": "Request Technical Data"
+    },
+    "mobile": {
+      "contact": "Contact Us",
+      "whatsapp": "WhatsApp"
     }
   },
   "finishedLubricants": {
     "title": "Finished Lubricants",
     "hero": {
-      "title": "Finished Lubricants",
-      "subtitle": "Advanced Industrial Lubrication Solutions"
+      "tag": "Premium Finished Lubricants",
+      "title": "SpecLube™ Series",
+      "subtitle": "Engineered for extreme conditions and maximum performance"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "productLineup": "Product Lineup",
+      "hydraulicOils": "Hydraulic Oils",
+      "packaging": "Packaging"
     },
     "overview": {
-      "title": "Product Overview",
-      "description": "We offer finished lubricants from professional Chinese manufacturers, formulated with advanced additive technology to deliver superior performance, extended equipment life, and reduced maintenance costs."
-    },
-    "features": {
-      "title": "Key Performance Characteristics",
+      "title": "Advanced Industrial Lubrication Solutions",
+      "description1": "SpecLube™ Finished Lubricants are premium formulated lubricants designed to provide exceptional protection and performance in the most demanding industrial applications.",
+      "description2": "We offer finished lubricants from professional Chinese manufacturers, formulated with advanced additive technology to deliver superior performance, extended equipment life, and reduced maintenance costs.",
+      "keyFeatures": "Key Performance Characteristics",
       "feature1": {
-        "title": "Wear Protection",
-        "description": "Superior anti-wear properties"
+        "title": "Exceptional Wear Protection",
+        "description": "Extends equipment life in high-load applications"
       },
       "feature2": {
-        "title": "Oxidation Stability",
-        "description": "Extended oil life and drain intervals"
+        "title": "Wide Temperature Range",
+        "description": "Performs from arctic to extreme heat conditions"
       },
       "feature3": {
-        "title": "Temperature Range",
-        "description": "Excellent performance across temperature ranges"
+        "title": "Water Resistance",
+        "description": "Maintains performance in wet environments"
       },
       "feature4": {
-        "title": "Corrosion Protection",
-        "description": "Protects metal surfaces from corrosion"
-      }
+        "title": "Oxidation Stability",
+        "description": "Extended service life and reduced deposits"
+      },
+      "requestQuote": "Request a Quote",
+      "downloadGuide": "Download Product Guide"
     },
-    "applications": {
-      "title": "Applications",
-      "item1": "Industrial machinery",
-      "item2": "Automotive engines",
-      "item3": "Hydraulic systems",
-      "item4": "Gear systems"
+    "productLineup": {
+      "title": "Our Product Lineup",
+      "description": "SpecLube™ offers a comprehensive range of high-performance lubricants designed to meet the specific needs of various industrial applications. Each product is formulated with our premium naphthenic base oils and advanced additive packages.",
+      "categories": {
+        "hydraulic": {
+          "name": "Hydraulic Oils",
+          "description": "High-performance hydraulic oils engineered for extreme pressure applications and wide temperature ranges.",
+          "grades": ["L-HM (High Pressure)", "L-HV (Low Temperature)", "L-HS (Synthetic)"],
+          "standard": "Meets DIN 51524"
+        },
+        "gear": {
+          "name": "Gear Oils",
+          "description": "Premium gear oils designed to protect against wear, scuffing and micropitting in industrial gear systems.",
+          "grades": ["L-CKD (Heavy Duty)", "L-CKE/P (Extreme Pressure)", "Synthetic Gear Oils"],
+          "standard": "Meets DIN 51517"
+        },
+        "fleet": {
+          "name": "Commercial Fleet",
+          "description": "High-performance engine oils for commercial vehicles and heavy-duty applications.",
+          "grades": ["Diesel Engine Oil (CJ-4/CH-4)", "Gasoline Engine Oil (API SN)", "Multi-Grade Engine Oils"],
+          "standard": "Meets API Specifications"
+        },
+        "specialty": {
+          "name": "Specialty Lubricants",
+          "description": "Specialized lubricants for unique industrial applications with specific performance requirements.",
+          "grades": ["Turbine Oil (L-TSA)", "Heat Transfer Oil (L-QD)", "Compressor Oils", "Food Grade Lubricants"],
+          "standard": "Various Industry Standards"
+        }
+      },
+      "availableGrades": "Available Grades:",
+      "contactTeam": "Contact Our Technical Team for Product Selection"
     },
-    "cta": {
-      "title": "Need Technical Specifications?",
-      "description": "Contact our team for detailed product information",
-      "button": "Request Technical Data"
+    "hydraulicOils": {
+      "title": "High-Performance Hydraulic Oils",
+      "description": "Our hydraulic oils are specially formulated to provide exceptional protection and performance in modern high-pressure hydraulic systems operating under severe conditions.",
+      "products": {
+        "lhm": {
+          "name": "SpecLube L-HM (High Pressure)",
+          "description": "Advanced anti-wear hydraulic oil designed for high-pressure systems operating at normal to elevated temperatures. Meets DIN 51524 Part 2 specifications."
+        },
+        "lhv": {
+          "name": "SpecLube L-HV (Low Temperature)",
+          "description": "Premium hydraulic oil with excellent low-temperature fluidity for systems operating in cold climates. Provides superior protection at temperatures as low as -40°C."
+        },
+        "lhs": {
+          "name": "SpecLube L-HS (Synthetic)",
+          "description": "Full synthetic hydraulic oil for extreme applications requiring maximum protection against wear, oxidation, and thermal degradation."
+        }
+      },
+      "benefits": {
+        "title": "Key Benefits",
+        "items": [
+          "Extended pump and component life",
+          "Improved system efficiency and energy savings",
+          "Reduced maintenance costs and downtime",
+          "Excellent filterability and system cleanliness",
+          "Compatibility with seal materials"
+        ]
+      },
+      "specifications": {
+        "title": "Technical Specifications",
+        "property": "Property",
+        "lhm32": "L-HM 32",
+        "lhm46": "L-HM 46",
+        "lhv46": "L-HV 46",
+        "viscosity40": "Viscosity @40°C (cSt)",
+        "viscosityIndex": "Viscosity Index",
+        "pourPoint": "Pour Point (°C)",
+        "flashPoint": "Flash Point (°C)",
+        "antiWear": "Anti-Wear (4-Ball, mm)"
+      },
+      "applications": {
+        "title": "Recommended Applications",
+        "industrial": {
+          "name": "Industrial Hydraulics",
+          "description": "Injection molding machines, presses, machine tools, and other industrial equipment"
+        },
+        "mobile": {
+          "name": "Mobile Equipment",
+          "description": "Construction machinery, agricultural equipment, and material handling systems"
+        },
+        "marine": {
+          "name": "Marine Applications",
+          "description": "Hydraulic systems on ships and offshore platforms"
+        },
+        "coldClimate": {
+          "name": "Cold Climate Operations",
+          "description": "Refrigeration systems and outdoor equipment in cold regions"
+        }
+      },
+      "requestConsultation": "Request a Product Consultation"
+    },
+    "packaging": {
+      "title": "Packaging & Delivery",
+      "description": "SpecLube™ Finished Lubricants are available in a comprehensive range of packaging options to meet the specific needs of your operation, from small maintenance applications to large-scale industrial use.",
+      "options": {
+        "drum200l": {
+          "name": "200L Steel Drum",
+          "description": "Heavy-duty steel drums with secure sealing for industrial applications"
+        },
+        "ibc1000l": {
+          "name": "1000L IBC Tank",
+          "description": "Intermediate bulk containers for efficient storage and handling"
+        },
+        "bucket18l": {
+          "name": "18L Plastic Bucket",
+          "description": "Convenient plastic buckets for smaller applications and maintenance"
+        }
+      },
+      "bulkDelivery": {
+        "title": "Bulk Delivery Options",
+        "description": "For large volume requirements, we offer efficient bulk delivery options to minimize packaging waste and reduce costs:",
+        "tankerTrucks": {
+          "name": "Tanker Trucks",
+          "description": "Bulk road transport for deliveries within 500km of our facilities"
+        },
+        "isoTanks": {
+          "name": "ISO Tank Containers",
+          "description": "26,000L stainless steel tanks for international shipping"
+        }
+      },
+      "learnMoreLogistics": "Learn More About Our Logistics"
+    },
+    "relatedProducts": {
+      "title": "Related Products",
+      "transformerOil": {
+        "series": "SpecVolt™ Series",
+        "name": "Transformer Oil",
+        "description": "Premium naphthenic transformer oils for high-voltage applications."
+      },
+      "rubberOil": {
+        "series": "SpecFlex™ Series",
+        "name": "Rubber Process Oil",
+        "description": "High solvency naphthenic oils for rubber compounding."
+      },
+      "viewProduct": "View Product"
+    },
+    "mobileFooter": {
+      "contactUs": "Contact Us",
+      "whatsapp": "WhatsApp"
     }
   },
   "quality": {
@@ -722,6 +1195,95 @@
     },
     "mobile": {
       "contact": "Contact Us",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "partners": {
+    "hero": {
+      "title": "Strategic Partners",
+      "subtitle": "Collaborating with China's leading special oil manufacturers to deliver premium quality products"
+    },
+    "intro": {
+      "title": "Our Supply Chain Network",
+      "description": "We have established strong partnerships with China's most reputable special oil manufacturers. These collaborations ensure that we can provide our global customers with consistent, high-quality products that meet international standards.",
+      "qualityAssured": "Quality Assured",
+      "directSourcing": "Direct Sourcing",
+      "reliableSupply": "Reliable Supply"
+    },
+    "partners": {
+      "petrochina": {
+        "name": "PetroChina",
+        "chineseName": "中国石油",
+        "fullName": "China National Petroleum Corporation",
+        "description": "China's largest oil and gas producer and distributor, a global leader in energy production.",
+        "products": ["Transformer Oil", "Hydraulic Oil", "Industrial Lubricants", "White Oil"],
+        "headquarters": "Beijing, China",
+        "established": "Est. 1988"
+      },
+      "sinopec": {
+        "name": "Sinopec",
+        "chineseName": "中国石化",
+        "fullName": "China Petroleum & Chemical Corporation",
+        "description": "One of the world's largest integrated energy and chemical companies, leading in refining capacity.",
+        "products": ["Transformer Oil", "Rubber Process Oil", "TDAE", "Specialty Oils"],
+        "headquarters": "Beijing, China",
+        "established": "Est. 2000"
+      },
+      "cnooc": {
+        "name": "CNOOC",
+        "chineseName": "中国海油",
+        "fullName": "China National Offshore Oil Corporation",
+        "description": "China's largest offshore oil and gas producer, specializing in deep-sea exploration and production.",
+        "products": ["Transformer Oil", "Marine Lubricants", "Naphthenic Oils"],
+        "headquarters": "Beijing, China",
+        "established": "Est. 1982"
+      },
+      "yanchang": {
+        "name": "Yanchang Petroleum",
+        "chineseName": "延长石油",
+        "fullName": "Shaanxi Yanchang Petroleum Group",
+        "description": "One of China's oldest oil companies, specializing in oilfield development and petrochemicals.",
+        "products": ["Industrial Oils", "Transformer Oil", "Lubricants"],
+        "headquarters": "Xi'an, China",
+        "established": "Est. 1905"
+      },
+      "sinochem": {
+        "name": "Sinochem",
+        "chineseName": "中化集团",
+        "fullName": "Sinochem Holdings Corporation",
+        "description": "A leading Chinese conglomerate in agriculture, energy, and chemical sectors.",
+        "products": ["Specialty Chemicals", "Industrial Oils", "Petrochemicals"],
+        "headquarters": "Beijing, China",
+        "established": "Est. 1950"
+      }
+    },
+    "whyChooseUs": {
+      "title": "Why Our Partners Choose Us",
+      "partnership": {
+        "title": "Long-term Partnership",
+        "description": "We build lasting relationships with manufacturers, ensuring stable supply chains and consistent quality."
+      },
+      "globalAccess": {
+        "title": "Global Market Access",
+        "description": "We connect Chinese manufacturers with international buyers, expanding their global reach."
+      },
+      "standards": {
+        "title": "Quality Standards",
+        "description": "All our partners meet strict international quality certifications and standards."
+      }
+    },
+    "certifications": {
+      "title": "Partner Certifications",
+      "items": ["ISO 9001", "ISO 14001", "ISO 45001", "API", "EU REACH", "ASTM", "DIN", "GB Standards"]
+    },
+    "cta": {
+      "title": "Interested in Becoming a Partner?",
+      "description": "We are always looking to expand our network of quality manufacturers. Contact us to discuss partnership opportunities.",
+      "contactButton": "Contact Us",
+      "viewProducts": "View Products"
+    },
+    "mobile": {
+      "call": "Call Us",
       "whatsapp": "WhatsApp"
     }
   }

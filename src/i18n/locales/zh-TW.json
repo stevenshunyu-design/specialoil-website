@@ -740,5 +740,94 @@
       "contact": "聯繫我們",
       "whatsapp": "WhatsApp"
     }
+  },
+  "partners": {
+    "hero": {
+      "title": "戰略合作夥伴",
+      "subtitle": "與中國領先的特種油製造商合作，提供優質產品"
+    },
+    "intro": {
+      "title": "我們的供應鏈網絡",
+      "description": "我們與中國最值得信賴的特種油製造商建立了穩固的合作關係。這些合作確保我們能夠為全球客戶提供符合國際標準的一致性高品質產品。",
+      "qualityAssured": "品質保證",
+      "directSourcing": "直接採購",
+      "reliableSupply": "可靠供應"
+    },
+    "partners": {
+      "petrochina": {
+        "name": "中國石油",
+        "chineseName": "中國石油",
+        "fullName": "中國石油天然氣集團有限公司",
+        "description": "中國最大的石油和天然氣生產商和分銷商，全球能源生產的領導者。",
+        "products": ["變壓器油", "液壓油", "工業潤滑油", "白油"],
+        "headquarters": "中國北京",
+        "established": "成立於1988年"
+      },
+      "sinopec": {
+        "name": "中國石化",
+        "chineseName": "中國石化",
+        "fullName": "中國石油化工股份有限公司",
+        "description": "全球最大的綜合性能源和化工企業之一，煉油能力領先。",
+        "products": ["變壓器油", "橡膠油", "TDAE", "特種油"],
+        "headquarters": "中國北京",
+        "established": "成立於2000年"
+      },
+      "cnooc": {
+        "name": "中國海油",
+        "chineseName": "中國海油",
+        "fullName": "中國海洋石油集團有限公司",
+        "description": "中國最大的海上石油和天然氣生產商，專注於深海勘探和生產。",
+        "products": ["變壓器油", "船用潤滑油", "環烷基油"],
+        "headquarters": "中國北京",
+        "established": "成立於1982年"
+      },
+      "yanchang": {
+        "name": "延長石油",
+        "chineseName": "延長石油",
+        "fullName": "陝西延長石油集團",
+        "description": "中國歷史最悠久的石油公司之一，專注於油田開發和石化。",
+        "products": ["工業油", "變壓器油", "潤滑油"],
+        "headquarters": "中國西安",
+        "established": "成立於1905年"
+      },
+      "sinochem": {
+        "name": "中化集團",
+        "chineseName": "中化集團",
+        "fullName": "中國中化控股有限責任公司",
+        "description": "中國領先的農業、能源和化工領域企業集團。",
+        "products": ["特種化學品", "工業油", "石化產品"],
+        "headquarters": "中國北京",
+        "established": "成立於1950年"
+      }
+    },
+    "whyChooseUs": {
+      "title": "合作夥伴選擇我們的原因",
+      "partnership": {
+        "title": "長期合作",
+        "description": "我們與製造商建立持久的合作關係，確保供應鏈穩定和品質一致。"
+      },
+      "globalAccess": {
+        "title": "全球市場准入",
+        "description": "我們將中國製造商與國際買家連接起來，拓展其全球業務。"
+      },
+      "standards": {
+        "title": "品質標準",
+        "description": "我們所有合作夥伴均符合嚴格的國際品質認證和標準。"
+      }
+    },
+    "certifications": {
+      "title": "合作夥伴認證",
+      "items": ["ISO 9001", "ISO 14001", "ISO 45001", "API", "歐盟REACH", "ASTM", "DIN", "國標"]
+    },
+    "cta": {
+      "title": "有興趣成為合作夥伴嗎？",
+      "description": "我們一直在尋找優質的製造商來擴大我們的網絡。聯繫我們討論合作機會。",
+      "contactButton": "聯繫我們",
+      "viewProducts": "查看產品"
+    },
+    "mobile": {
+      "call": "致電我們",
+      "whatsapp": "WhatsApp"
+    }
   }
 }

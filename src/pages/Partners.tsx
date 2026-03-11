@@ -1,70 +1,73 @@
 import { Link } from 'react-router-dom';
-
-// 合作伙伴数据 - 使用真实 Logo 图片
-const partners = [
-  {
-    id: 1,
-    name: 'PetroChina',
-    chineseName: '中国石油',
-    fullName: 'China National Petroleum Corporation',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/proxy_e3d5d347?sign=1804577395-b0e0a0060d-0-240563949ddd2996bda588cd203a569e1ce40effd0584699ec4292d76761edec',
-    website: 'https://www.petrochina.com.cn',
-    description: 'China\'s largest oil and gas producer and distributor, a global leader in energy production.',
-    products: ['Transformer Oil', 'Hydraulic Oil', 'Industrial Lubricants', 'White Oil'],
-    established: 1988,
-    headquarters: 'Beijing, China'
-  },
-  {
-    id: 2,
-    name: 'Sinopec',
-    chineseName: '中国石化',
-    fullName: 'China Petroleum & Chemical Corporation',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/proxy_68f0221f?sign=1804577396-2eac144ddd-0-839eaca03d35fdddcd1c531b04ba52d8481eeb4036aa7528508e39a96ea0b34f',
-    website: 'https://www.sinopec.com',
-    description: 'One of the world\'s largest integrated energy and chemical companies, leading in refining capacity.',
-    products: ['Transformer Oil', 'Rubber Process Oil', 'TDAE', 'Specialty Oils'],
-    established: 2000,
-    headquarters: 'Beijing, China'
-  },
-  {
-    id: 3,
-    name: 'CNOOC',
-    chineseName: '中国海油',
-    fullName: 'China National Offshore Oil Corporation',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/partners/cnooc_a36fc693.png?sign=1804576757-38e8a2ed30-0-49472ce53a49e2446d75297ab65d3603799d86c349905641e12c0bf99bd36111',
-    website: 'https://www.cnooc.com.cn',
-    description: 'China\'s largest offshore oil and gas producer, specializing in deep-sea exploration and production.',
-    products: ['Transformer Oil', 'Marine Lubricants', 'Naphthenic Oils'],
-    established: 1982,
-    headquarters: 'Beijing, China'
-  },
-  {
-    id: 4,
-    name: 'Yanchang Petroleum',
-    chineseName: '延长石油',
-    fullName: 'Shaanxi Yanchang Petroleum Group',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/proxy_0ca6bd67?sign=1804577397-b639af4867-0-1d40218054f985039c528fdf48494b9b4dfb45a8d1dc04494fb50bdee43095e2',
-    website: 'https://www.sxycpc.com',
-    description: 'One of China\'s oldest oil companies, specializing in oilfield development and petrochemicals.',
-    products: ['Industrial Oils', 'Transformer Oil', 'Lubricants'],
-    established: 1905,
-    headquarters: 'Xi\'an, China'
-  },
-  {
-    id: 5,
-    name: 'Sinochem',
-    chineseName: '中化集团',
-    fullName: 'Sinochem Holdings Corporation',
-    logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/proxy_66e0227a?sign=1804577396-b19d788c30-0-ee1a0b9a68c32a95e8ef72643c346641bde09aabf516df2ed4608c300bd03493',
-    website: 'https://www.sinochem.com',
-    description: 'A leading Chinese conglomerate in agriculture, energy, and chemical sectors.',
-    products: ['Specialty Chemicals', 'Industrial Oils', 'Petrochemicals'],
-    established: 1950,
-    headquarters: 'Beijing, China'
-  }
-];
+import { useTranslation } from 'react-i18next';
 
 const Partners = () => {
+  const { t } = useTranslation();
+  
+  // 合作伙伴数据 - 使用翻译
+  const partners = [
+    {
+      id: 1,
+      name: t('partners.partners.petrochina.name'),
+      chineseName: t('partners.partners.petrochina.chineseName'),
+      fullName: t('partners.partners.petrochina.fullName'),
+      logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/proxy_e3d5d347?sign=1804577395-b0e0a0060d-0-240563949ddd2996bda588cd203a569e1ce40effd0584699ec4292d76761edec',
+      website: 'https://www.petrochina.com.cn',
+      description: t('partners.partners.petrochina.description'),
+      products: t('partners.partners.petrochina.products', { returnObjects: true }) as string[],
+      established: t('partners.partners.petrochina.established'),
+      headquarters: t('partners.partners.petrochina.headquarters')
+    },
+    {
+      id: 2,
+      name: t('partners.partners.sinopec.name'),
+      chineseName: t('partners.partners.sinopec.chineseName'),
+      fullName: t('partners.partners.sinopec.fullName'),
+      logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/proxy_68f0221f?sign=1804577396-2eac144ddd-0-839eaca03d35fdddcd1c531b04ba52d8481eeb4036aa7528508e39a96ea0b34f',
+      website: 'https://www.sinopec.com',
+      description: t('partners.partners.sinopec.description'),
+      products: t('partners.partners.sinopec.products', { returnObjects: true }) as string[],
+      established: t('partners.partners.sinopec.established'),
+      headquarters: t('partners.partners.sinopec.headquarters')
+    },
+    {
+      id: 3,
+      name: t('partners.partners.cnooc.name'),
+      chineseName: t('partners.partners.cnooc.chineseName'),
+      fullName: t('partners.partners.cnooc.fullName'),
+      logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/partners/cnooc_a36fc693.png?sign=1804576757-38e8a2ed30-0-49472ce53a49e2446d75297ab65d3603799d86c349905641e12c0bf99bd36111',
+      website: 'https://www.cnooc.com.cn',
+      description: t('partners.partners.cnooc.description'),
+      products: t('partners.partners.cnooc.products', { returnObjects: true }) as string[],
+      established: t('partners.partners.cnooc.established'),
+      headquarters: t('partners.partners.cnooc.headquarters')
+    },
+    {
+      id: 4,
+      name: t('partners.partners.yanchang.name'),
+      chineseName: t('partners.partners.yanchang.chineseName'),
+      fullName: t('partners.partners.yanchang.fullName'),
+      logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/proxy_0ca6bd67?sign=1804577397-b639af4867-0-1d40218054f985039c528fdf48494b9b4dfb45a8d1dc04494fb50bdee43095e2',
+      website: 'https://www.sxycpc.com',
+      description: t('partners.partners.yanchang.description'),
+      products: t('partners.partners.yanchang.products', { returnObjects: true }) as string[],
+      established: t('partners.partners.yanchang.established'),
+      headquarters: t('partners.partners.yanchang.headquarters')
+    },
+    {
+      id: 5,
+      name: t('partners.partners.sinochem.name'),
+      chineseName: t('partners.partners.sinochem.chineseName'),
+      fullName: t('partners.partners.sinochem.fullName'),
+      logo: 'https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/proxy_66e0227a?sign=1804577396-b19d788c30-0-ee1a0b9a68c32a95e8ef72643c346641bde09aabf516df2ed4608c300bd03493',
+      website: 'https://www.sinochem.com',
+      description: t('partners.partners.sinochem.description'),
+      products: t('partners.partners.sinochem.products', { returnObjects: true }) as string[],
+      established: t('partners.partners.sinochem.established'),
+      headquarters: t('partners.partners.sinochem.headquarters')
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-white pt-24 pb-16">
       <div className="container mx-auto px-4">
@@ -74,16 +77,16 @@ const Partners = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-[#003366]/90 to-[#003366]/70 z-10"></div>
             <img 
               src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&h=400&fit=crop" 
-              alt="Strategic Partners" 
+              alt={t('partners.hero.title')} 
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 z-20 flex items-center justify-center">
               <div className="text-center">
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 font-['Montserrat']">
-                  Strategic Partners
+                  {t('partners.hero.title')}
                 </h1>
                 <p className="text-xl text-white/80 max-w-2xl mx-auto px-4">
-                  Collaborating with China's leading special oil manufacturers to deliver premium quality products
+                  {t('partners.hero.subtitle')}
                 </p>
               </div>
             </div>
@@ -94,25 +97,23 @@ const Partners = () => {
         <section className="mb-12">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-[#003366] mb-6 font-['Montserrat']">
-              Our Supply Chain Network
+              {t('partners.intro.title')}
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed mb-6">
-              We have established strong partnerships with China's most reputable special oil manufacturers. 
-              These collaborations ensure that we can provide our global customers with consistent, 
-              high-quality products that meet international standards.
+              {t('partners.intro.description')}
             </p>
             <div className="flex justify-center gap-8 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <i className="fa-solid fa-check-circle text-[#D4AF37]"></i>
-                <span>Quality Assured</span>
+                <span>{t('partners.intro.qualityAssured')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <i className="fa-solid fa-check-circle text-[#D4AF37]"></i>
-                <span>Direct Sourcing</span>
+                <span>{t('partners.intro.directSourcing')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <i className="fa-solid fa-check-circle text-[#D4AF37]"></i>
-                <span>Reliable Supply</span>
+                <span>{t('partners.intro.reliableSupply')}</span>
               </div>
             </div>
           </div>
@@ -184,7 +185,7 @@ const Partners = () => {
         {/* Why Our Partners */}
         <section className="mb-16 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 md:p-12">
           <h2 className="text-3xl font-bold text-[#003366] mb-8 text-center font-['Montserrat']">
-            Why Our Partners Choose Us
+            {t('partners.whyChooseUs.title')}
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -192,9 +193,9 @@ const Partners = () => {
               <div className="w-16 h-16 bg-[#003366] rounded-full flex items-center justify-center mx-auto mb-4">
                 <i className="fa-solid fa-handshake text-2xl text-white"></i>
               </div>
-              <h3 className="font-bold text-lg text-[#003366] mb-2">Long-term Partnership</h3>
+              <h3 className="font-bold text-lg text-[#003366] mb-2">{t('partners.whyChooseUs.partnership.title')}</h3>
               <p className="text-gray-600">
-                We build lasting relationships with manufacturers, ensuring stable supply chains and consistent quality.
+                {t('partners.whyChooseUs.partnership.description')}
               </p>
             </div>
             
@@ -202,9 +203,9 @@ const Partners = () => {
               <div className="w-16 h-16 bg-[#003366] rounded-full flex items-center justify-center mx-auto mb-4">
                 <i className="fa-solid fa-globe text-2xl text-white"></i>
               </div>
-              <h3 className="font-bold text-lg text-[#003366] mb-2">Global Market Access</h3>
+              <h3 className="font-bold text-lg text-[#003366] mb-2">{t('partners.whyChooseUs.globalAccess.title')}</h3>
               <p className="text-gray-600">
-                We connect Chinese manufacturers with international buyers, expanding their global reach.
+                {t('partners.whyChooseUs.globalAccess.description')}
               </p>
             </div>
             
@@ -212,9 +213,9 @@ const Partners = () => {
               <div className="w-16 h-16 bg-[#003366] rounded-full flex items-center justify-center mx-auto mb-4">
                 <i className="fa-solid fa-award text-2xl text-white"></i>
               </div>
-              <h3 className="font-bold text-lg text-[#003366] mb-2">Quality Standards</h3>
+              <h3 className="font-bold text-lg text-[#003366] mb-2">{t('partners.whyChooseUs.standards.title')}</h3>
               <p className="text-gray-600">
-                All our partners meet strict international quality certifications and standards.
+                {t('partners.whyChooseUs.standards.description')}
               </p>
             </div>
           </div>
@@ -223,11 +224,11 @@ const Partners = () => {
         {/* Certifications */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-[#003366] mb-8 text-center font-['Montserrat']">
-            Partner Certifications
+            {t('partners.certifications.title')}
           </h2>
           
           <div className="flex flex-wrap justify-center gap-6">
-            {['ISO 9001', 'ISO 14001', 'ISO 45001', 'API', 'EU REACH', 'ASTM', 'DIN', 'GB Standards'].map((cert, index) => (
+            {(t('partners.certifications.items', { returnObjects: true }) as string[]).map((cert, index) => (
               <div 
                 key={index}
                 className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200"
@@ -242,11 +243,10 @@ const Partners = () => {
         {/* CTA Section */}
         <section className="bg-gradient-to-r from-[#003366] to-[#004080] rounded-xl p-8 md:p-12 text-center">
           <h2 className="text-3xl font-bold text-white mb-4 font-['Montserrat']">
-            Interested in Becoming a Partner?
+            {t('partners.cta.title')}
           </h2>
           <p className="text-white/80 mb-8 max-w-2xl mx-auto">
-            We are always looking to expand our network of quality manufacturers. 
-            Contact us to discuss partnership opportunities.
+            {t('partners.cta.description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
@@ -254,14 +254,14 @@ const Partners = () => {
               className="inline-flex items-center justify-center gap-2 bg-[#D4AF37] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#c9a432] transition-all"
             >
               <i className="fa-solid fa-envelope"></i>
-              Contact Us
+              {t('partners.cta.contactButton')}
             </Link>
             <Link 
               to="/products"
               className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/30 px-8 py-3 rounded-lg font-semibold hover:bg-white/20 transition-all"
             >
               <i className="fa-solid fa-box"></i>
-              View Products
+              {t('partners.cta.viewProducts')}
             </Link>
           </div>
         </section>
@@ -271,11 +271,11 @@ const Partners = () => {
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex shadow-lg">
         <a href="tel:+8613793280176" className="flex-1 py-4 bg-[#003366] text-white flex items-center justify-center font-medium">
           <i className="fa-solid fa-phone mr-2"></i>
-          <span>Call Us</span>
+          <span>{t('partners.mobile.call')}</span>
         </a>
         <a href="https://wa.me/12345678910" className="flex-1 py-4 bg-[#D4AF37] text-white flex items-center justify-center font-medium">
           <i className="fa-brands fa-whatsapp mr-2"></i>
-          <span>WhatsApp</span>
+          <span>{t('partners.mobile.whatsapp')}</span>
         </a>
       </div>
     </div>

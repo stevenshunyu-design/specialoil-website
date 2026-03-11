@@ -448,43 +448,180 @@
   "finishedLubricants": {
     "title": "成品润滑油",
     "hero": {
-      "title": "成品润滑油",
-      "subtitle": "先进的工业润滑解决方案"
+      "tag": "优质成品润滑油",
+      "title": "SpecLube™系列",
+      "subtitle": "专为极端条件和最大性能而设计"
+    },
+    "tabs": {
+      "overview": "概述",
+      "productLineup": "产品系列",
+      "hydraulicOils": "液压油",
+      "packaging": "包装"
     },
     "overview": {
-      "title": "产品概述",
-      "description": "我们提供来自专业中国制造商的成品润滑油，采用先进添加剂技术配方，提供卓越性能、延长设备寿命并降低维护成本。"
-    },
-    "features": {
-      "title": "关键性能特点",
+      "title": "先进的工业润滑解决方案",
+      "description1": "SpecLube™成品润滑油是优质配方润滑油，旨在在最苛刻的工业应用中提供卓越的保护和性能。",
+      "description2": "我们提供来自专业中国制造商的成品润滑油，采用先进添加剂技术配方，提供卓越性能、延长设备寿命并降低维护成本。",
+      "keyFeatures": "关键性能特点",
       "feature1": {
-        "title": "耐磨保护",
-        "description": "优异的抗磨性能"
+        "title": "卓越的耐磨保护",
+        "description": "在高负荷应用中延长设备寿命"
       },
       "feature2": {
-        "title": "氧化稳定性",
-        "description": "延长油品寿命和换油周期"
+        "title": "宽广的温度范围",
+        "description": "从北极到极端高温环境均能表现优异"
       },
       "feature3": {
-        "title": "温度范围",
-        "description": "在各种温度范围内性能优异"
+        "title": "耐水性",
+        "description": "在潮湿环境中保持性能"
       },
       "feature4": {
-        "title": "防腐保护",
-        "description": "保护金属表面免受腐蚀"
-      }
+        "title": "氧化稳定性",
+        "description": "延长使用寿命并减少沉积物"
+      },
+      "requestQuote": "获取报价",
+      "downloadGuide": "下载产品指南"
     },
-    "applications": {
-      "title": "应用领域",
-      "item1": "工业机械",
-      "item2": "汽车发动机",
-      "item3": "液压系统",
-      "item4": "齿轮系统"
+    "productLineup": {
+      "title": "我们的产品系列",
+      "description": "SpecLube™提供全面的高性能润滑油系列，旨在满足各种工业应用的具体需求。每种产品都采用我们的优质环烷基基础油和先进添加剂配方。",
+      "categories": {
+        "hydraulic": {
+          "name": "液压油",
+          "description": "为极端压力应用和宽温度范围设计的高性能液压油。",
+          "grades": ["L-HM（高压）", "L-HV（低温）", "L-HS（合成）"],
+          "standard": "符合DIN 51524标准"
+        },
+        "gear": {
+          "name": "齿轮油",
+          "description": "优质齿轮油，旨在保护工业齿轮系统免受磨损、擦伤和微点蚀。",
+          "grades": ["L-CKD（重载）", "L-CKE/P（极压）", "合成齿轮油"],
+          "standard": "符合DIN 51517标准"
+        },
+        "fleet": {
+          "name": "商用车队",
+          "description": "为商用车和重型应用设计的高性能发动机油。",
+          "grades": ["柴油机油（CJ-4/CH-4）", "汽油机油（API SN）", "多级发动机油"],
+          "standard": "符合API规格"
+        },
+        "specialty": {
+          "name": "特种润滑油",
+          "description": "针对具有特定性能要求的独特工业应用的专业润滑油。",
+          "grades": ["汽轮机油（L-TSA）", "导热油（L-QD）", "压缩机油", "食品级润滑油"],
+          "standard": "各种行业标准"
+        }
+      },
+      "availableGrades": "可选牌号：",
+      "contactTeam": "联系我们的技术团队进行产品选择"
     },
-    "cta": {
-      "title": "需要技术规格？",
-      "description": "联系我们的团队获取详细产品信息",
-      "button": "索取技术资料"
+    "hydraulicOils": {
+      "title": "高性能液压油",
+      "description": "我们的液压油专门配方，为在严苛条件下运行的现代高压液压系统提供卓越的保护和性能。",
+      "products": {
+        "lhm": {
+          "name": "SpecLube L-HM（高压）",
+          "description": "先进抗磨液压油，专为在正常到高温条件下运行的高压系统设计。符合DIN 51524 Part 2规格。"
+        },
+        "lhv": {
+          "name": "SpecLube L-HV（低温）",
+          "description": "优质液压油，具有优异的低温流动性，适用于在寒冷气候下运行的系统。在低至-40°C的温度下提供卓越保护。"
+        },
+        "lhs": {
+          "name": "SpecLube L-HS（合成）",
+          "description": "全合成液压油，适用于需要最大程度防止磨损、氧化和热降解的极端应用。"
+        }
+      },
+      "benefits": {
+        "title": "主要优势",
+        "items": [
+          "延长泵和组件寿命",
+          "提高系统效率和节能",
+          "降低维护成本和停机时间",
+          "优异的过滤性和系统清洁度",
+          "与密封材料兼容"
+        ]
+      },
+      "specifications": {
+        "title": "技术规格",
+        "property": "性能指标",
+        "lhm32": "L-HM 32",
+        "lhm46": "L-HM 46",
+        "lhv46": "L-HV 46",
+        "viscosity40": "粘度@40°C (cSt)",
+        "viscosityIndex": "粘度指数",
+        "pourPoint": "倾点 (°C)",
+        "flashPoint": "闪点 (°C)",
+        "antiWear": "抗磨性能（四球机，mm）"
+      },
+      "applications": {
+        "title": "推荐应用",
+        "industrial": {
+          "name": "工业液压",
+          "description": "注塑机、压力机、机床和其他工业设备"
+        },
+        "mobile": {
+          "name": "移动设备",
+          "description": "建筑机械、农业设备和物料搬运系统"
+        },
+        "marine": {
+          "name": "海洋应用",
+          "description": "船舶和海上平台的液压系统"
+        },
+        "coldClimate": {
+          "name": "寒冷气候作业",
+          "description": "制冷系统和寒冷地区的户外设备"
+        }
+      },
+      "requestConsultation": "索取产品咨询"
+    },
+    "packaging": {
+      "title": "包装与交付",
+      "description": "SpecLube™成品润滑油提供全面的包装选择，以满足您运营的具体需求，从小型维护应用到大规模工业用途。",
+      "options": {
+        "drum200l": {
+          "name": "200L钢桶",
+          "description": "工业应用重型钢桶，密封安全可靠"
+        },
+        "ibc1000l": {
+          "name": "1000L IBC吨桶",
+          "description": "中型散装容器，便于高效存储和处理"
+        },
+        "bucket18l": {
+          "name": "18L塑料桶",
+          "description": "便捷的塑料桶，适用于小型应用和维护"
+        }
+      },
+      "bulkDelivery": {
+        "title": "散装交付选项",
+        "description": "对于大批量需求，我们提供高效的散装交付选项，以最大限度地减少包装浪费并降低成本：",
+        "tankerTrucks": {
+          "name": "罐车",
+          "description": "距离我们工厂500公里范围内的散装公路运输"
+        },
+        "isoTanks": {
+          "name": "ISO罐式集装箱",
+          "description": "26000升不锈钢罐，用于国际运输"
+        }
+      },
+      "learnMoreLogistics": "了解更多关于我们物流的信息"
+    },
+    "relatedProducts": {
+      "title": "相关产品",
+      "transformerOil": {
+        "series": "SpecVolt™系列",
+        "name": "变压器油",
+        "description": "用于高压应用的优质环烷基变压器油。"
+      },
+      "rubberOil": {
+        "series": "SpecFlex™系列",
+        "name": "橡胶操作油",
+        "description": "用于橡胶配合的高溶解力环烷基油。"
+      },
+      "viewProduct": "查看产品"
+    },
+    "mobileFooter": {
+      "contactUs": "联系我们",
+      "whatsapp": "WhatsApp"
     }
   },
   "quality": {
@@ -738,6 +875,95 @@
     },
     "mobile": {
       "contact": "联系我们",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "partners": {
+    "hero": {
+      "title": "战略合作伙伴",
+      "subtitle": "与中国领先的特种油制造商合作，提供优质产品"
+    },
+    "intro": {
+      "title": "我们的供应链网络",
+      "description": "我们与中国最值得信赖的特种油制造商建立了稳固的合作关系。这些合作确保我们能够为全球客户提供符合国际标准的一致性高质量产品。",
+      "qualityAssured": "质量保证",
+      "directSourcing": "直接采购",
+      "reliableSupply": "可靠供应"
+    },
+    "partners": {
+      "petrochina": {
+        "name": "中国石油",
+        "chineseName": "中国石油",
+        "fullName": "中国石油天然气集团有限公司",
+        "description": "中国最大的石油和天然气生产商和分销商，全球能源生产的领导者。",
+        "products": ["变压器油", "液压油", "工业润滑油", "白油"],
+        "headquarters": "中国北京",
+        "established": "成立于1988年"
+      },
+      "sinopec": {
+        "name": "中国石化",
+        "chineseName": "中国石化",
+        "fullName": "中国石油化工股份有限公司",
+        "description": "全球最大的综合性能源和化工企业之一，炼油能力领先。",
+        "products": ["变压器油", "橡胶油", "TDAE", "特种油"],
+        "headquarters": "中国北京",
+        "established": "成立于2000年"
+      },
+      "cnooc": {
+        "name": "中国海油",
+        "chineseName": "中国海油",
+        "fullName": "中国海洋石油集团有限公司",
+        "description": "中国最大的海上石油和天然气生产商，专注于深海勘探和生产。",
+        "products": ["变压器油", "船用润滑油", "环烷基油"],
+        "headquarters": "中国北京",
+        "established": "成立于1982年"
+      },
+      "yanchang": {
+        "name": "延长石油",
+        "chineseName": "延长石油",
+        "fullName": "陕西延长石油集团",
+        "description": "中国历史最悠久的石油公司之一，专注于油田开发和石化。",
+        "products": ["工业油", "变压器油", "润滑油"],
+        "headquarters": "中国西安",
+        "established": "成立于1905年"
+      },
+      "sinochem": {
+        "name": "中化集团",
+        "chineseName": "中化集团",
+        "fullName": "中国中化控股有限责任公司",
+        "description": "中国领先的农业、能源和化工领域企业集团。",
+        "products": ["特种化学品", "工业油", "石化产品"],
+        "headquarters": "中国北京",
+        "established": "成立于1950年"
+      }
+    },
+    "whyChooseUs": {
+      "title": "合作伙伴选择我们的原因",
+      "partnership": {
+        "title": "长期合作",
+        "description": "我们与制造商建立持久的合作关系，确保供应链稳定和品质一致。"
+      },
+      "globalAccess": {
+        "title": "全球市场准入",
+        "description": "我们将中国制造商与国际买家连接起来，拓展其全球业务。"
+      },
+      "standards": {
+        "title": "质量标准",
+        "description": "我们所有合作伙伴均符合严格的国际质量认证和标准。"
+      }
+    },
+    "certifications": {
+      "title": "合作伙伴认证",
+      "items": ["ISO 9001", "ISO 14001", "ISO 45001", "API", "欧盟REACH", "ASTM", "DIN", "国标"]
+    },
+    "cta": {
+      "title": "有兴趣成为合作伙伴吗？",
+      "description": "我们一直在寻找优质的制造商来扩大我们的网络。联系我们讨论合作机会。",
+      "contactButton": "联系我们",
+      "viewProducts": "查看产品"
+    },
+    "mobile": {
+      "call": "致电我们",
       "whatsapp": "WhatsApp"
     }
   }
