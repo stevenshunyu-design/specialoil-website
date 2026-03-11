@@ -590,7 +590,7 @@ const Logistics = () => {
         <section className="bg-[#003366] text-white p-8 rounded-sm">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-6 md:mb-0">
-              <h2 className="text-2xl md:text-3xl font-bold mb-2 font-['Montserrat']">
+              <h2 className="text-2xl md:text-3xl font-bold mb-2 font-['Montserrat'] text-white">
                 Ready to Ship Your Order?
               </h2>
               <p className="text-white/80">
