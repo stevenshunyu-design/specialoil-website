@@ -1,0 +1,86 @@
+{
+  "common": {
+    "learnMore": "En savoir plus",
+    "contactUs": "Nous contacter",
+    "requestQuote": "Demander un devis",
+    "submit": "Soumettre",
+    "name": "Nom",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "message": "Message",
+    "required": "Requis",
+    "success": "Succès",
+    "error": "Erreur",
+    "loading": "Chargement..."
+  },
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "products": "Produits",
+    "quality": "Qualité",
+    "logistics": "Logistique",
+    "contact": "Contact",
+    "selectLanguage": "Sélectionner la langue"
+  },
+  "footer": {
+    "description": "Votre partenaire de confiance pour les solutions de chaîne d'approvisionnement en huiles spéciales depuis la Chine.",
+    "quickLinks": "Liens rapides",
+    "products": "Produits",
+    "contact": "Contact",
+    "followUs": "Suivez-nous",
+    "allRightsReserved": "Tous droits réservés",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfService": "Conditions d'utilisation"
+  },
+  "home": {
+    "hero": {
+      "title": "Votre passerelle de confiance vers la chaîne d'approvisionnement en huiles spéciales de Chine",
+      "subtitle": "Nous connectons les acheteurs mondiaux aux principaux fabricants d'huiles spéciales de Chine, offrant des solutions d'approvisionnement, d'assurance qualité et de logistique.",
+      "cta": "Demander un devis"
+    },
+    "slides": {
+      "slide1": { "title": "Source d'huiles spéciales premium de Chine", "subtitle": "Connecter les acheteurs mondiaux aux meilleurs fabricants chinois" },
+      "slide2": { "title": "Huile spéciale de haute qualité", "subtitle": "Conforme aux normes et spécifications mondiales" },
+      "slide3": { "title": "Logistique mondiale fluide", "subtitle": "Expédition fiable vers plus de 50 pays" }
+    },
+    "sourceStory": {
+      "tag": "Votre partenaire de chaîne d'approvisionnement",
+      "title": "Votre passerelle de confiance vers la chaîne d'approvisionnement en huiles spéciales de Chine",
+      "description": "CN-SpecLube Chain sert de lien stratégique avec l'industrie des huiles spéciales de Chine.",
+      "feature1": { "title": "Assurance qualité", "description": "Contrôle qualité rigoureux à chaque étape" },
+      "feature2": { "title": "Logistique mondiale", "description": "Expédition fiable vers plus de 50 pays" },
+      "feature3": { "title": "Support technique", "description": "Conseils d'experts pour vos besoins" }
+    },
+    "features": {
+      "title": "Pourquoi nous choisir",
+      "subtitle": "Nous fournissons des solutions de chaîne d'approvisionnement complètes pour les huiles spéciales",
+      "quality": { "title": "Certifié ISO 9001", "description": "Excellence du système de gestion de la qualité" },
+      "global": { "title": "Plus de 50 pays", "description": "Réseau d'exportation mondial" },
+      "standards": { "title": "Normes de qualité", "description": "Conformité internationale" },
+      "logistics": { "title": "Livraison rapide", "description": "Solutions logistiques efficaces" }
+    },
+    "products": { "title": "Nos produits", "subtitle": "Huiles spéciales premium de fabricants chinois de confiance", "viewDetails": "Voir les détails" },
+    "cta": { "title": "Prêt à acheter des huiles spéciales?", "description": "Notre équipe est prête à vous aider à trouver les bons produits", "button": "Contactez-nous aujourd'hui" }
+  },
+  "about": {
+    "hero": { "title": "À propos de CN-SpecLube Chain", "subtitle": "Votre partenaire de confiance dans la chaîne d'approvisionnement en huiles spéciales de Chine" },
+    "story": { "tag": "Notre histoire", "title": "Connecter les marchés mondiaux à l'industrie des huiles spéciales de Chine", "description": "CN-SpecLube Chain est un fournisseur spécialisé de services de chaîne d'approvisionnement." },
+    "mission": { "title": "Notre mission", "description": "Fournir des services de chaîne d'approvisionnement fiables, efficaces et transparents." },
+    "vision": { "title": "Notre vision", "description": "Devenir le pont le plus fiable entre les marchés internationaux et l'industrie des huiles spéciales de Chine." },
+    "values": { "title": "Nos valeurs", "quality": { "title": "Qualité d'abord" }, "integrity": { "title": "Intégrité" }, "service": { "title": "Excellence du service" } },
+    "cta": { "title": "Prêt à collaborer avec nous?", "button": "Nous contacter" }
+  },
+  "products": { "title": "Nos produits", "categories": { "transformer": { "title": "Huile pour transformateurs" }, "rubber": { "title": "Huile pour caoutchouc" }, "lubricants": { "title": "Lubrifiants finis" } } },
+  "transformerOil": { "title": "Huile pour transformateurs", "subtitle": "Huiles isolantes haute performance", "cta": { "title": "Besoin de spécifications techniques?", "button": "Demander les données techniques" } },
+  "rubberProcessOil": { "title": "Huile pour caoutchouc", "hero": { "title": "Huile pour traitement du caoutchouc" }, "cta": { "button": "Demander les données techniques" } },
+  "finishedLubricants": { "title": "Lubrifiants finis", "hero": { "title": "Lubrifiants finis" }, "cta": { "button": "Demander les données techniques" } },
+  "quality": { "title": "Assurance qualité", "hero": { "title": "Assurance qualité" }, "cta": { "title": "Confiance dans chaque goutte", "button": "Demander des échantillons" } },
+  "logistics": {
+    "title": "Solutions logistiques et d'emballage",
+    "hero": { "title": "Solutions logistiques et d'emballage" },
+    "tabs": { "bulk": "Transport de liquides en vrac", "packaged": "Transport de marchandises emballées", "shipping": "Routes d'expédition mondiales", "customs": "Douanes et conformité" },
+    "bulk": { "title": "Transport de liquides en vrac", "isoTank": { "title": "Tank ISO", "capacity": "26 000 L" }, "flexibag": { "title": "Flexibag", "capacity": "Conteneur 20 pieds" } },
+    "cta": { "title": "Prêt à expédier votre commande?", "button": "Obtenir un devis d'expédition" }
+  },
+  "contact": { "title": "Nous contacter", "subtitle": "Contactez notre équipe", "form": { "title": "Envoyez-nous un message" }, "info": { "title": "Informations de contact" } }
+}

@@ -1,0 +1,85 @@
+{
+  "common": {
+    "learnMore": "詳細を見る",
+    "contactUs": "お問い合わせ",
+    "requestQuote": "見積もりを依頼",
+    "submit": "送信",
+    "name": "名前",
+    "email": "メール",
+    "phone": "電話",
+    "message": "メッセージ",
+    "required": "必須",
+    "success": "成功",
+    "error": "エラー",
+    "loading": "読み込み中..."
+  },
+  "nav": {
+    "home": "ホーム",
+    "about": "会社概要",
+    "products": "製品",
+    "quality": "品質",
+    "logistics": "物流",
+    "contact": "お問い合わせ",
+    "selectLanguage": "言語を選択"
+  },
+  "footer": {
+    "description": "中国の特殊油サプライチェーンソリューションの信頼できるパートナーです。",
+    "quickLinks": "クイックリンク",
+    "products": "製品",
+    "contact": "お問い合わせ",
+    "followUs": "フォローする",
+    "allRightsReserved": "全著作権所有",
+    "privacyPolicy": "プライバシーポリシー",
+    "termsOfService": "利用規約"
+  },
+  "home": {
+    "hero": {
+      "title": "中国の特殊油サプライチェーンへの信頼できるゲートウェイ",
+      "subtitle": "世界中のバイヤーを中国の主要な特殊油メーカーと結びつけ、調達、品質保証、物流ソリューションを提供します。",
+      "cta": "見積もりを依頼"
+    },
+    "slides": {
+      "slide1": { "title": "中国のプレミアム特殊油ソース", "subtitle": "世界中のバイヤーを中国のベストメーカーと接続" },
+      "slide2": { "title": "高品質の特殊油", "subtitle": "グローバル基準と仕様に準拠" },
+      "slide3": { "title": "シームレスなグローバル物流", "subtitle": "50カ国以上への信頼できる配送" }
+    },
+    "sourceStory": {
+      "tag": "あなたのサプライチェーンパートナー",
+      "title": "中国の特殊油サプライチェーンへの信頼できるゲートウェイ",
+      "description": "CN-SpecLube Chainは中国の特殊油産業への戦略的リンクとして機能します。",
+      "feature1": { "title": "品質保証", "description": "すべての段階で厳格な品質管理" },
+      "feature2": { "title": "グローバル物流", "description": "50カ国以上への信頼できる配送" },
+      "feature3": { "title": "技術サポート", "description": "ニーズに合わせた専門的なガイダンス" }
+    },
+    "features": {
+      "title": "選ばれる理由",
+      "subtitle": "特殊油のためのエンドツーエンドのサプライチェーンソリューションを提供",
+      "quality": { "title": "ISO 9001認証取得", "description": "品質マネジメントシステムの卓越性" },
+      "global": { "title": "50カ国以上", "description": "グローバル輸出ネットワーク" },
+      "standards": { "title": "品質基準", "description": "国際的なコンプライアンス" },
+      "logistics": { "title": "迅速な配送", "description": "効率的な物流ソリューション" }
+    },
+    "products": { "title": "製品紹介", "subtitle": "信頼できる中国メーカーから調達したプレミアム特殊油", "viewDetails": "詳細を見る" },
+    "cta": { "title": "特殊油の調達準備はできましたか？", "description": "チームが適切な製品を見つけるお手伝いをします", "button": "今すぐお問い合わせ" }
+  },
+  "about": {
+    "hero": { "title": "CN-SpecLube Chainについて", "subtitle": "中国の特殊油サプライチェーンにおける信頼できるパートナー" },
+    "story": { "tag": "私たちの物語", "title": "グローバル市場と中国の特殊油産業を接続", "description": "CN-SpecLube Chainは、国際的なバイヤーと中国の特殊油メーカーを結ぶ専門サプライチェーンサービスプロバイダーです。" },
+    "mission": { "title": "私たちのミッション", "description": "信頼性が高く、効率的で透明なサプライチェーンサービスを提供すること。" },
+    "vision": { "title": "私たちのビジョン", "description": "国際市場と中国の特殊油産業の間で最も信頼される架け橋になること。" },
+    "cta": { "title": "パートナーシップの準備はできましたか？", "button": "お問い合わせ" }
+  },
+  "products": { "title": "製品紹介", "categories": { "transformer": { "title": "変圧器油" }, "rubber": { "title": "ゴム加工油" }, "lubricants": { "title": "完成潤滑油" } } },
+  "transformerOil": { "title": "変圧器油", "subtitle": "高性能絶縁油", "cta": { "title": "技術仕様が必要ですか？", "button": "技術データを請求" } },
+  "rubberProcessOil": { "title": "ゴム加工油", "hero": { "title": "ゴム加工油" }, "cta": { "button": "技術データを請求" } },
+  "finishedLubricants": { "title": "完成潤滑油", "hero": { "title": "完成潤滑油" }, "cta": { "button": "技術データを請求" } },
+  "quality": { "title": "品質保証", "hero": { "title": "品質保証" }, "cta": { "title": "一滴一滴への信頼", "button": "製品サンプルを請求" } },
+  "logistics": {
+    "title": "物流・梱包ソリューション",
+    "hero": { "title": "物流・梱包ソリューション" },
+    "tabs": { "bulk": "バルク液体輸送", "packaged": "包装貨物輸送", "shipping": "グローバル配送ルート", "customs": "通関・コンプライアンス" },
+    "bulk": { "title": "バルク液体輸送", "isoTank": { "title": "ISOタンク", "capacity": "26,000L" }, "flexibag": { "title": "フレキシバッグ", "capacity": "20フィートコンテナ" } },
+    "cta": { "title": "注文の出荷準備はできましたか？", "button": "配送見積もりを取得" }
+  },
+  "contact": { "title": "お問い合わせ", "subtitle": "チームにご連絡ください", "form": { "title": "メッセージを送信" }, "info": { "title": "連絡先情報" } }
+}

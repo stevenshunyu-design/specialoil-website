@@ -1,0 +1,157 @@
+{
+  "common": {
+    "learnMore": "Más información",
+    "contactUs": "Contáctenos",
+    "requestQuote": "Solicitar cotización",
+    "submit": "Enviar",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "message": "Mensaje",
+    "required": "Requerido",
+    "success": "Éxito",
+    "error": "Error",
+    "loading": "Cargando..."
+  },
+  "nav": {
+    "home": "Inicio",
+    "about": "Nosotros",
+    "products": "Productos",
+    "quality": "Calidad",
+    "logistics": "Logística",
+    "contact": "Contacto",
+    "selectLanguage": "Seleccionar idioma"
+  },
+  "footer": {
+    "description": "Su socio de confianza para soluciones de cadena de suministro de aceites especiales desde China.",
+    "quickLinks": "Enlaces rápidos",
+    "products": "Productos",
+    "contact": "Contacto",
+    "followUs": "Síguenos",
+    "allRightsReserved": "Todos los derechos reservados",
+    "privacyPolicy": "Política de privacidad",
+    "termsOfService": "Términos de servicio"
+  },
+  "home": {
+    "hero": {
+      "title": "Su Puerta de Confianza a la Cadena de Suministro de Aceites Especiales de China",
+      "subtitle": "Conectamos a compradores globales con los principales fabricantes de aceites especiales de China, proporcionando soluciones de adquisición, aseguramiento de calidad y logística.",
+      "cta": "Solicitar cotización"
+    },
+    "slides": {
+      "slide1": {
+        "title": "Fuente de Aceites Especiales Premium de China",
+        "subtitle": "Conectando compradores globales con los mejores fabricantes de China"
+      },
+      "slide2": {
+        "title": "Aceite Especial de Alta Calidad",
+        "subtitle": "Cumple con estándares y especificaciones globales"
+      },
+      "slide3": {
+        "title": "Logística Global Sin Problemas",
+        "subtitle": "Envío confiable a más de 50 países"
+      }
+    },
+    "sourceStory": {
+      "tag": "Su socio de cadena de suministro",
+      "title": "Su Puerta de Confianza a la Cadena de Suministro de Aceites Especiales de China",
+      "description": "CN-SpecLube Chain sirve como su enlace estratégico con la industria de aceites especiales de China. Proporcionamos servicios integrales de cadena de suministro incluyendo coordinación de adquisiciones, control de calidad, gestión logística y documentación aduanera.",
+      "feature1": { "title": "Aseguramiento de calidad", "description": "Control de calidad riguroso en cada paso" },
+      "feature2": { "title": "Logística global", "description": "Envío confiable a más de 50 países" },
+      "feature3": { "title": "Soporte técnico", "description": "Orientación experta para sus necesidades" }
+    },
+    "features": {
+      "title": "Por qué elegirnos",
+      "subtitle": "Proporcionamos soluciones de cadena de suministro integrales para aceites especiales",
+      "quality": { "title": "Certificado ISO 9001", "description": "Excelencia en sistema de gestión de calidad" },
+      "global": { "title": "Más de 50 países", "description": "Red de exportación global" },
+      "standards": { "title": "Estándares de calidad", "description": "Cumplimiento internacional" },
+      "logistics": { "title": "Entrega rápida", "description": "Soluciones logísticas eficientes" }
+    },
+    "products": {
+      "title": "Nuestros productos",
+      "subtitle": "Aceites especiales premium de fabricantes chinos de confianza",
+      "viewDetails": "Ver detalles"
+    },
+    "cta": {
+      "title": "¿Listo para adquirir aceites especiales?",
+      "description": "Nuestro equipo está listo para ayudarle a encontrar los productos adecuados",
+      "button": "Contáctenos hoy"
+    }
+  },
+  "about": {
+    "hero": { "title": "Sobre CN-SpecLube Chain", "subtitle": "Su socio de confianza en la cadena de suministro de aceites especiales de China" },
+    "story": {
+      "tag": "Nuestra historia",
+      "title": "Conectando mercados globales con la industria de aceites especiales de China",
+      "description": "CN-SpecLube Chain es un proveedor especializado de servicios de cadena de suministro enfocado en conectar compradores internacionales con fabricantes de aceites especiales de China."
+    },
+    "mission": { "title": "Nuestra misión", "description": "Proporcionar servicios de cadena de suministro confiables, eficientes y transparentes." },
+    "vision": { "title": "Nuestra visión", "description": "Convertirse en el puente más confiable entre los mercados internacionales y la industria de aceites especiales de China." },
+    "values": {
+      "title": "Nuestros valores",
+      "quality": { "title": "Calidad primero", "description": "Aseguramos que cada producto cumpla con estándares internacionales" },
+      "integrity": { "title": "Integridad", "description": "Prácticas comerciales transparentes y honestas" },
+      "service": { "title": "Excelencia en servicio", "description": "Soporte dedicado en cada paso" }
+    },
+    "cta": { "title": "¿Listo para asociarse con nosotros?", "description": "Permítanos ayudarle a navegar el mercado de aceites especiales de China", "button": "Póngase en contacto" }
+  },
+  "products": {
+    "title": "Nuestros productos",
+    "subtitle": "Aceites especiales premium de fabricantes chinos de confianza",
+    "categories": {
+      "transformer": { "title": "Aceite para transformadores", "description": "Aceites aislantes de alto rendimiento" },
+      "rubber": { "title": "Aceite para proceso de caucho", "description": "Aceites especiales para fabricación de caucho" },
+      "lubricants": { "title": "Lubricantes terminados", "description": "Lubricantes industriales y automotrices" }
+    }
+  },
+  "transformerOil": {
+    "title": "Aceite para transformadores",
+    "subtitle": "Aceites aislantes de alto rendimiento",
+    "hero": { "title": "Aceite para transformadores premium", "subtitle": "Aceites aislantes de alto rendimiento para equipos eléctricos" },
+    "overview": { "title": "Descripción del producto", "description": "Proporcionamos aceites para transformadores de fabricantes chinos líderes, con excelentes propiedades de aislamiento eléctrico." },
+    "features": { "title": "Características de rendimiento clave" },
+    "applications": { "title": "Aplicaciones" },
+    "cta": { "title": "¿Necesita especificaciones técnicas?", "description": "Contacte a nuestro equipo para información detallada", "button": "Solicitar datos técnicos" }
+  },
+  "rubberProcessOil": {
+    "title": "Aceite para proceso de caucho",
+    "hero": { "title": "Aceite para proceso de caucho", "subtitle": "Soluciones superiores para procesamiento de caucho" },
+    "overview": { "title": "Descripción del producto", "description": "Proporcionamos aceites para proceso de caucho de productores chinos de confianza." },
+    "cta": { "title": "¿Necesita especificaciones técnicas?", "button": "Solicitar datos técnicos" }
+  },
+  "finishedLubricants": {
+    "title": "Lubricantes terminados",
+    "hero": { "title": "Lubricantes terminados", "subtitle": "Soluciones avanzadas de lubricación industrial" },
+    "overview": { "title": "Descripción del producto", "description": "Ofrecemos lubricantes terminados de fabricantes chinos profesionales." },
+    "cta": { "title": "¿Necesita especificaciones técnicas?", "button": "Solicitar datos técnicos" }
+  },
+  "quality": {
+    "title": "Aseguramiento de calidad",
+    "hero": { "title": "Aseguramiento de calidad", "subtitle": "Nuestro compromiso con la excelencia" },
+    "process": { "title": "Nuestro proceso de calidad", "description": "Mantenemos un control de calidad riguroso en toda nuestra cadena de suministro." },
+    "sourcing": { "title": "Adquisición estratégica", "description": "Nos asociamos con fabricantes líderes de aceites especiales de China." },
+    "cta": { "title": "Confianza en cada gota", "description": "Nuestro compromiso con la calidad garantiza que reciba los mejores productos", "button": "Solicitar muestras" }
+  },
+  "logistics": {
+    "title": "Soluciones de logística y embalaje",
+    "hero": { "title": "Soluciones de logística y embalaje", "subtitle": "Envío global eficiente y confiable" },
+    "tabs": { "bulk": "Transporte de líquidos a granel", "packaged": "Transporte de bienes embalados", "shipping": "Rutas de envío global", "customs": "Aduanas y cumplimiento" },
+    "bulk": {
+      "title": "Transporte de líquidos a granel",
+      "description": "Ofrecemos soluciones eficientes y rentables para el transporte de líquidos a granel.",
+      "isoTank": { "title": "Tanque ISO", "capacity": "26,000L", "description": "Tanques de acero inoxidable para transporte seguro de líquidos a granel." },
+      "flexibag": { "title": "Flexibag", "capacity": "Contenedor de 20 pies", "description": "Contenedores flexibles con almohadilla de calentamiento disponibles.", "badge": "Almohadilla de calentamiento disponible" }
+    },
+    "packaged": { "title": "Transporte de bienes embalados" },
+    "shipping": { "title": "Rutas de envío global" },
+    "customs": { "title": "Aduanas y cumplimiento" },
+    "cta": { "title": "¿Listo para enviar su pedido?", "description": "Nuestros expertos en logística están listos para proporcionarle una solución", "button": "Obtener cotización de envío" }
+  },
+  "contact": {
+    "title": "Contáctenos",
+    "subtitle": "Póngase en contacto con nuestro equipo",
+    "form": { "title": "Envíenos un mensaje", "name": "Su nombre", "email": "Correo electrónico", "phone": "Teléfono", "company": "Nombre de empresa", "subject": "Asunto", "message": "Su mensaje", "submit": "Enviar mensaje" },
+    "info": { "title": "Información de contacto", "address": "Dirección", "phone": "Teléfono", "email": "Correo electrónico" }
+  }
+}

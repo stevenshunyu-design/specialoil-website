@@ -1,0 +1,85 @@
+{
+  "common": {
+    "learnMore": "Saiba mais",
+    "contactUs": "Contate-nos",
+    "requestQuote": "Solicitar cotação",
+    "submit": "Enviar",
+    "name": "Nome",
+    "email": "E-mail",
+    "phone": "Telefone",
+    "message": "Mensagem",
+    "required": "Obrigatório",
+    "success": "Sucesso",
+    "error": "Erro",
+    "loading": "Carregando..."
+  },
+  "nav": {
+    "home": "Início",
+    "about": "Sobre",
+    "products": "Produtos",
+    "quality": "Qualidade",
+    "logistics": "Logística",
+    "contact": "Contato",
+    "selectLanguage": "Selecionar idioma"
+  },
+  "footer": {
+    "description": "Seu parceiro de confiança para soluções de cadeia de suprimentos de óleos especiais da China.",
+    "quickLinks": "Links rápidos",
+    "products": "Produtos",
+    "contact": "Contato",
+    "followUs": "Siga-nos",
+    "allRightsReserved": "Todos os direitos reservados",
+    "privacyPolicy": "Política de privacidade",
+    "termsOfService": "Termos de serviço"
+  },
+  "home": {
+    "hero": {
+      "title": "Sua Porta de Confiança para a Cadeia de Suprimentos de Óleos Especiais da China",
+      "subtitle": "Conectamos compradores globais aos principais fabricantes de óleos especiais da China, fornecendo soluções de aquisição, garantia de qualidade e logística.",
+      "cta": "Solicitar cotação"
+    },
+    "slides": {
+      "slide1": { "title": "Fonte de óleos especiais premium da China", "subtitle": "Conectando compradores globais aos melhores fabricantes chineses" },
+      "slide2": { "title": "Óleo especial de alta qualidade", "subtitle": "Em conformidade com padrões e especificações globais" },
+      "slide3": { "title": "Logística global sem problemas", "subtitle": "Envio confiável para mais de 50 países" }
+    },
+    "sourceStory": {
+      "tag": "Seu parceiro de cadeia de suprimentos",
+      "title": "Sua Porta de Confiança para a Cadeia de Suprimentos de Óleos Especiais da China",
+      "description": "CN-SpecLube Chain serve como seu elo estratégico com a indústria de óleos especiais da China.",
+      "feature1": { "title": "Garantia de qualidade", "description": "Controle de qualidade rigoroso em cada etapa" },
+      "feature2": { "title": "Logística global", "description": "Envio confiável para mais de 50 países" },
+      "feature3": { "title": "Suporte técnico", "description": "Orientação especializada para suas necessidades" }
+    },
+    "features": {
+      "title": "Por que nos escolher",
+      "subtitle": "Fornecemos soluções de cadeia de suprimentos completas para óleos especiais",
+      "quality": { "title": "Certificado ISO 9001", "description": "Excelência em sistema de gestão de qualidade" },
+      "global": { "title": "Mais de 50 países", "description": "Rede de exportação global" },
+      "standards": { "title": "Padrões de qualidade", "description": "Conformidade internacional" },
+      "logistics": { "title": "Entrega rápida", "description": "Soluções logísticas eficientes" }
+    },
+    "products": { "title": "Nossos produtos", "subtitle": "Óleos especiais premium de fabricantes chineses de confiança", "viewDetails": "Ver detalhes" },
+    "cta": { "title": "Pronto para adquirir óleos especiais?", "description": "Nossa equipe está pronta para ajudá-lo a encontrar os produtos certos", "button": "Contate-nos hoje" }
+  },
+  "about": {
+    "hero": { "title": "Sobre a CN-SpecLube Chain", "subtitle": "Seu parceiro de confiança na cadeia de suprimentos de óleos especiais da China" },
+    "story": { "tag": "Nossa história", "title": "Conectando mercados globais à indústria de óleos especiais da China", "description": "CN-SpecLube Chain é um provedor especializado de serviços de cadeia de suprimentos." },
+    "mission": { "title": "Nossa missão", "description": "Fornecer serviços de cadeia de suprimentos confiáveis, eficientes e transparentes." },
+    "vision": { "title": "Nossa visão", "description": "Tornar-se a ponte mais confiável entre os mercados internacionais e a indústria de óleos especiais da China." },
+    "cta": { "title": "Pronto para colaborar conosco?", "button": "Entre em contato" }
+  },
+  "products": { "title": "Nossos produtos", "categories": { "transformer": { "title": "Óleo para transformadores" }, "rubber": { "title": "Óleo para borracha" }, "lubricants": { "title": "Lubrificantes acabados" } } },
+  "transformerOil": { "title": "Óleo para transformadores", "subtitle": "Óleos isolantes de alto desempenho", "cta": { "title": "Precisa de especificações técnicas?", "button": "Solicitar dados técnicos" } },
+  "rubberProcessOil": { "title": "Óleo para borracha", "hero": { "title": "Óleo para processamento de borracha" }, "cta": { "button": "Solicitar dados técnicos" } },
+  "finishedLubricants": { "title": "Lubrificantes acabados", "hero": { "title": "Lubrificantes acabados" }, "cta": { "button": "Solicitar dados técnicos" } },
+  "quality": { "title": "Garantia de qualidade", "hero": { "title": "Garantia de qualidade" }, "cta": { "title": "Confiança em cada gota", "button": "Solicitar amostras" } },
+  "logistics": {
+    "title": "Soluções de logística e embalagem",
+    "hero": { "title": "Soluções de logística e embalagem" },
+    "tabs": { "bulk": "Transporte de líquidos a granel", "packaged": "Transporte de mercadorias embaladas", "shipping": "Rotas de envio global", "customs": "Alfândega e conformidade" },
+    "bulk": { "title": "Transporte de líquidos a granel", "isoTank": { "title": "Tanque ISO", "capacity": "26.000 L" }, "flexibag": { "title": "Flexibag", "capacity": "Contêiner de 20 pés" } },
+    "cta": { "title": "Pronto para enviar seu pedido?", "button": "Obter cotação de envio" }
+  },
+  "contact": { "title": "Contate-nos", "subtitle": "Entre em contato com nossa equipe", "form": { "title": "Envie-nos uma mensagem" }, "info": { "title": "Informações de contato" } }
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import LanguageSelector from './LanguageSelector';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -124,6 +125,11 @@ const Header = () => {
                 )}
               </div>
             ))}
+            
+            {/* Language Selector */}
+            <div className={`ml-2 ${isHomePage && !isScrolled ? '' : ''}`}>
+              <LanguageSelector />
+            </div>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -195,6 +201,11 @@ const Header = () => {
                 )}
               </div>
             ))}
+            
+            {/* Language Selector for Mobile */}
+            <div className="pt-4 mt-2 border-t border-[var(--primary-200)]">
+              <LanguageSelector />
+            </div>
           </nav>
         </div>
       )}

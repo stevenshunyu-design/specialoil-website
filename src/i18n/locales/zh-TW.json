@@ -1,0 +1,449 @@
+{
+  "common": {
+    "learnMore": "了解更多",
+    "contactUs": "聯繫我們",
+    "requestQuote": "索取報價",
+    "submit": "提交",
+    "name": "姓名",
+    "email": "電子郵件",
+    "phone": "電話",
+    "message": "訊息",
+    "required": "必填",
+    "success": "成功",
+    "error": "錯誤",
+    "loading": "載入中..."
+  },
+  "nav": {
+    "home": "首頁",
+    "about": "關於我們",
+    "products": "產品",
+    "quality": "品質保證",
+    "logistics": "物流服務",
+    "contact": "聯繫我們",
+    "selectLanguage": "選擇語言"
+  },
+  "footer": {
+    "description": "您值得信賴的中國特種油供應鏈解決方案合作夥伴。",
+    "quickLinks": "快速連結",
+    "products": "產品",
+    "contact": "聯繫我們",
+    "followUs": "關注我們",
+    "allRightsReserved": "版權所有",
+    "privacyPolicy": "隱私政策",
+    "termsOfService": "服務條款"
+  },
+  "home": {
+    "hero": {
+      "title": "您通往中國特種油供應鏈的可靠橋樑",
+      "subtitle": "我們連接全球買家與中國領先的特種油製造商，提供無縫採購、品質保證和物流解決方案。",
+      "cta": "索取報價"
+    },
+    "slides": {
+      "slide1": {
+        "title": "中國優質特種油來源",
+        "subtitle": "連接全球買家與中國最佳製造商"
+      },
+      "slide2": {
+        "title": "高品質特種油",
+        "subtitle": "符合全球標準與規格"
+      },
+      "slide3": {
+        "title": "無縫全球物流",
+        "subtitle": "可靠運送至全球50多個國家"
+      }
+    },
+    "sourceStory": {
+      "tag": "您的供應鏈合作夥伴",
+      "title": "您通往中國特種油供應鏈的可靠橋樑",
+      "description": "CN-SpecLube Chain 作為您連接中國特種油產業的策略橋樑。我們提供全面的供應鏈服務，包括採購協調、品質管控、物流管理和報關文件。",
+      "feature1": {
+        "title": "品質保證",
+        "description": "每一步驟都有嚴格的品質管控"
+      },
+      "feature2": {
+        "title": "全球物流",
+        "description": "可靠運送至50多個國家"
+      },
+      "feature3": {
+        "title": "技術支援",
+        "description": "專業指導滿足您的需求"
+      }
+    },
+    "features": {
+      "title": "為什麼選擇我們",
+      "subtitle": "我們為特種油提供端到端供應鏈解決方案",
+      "quality": {
+        "title": "ISO 9001 認證",
+        "description": "卓越的品質管理系統"
+      },
+      "global": {
+        "title": "50多個國家",
+        "description": "全球出口網絡"
+      },
+      "standards": {
+        "title": "品質標準",
+        "description": "符合國際規範"
+      },
+      "logistics": {
+        "title": "快速交貨",
+        "description": "高效物流解決方案"
+      }
+    },
+    "products": {
+      "title": "我們的產品",
+      "subtitle": "源自值得信賴的中國製造商的優質特種油",
+      "viewDetails": "查看詳情"
+    },
+    "cta": {
+      "title": "準備好採購特種油了嗎？",
+      "description": "我們的團隊隨時準備幫助您找到適合您需求的產品",
+      "button": "立即聯繫我們"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "關於 CN-SpecLube Chain",
+      "subtitle": "您在中國特種油供應鏈中的可信賴合作夥伴"
+    },
+    "story": {
+      "tag": "我們的故事",
+      "title": "連接全球市場與中國特種油產業",
+      "description": "CN-SpecLube Chain 是一家專業的供應鏈服務提供商，專注於連接國際買家與中國特種油製造商。我們提供包括採購協調、品質保證、物流管理和報關文件在內的全面解決方案。",
+      "p2": "我們的團隊擁有深厚的行業專業知識，並與領先的中國製造商建立了穩固的合作關係。我們作為您的策略合作夥伴，確保從採購到交付的無縫交易和可靠的產品品質。"
+    },
+    "mission": {
+      "title": "我們的使命",
+      "description": "提供可靠、高效、透明的供應鏈服務，連接全球買家與中國特種油製造商。"
+    },
+    "vision": {
+      "title": "我們的願景",
+      "description": "成為國際市場與中國特種油產業之間最值得信賴的橋樑。"
+    },
+    "values": {
+      "title": "我們的價值觀",
+      "quality": {
+        "title": "品質至上",
+        "description": "我們確保每個產品都符合國際標準"
+      },
+      "integrity": {
+        "title": "誠信經營",
+        "description": "透明誠實的商業實踐"
+      },
+      "service": {
+        "title": "卓越服務",
+        "description": "每一步都有專人支援"
+      }
+    },
+    "cta": {
+      "title": "準備好與我們合作了嗎？",
+      "description": "讓我們幫助您開拓中國特種油市場",
+      "button": "聯繫我們"
+    }
+  },
+  "products": {
+    "title": "我們的產品",
+    "subtitle": "源自值得信賴的中國製造商的優質特種油",
+    "categories": {
+      "transformer": {
+        "title": "變壓器油",
+        "description": "用於電氣設備的高性能絕緣油"
+      },
+      "rubber": {
+        "title": "橡膠加工油",
+        "description": "用於橡膠製造的特種油"
+      },
+      "lubricants": {
+        "title": "成品潤滑油",
+        "description": "工業和汽車潤滑油"
+      }
+    }
+  },
+  "transformerOil": {
+    "title": "變壓器油",
+    "subtitle": "高性能絕緣油",
+    "hero": {
+      "title": "優質變壓器油",
+      "subtitle": "用於電氣設備的高性能絕緣油"
+    },
+    "overview": {
+      "title": "產品概述",
+      "description": "我們提供來自中國領先製造商的變壓器油，具有優異的電氣絕緣性能、熱穩定性和抗氧化性，適用於現代電力系統。"
+    },
+    "features": {
+      "title": "關鍵性能特點",
+      "feature1": {
+        "title": "優異絕緣",
+        "description": "高介電強度，確保可靠的電氣絕緣"
+      },
+      "feature2": {
+        "title": "熱穩定性",
+        "description": "優異的散熱和熱性能"
+      },
+      "feature3": {
+        "title": "抗氧化性",
+        "description": "使用壽命長，降解極小"
+      },
+      "feature4": {
+        "title": "低溫流動性",
+        "description": "優異的寒冷氣候性能"
+      }
+    },
+    "applications": {
+      "title": "應用領域",
+      "item1": "電力變壓器",
+      "item2": "配電變壓器",
+      "item3": "儀表變壓器",
+      "item4": "斷路器"
+    },
+    "cta": {
+      "title": "需要技術規格？",
+      "description": "聯繫我們的團隊獲取詳細產品資訊和報價",
+      "button": "索取技術資料"
+    }
+  },
+  "rubberProcessOil": {
+    "title": "橡膠加工油",
+    "hero": {
+      "title": "橡膠加工油",
+      "subtitle": "卓越的橡膠加工解決方案"
+    },
+    "overview": {
+      "title": "產品概述",
+      "description": "我們提供來自值得信賴的中國生產商的橡膠加工油，具有高溶解力（Cn% > 35%）和與各種橡膠類型的優異相容性。我們的端到端解決方案支援專業工業應用的無縫採購。"
+    },
+    "features": {
+      "title": "關鍵性能特點",
+      "feature1": {
+        "title": "高溶解力",
+        "description": "與橡膠化合物有優異的相容性"
+      },
+      "feature2": {
+        "title": "熱穩定性",
+        "description": "在加工條件下性能穩定"
+      },
+      "feature3": {
+        "title": "顏色穩定性",
+        "description": "保持產品外觀和品質"
+      },
+      "feature4": {
+        "title": "低揮發性",
+        "description": "加工過程中排放量低"
+      }
+    },
+    "applications": {
+      "title": "應用領域",
+      "item1": "輪胎製造",
+      "item2": "工業橡膠製品",
+      "item3": "汽車零件",
+      "item4": "密封劑和黏合劑"
+    },
+    "cta": {
+      "title": "需要技術規格？",
+      "description": "聯繫我們的團隊獲取詳細產品資訊",
+      "button": "索取技術資料"
+    }
+  },
+  "finishedLubricants": {
+    "title": "成品潤滑油",
+    "hero": {
+      "title": "成品潤滑油",
+      "subtitle": "先進的工業潤滑解決方案"
+    },
+    "overview": {
+      "title": "產品概述",
+      "description": "我們提供來自專業中國製造商的成品潤滑油，採用先進添加劑技術配方，提供卓越性能、延長設備壽命並降低維護成本。"
+    },
+    "features": {
+      "title": "關鍵性能特點",
+      "feature1": {
+        "title": "耐磨保護",
+        "description": "優異的抗磨性能"
+      },
+      "feature2": {
+        "title": "氧化穩定性",
+        "description": "延長油品壽命和換油週期"
+      },
+      "feature3": {
+        "title": "溫度範圍",
+        "description": "在各種溫度範圍內性能優異"
+      },
+      "feature4": {
+        "title": "防腐保護",
+        "description": "保護金屬表面免受腐蝕"
+      }
+    },
+    "applications": {
+      "title": "應用領域",
+      "item1": "工業機械",
+      "item2": "汽車引擎",
+      "item3": "液壓系統",
+      "item4": "齒輪系統"
+    },
+    "cta": {
+      "title": "需要技術規格？",
+      "description": "聯繫我們的團隊獲取詳細產品資訊",
+      "button": "索取技術資料"
+    }
+  },
+  "quality": {
+    "title": "品質保證",
+    "hero": {
+      "title": "品質保證",
+      "subtitle": "我們對卓越的承諾"
+    },
+    "process": {
+      "title": "我們的品質流程",
+      "description": "在 CN-SpecLube Chain，我們在整個供應鏈中保持嚴格的品質管控，從原材料採購到成品交付。我們對品質的承諾確保每個產品都符合最高的行業標準。"
+    },
+    "sourcing": {
+      "title": "策略採購",
+      "description": "我們與領先的中國特種油製造商合作，精心選擇以卓越品質標準和一致產品品質著稱的供應商。"
+    },
+    "standards": {
+      "title": "國際標準",
+      "description": "我們所有的產品都符合國際品質標準和規格。",
+      "item1": "ISO 9001 品質管理",
+      "item2": "ASTM 標準",
+      "item3": "IEC 規格",
+      "item4": "API 標準"
+    },
+    "testing": {
+      "title": "測試方法",
+      "description": "全面的測試確保產品品質和性能。",
+      "item1": "物理性能測試",
+      "item2": "化學成分分析",
+      "item3": "性能測試",
+      "item4": "污染測試"
+    },
+    "cta": {
+      "title": "每一滴都值得信賴",
+      "description": "我們對品質的承諾確保您獲得最適合工業需求的優質產品",
+      "button": "索取產品樣品"
+    }
+  },
+  "logistics": {
+    "title": "物流與包裝解決方案",
+    "hero": {
+      "title": "物流與包裝解決方案",
+      "subtitle": "高效可靠的全球運輸"
+    },
+    "tabs": {
+      "bulk": "散裝液體運輸",
+      "packaged": "包裝貨物運輸",
+      "shipping": "全球航線",
+      "customs": "報關與合規"
+    },
+    "bulk": {
+      "title": "散裝液體運輸",
+      "description": "我們為原材料提供高效且具成本效益的散裝液體運輸解決方案，專為滿足石油和潤滑油行業的特定要求而設計。",
+      "isoTank": {
+        "title": "ISO 儲罐",
+        "capacity": "26,000公升",
+        "description": "專為安全高效運輸散裝液體而設計的不鏽鋼鏽鋼儲罐。裝載量因產品密度而異——通常為21,000-26,000公升，取決於所運輸液體的比重。"
+      },
+      "flexibag": {
+        "title": "液體囊袋",
+        "capacity": "20英尺貨櫃",
+        "description": "柔性中型散裝容器，可為溫度敏感產品提供加熱墊。",
+        "badge": "可加裝加熱墊"
+      },
+      "benefits": {
+        "title": "散裝液體運輸的優勢",
+        "cost": {
+          "title": "成本效益",
+          "description": "降低包裝成本和處理費用"
+        },
+        "environment": {
+          "title": "環保",
+          "description": "減少包裝廢棄物，降低碳足跡"
+        },
+        "handling": {
+          "title": "高效處理",
+          "description": "簡化物流，加快裝卸流程"
+        }
+      }
+    },
+    "packaged": {
+      "title": "包裝貨物運輸",
+      "description": "我們提供靈活的包裝選項以滿足您的特定要求。",
+      "drums": {
+        "title": "鐵桶",
+        "details": "每棧板4桶，纏繞膜加固",
+        "description": "200L鋼桶牢固地包裝在木棧板上，確保運輸過程中的穩定性。"
+      },
+      "ibc": {
+        "title": "IBC中型散裝容器",
+        "details": "堆高機搬運",
+        "description": "1000L中型散裝容器，專為高效存儲和堆高機或棧板車搬運而設計。"
+      },
+      "smallPacks": {
+        "title": "小包裝",
+        "details": "紙箱包裝",
+        "description": "18L塑膠桶和更小的容器牢固地包裝在堅固的紙箱中，確保安全運輸。"
+      }
+    },
+    "shipping": {
+      "title": "全球航線",
+      "description": "我們運送到全球主要港口，運輸時間可靠。",
+      "routes": {
+        "asiaEurope": {
+          "route": "亞洲至歐洲",
+          "transitTime": "21-28天",
+          "ports": "上海、寧波 → 鹿特丹、漢堡"
+        },
+        "asiaNorthAmerica": {
+          "route": "亞洲至北美洲",
+          "transitTime": "18-25天",
+          "ports": "青島、天津 → 洛杉磯、紐約"
+        },
+        "asiaSouthAmerica": {
+          "route": "亞洲至南美洲",
+          "transitTime": "30-40天",
+          "ports": "上海 → 聖保羅、布宜諾斯艾利斯"
+        },
+        "asiaOceania": {
+          "route": "亞洲至大洋洲",
+          "transitTime": "12-18天",
+          "ports": "上海 → 雪梨、墨爾本"
+        }
+      }
+    },
+    "customs": {
+      "title": "報關與合規",
+      "description": "我們處理所有報關文件和合規要求。",
+      "items": {
+        "item1": "出口文件",
+        "item2": "進口文件",
+        "item3": "原產地證明書",
+        "item4": "品質證明書",
+        "item5": "危險品文件",
+        "item6": "保險安排"
+      }
+    },
+    "cta": {
+      "title": "準備好運送您的訂單了嗎？",
+      "description": "我們的物流專家隨時準備為您提供客製化的運輸解決方案",
+      "button": "獲取運輸報價"
+    }
+  },
+  "contact": {
+    "title": "聯繫我們",
+    "subtitle": "與我們的團隊聯繫",
+    "form": {
+      "title": "發送訊息給我們",
+      "name": "您的姓名",
+      "email": "電子郵件地址",
+      "phone": "電話號碼",
+      "company": "公司名稱",
+      "subject": "主旨",
+      "message": "您的訊息",
+      "submit": "發送訊息"
+    },
+    "info": {
+      "title": "聯繫資訊",
+      "address": "地址",
+      "phone": "電話",
+      "email": "電子郵件"
+    }
+  }
+}
