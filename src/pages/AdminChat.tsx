@@ -21,6 +21,14 @@ interface Message {
   created_at: string;
 }
 
+// 按客户编号分组的会话
+interface GroupedSessions {
+  customerNo: string;
+  sessions: ChatSession[];
+  latestName: string;
+  latestUpdate: string;
+}
+
 const AdminChat = () => {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [selectedSession, setSelectedSession] = useState<ChatSession | null>(null);
@@ -32,6 +40,7 @@ const AdminChat = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [historyCollapsed, setHistoryCollapsed] = useState(false);
   const [deletingSession, setDeletingSession] = useState<string | null>(null);
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -213,6 +222,18 @@ const AdminChat = () => {
     setMessages([]);
   };
 
+  const toggleGroup = (customerNo: string) => {
+    setExpandedGroups(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(customerNo)) {
+        newSet.delete(customerNo);
+      } else {
+        newSet.add(customerNo);
+      }
+      return newSet;
+    });
+  };
+
   const formatTime = (dateStr: string) => {
     return new Date(dateStr).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   };
@@ -227,7 +248,39 @@ const AdminChat = () => {
   
   // 分离活跃会话和历史会话
   const activeSessions = sessions.filter(s => s.status !== 'closed');
-  const closedSessions = sessions.filter(s => s.status === 'closed');
+  const closedSessionsList = sessions.filter(s => s.status === 'closed');
+
+  // 按客户编号分组历史会话
+  const groupedHistory = useCallback((): GroupedSessions[] => {
+    const groups = new Map<string, GroupedSessions>();
+    
+    closedSessionsList.forEach(session => {
+      const customerNo = session.customer_no || `#${session.id.substring(0, 4)}`;
+      
+      if (!groups.has(customerNo)) {
+        groups.set(customerNo, {
+          customerNo,
+          sessions: [],
+          latestName: session.visitor_name || 'Unknown',
+          latestUpdate: session.updated_at
+        });
+      }
+      
+      const group = groups.get(customerNo)!;
+      group.sessions.push(session);
+      
+      // 更新最新名称和更新时间
+      if (new Date(session.updated_at) > new Date(group.latestUpdate)) {
+        group.latestUpdate = session.updated_at;
+        group.latestName = session.visitor_name || group.latestName;
+      }
+    });
+    
+    // 按最新更新时间排序
+    return Array.from(groups.values()).sort(
+      (a, b) => new Date(b.latestUpdate).getTime() - new Date(a.latestUpdate).getTime()
+    );
+  }, [closedSessionsList]);
 
   // Login form
   if (!isAdmin) {
@@ -278,6 +331,8 @@ const AdminChat = () => {
     );
   }
 
+  const historyGroups = groupedHistory();
+
   return (
     <div className="min-h-screen bg-slate-100 flex">
       {/* Sessions Sidebar */}
@@ -317,8 +372,8 @@ const AdminChat = () => {
               <p className="text-[10px] text-emerald-400/70">Active</p>
             </div>
             <div className="bg-gradient-to-br from-slate-500/20 to-slate-600/20 border border-slate-500/30 rounded-xl p-2 text-center">
-              <p className="text-lg font-bold text-slate-400">{closedCount}</p>
-              <p className="text-[10px] text-slate-400/70">History</p>
+              <p className="text-lg font-bold text-slate-400">{historyGroups.length}</p>
+              <p className="text-[10px] text-slate-400/70">Customers</p>
             </div>
           </div>
         )}
@@ -388,8 +443,8 @@ const AdminChat = () => {
                 </>
               )}
               
-              {/* Closed Sessions (History) - 可折叠 */}
-              {closedSessions.length > 0 && (
+              {/* Closed Sessions (History) - 按客户编号分组 */}
+              {historyGroups.length > 0 && (
                 <>
                   {/* History Header - 可点击折叠 */}
                   <div 
@@ -398,7 +453,7 @@ const AdminChat = () => {
                   >
                     <span className="flex items-center gap-2">
                       <i className={`fa-solid fa-chevron-${historyCollapsed ? 'right' : 'down'} text-[10px]`}></i>
-                      📁 History ({closedSessions.length})
+                      📁 History ({historyGroups.length} customers, {closedCount} chats)
                     </span>
                     {!sidebarCollapsed && (
                       <span className="text-[10px] text-white/30">
@@ -407,51 +462,80 @@ const AdminChat = () => {
                     )}
                   </div>
                   
-                  {/* History List - 根据折叠状态显示/隐藏 */}
-                  {!historyCollapsed && closedSessions.map(session => (
-                    <div
-                      key={session.id}
-                      onClick={() => handleSelectSession(session)}
-                      className={`p-3 border-b border-white/5 cursor-pointer transition-all group ${
-                        selectedSession?.id === session.id 
-                          ? 'bg-gradient-to-r from-slate-600/30 to-transparent border-l-2 border-l-slate-400' 
-                          : 'hover:bg-white/5'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
+                  {/* History Groups - 根据折叠状态显示/隐藏 */}
+                  {!historyCollapsed && historyGroups.map(group => (
+                    <div key={group.customerNo}>
+                      {/* Group Header */}
+                      <div 
+                        onClick={() => toggleGroup(group.customerNo)}
+                        className={`p-3 border-b border-white/5 cursor-pointer hover:bg-white/5 transition-all flex items-center gap-3 ${
+                          expandedGroups.has(group.customerNo) ? 'bg-white/5' : ''
+                        }`}
+                      >
                         <div className="relative flex-shrink-0">
                           <div className="w-10 h-10 rounded-full flex items-center justify-center bg-slate-500/20 text-slate-400">
                             <i className="fa-solid fa-user text-sm"></i>
                           </div>
-                          <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-slate-800 bg-slate-500"></span>
+                          <span className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-slate-600 text-white text-[10px] flex items-center justify-center font-bold">
+                            {group.sessions.length}
+                          </span>
                         </div>
                         {!sidebarCollapsed && (
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
                               <span className="font-medium text-white/70 text-sm truncate">
-                                {session.visitor_name ? `${session.visitor_name} (${session.customer_no || `#${session.id.substring(0, 4)}`})` : session.customer_no || `#${session.id.substring(0, 4)}`}
+                                {group.latestName} ({group.customerNo})
                               </span>
                               <div className="flex items-center gap-1 flex-shrink-0">
-                                <span className="text-xs px-2 py-0.5 rounded-full bg-slate-500/20 text-slate-400">
-                                  closed
-                                </span>
-                                {/* 删除按钮 */}
-                                <button
-                                  onClick={(e) => deleteSession(session.id, e)}
-                                  disabled={deletingSession === session.id}
-                                  className="p-1 text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded transition-all opacity-0 group-hover:opacity-100"
-                                  title="Delete conversation"
-                                >
-                                  <i className={`fa-solid ${deletingSession === session.id ? 'fa-spinner fa-spin' : 'fa-trash'} text-xs`}></i>
-                                </button>
+                                <i className={`fa-solid fa-chevron-${expandedGroups.has(group.customerNo) ? 'down' : 'right'} text-[10px] text-white/30`}></i>
                               </div>
                             </div>
                             <p className="text-xs text-white/30 truncate mt-0.5">
-                              {session.visitor_email || 'No email'} · {formatDate(session.updated_at)}
+                              {group.sessions.length} conversation{group.sessions.length > 1 ? 's' : ''} · Last {formatDate(group.latestUpdate)}
                             </p>
                           </div>
                         )}
                       </div>
+                      
+                      {/* Group Sessions - 展开时显示 */}
+                      {expandedGroups.has(group.customerNo) && group.sessions.map(session => (
+                        <div
+                          key={session.id}
+                          onClick={() => handleSelectSession(session)}
+                          className={`p-3 pl-12 border-b border-white/5 cursor-pointer transition-all group ${
+                            selectedSession?.id === session.id 
+                              ? 'bg-gradient-to-r from-slate-600/30 to-transparent border-l-2 border-l-slate-400' 
+                              : 'hover:bg-white/5'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between">
+                                <span className="font-medium text-white/60 text-sm">
+                                  {session.visitor_name || 'Unknown'}
+                                </span>
+                                <div className="flex items-center gap-1 flex-shrink-0">
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-500/20 text-slate-400">
+                                    {formatDate(session.updated_at)}
+                                  </span>
+                                  {/* 删除按钮 */}
+                                  <button
+                                    onClick={(e) => deleteSession(session.id, e)}
+                                    disabled={deletingSession === session.id}
+                                    className="p-1 text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded transition-all opacity-0 group-hover:opacity-100"
+                                    title="Delete conversation"
+                                  >
+                                    <i className={`fa-solid ${deletingSession === session.id ? 'fa-spinner fa-spin' : 'fa-trash'} text-xs`}></i>
+                                  </button>
+                                </div>
+                              </div>
+                              <p className="text-xs text-white/25 truncate mt-0.5">
+                                {session.visitor_email || 'No email'}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </>
