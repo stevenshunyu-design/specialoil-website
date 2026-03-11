@@ -158,16 +158,16 @@ const Home = () => {
             </div>
             <div className="lg:w-1/2">
               <span className="font-mono text-[var(--accent-600)] text-sm uppercase tracking-wider mb-4 block font-medium">
-                Premium Source
+                Your Supply Chain Partner
               </span>
               <h2 className="font-display text-4xl md:text-5xl font-semibold mb-6 text-[var(--text-dark)] leading-tight">
-                Direct from China's Premium Oil Source
+                Your Trusted Gateway to China's Specialty Oil Supply Chain
               </h2>
               <p className="font-body text-lg text-[var(--text-body)] mb-6 leading-relaxed">
-                As a professional supply chain platform for Chinese special oils, we provide direct access to the premium naphthenic crude from the Suizhong 36-1 oilfield in Bohai Bay, known for its naturally low sulfur content and exceptional properties.
+                As a professional supply chain service platform, we specialize in connecting international buyers with leading Chinese manufacturers of specialty oils—including transformer oil, white oil, rubber oil, and other refined oil products.
               </p>
               <p className="font-body text-lg text-[var(--text-body)] mb-8 leading-relaxed">
-                Our advantage lies in connecting international buyers directly with China's top special oil manufacturers, ensuring quality, competitive pricing, and reliable supply. We handle all logistics, documentation, and quality control processes.
+                We provide end-to-end solutions designed to streamline cross-border procurement. Our services cover the entire process: sourcing coordination, quality assurance, logistics, port consolidation, and export customs clearance. With a dedicated team and industry expertise, we ensure competitive pricing, reliable supply, and seamless transaction execution.
               </p>
               <Link
                 to="/about"
