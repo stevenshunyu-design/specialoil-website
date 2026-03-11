@@ -8,6 +8,10 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 
+// ==================== 代码版本标记 ====================
+console.log('🚀 CODE VERSION: TEXT-MESSAGE-FORMAT-v1 (commit f5c0639)');
+// ======================================================
+
 // 全局错误处理 - 防止进程崩溃
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', error);
