@@ -1028,6 +1028,9 @@ app.post('/api/chat', async (req: Request, res: Response) => {
           }
         };
         
+        // 调试：打印实际发送的消息内容
+        console.log(`📤 NOTIFICATION CONTENT: ${JSON.stringify(notification)}`);
+        
         try {
           console.log(`📤 Sending Feishu notification for new customer: ${customerNo}`);
           console.log(`   Webhook URL: ${FEISHU_WEBHOOK_URL?.substring(0, 50)}...`);
