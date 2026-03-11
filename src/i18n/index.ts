@@ -42,10 +42,14 @@ i18n
     fallbackLng: 'en',
     defaultNS: 'translation',
     detection: {
-      order: ['localStorage', 'navigator'],
+      // 只使用 localStorage，不自动检测浏览器语言
+      // 这样首次访问会使用 fallbackLng (英文)
+      order: ['localStorage'],
       caches: ['localStorage'],
       lookupLocalStorage: 'i18nextLng',
     },
+    // 支持的语言白名单
+    supportedLngs: ['en', 'zh-TW', 'zh-CN', 'es', 'fr', 'pt', 'ja', 'ru'],
     interpolation: {
       escapeValue: false,
     },
