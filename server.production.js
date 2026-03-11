@@ -149,7 +149,9 @@ app.use(express.static(distPath, {
   maxAge: "1d"
   // 静态资源缓存
 }));
-var FEISHU_WEBHOOK_URL = process.env.FEISHU_CHAT_WEBHOOK || process.env.FEISHU_WEBHOOK_URL;
+var FEISHU_CHAT_WEBHOOK = process.env.FEISHU_CHAT_WEBHOOK;
+var FEISHU_INQUIRY_WEBHOOK = process.env.FEISHU_INQUIRY_WEBHOOK;
+var FEISHU_WEBHOOK_URL = FEISHU_CHAT_WEBHOOK || process.env.FEISHU_WEBHOOK_URL;
 var FEISHU_APP_ID = process.env.FEISHU_APP_ID || process.env.FEISHU_CHAT_APP_ID;
 var FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET || process.env.FEISHU_CHAT_APP_SECRET;
 var FEISHU_CHAT_ID = process.env.FEISHU_CHAT_ID;
@@ -160,7 +162,8 @@ console.log("Server Configuration:");
 console.log("FEISHU_APP_ID:", FEISHU_APP_ID || "NOT SET");
 console.log("FEISHU_APP_SECRET:", FEISHU_APP_SECRET ? "SET" : "NOT SET");
 console.log("FEISHU_CHAT_ID:", FEISHU_CHAT_ID || "NOT SET");
-console.log("FEISHU_WEBHOOK_URL:", FEISHU_WEBHOOK_URL ? `SET (${FEISHU_WEBHOOK_URL.substring(0, 50)}...)` : "NOT SET");
+console.log("FEISHU_CHAT_WEBHOOK (\u5BA2\u670D\u901A\u77E5):", FEISHU_CHAT_WEBHOOK ? `SET` : "NOT SET");
+console.log("FEISHU_INQUIRY_WEBHOOK (\u8BE2\u76D8\u901A\u77E5):", FEISHU_INQUIRY_WEBHOOK ? `SET` : "NOT SET");
 console.log("OPENAI_API_KEY:", OPENAI_API_KEY ? "SET" : "NOT SET");
 console.log("========================================");
 var feishuAccessToken = null;
@@ -988,8 +991,10 @@ app.post("/api/inquiries", async (req, res) => {
       return res.status(500).json({ error: "Failed to save inquiry" });
     }
     console.log(`\u2705 New inquiry created: ${name} from ${company}`);
-    if (FEISHU_WEBHOOK_URL) {
+    const inquiryWebhook = FEISHU_INQUIRY_WEBHOOK || FEISHU_WEBHOOK_URL;
+    if (inquiryWebhook) {
       try {
+        console.log(`\u{1F4E4} Sending inquiry notification to Feishu...`);
         const notification = {
           msg_type: "interactive",
           card: {
@@ -1016,14 +1021,18 @@ app.post("/api/inquiries", async (req, res) => {
             ]
           }
         };
-        await fetch(FEISHU_WEBHOOK_URL, {
+        const response = await fetch(inquiryWebhook, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(notification)
         });
+        const result = await response.text();
+        console.log(`\u{1F4E5} Feishu inquiry notification response: ${response.status} - ${result}`);
       } catch (feishuError) {
-        console.error("Failed to send Feishu notification:", feishuError);
+        console.error("\u274C Failed to send Feishu inquiry notification:", feishuError);
       }
+    } else {
+      console.log("\u26A0\uFE0F No inquiry webhook configured");
     }
     res.json({ success: true, data });
   } catch (error) {
