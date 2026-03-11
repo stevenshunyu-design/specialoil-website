@@ -1,3 +1,7 @@
+// ==================== 代码版本标记 ====================
+console.log('🚀 CODE VERSION: TEXT-MESSAGE-FORMAT-v1 (server.production.js updated)');
+// ======================================================
+
 var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
   get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
 }) : x)(function(x) {
@@ -755,33 +759,9 @@ app.post("/api/chat/human", async (req, res) => {
       const customerNo = existingSession.customer_no || `#${sessionId.substring(0, 8)}`;
       const visitorName = existingSession.visitor_name || "Visitor";
       const notification = {
-        msg_type: "interactive",
-        card: {
-          header: {
-            title: { tag: "plain_text", content: `\u{1F4AC} \u65B0\u6D88\u606F ${customerNo}` },
-            template: "blue"
-          },
-          elements: [
-            {
-              tag: "div",
-              text: {
-                tag: "lark_md",
-                content: `**${visitorName}**: ${message.substring(0, 200)}${message.length > 200 ? "..." : ""}`
-              }
-            },
-            { tag: "divider" },
-            {
-              tag: "action",
-              actions: [
-                {
-                  tag: "button",
-                  text: { tag: "plain_text", content: "\u524D\u5F80\u540E\u53F0\u56DE\u590D" },
-                  url: `${process.env.SITE_URL || "https://cnspecialtyoils.com"}/admin/chat`,
-                  type: "primary"
-                }
-              ]
-            }
-          ]
+        msg_type: "text",
+        content: {
+          text: `\u{1F4AC} \u65B0\u6D88\u606F ${customerNo}\n\n${visitorName}: ${message.substring(0, 200)}${message.length > 200 ? "..." : ""}\n\n\u8BF7\u524D\u5F80\u540E\u53F0\u56DE\u590D: ${process.env.SITE_URL || "https://cnspecialtyoils.com"}/admin/chat`
         }
       };
       try {
@@ -860,43 +840,9 @@ app.post("/api/chat", async (req, res) => {
         console.log(`\u{1F4E4} Preparing to send Feishu notification for human support request...`);
         console.log(`   Webhook URL: ${FEISHU_WEBHOOK_URL}`);
         const notification = {
-          msg_type: "interactive",
-          card: {
-            header: {
-              title: { tag: "plain_text", content: `\u{1F514} \u65B0\u5BA2\u6237\u54A8\u8BE2 ${customerNo}` },
-              template: "blue"
-            },
-            elements: [
-              {
-                tag: "div",
-                text: {
-                  tag: "lark_md",
-                  content: `**\u5BA2\u6237\u4FE1\u606F**
-\u{1F464} \u59D3\u540D: ${customerName}
-\u{1F4E7} \u90AE\u7BB1: ${customerEmail}
-\u{1F4F1} \u7535\u8BDD: ${customerPhone}
-\u{1F4AC} \u6D88\u606F: ${message.substring(0, 100)}${message.length > 100 ? "..." : ""}`
-                }
-              },
-              { tag: "divider" },
-              {
-                tag: "action",
-                actions: [
-                  {
-                    tag: "button",
-                    text: { tag: "plain_text", content: "\u524D\u5F80\u540E\u53F0\u56DE\u590D" },
-                    url: `${process.env.SITE_URL || "https://cnspecialtyoils.com"}/admin/chat`,
-                    type: "primary"
-                  }
-                ]
-              },
-              {
-                tag: "note",
-                elements: [
-                  { tag: "plain_text", content: `\u8BF7\u767B\u5F55\u540E\u53F0\u5BA2\u670D\u7CFB\u7EDF\u56DE\u590D\u5BA2\u6237\u6D88\u606F` }
-                ]
-              }
-            ]
+          msg_type: "text",
+          content: {
+            text: `\u{1F514} \u65B0\u5BA2\u6237\u54A8\u8BE2 ${customerNo}\n\n\u5BA2\u6237\u4FE1\u606F:\n\u{1F464} \u59D3\u540D: ${customerName}\n\u{1F4E7} \u90AE\u7BB1: ${customerEmail}\n\u{1F4F1} \u7535\u8BDD: ${customerPhone}\n\u{1F4AC} \u6D88\u606F: ${message.substring(0, 100)}${message.length > 100 ? "..." : ""}\n\n\u8BF7\u524D\u5F80\u540E\u53F0\u56DE\u590D: ${process.env.SITE_URL || "https://cnspecialtyoils.com"}/admin/chat`
           }
         };
         try {
