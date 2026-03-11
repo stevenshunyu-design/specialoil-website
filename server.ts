@@ -70,7 +70,7 @@ console.log('Server Configuration:');
 console.log('FEISHU_APP_ID:', FEISHU_APP_ID || 'NOT SET');
 console.log('FEISHU_APP_SECRET:', FEISHU_APP_SECRET ? 'SET' : 'NOT SET');
 console.log('FEISHU_CHAT_ID:', FEISHU_CHAT_ID || 'NOT SET');
-console.log('FEISHU_WEBHOOK_URL:', FEISHU_WEBHOOK_URL ? 'SET' : 'NOT SET');
+console.log('FEISHU_WEBHOOK_URL:', FEISHU_WEBHOOK_URL ? `SET (${FEISHU_WEBHOOK_URL.substring(0, 50)}...)` : 'NOT SET');
 console.log('OPENAI_API_KEY:', OPENAI_API_KEY ? 'SET' : 'NOT SET');
 console.log('========================================');
 
@@ -822,6 +822,45 @@ app.post('/api/chat/sessions/:sessionId/close', async (req: Request, res: Respon
   }
 });
 
+// 删除会话 API - 删除会话及其所有消息
+app.delete('/api/chat/sessions/:sessionId', async (req: Request, res: Response) => {
+  try {
+    const { sessionId } = req.params;
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ error: 'Database not configured' });
+    }
+
+    // 先删除会话的所有消息
+    const { error: messagesError } = await client
+      .from('chat_messages')
+      .delete()
+      .eq('session_id', sessionId);
+
+    if (messagesError) {
+      console.error('Error deleting session messages:', messagesError);
+      return res.status(500).json({ error: 'Failed to delete session messages' });
+    }
+
+    // 再删除会话本身
+    const { error: sessionError } = await client
+      .from('chat_sessions')
+      .delete()
+      .eq('id', sessionId);
+
+    if (sessionError) {
+      console.error('Error deleting session:', sessionError);
+      return res.status(500).json({ error: 'Failed to delete session' });
+    }
+
+    console.log(`✅ Session ${sessionId} deleted successfully`);
+    res.json({ success: true, message: 'Session deleted' });
+  } catch (error) {
+    console.error('Delete session error:', error);
+    res.status(500).json({ error: 'Failed to delete session' });
+  }
+});
+
 // 人工客服消息 API - 用户发送消息（转人工后使用）
 app.post('/api/chat/human', async (req: Request, res: Response) => {
   try {
@@ -903,16 +942,28 @@ app.post('/api/chat/human', async (req: Request, res: Response) => {
       };
 
       try {
+        console.log(`📤 Sending Feishu notification for new message from ${customerNo}`);
+        
         const feishuResponse = await fetch(FEISHU_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(notification)
         });
+        
         const feishuResult = await feishuResponse.text();
-        console.log(`✅ Feishu notification sent for new message from ${customerNo}, response: ${feishuResult}`);
+        console.log(`📥 Feishu response status: ${feishuResponse.status}`);
+        console.log(`📥 Feishu response: ${feishuResult}`);
+        
+        if (feishuResponse.ok) {
+          console.log(`✅ Feishu notification sent successfully for ${customerNo}`);
+        } else {
+          console.error(`❌ Feishu notification failed: ${feishuResult}`);
+        }
       } catch (feishuError) {
-        console.error('Failed to send Feishu notification:', feishuError);
+        console.error('❌ Failed to send Feishu notification:', feishuError);
       }
+    } else {
+      console.log('⚠️ FEISHU_WEBHOOK_URL not configured, skipping notification');
     }
 
     res.json({
@@ -1005,15 +1056,26 @@ app.post('/api/chat', async (req: Request, res: Response) => {
         };
         
         try {
+          console.log(`📤 Sending Feishu notification for new customer: ${customerNo}`);
+          console.log(`   Webhook URL: ${FEISHU_WEBHOOK_URL?.substring(0, 50)}...`);
+          
           const feishuResponse = await fetch(FEISHU_WEBHOOK_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(notification)
           });
+          
           const feishuResult = await feishuResponse.text();
-          console.log(`✅ Feishu notification sent: ${customerNo}, response: ${feishuResult}`);
+          console.log(`📥 Feishu response status: ${feishuResponse.status}`);
+          console.log(`📥 Feishu response body: ${feishuResult}`);
+          
+          if (feishuResponse.ok) {
+            console.log(`✅ Feishu notification sent successfully: ${customerNo}`);
+          } else {
+            console.error(`❌ Feishu notification failed with status ${feishuResponse.status}: ${feishuResult}`);
+          }
         } catch (error) {
-          console.error('Feishu notification error:', error);
+          console.error('❌ Feishu notification error:', error);
         }
       }
 

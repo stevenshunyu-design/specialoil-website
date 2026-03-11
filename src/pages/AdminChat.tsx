@@ -30,12 +30,19 @@ const AdminChat = () => {
   const [adminName, setAdminName] = useState('Support');
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [historyCollapsed, setHistoryCollapsed] = useState(false);
+  const [deletingSession, setDeletingSession] = useState<string | null>(null);
+  
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const sessionsPollRef = useRef<NodeJS.Timeout | null>(null);
 
+  // 只在消息容器内滚动，不影响整个页面
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   }, []);
 
   useEffect(() => {
@@ -58,7 +65,6 @@ const AdminChat = () => {
       const response = await fetch('/api/chat/sessions');
       const data = await response.json();
       if (data.success) {
-        // Show all sessions including closed ones, sorted by updated_at desc
         setSessions(data.data.sort((a: ChatSession, b: ChatSession) => 
           new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
         ));
@@ -159,13 +165,43 @@ const AdminChat = () => {
     if (confirm('Are you sure you want to close this chat?')) {
       try {
         await fetch(`/api/chat/sessions/${selectedSession.id}/close`, { method: 'POST' });
-        // 更新本地状态，但保留消息历史供查看
         setSelectedSession(prev => prev ? { ...prev, status: 'closed' } : null);
         fetchSessions();
       } catch (err) {
         console.error('Failed to close session:', err);
       }
     }
+  };
+
+  const deleteSession = async (sessionId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // 防止触发选中会话
+    
+    if (!confirm('Are you sure you want to delete this conversation? This cannot be undone.')) {
+      return;
+    }
+    
+    setDeletingSession(sessionId);
+    try {
+      const response = await fetch(`/api/chat/sessions/${sessionId}`, { 
+        method: 'DELETE' 
+      });
+      
+      if (response.ok) {
+        // 如果删除的是当前选中的会话，清除选中状态
+        if (selectedSession?.id === sessionId) {
+          setSelectedSession(null);
+          setMessages([]);
+        }
+        // 刷新会话列表
+        fetchSessions();
+      } else {
+        alert('Failed to delete conversation');
+      }
+    } catch (err) {
+      console.error('Failed to delete session:', err);
+      alert('Failed to delete conversation');
+    }
+    setDeletingSession(null);
   };
 
   const handleLogout = () => {
@@ -247,7 +283,7 @@ const AdminChat = () => {
       {/* Sessions Sidebar */}
       <div className={`${sidebarCollapsed ? 'w-20' : 'w-80'} bg-gradient-to-b from-slate-800 to-slate-900 flex flex-col transition-all duration-300`}>
         {/* Header */}
-        <div className="p-4 border-b border-white/10">
+        <div className="p-4 border-b border-white/10 flex-shrink-0">
           <div className="flex items-center justify-between">
             {!sidebarCollapsed && (
               <div className="flex items-center gap-3">
@@ -271,7 +307,7 @@ const AdminChat = () => {
 
         {/* Stats */}
         {!sidebarCollapsed && (
-          <div className="p-3 grid grid-cols-3 gap-2">
+          <div className="p-3 grid grid-cols-3 gap-2 flex-shrink-0">
             <div className="bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-xl p-2 text-center">
               <p className="text-lg font-bold text-amber-400">{waitingCount}</p>
               <p className="text-[10px] text-amber-400/70">Waiting</p>
@@ -288,7 +324,7 @@ const AdminChat = () => {
         )}
 
         {/* Sessions List */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
           {sessions.length === 0 ? (
             <div className="p-4 text-center">
               <i className="fa-solid fa-inbox text-3xl text-white/20 mb-2"></i>
@@ -300,7 +336,7 @@ const AdminChat = () => {
               {activeSessions.length > 0 && (
                 <>
                   {!sidebarCollapsed && (
-                    <div className="px-3 py-2 text-xs text-white/40 font-medium uppercase tracking-wider">
+                    <div className="px-3 py-2 text-xs text-white/40 font-medium uppercase tracking-wider flex-shrink-0">
                       Active Chats ({activeSessions.length})
                     </div>
                   )}
@@ -330,10 +366,10 @@ const AdminChat = () => {
                         {!sidebarCollapsed && (
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                              <span className="font-medium text-white text-sm">
+                              <span className="font-medium text-white text-sm truncate">
                                 {session.visitor_name ? `${session.visitor_name} (${session.customer_no || `#${session.id.substring(0, 4)}`})` : session.customer_no || `#${session.id.substring(0, 4)}`}
                               </span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${
+                              <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${
                                 session.status === 'waiting' 
                                   ? 'bg-amber-500/20 text-amber-400' 
                                   : 'bg-emerald-500/20 text-emerald-400'
@@ -342,7 +378,7 @@ const AdminChat = () => {
                               </span>
                             </div>
                             <p className="text-xs text-white/40 truncate mt-0.5">
-                              {session.visitor_email || 'No email'} • {formatDate(session.updated_at)}
+                              {session.visitor_email || 'No email'} · {formatDate(session.updated_at)}
                             </p>
                           </div>
                         )}
@@ -352,19 +388,31 @@ const AdminChat = () => {
                 </>
               )}
               
-              {/* Closed Sessions (History) */}
+              {/* Closed Sessions (History) - 可折叠 */}
               {closedSessions.length > 0 && (
                 <>
-                  {!sidebarCollapsed && (
-                    <div className="px-3 py-2 text-xs text-white/40 font-medium uppercase tracking-wider border-t border-white/10 mt-1">
+                  {/* History Header - 可点击折叠 */}
+                  <div 
+                    onClick={() => setHistoryCollapsed(!historyCollapsed)}
+                    className="px-3 py-2 text-xs text-white/40 font-medium uppercase tracking-wider border-t border-white/10 mt-1 cursor-pointer hover:bg-white/5 flex items-center justify-between flex-shrink-0"
+                  >
+                    <span className="flex items-center gap-2">
+                      <i className={`fa-solid fa-chevron-${historyCollapsed ? 'right' : 'down'} text-[10px]`}></i>
                       📁 History ({closedSessions.length})
-                    </div>
-                  )}
-                  {closedSessions.map(session => (
+                    </span>
+                    {!sidebarCollapsed && (
+                      <span className="text-[10px] text-white/30">
+                        {historyCollapsed ? 'Click to expand' : 'Click to collapse'}
+                      </span>
+                    )}
+                  </div>
+                  
+                  {/* History List - 根据折叠状态显示/隐藏 */}
+                  {!historyCollapsed && closedSessions.map(session => (
                     <div
                       key={session.id}
                       onClick={() => handleSelectSession(session)}
-                      className={`p-3 border-b border-white/5 cursor-pointer transition-all ${
+                      className={`p-3 border-b border-white/5 cursor-pointer transition-all group ${
                         selectedSession?.id === session.id 
                           ? 'bg-gradient-to-r from-slate-600/30 to-transparent border-l-2 border-l-slate-400' 
                           : 'hover:bg-white/5'
@@ -380,15 +428,26 @@ const AdminChat = () => {
                         {!sidebarCollapsed && (
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                              <span className="font-medium text-white/70 text-sm">
+                              <span className="font-medium text-white/70 text-sm truncate">
                                 {session.visitor_name ? `${session.visitor_name} (${session.customer_no || `#${session.id.substring(0, 4)}`})` : session.customer_no || `#${session.id.substring(0, 4)}`}
                               </span>
-                              <span className="text-xs px-2 py-0.5 rounded-full bg-slate-500/20 text-slate-400">
-                                closed
-                              </span>
+                              <div className="flex items-center gap-1 flex-shrink-0">
+                                <span className="text-xs px-2 py-0.5 rounded-full bg-slate-500/20 text-slate-400">
+                                  closed
+                                </span>
+                                {/* 删除按钮 */}
+                                <button
+                                  onClick={(e) => deleteSession(session.id, e)}
+                                  disabled={deletingSession === session.id}
+                                  className="p-1 text-white/30 hover:text-red-400 hover:bg-red-400/10 rounded transition-all opacity-0 group-hover:opacity-100"
+                                  title="Delete conversation"
+                                >
+                                  <i className={`fa-solid ${deletingSession === session.id ? 'fa-spinner fa-spin' : 'fa-trash'} text-xs`}></i>
+                                </button>
+                              </div>
                             </div>
                             <p className="text-xs text-white/30 truncate mt-0.5">
-                              {session.visitor_email || 'No email'} • {formatDate(session.updated_at)}
+                              {session.visitor_email || 'No email'} · {formatDate(session.updated_at)}
                             </p>
                           </div>
                         )}
@@ -402,7 +461,7 @@ const AdminChat = () => {
         </div>
 
         {/* Logout */}
-        <div className="p-3 border-t border-white/10">
+        <div className="p-3 border-t border-white/10 flex-shrink-0">
           <button
             onClick={handleLogout}
             className="w-full py-2 text-white/50 hover:text-white hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center gap-2"
@@ -418,7 +477,7 @@ const AdminChat = () => {
         {selectedSession ? (
           <>
             {/* Chat Header */}
-            <div className="p-4 bg-white border-b border-slate-200 flex items-center justify-between shadow-sm">
+            <div className="p-4 bg-white border-b border-slate-200 flex items-center justify-between shadow-sm flex-shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-[#003366] to-[#004080] rounded-xl flex items-center justify-center shadow-lg">
                   <i className="fa-solid fa-user text-white"></i>
@@ -463,8 +522,11 @@ const AdminChat = () => {
               </div>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-slate-100 to-slate-50">
+            {/* Messages - 使用 ref 控制滚动 */}
+            <div 
+              ref={messagesContainerRef}
+              className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-slate-100 to-slate-50"
+            >
               {messages.length === 0 ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="text-center text-slate-400">
@@ -513,7 +575,7 @@ const AdminChat = () => {
             </div>
 
             {/* Input */}
-            <div className="p-4 bg-white border-t border-slate-200">
+            <div className="p-4 bg-white border-t border-slate-200 flex-shrink-0">
               {selectedSession.status === 'closed' ? (
                 <div className="text-center py-3">
                   <p className="text-slate-500 text-sm">🔒 This conversation has been closed</p>
