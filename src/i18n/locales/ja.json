@@ -48,33 +48,103 @@
   },
   "home": {
     "hero": {
-      "title": "中国の特殊油サプライチェーンへの信頼できるゲートウェイ",
-      "subtitle": "世界中のバイヤーを中国の主要な特殊油メーカーと結びつけ、調達、品質保証、物流ソリューションを提供します。",
-      "cta": "見積もりを依頼"
+      "title": "中国特殊油サプライチェーンへの信頼できるゲートウェイ",
+      "subtitle": "世界中のバイヤーと中国の主要な特殊油メーカーを結び、シームレスな調達、品質保証、物流ソリューションを提供します。",
+      "cta": "見積もり依頼"
     },
     "slides": {
-      "slide1": { "title": "中国のプレミアム特殊油ソース", "subtitle": "世界中のバイヤーを中国のベストメーカーと接続" },
-      "slide2": { "title": "高品質の特殊油", "subtitle": "グローバル基準と仕様に準拠" },
-      "slide3": { "title": "シームレスなグローバル物流", "subtitle": "50カ国以上への信頼できる配送" }
+      "cta": "詳細を見る",
+      "slide1": {
+        "title": "中国のプレミアム特殊油ソース",
+        "subtitle": "世界中のバイヤーと中国の最高メーカーを結ぶ"
+      },
+      "slide2": {
+        "title": "高品質特殊油",
+        "subtitle": "世界基準と仕様に準拠"
+      },
+      "slide3": {
+        "title": "シームレスなグローバル物流",
+        "subtitle": "50カ国以上への信頼できる配送"
+      }
     },
     "sourceStory": {
-      "tag": "あなたのサプライチェーンパートナー",
-      "title": "中国の特殊油サプライチェーンへの信頼できるゲートウェイ",
-      "description": "CN-SpecLube Chainは中国の特殊油産業への戦略的リンクとして機能します。",
-      "feature1": { "title": "品質保証", "description": "すべての段階で厳格な品質管理" },
-      "feature2": { "title": "グローバル物流", "description": "50カ国以上への信頼できる配送" },
-      "feature3": { "title": "技術サポート", "description": "ニーズに合わせた専門的なガイダンス" }
+      "tag": "サプライチェーンパートナー",
+      "title": "中国特殊油サプライチェーンへの信頼できるゲートウェイ",
+      "description1": "専門のサプライチェーンサービスプラットフォームとして、変圧器油、白油、ゴム油、その他精製油製品を含む中国の主要な特殊油メーカーと国際バイヤーを結ぶことに特化しています。",
+      "description2": "国境を越えた調達を簡素化するために設計されたエンドツーエンドのソリューションを提供します。調達調整、品質保証、物流、港湾集約、輸出通関を含む全プロセスをカバーします。",
+      "button": "サプライチェーンについて"
     },
     "features": {
-      "title": "選ばれる理由",
-      "subtitle": "特殊油のためのエンドツーエンドのサプライチェーンソリューションを提供",
-      "quality": { "title": "ISO 9001認証取得", "description": "品質マネジメントシステムの卓越性" },
-      "global": { "title": "50カ国以上", "description": "グローバル輸出ネットワーク" },
-      "standards": { "title": "品質基準", "description": "国際的なコンプライアンス" },
-      "logistics": { "title": "迅速な配送", "description": "効率的な物流ソリューション" }
+      "quality": {
+        "title": "ISO 9001認証",
+        "description": "品質マネジメントシステムの卓越性"
+      },
+      "global": {
+        "title": "50カ国以上",
+        "description": "グローバル輸出ネットワーク"
+      },
+      "standards": {
+        "title": "品質基準",
+        "description": "国際的なコンプライアンス"
+      },
+      "logistics": {
+        "title": "迅速な配送",
+        "description": "効率的な物流ソリューション"
+      },
+      "support": {
+        "title": "24/7サポート",
+        "description": "技術サポート"
+      }
     },
-    "products": { "title": "製品紹介", "subtitle": "信頼できる中国メーカーから調達したプレミアム特殊油", "viewDetails": "詳細を見る" },
-    "cta": { "title": "特殊油の調達準備はできましたか？", "description": "チームが適切な製品を見つけるお手伝いをします", "button": "今すぐお問い合わせ" }
+    "products": {
+      "tag": "製品ポートフォリオ",
+      "title": "中国の特殊油製品",
+      "subtitle": "国際基準を満たし、世界中の産業顧客に輸出される中国特殊油の包括的な範囲を提供します。",
+      "viewDetails": "製品を見る",
+      "transformer": {
+        "series": "SpecVolt™シリーズ",
+        "standard": "ASTM D3487",
+        "title": "変圧器油",
+        "description": "優れた誘電特性と低硫黄含有量のプレミアムナフテン系変圧器油。",
+        "tags": ["腐食硫黄ゼロ", "北極グレード", "高誘電"]
+      },
+      "rubber": {
+        "series": "SpecFlex™シリーズ",
+        "standard": "EU REACH",
+        "title": "ゴム加工油",
+        "description": "低PAH含有量のゴム配合用高溶解力ナフテン系油。",
+        "tags": ["Cn% > 35%", "低PAHs", "タイヤ製造"]
+      },
+      "hydraulic": {
+        "series": "SpecLube™シリーズ",
+        "standard": "DIN 51524",
+        "title": "作動油",
+        "description": "産業用途向け高性能耐摩耗作動油。",
+        "tags": ["高圧", "耐摩耗", "広温度範囲"]
+      }
+    },
+    "benefits": {
+      "tag": "選ばれる理由",
+      "title": "自信を持ってパートナーに",
+      "subtitle": "専門の中国特殊油サプライチェーンプラットフォームと協力する利点を体験",
+      "pricing": {
+        "title": "競争力のある価格",
+        "description": "仲介業者マークアップなしで工場に直接アクセスし、プレミアム中国特殊油の可能な限り最良の価格を提供。"
+      },
+      "quality": {
+        "title": "品質保証",
+        "description": "出荷前の厳格な検査と試験により、製品が国際基準と特定の要件を満たすことを保証。"
+      },
+      "logistics": {
+        "title": "手間のかからない物流",
+        "description": "輸出書類、通関、世界中の目的地港への配送を完全に管理。"
+      }
+    },
+    "cta": {
+      "title": "特殊油の調達準備はできましたか？",
+      "description": "チームが適切な製品を見つけるお手伝いをします",
+      "button": "見積もり依頼"
+    }
   },
   "about": {
     "hero": { "title": "中国特殊油サプライチェーン", "subtitle": "中国の特殊油サプライチェーンにおける信頼できるパートナー" },
@@ -287,5 +357,155 @@
     "cta": { "title": "注文の出荷準備はできましたか？", "description": "当社の物流専門家がカスタマイズされた輸送ソリューションを提供する準備ができています", "button": "配送見積もりを取得" },
     "mobileFooter": { "contact": "お問い合わせ" }
   },
-  "contact": { "title": "お問い合わせ", "subtitle": "チームにご連絡ください", "form": { "title": "メッセージを送信" }, "info": { "title": "連絡先情報" } }
+  "contact": {
+    "hero": {
+      "title": "中国特殊油チームへお問い合わせ",
+      "alt": "中国特殊油についてお問い合わせ"
+    },
+    "form": {
+      "title": "見積もり依頼",
+      "subtitle": "以下のフォームに記入して、中国特殊油の競争力のある見積もりを取得してください。チームは24時間以内に回答します。",
+      "name": "担当者名",
+      "namePlaceholder": "氏名",
+      "company": "会社名",
+      "companyPlaceholder": "貴社名",
+      "email": "メールアドレス",
+      "emailPlaceholder": "your.email@company.com",
+      "productCategory": "製品カテゴリー",
+      "selectProduct": "製品タイプを選択",
+      "products": {
+        "transformer": "変圧器油",
+        "rubber": "ゴム加工油",
+        "hydraulic": "作動油",
+        "gear": "ギアオイル",
+        "other": "その他特殊油"
+      },
+      "destinationPort": "仕向港",
+      "destinationPortPlaceholder": "CIF/CFR見積用",
+      "quantity": "推定数量",
+      "quantityPlaceholder": "例：500ドラム、20コンテナ、100MT",
+      "message": "追加要件",
+      "messagePlaceholder": "具体的な要件、技術仕様、ご質問をお聞かせください",
+      "submit": "競争力のある見積もりを取得",
+      "processing": "処理中...",
+      "protectedBy": "このフォームはhCaptchaで保護されており、その",
+      "privacyPolicy": "プライバシーポリシー",
+      "and": "と",
+      "termsOfService": "利用規約",
+      "apply": "が適用されます"
+    },
+    "info": {
+      "title": "チームへお問い合わせ",
+      "email": {
+        "title": "メールを送信",
+        "description": "迅速な回答のため、国際チームにメールをお送りください"
+      },
+      "whatsapp": {
+        "title": "WhatsApp",
+        "description": "24/7ダイレクトメッセージ対応"
+      },
+      "phone": {
+        "title": "お電話",
+        "description": "国際販売ホットライン"
+      },
+      "hours": {
+        "title": "営業時間",
+        "weekdays": "月曜日～金曜日：午前9時～午後6時 (GMT+8)",
+        "saturday": "土曜日：午前9時～正午 (GMT+8)",
+        "whatsapp": "WhatsAppで24/7サポート"
+      },
+      "address": {
+        "title": "オフィス住所",
+        "line1": "松嶺路197号10階",
+        "line2": "青島市嶗山区",
+        "line3": "中国山東省"
+      }
+    },
+    "team": {
+      "title": "ビジネスサポートチーム",
+      "steven": {
+        "name": "Steven Zhang",
+        "role": "国際販売ディレクター",
+        "languages": "言語：英語、中国語"
+      }
+    },
+    "faq": {
+      "title": "よくある質問",
+      "q1": {
+        "question": "中国からどのような種類の特殊油を供給していますか？",
+        "answer": "変圧器油、ゴム加工油、作動油、ギアオイル、タービン油、熱媒体油、その他の工業用潤滑油を含む幅広い中国特殊油を供給しています。"
+      },
+      "q2": {
+        "question": "製品にはどのような認証がありますか？",
+        "answer": "ISO 9001、ISO 14001、ASTM、DIN、IEC、EU REACH準拠など、様々な国際基準を満たしています。要求に応じて各製品の特定の証明書を提供できます。"
+      },
+      "q3": {
+        "question": "どのインコタームズに対応していますか？",
+        "answer": "EXW、FOB、CFR、CIF、DAP、DDPを含む主要なインコタームズ全てに対応し、国際のお客様に柔軟性を提供しています。"
+      },
+      "q4": {
+        "question": "リードタイムはどれくらいですか？",
+        "answer": "標準的なリードタイムは注文確認と入金確認後7-14日です。大量注文やカスタム製品の場合、リードタイムが延長される場合があります。"
+      },
+      "q5": {
+        "question": "製品サンプルを提供できますか？",
+        "answer": "はい、品質評価用の無料サンプルを提供できます。配送費用はお客様のご負担となります。サンプル請求は営業チームまでご連絡ください。"
+      },
+      "q6": {
+        "question": "製品品質をどのように保証していますか？",
+        "answer": "複数の検査、実験室テスト、工場監査を通じて厳格な品質管理を行っています。すべての製品は出荷前にテストを受け、国際基準とお客様の要件を満たしていることを確認しています。"
+      }
+    },
+    "mobile": {
+      "call": "お電話",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "中国特殊油業界のニュースと洞察",
+      "alt": "中国特殊油業界ニュース"
+    },
+    "loading": "記事を読み込み中...",
+    "searchPlaceholder": "記事を検索...",
+    "categories": {
+      "all": "すべて",
+      "industryNews": "業界ニュース",
+      "technicalInfo": "技術情報",
+      "marketAnalysis": "市場分析",
+      "productUpdates": "製品更新"
+    },
+    "latestArticles": "最新記事",
+    "noArticles": "記事が見つかりません",
+    "viewAll": "すべての記事を見る",
+    "insights": {
+      "title": "中国特殊油市場の重要な洞察",
+      "trends": {
+        "title": "市場トレンド",
+        "description": "中国の特殊油業界とグローバル市場の発展における最新トレンドをご覧ください。",
+        "link": "トレンドを探索"
+      },
+      "guides": {
+        "title": "技術ガイド",
+        "description": "中国特殊油の適切な適用に関する詳細な技術情報とガイドライン。",
+        "link": "ガイドを見る"
+      },
+      "regulatory": {
+        "title": "規制更新",
+        "description": "特殊油業界に影響する最新の規制変更とコンプライアンス要件。",
+        "link": "更新を読む"
+      }
+    },
+    "subscribe": {
+      "title": "ニュースレターを購読",
+      "description": "最新の中国特殊油業界ニュースと技術的洞察を受信箱にお届けします",
+      "placeholder": "メールアドレス",
+      "button": "購読",
+      "subscribing": "購読中..."
+    },
+    "mobile": {
+      "contact": "お問い合わせ",
+      "whatsapp": "WhatsApp"
+    }
+  }
 }

@@ -48,33 +48,103 @@
   },
   "home": {
     "hero": {
-      "title": "Sua Porta de Confiança para a Cadeia de Suprimentos de Óleos Especiais da China",
-      "subtitle": "Conectamos compradores globais aos principais fabricantes de óleos especiais da China, fornecendo soluções de aquisição, garantia de qualidade e logística.",
-      "cta": "Solicitar cotação"
+      "title": "Seu Portal Confiável para a Cadeia de Suprimentos de Óleos Especiais da China",
+      "subtitle": "Conectamos compradores globais aos principais fabricantes chineses de óleos especiais, fornecendo soluções de aquisição, garantia de qualidade e logística.",
+      "cta": "Solicitar Cotação"
     },
     "slides": {
-      "slide1": { "title": "Fonte de óleos especiais premium da China", "subtitle": "Conectando compradores globais aos melhores fabricantes chineses" },
-      "slide2": { "title": "Óleo especial de alta qualidade", "subtitle": "Em conformidade com padrões e especificações globais" },
-      "slide3": { "title": "Logística global sem problemas", "subtitle": "Envio confiável para mais de 50 países" }
+      "cta": "Saiba Mais",
+      "slide1": {
+        "title": "Fonte Premium de Óleos Especiais da China",
+        "subtitle": "Conectando Compradores Globais aos Melhores Fabricantes da China"
+      },
+      "slide2": {
+        "title": "Óleo Especial de Alta Qualidade",
+        "subtitle": "Conforme com Padrões e Especificações Globais"
+      },
+      "slide3": {
+        "title": "Logística Global Sem Problemas",
+        "subtitle": "Envio Confiável para Mais de 50 Países"
+      }
     },
     "sourceStory": {
-      "tag": "Seu parceiro de cadeia de suprimentos",
-      "title": "Sua Porta de Confiança para a Cadeia de Suprimentos de Óleos Especiais da China",
-      "description": "CN-SpecLube Chain serve como seu elo estratégico com a indústria de óleos especiais da China.",
-      "feature1": { "title": "Garantia de qualidade", "description": "Controle de qualidade rigoroso em cada etapa" },
-      "feature2": { "title": "Logística global", "description": "Envio confiável para mais de 50 países" },
-      "feature3": { "title": "Suporte técnico", "description": "Orientação especializada para suas necessidades" }
+      "tag": "Seu Parceiro na Cadeia de Suprimentos",
+      "title": "Seu Portal Confiável para a Cadeia de Suprimentos de Óleos Especiais da China",
+      "description1": "Como plataforma profissional de serviços de cadeia de suprimentos, nos especializamos em conectar compradores internacionais com os principais fabricantes chineses de óleos especiais—incluindo óleo para transformadores, óleo branco, óleo para borracha e outros produtos refinados.",
+      "description2": "Oferecemos soluções completas projetadas para simplificar a aquisição transfronteiriça. Nossos serviços cobrem todo o processo: coordenação de suprimentos, garantia de qualidade, logística, consolidação portuária e despacho aduaneiro de exportação.",
+      "button": "Conheça Nossa Cadeia de Suprimentos"
     },
     "features": {
-      "title": "Por que nos escolher",
-      "subtitle": "Fornecemos soluções de cadeia de suprimentos completas para óleos especiais",
-      "quality": { "title": "Certificado ISO 9001", "description": "Excelência em sistema de gestão de qualidade" },
-      "global": { "title": "Mais de 50 países", "description": "Rede de exportação global" },
-      "standards": { "title": "Padrões de qualidade", "description": "Conformidade internacional" },
-      "logistics": { "title": "Entrega rápida", "description": "Soluções logísticas eficientes" }
+      "quality": {
+        "title": "Certificado ISO 9001",
+        "description": "Excelência em sistema de gestão de qualidade"
+      },
+      "global": {
+        "title": "Mais de 50 países",
+        "description": "Rede de exportação global"
+      },
+      "standards": {
+        "title": "Padrões de qualidade",
+        "description": "Conformidade internacional"
+      },
+      "logistics": {
+        "title": "Entrega rápida",
+        "description": "Soluções logísticas eficientes"
+      },
+      "support": {
+        "title": "Suporte 24/7",
+        "description": "Assistência técnica"
+      }
     },
-    "products": { "title": "Nossos produtos", "subtitle": "Óleos especiais premium de fabricantes chineses de confiança", "viewDetails": "Ver detalhes" },
-    "cta": { "title": "Pronto para adquirir óleos especiais?", "description": "Nossa equipe está pronta para ajudá-lo a encontrar os produtos certos", "button": "Contate-nos hoje" }
+    "products": {
+      "tag": "Portfólio de Produtos",
+      "title": "Produtos de Óleos Especiais da China",
+      "subtitle": "Oferecemos uma gama completa de óleos especiais chineses que atendem padrões internacionais e são exportados para clientes industriais em todo o mundo.",
+      "viewDetails": "Ver Produto",
+      "transformer": {
+        "series": "Série SpecVolt™",
+        "standard": "ASTM D3487",
+        "title": "Óleo para Transformadores",
+        "description": "Óleos naftênicos premium com excelentes propriedades dielétricas e baixo teor de enxofre.",
+        "tags": ["Sem Enxofre Corrosivo", "Grau Ártico", "Alta Dielétrica"]
+      },
+      "rubber": {
+        "series": "Série SpecFlex™",
+        "standard": "EU REACH",
+        "title": "Óleo para Borracha",
+        "description": "Óleos naftênicos de alta solvência para compostos de borracha com baixo teor de PAH.",
+        "tags": ["Cn% > 35%", "Baixos PAHs", "Fabricação de Pneus"]
+      },
+      "hydraulic": {
+        "series": "Série SpecLube™",
+        "standard": "DIN 51524",
+        "title": "Óleo Hidráulico",
+        "description": "Óleos hidráulicos anti-desgaste de alta performance para aplicações industriais.",
+        "tags": ["Alta Pressão", "Anti-Desgaste", "Ampla Faixa de Temp"]
+      }
+    },
+    "benefits": {
+      "tag": "Por Que Nos Escolher",
+      "title": "Parceria com Confiança",
+      "subtitle": "Experimente as vantagens de trabalhar com uma plataforma dedicada à cadeia de suprimentos de óleos especiais chineses",
+      "pricing": {
+        "title": "Preços Competitivos",
+        "description": "Acesso direto à fábrica sem intermediários, fornecendo os melhores preços possíveis para óleos especiais chineses premium."
+      },
+      "quality": {
+        "title": "Garantia de Qualidade",
+        "description": "Inspeção e testes rigorosos antes do envio para garantir que os produtos atendam padrões internacionais e seus requisitos específicos."
+      },
+      "logistics": {
+        "title": "Logística Sem Problemas",
+        "description": "Gestão completa de documentação de exportação, despacho aduaneiro e envio para seu porto de destino."
+      }
+    },
+    "cta": {
+      "title": "Pronto para Adquirir Óleos Especiais?",
+      "description": "Nossa equipe está pronta para ajudá-lo a encontrar os produtos certos",
+      "button": "Solicitar Cotação"
+    }
   },
   "about": {
     "hero": { "title": "Cadeia de Suprimentos de Óleos Especiais da China", "subtitle": "Seu parceiro de confiança na cadeia de suprimentos de óleos especiais da China" },
@@ -287,5 +357,155 @@
     "cta": { "title": "Pronto para enviar seu pedido?", "description": "Nossos especialistas em logística estão prontos para fornecer uma solução personalizada", "button": "Obter cotação de envio" },
     "mobileFooter": { "contact": "Contate-nos" }
   },
-  "contact": { "title": "Contate-nos", "subtitle": "Entre em contato com nossa equipe", "form": { "title": "Envie-nos uma mensagem" }, "info": { "title": "Informações de contato" } }
+  "contact": {
+    "hero": {
+      "title": "Contate Nossa Equipe de Óleos Especiais da China",
+      "alt": "Contate-nos para Óleos Especiais da China"
+    },
+    "form": {
+      "title": "Solicitar Cotação",
+      "subtitle": "Preencha o formulário abaixo para obter uma cotação competitiva para óleos especiais chineses. Nossa equipe responderá em 24 horas.",
+      "name": "Pessoa de Contato",
+      "namePlaceholder": "Seu nome completo",
+      "company": "Nome da Empresa",
+      "companyPlaceholder": "Sua empresa",
+      "email": "Endereço de Email",
+      "emailPlaceholder": "seu.email@empresa.com",
+      "productCategory": "Categoria de Produto",
+      "selectProduct": "Selecionar tipo de produto",
+      "products": {
+        "transformer": "Óleo para Transformadores",
+        "rubber": "Óleo para Borracha",
+        "hydraulic": "Óleo Hidráulico",
+        "gear": "Óleo para Engrenagens",
+        "other": "Outro Óleo Especial"
+      },
+      "destinationPort": "Porto de Destino",
+      "destinationPortPlaceholder": "Para cotação CIF/CFR",
+      "quantity": "Quantidade Estimada",
+      "quantityPlaceholder": "ex. 500 tambores, 20 contêineres, 100 MT",
+      "message": "Requisitos Adicionais",
+      "messagePlaceholder": "Conte-nos sobre seus requisitos específicos, especificações técnicas ou perguntas",
+      "submit": "Obter Cotação Competitiva",
+      "processing": "Processando...",
+      "protectedBy": "Este formulário é protegido por hCaptcha e sua",
+      "privacyPolicy": "Política de Privacidade",
+      "and": "e",
+      "termsOfService": "Termos de Serviço",
+      "apply": "aplicam"
+    },
+    "info": {
+      "title": "Contate Nossa Equipe",
+      "email": {
+        "title": "Envie-nos um Email",
+        "description": "Para resposta mais rápida, envie email para nossa equipe internacional"
+      },
+      "whatsapp": {
+        "title": "WhatsApp",
+        "description": "Mensagem direta disponível 24/7"
+      },
+      "phone": {
+        "title": "Ligue para Nós",
+        "description": "Linha de vendas internacionais"
+      },
+      "hours": {
+        "title": "Horário de Funcionamento",
+        "weekdays": "Segunda - Sexta: 9:00 - 18:00 (GMT+8)",
+        "saturday": "Sábado: 9:00 - 12:00 (GMT+8)",
+        "whatsapp": "Suporte 24/7 via WhatsApp"
+      },
+      "address": {
+        "title": "Endereço do Escritório",
+        "line1": "10º Andar, Nº 197, Rua Songling",
+        "line2": "Distrito de Laoshan, Qingdao",
+        "line3": "Shandong, China"
+      }
+    },
+    "team": {
+      "title": "Equipe de Suporte Comercial",
+      "steven": {
+        "name": "Steven Zhang",
+        "role": "Diretor de Vendas Internacionais",
+        "languages": "Idiomas: Inglês, Chinês"
+      }
+    },
+    "faq": {
+      "title": "Perguntas Frequentes",
+      "q1": {
+        "question": "Quais tipos de óleos especiais vocês fornecem da China?",
+        "answer": "Fornecemos uma ampla gama de óleos especiais chineses incluindo óleo para transformadores, óleo para borracha, óleo hidráulico, óleo para engrenagens, óleo para turbinas, óleo térmico e outros lubrificantes industriais."
+      },
+      "q2": {
+        "question": "Quais certificações seus produtos têm?",
+        "answer": "Nossos produtos atendem a vários padrões internacionais incluindo ISO 9001, ISO 14001, ASTM, DIN, IEC e conformidade EU REACH. Podemos fornecer certificados específicos para cada produto mediante solicitação."
+      },
+      "q3": {
+        "question": "Quais Incoterms vocês suportam?",
+        "answer": "Suportamos todos os principais Incoterms incluindo EXW, FOB, CFR, CIF, DAP e DDP para proporcionar flexibilidade aos nossos clientes internacionais."
+      },
+      "q4": {
+        "question": "Qual é o prazo de entrega?",
+        "answer": "O prazo padrão é de 7-14 dias após confirmação do pedido e recebimento do pagamento. Para pedidos de grande volume ou produtos personalizados, o prazo pode ser estendido."
+      },
+      "q5": {
+        "question": "Vocês podem fornecer amostras do produto?",
+        "answer": "Sim, podemos fornecer amostras gratuitas para avaliação de qualidade. Os clientes são responsáveis pelos custos de envio. Entre em contato com nossa equipe de vendas para solicitar amostras."
+      },
+      "q6": {
+        "question": "Como vocês garantem a qualidade do produto?",
+        "answer": "Realizamos controle de qualidade rigoroso através de múltiplas inspeções, testes de laboratório e auditorias de fábrica. Todos os produtos passam por testes antes do envio para garantir que atendam aos padrões internacionais e requisitos do cliente."
+      }
+    },
+    "mobile": {
+      "call": "Ligue para Nós",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "Notícias e Análises da Indústria de Óleos Especiais da China",
+      "alt": "Notícias da Indústria de Óleos Especiais da China"
+    },
+    "loading": "Carregando artigos...",
+    "searchPlaceholder": "Buscar artigos...",
+    "categories": {
+      "all": "Todos",
+      "industryNews": "Notícias da Indústria",
+      "technicalInfo": "Informações Técnicas",
+      "marketAnalysis": "Análise de Mercado",
+      "productUpdates": "Atualizações de Produtos"
+    },
+    "latestArticles": "Últimos Artigos",
+    "noArticles": "Nenhum artigo encontrado",
+    "viewAll": "Ver Todos os Artigos",
+    "insights": {
+      "title": "Principais Insights do Mercado de Óleos Especiais Chineses",
+      "trends": {
+        "title": "Tendências de Mercado",
+        "description": "Mantenha-se atualizado com as últimas tendências na indústria de óleos especiais da China e desenvolvimentos do mercado global.",
+        "link": "Explorar tendências"
+      },
+      "guides": {
+        "title": "Guias Técnicos",
+        "description": "Informações técnicas detalhadas e diretrizes para a correta aplicação de óleos especiais chineses.",
+        "link": "Ver guias"
+      },
+      "regulatory": {
+        "title": "Atualizações Regulatórias",
+        "description": "Últimas mudanças regulatórias e requisitos de conformidade afetando a indústria de óleos especiais.",
+        "link": "Ler atualizações"
+      }
+    },
+    "subscribe": {
+      "title": "Inscreva-se em Nossa Newsletter",
+      "description": "Receba as últimas notícias da indústria de óleos especiais da China e análises técnicas em sua caixa de entrada",
+      "placeholder": "Seu endereço de email",
+      "button": "Inscrever-se",
+      "subscribing": "Inscrevendo..."
+    },
+    "mobile": {
+      "contact": "Contate-nos",
+      "whatsapp": "WhatsApp"
+    }
+  }
 }

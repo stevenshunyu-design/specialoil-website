@@ -48,75 +48,102 @@
   },
   "home": {
     "hero": {
-      "title": "您通往中國特種油供應鏈的可靠橋樑",
+      "title": "中國特種油供應鏈的信賴門戶",
       "subtitle": "我們連接全球買家與中國領先的特種油製造商，提供無縫採購、品質保證和物流解決方案。",
-      "cta": "索取報價"
+      "cta": "獲取報價"
     },
     "slides": {
       "cta": "了解更多",
       "slide1": {
-        "title": "中國優質特種油來源",
+        "title": "中國優質特種油源頭",
         "subtitle": "連接全球買家與中國最佳製造商"
       },
       "slide2": {
-        "title": "高品質特種油",
+        "title": "優質特種油",
         "subtitle": "符合全球標準與規格"
       },
       "slide3": {
         "title": "無縫全球物流",
-        "subtitle": "可靠運送至全球50多個國家"
+        "subtitle": "可靠運輸至全球50多個國家"
       }
     },
     "sourceStory": {
       "tag": "您的供應鏈合作夥伴",
-      "title": "您通往中國特種油供應鏈的可靠橋樑",
-      "description": "CN-SpecLube Chain 作為您連接中國特種油產業的策略橋樑。我們提供全面的供應鏈服務，包括採購協調、品質管控、物流管理和報關文件。",
-      "feature1": {
-        "title": "品質保證",
-        "description": "每一步驟都有嚴格的品質管控"
-      },
-      "feature2": {
-        "title": "全球物流",
-        "description": "可靠運送至50多個國家"
-      },
-      "feature3": {
-        "title": "技術支援",
-        "description": "專業指導滿足您的需求"
-      }
+      "title": "中國特種油供應鏈的信賴門戶",
+      "description1": "作為專業的供應鏈服務平台，我們專注於連接國際買家與中國領先的特種油製造商——包括變壓器油、白油、橡膠油和其他精煉油產品。",
+      "description2": "我們提供端到端解決方案，旨在簡化跨境採購。我們的服務涵蓋整個流程：採購協調、品質保證、物流、港口集運和出口報關。",
+      "button": "了解我們的供應鏈"
     },
     "features": {
-      "title": "為什麼選擇我們",
-      "subtitle": "我們為特種油提供端到端供應鏈解決方案",
       "quality": {
-        "title": "ISO 9001 認證",
-        "description": "卓越的品質管理系統"
+        "title": "ISO 9001認證",
+        "description": "品質管理系統卓越"
       },
       "global": {
-        "title": "50多個國家",
+        "title": "50+國家",
         "description": "全球出口網絡"
       },
       "standards": {
         "title": "品質標準",
-        "description": "符合國際規範"
+        "description": "國際合規"
       },
       "logistics": {
-        "title": "快速交貨",
+        "title": "快速交付",
         "description": "高效物流解決方案"
       },
       "support": {
-        "title": "24/7 支援",
+        "title": "24/7支援",
         "description": "技術支援"
       }
     },
     "products": {
-      "title": "我們的產品",
-      "subtitle": "源自值得信賴的中國製造商的優質特種油",
-      "viewDetails": "查看詳情"
+      "tag": "產品系列",
+      "title": "中國特種油產品",
+      "subtitle": "我們提供全面的中國特種油產品系列，符合國際標準，出口給全球工業客戶。",
+      "viewDetails": "查看產品",
+      "transformer": {
+        "series": "SpecVolt™系列",
+        "standard": "ASTM D3487",
+        "title": "變壓器油",
+        "description": "優質環烷基變壓器油，具有優異的介電性能和低硫含量。",
+        "tags": ["零腐蝕硫", "北極級", "高介電"]
+      },
+      "rubber": {
+        "series": "SpecFlex™系列",
+        "standard": "歐盟REACH",
+        "title": "橡膠加工油",
+        "description": "高溶解力環烷基油，用於橡膠混煉，低PAH含量。",
+        "tags": ["Cn% > 35%", "低PAHs", "輪胎製造"]
+      },
+      "hydraulic": {
+        "series": "SpecLube™系列",
+        "standard": "DIN 51524",
+        "title": "液壓油",
+        "description": "高性能抗磨液壓油，適用於工業應用。",
+        "tags": ["高壓", "抗磨", "寬溫範圍"]
+      }
+    },
+    "benefits": {
+      "tag": "為什麼選擇我們",
+      "title": "放心合作",
+      "subtitle": "體驗與專業中國特種油供應鏈平台合作的優勢",
+      "pricing": {
+        "title": "有競爭力的價格",
+        "description": "直接工廠採購，無中間商加價，為您提供優質中國特種油的最佳價格。"
+      },
+      "quality": {
+        "title": "品質保證",
+        "description": "嚴格的裝運前檢驗和測試，確保產品符合國際標準和您的具體要求。"
+      },
+      "logistics": {
+        "title": "無憂物流",
+        "description": "全程管理出口文件、報關和運輸到全球目的港。"
+      }
     },
     "cta": {
-      "title": "準備好採購特種油了嗎？",
-      "description": "我們的團隊隨時準備幫助您找到適合您需求的產品",
-      "button": "立即聯繫我們"
+      "title": "準備採購特種油？",
+      "description": "我們的團隊隨時準備幫助您找到合適的產品",
+      "button": "獲取報價"
     }
   },
   "about": {
@@ -564,23 +591,154 @@
     "mobileFooter": { "contact": "聯繫我們" }
   },
   "contact": {
-    "title": "聯繫我們",
-    "subtitle": "與我們的團隊聯繫",
+    "hero": {
+      "title": "聯繫我們的中國特種油團隊",
+      "alt": "聯繫我們獲取中國特種油"
+    },
     "form": {
-      "title": "發送訊息給我們",
-      "name": "您的姓名",
-      "email": "電子郵件地址",
-      "phone": "電話號碼",
+      "title": "獲取報價",
+      "subtitle": "填寫以下表格獲取中國特種油的有競爭力報價。我們的團隊將在24小時內回覆。",
+      "name": "聯繫人",
+      "namePlaceholder": "您的姓名",
       "company": "公司名稱",
-      "subject": "主旨",
-      "message": "您的訊息",
-      "submit": "發送訊息"
+      "companyPlaceholder": "您的公司",
+      "email": "電子郵件地址",
+      "emailPlaceholder": "your.email@company.com",
+      "productCategory": "產品類別",
+      "selectProduct": "選擇產品類型",
+      "products": {
+        "transformer": "變壓器油",
+        "rubber": "橡膠加工油",
+        "hydraulic": "液壓油",
+        "gear": "齒輪油",
+        "other": "其他特種油"
+      },
+      "destinationPort": "目的港",
+      "destinationPortPlaceholder": "用於CIF/CFR報價",
+      "quantity": "預計數量",
+      "quantityPlaceholder": "例如：500桶、20個貨櫃、100公噸",
+      "message": "附加要求",
+      "messagePlaceholder": "告訴我們您的具體要求、技術規格或任何問題",
+      "submit": "獲取有競爭力的報價",
+      "processing": "處理中...",
+      "protectedBy": "此表單受hCaptcha保護，其",
+      "privacyPolicy": "隱私政策",
+      "and": "和",
+      "termsOfService": "服務條款",
+      "apply": "適用"
     },
     "info": {
-      "title": "聯繫資訊",
-      "address": "地址",
-      "phone": "電話",
-      "email": "電子郵件"
+      "title": "聯繫我們的團隊",
+      "email": {
+        "title": "發送郵件",
+        "description": "如需快速回覆，請發送郵件至我們的國際團隊"
+      },
+      "whatsapp": {
+        "title": "WhatsApp",
+        "description": "24/7全天候直接訊息"
+      },
+      "phone": {
+        "title": "致電我們",
+        "description": "國際銷售熱線"
+      },
+      "hours": {
+        "title": "營業時間",
+        "weekdays": "週一至週五：上午9:00 - 下午6:00 (GMT+8)",
+        "saturday": "週六：上午9:00 - 中午12:00 (GMT+8)",
+        "whatsapp": "WhatsApp全天候支援"
+      },
+      "address": {
+        "title": "辦公地址",
+        "line1": "松嶺路197號10樓",
+        "line2": "青島市嶗山區",
+        "line3": "中國山東省"
+      }
+    },
+    "team": {
+      "title": "業務支援團隊",
+      "steven": {
+        "name": "張順宇",
+        "role": "國際銷售總監",
+        "languages": "語言：英語、中文"
+      }
+    },
+    "faq": {
+      "title": "常見問題",
+      "q1": {
+        "question": "您從中國供應哪些類型的特種油？",
+        "answer": "我們供應廣泛的中國特種油，包括變壓器油、橡膠加工油、液壓油、齒輪油、汽輪機油、導熱油和其他工業潤滑油。"
+      },
+      "q2": {
+        "question": "您的產品有哪些認證？",
+        "answer": "我們的產品符合多種國際標準，包括ISO 9001、ISO 14001、ASTM、DIN、IEC和歐盟REACH合規。我們可以根據要求提供每種產品的具體證書。"
+      },
+      "q3": {
+        "question": "您支援哪些國際貿易術語？",
+        "answer": "我們支援所有主要國際貿易術語，包括EXW、FOB、CFR、CIF、DAP和DDP，為我們的國際客戶提供靈活性。"
+      },
+      "q4": {
+        "question": "您的訂單交貨期是多少？",
+        "answer": "標準交貨期為訂單確認並收到付款後7-14天。對於大批量訂單或客製產品，交貨期可能會相應延長。"
+      },
+      "q5": {
+        "question": "您可以提供產品樣品嗎？",
+        "answer": "是的，我們可以提供免費產品樣品供品質評估。客戶需承擔運輸費用。請聯繫我們的銷售團隊索取樣品。"
+      },
+      "q6": {
+        "question": "您如何確保產品品質？",
+        "answer": "我們通過多次檢驗、實驗室測試和工廠審核進行嚴格的品質控制。所有產品在發貨前都經過測試，以確保符合國際標準和客戶要求。"
+      }
+    },
+    "mobile": {
+      "call": "致電我們",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "中國特種油行業新聞與洞察",
+      "alt": "中國特種油行業新聞"
+    },
+    "loading": "載入文章中...",
+    "searchPlaceholder": "搜尋文章...",
+    "categories": {
+      "all": "全部",
+      "industryNews": "行業新聞",
+      "technicalInfo": "技術資訊",
+      "marketAnalysis": "市場分析",
+      "productUpdates": "產品更新"
+    },
+    "latestArticles": "最新文章",
+    "noArticles": "未找到文章",
+    "viewAll": "查看所有文章",
+    "insights": {
+      "title": "中國特種油市場關鍵洞察",
+      "trends": {
+        "title": "市場趨勢",
+        "description": "了解中國特種油行業和全球市場發展的最新趨勢。",
+        "link": "探索趨勢"
+      },
+      "guides": {
+        "title": "技術指南",
+        "description": "中國特種油正確應用的詳細技術資訊和指南。",
+        "link": "查看指南"
+      },
+      "regulatory": {
+        "title": "法規更新",
+        "description": "影響特種油行業的最新法規變化和合規要求。",
+        "link": "閱讀更新"
+      }
+    },
+    "subscribe": {
+      "title": "訂閱我們的通訊",
+      "description": "獲取最新中國特種油行業新聞和技術洞察，直接發送到您的收件匣",
+      "placeholder": "您的電子郵件地址",
+      "button": "訂閱",
+      "subscribing": "訂閱中..."
+    },
+    "mobile": {
+      "contact": "聯繫我們",
+      "whatsapp": "WhatsApp"
     }
   }
 }

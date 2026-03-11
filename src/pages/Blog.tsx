@@ -1,11 +1,12 @@
-import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useBlog } from '../hooks/useBlog';
 import BlogCard from '../components/BlogCard';
 import { SubscribeSuccessModal, SubscribeErrorModal } from '@/components/ToastModal';
 
 const Blog = () => {
+  const { t } = useTranslation();
   // 所有Hooks必须放在组件顶部，确保每次渲染都以相同顺序调用
   const { posts, isLoading, searchPosts } = useBlog();
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,6 +23,15 @@ const Blog = () => {
   
   // 分类列表
   const categories = ['All', 'Industry News', 'Technical Information', 'Market Analysis', 'Product Updates'];
+  
+  // 分类翻译映射
+  const categoryLabels: Record<string, string> = {
+    'All': t('blog.categories.all'),
+    'Industry News': t('blog.categories.industryNews'),
+    'Technical Information': t('blog.categories.technicalInfo'),
+    'Market Analysis': t('blog.categories.marketAnalysis'),
+    'Product Updates': t('blog.categories.productUpdates')
+  };
 
   // 搜索功能
   useEffect(() => {
@@ -73,7 +83,7 @@ const Blog = () => {
       <div className="min-h-screen bg-white pt-24 pb-16 flex items-center justify-center">
         <div className="text-center">
           <i className="fa-solid fa-spinner fa-spin text-4xl text-[#D4AF37] mb-4"></i>
-          <p className="text-xl text-[#333333]">Loading articles...</p>
+          <p className="text-xl text-[#333333]">{t('blog.loading')}</p>
         </div>
       </div>
     );
@@ -93,12 +103,12 @@ const Blog = () => {
             <div className="absolute inset-0 bg-black/40 z-10"></div>
             <img 
               src="https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_16_9&prompt=China%20special%20oil%20industry%20news%2C%20industrial%20cinematic%20style&sign=5f2862a71a389200cb51a21eb3534804" 
-              alt="China Special Oil Industry News" 
+              alt={t('blog.hero.alt')} 
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 z-20 flex items-center justify-center">
                 <h1 className="text-4xl md:text-5xl font-bold text-white font-['Montserrat'] tracking-tight text-center px-4 text-shadow-sm">
-                  China Special Oil Industry News & Insights
+                  {t('blog.hero.title')}
                 </h1>
               </div>
           </div>
@@ -109,7 +119,7 @@ const Blog = () => {
           <div className="relative">
             <input
               type="text"
-              placeholder="Search for articles..."
+              placeholder={t('blog.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-6 py-4 bg-[#F4F6F9] border border-gray-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
@@ -133,7 +143,7 @@ const Blog = () => {
                     : 'bg-[#F4F6F9] text-[#333333] hover:bg-gray-200'
                 }`}
               >
-                {category}
+                {categoryLabels[category]}
               </button>
             ))}
           </div>
@@ -142,7 +152,7 @@ const Blog = () => {
         {/* Blog Posts */}
         <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-[#003366] font-['Montserrat']">
-              Latest Articles
+              {t('blog.latestArticles')}
             </h2>
           
           {filteredByCategory.length > 0 ? (
@@ -154,7 +164,7 @@ const Blog = () => {
           ) : (
             <div className="text-center py-12 bg-[#F4F6F9] rounded-sm">
               <i className="fa-solid fa-search text-4xl text-gray-400 mb-4"></i>
-              <p className="text-xl text-[#333333]">No articles found</p>
+              <p className="text-xl text-[#333333]">{t('blog.noArticles')}</p>
               <button 
                 onClick={() => {
                   setSearchQuery('');
@@ -162,8 +172,8 @@ const Blog = () => {
                 }}
                 className="mt-4 inline-block bg-[#003366] text-white px-6 py-2 rounded-sm font-semibold hover:bg-opacity-90 transition-all"
               >
-                  View All Articles
-                </button>
+                {t('blog.viewAll')}
+              </button>
             </div>
           )}
         </section>
@@ -171,7 +181,7 @@ const Blog = () => {
         {/* Industry Insights Highlight */}
         <section className="mb-16 bg-[#F4F6F9] p-8 rounded-sm">
           <h2 className="text-3xl font-bold mb-8 text-center text-[#003366] font-['Montserrat']">
-            Key Insights on Chinese Special Oil Market
+            {t('blog.insights.title')}
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -180,16 +190,16 @@ const Blog = () => {
                 <i className="fa-solid fa-chart-line"></i>
               </div>
               <h3 className="text-xl font-bold mb-3 text-[#003366] font-['Montserrat']">
-                Market Trends
+                {t('blog.insights.trends.title')}
               </h3>
               <p className="text-[#333333] mb-4">
-                Stay updated with the latest trends in China's special oil industry and global market developments.
+                {t('blog.insights.trends.description')}
               </p>
               <Link 
                 to="#"
                 className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors"
               >
-                Explore trends <i className="fa-solid fa-arrow-right ml-1"></i>
+                {t('blog.insights.trends.link')} <i className="fa-solid fa-arrow-right ml-1"></i>
               </Link>
             </div>
             
@@ -198,16 +208,16 @@ const Blog = () => {
                 <i className="fa-solid fa-lightbulb"></i>
               </div>
               <h3 className="text-xl font-bold mb-3 text-[#003366] font-['Montserrat']">
-                Technical Guides
+                {t('blog.insights.guides.title')}
               </h3>
               <p className="text-[#333333] mb-4">
-                Detailed technical information and guidelines for proper application of Chinese special oils.
+                {t('blog.insights.guides.description')}
               </p>
               <Link 
                 to="#"
                 className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors"
               >
-                View guides <i className="fa-solid fa-arrow-right ml-1"></i>
+                {t('blog.insights.guides.link')} <i className="fa-solid fa-arrow-right ml-1"></i>
               </Link>
             </div>
             
@@ -216,16 +226,16 @@ const Blog = () => {
                 <i className="fa-solid fa-certificate"></i>
               </div>
               <h3 className="text-xl font-bold mb-3 text-[#003366] font-['Montserrat']">
-                Regulatory Updates
+                {t('blog.insights.regulatory.title')}
               </h3>
               <p className="text-[#333333] mb-4">
-                Latest regulatory changes and compliance requirements affecting the special oil industry.
+                {t('blog.insights.regulatory.description')}
               </p>
               <Link 
                 to="#"
                 className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors"
               >
-                Read updates <i className="fa-solid fa-arrow-right ml-1"></i>
+                {t('blog.insights.regulatory.link')} <i className="fa-solid fa-arrow-right ml-1"></i>
               </Link>
             </div>
           </div>
@@ -236,16 +246,16 @@ const Blog = () => {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-6 md:mb-0">
                <h2 className="font-display text-2xl md:text-3xl font-semibold mb-2 text-white">
-                  Subscribe to Our Newsletter
+                  {t('blog.subscribe.title')}
                 </h2>
                 <p className="font-body text-white/80">
-                  Get the latest China special oil industry news and technical insights delivered to your inbox
+                  {t('blog.subscribe.description')}
                 </p>
             </div>
             <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4">
               <input
                 type="email"
-                placeholder="Your email address"
+                placeholder={t('blog.subscribe.placeholder')}
                 value={subscriberEmail}
                 onChange={(e) => setSubscriberEmail(e.target.value)}
                 className="px-4 py-3 bg-white/10 text-white placeholder-white/60 border border-white/20 rounded-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent-600)] w-full sm:w-64"
@@ -256,7 +266,7 @@ const Blog = () => {
                   disabled={isSubscribing}
                   className="inline-block bg-[var(--accent-600)] text-white px-6 py-3 rounded-sm font-medium hover:bg-[var(--accent-700)] transition-all duration-300 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubscribing ? 'Subscribing...' : 'Subscribe'}
+                  {isSubscribing ? t('blog.subscribe.subscribing') : t('blog.subscribe.button')}
                 </button>
             </form>
           </div>
@@ -279,11 +289,11 @@ const Blog = () => {
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg flex">
         <a href="tel:+8613793280176" className="flex-1 py-4 bg-[#003366] text-white flex items-center justify-center">
           <i className="fa-solid fa-phone mr-2"></i>
-          <span>Contact Us</span>
+          <span>{t('blog.mobile.contact')}</span>
         </a>
         <a href="https://wa.me/8613800138000" className="flex-1 py-4 bg-[#D4AF37] text-white flex items-center justify-center">
           <i className="fa-brands fa-whatsapp mr-2"></i>
-          <span>WhatsApp</span>
+          <span>{t('blog.mobile.whatsapp')}</span>
         </a>
       </div>
     </div>

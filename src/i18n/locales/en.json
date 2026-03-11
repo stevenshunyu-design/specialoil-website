@@ -54,70 +54,42 @@
     },
     "slides": {
       "cta": "Learn More",
-      "slide1": {
-        "title": "China's Premium Special Oil Source",
-        "subtitle": "Connecting Global Buyers with China's Best Manufacturers"
-      },
-      "slide2": {
-        "title": "High-Quality Special Oil",
-        "subtitle": "Compliant with Global Standards & Specifications"
-      },
-      "slide3": {
-        "title": "Seamless Global Logistics",
-        "subtitle": "Reliable Shipping to 50+ Countries Worldwide"
-      }
+      "slide1": { "title": "China's Premium Special Oil Source", "subtitle": "Connecting Global Buyers with China's Best Manufacturers" },
+      "slide2": { "title": "High-Quality Special Oil", "subtitle": "Compliant with Global Standards & Specifications" },
+      "slide3": { "title": "Seamless Global Logistics", "subtitle": "Reliable Shipping to 50+ Countries Worldwide" }
     },
     "sourceStory": {
       "tag": "Your Supply Chain Partner",
       "title": "Your Trusted Gateway to China's Specialty Oil Supply Chain",
-      "description": "CN-SpecLube Chain serves as your strategic link to China's specialty oil industry. We provide comprehensive supply chain services including procurement coordination, quality control, logistics management, and customs documentation.",
-      "feature1": {
-        "title": "Quality Assurance",
-        "description": "Rigorous quality control at every step"
-      },
-      "feature2": {
-        "title": "Global Logistics",
-        "description": "Reliable shipping to 50+ countries"
-      },
-      "feature3": {
-        "title": "Technical Support",
-        "description": "Expert guidance for your requirements"
-      }
+      "description1": "As a professional supply chain service platform, we specialize in connecting international buyers with leading Chinese manufacturers of specialty oils—including transformer oil, white oil, rubber oil, and other refined oil products.",
+      "description2": "We provide end-to-end solutions designed to streamline cross-border procurement. Our services cover the entire process: sourcing coordination, quality assurance, logistics, port consolidation, and export customs clearance.",
+      "button": "Learn About Our Supply Chain"
     },
     "features": {
-      "title": "Why Choose Us",
-      "subtitle": "We provide end-to-end supply chain solutions for specialty oils",
-      "quality": {
-        "title": "ISO 9001 Certified",
-        "description": "Quality management system excellence"
-      },
-      "global": {
-        "title": "50+ Countries",
-        "description": "Global export network"
-      },
-      "standards": {
-        "title": "Quality Standards",
-        "description": "International compliance"
-      },
-      "logistics": {
-        "title": "Fast Delivery",
-        "description": "Efficient logistics solutions"
-      },
-      "support": {
-        "title": "24/7 Support",
-        "description": "Technical assistance"
-      }
+      "quality": { "title": "ISO 9001 Certified", "description": "Quality management system excellence" },
+      "global": { "title": "50+ Countries", "description": "Global export network" },
+      "standards": { "title": "Quality Standards", "description": "International compliance" },
+      "logistics": { "title": "Fast Delivery", "description": "Efficient logistics solutions" },
+      "support": { "title": "24/7 Support", "description": "Technical assistance" }
     },
     "products": {
-      "title": "Our Products",
-      "subtitle": "Premium specialty oils sourced from trusted Chinese manufacturers",
-      "viewDetails": "View Details"
+      "tag": "Product Portfolio",
+      "title": "China's Special Oil Products",
+      "subtitle": "We offer a comprehensive range of Chinese special oils that meet international standards and are exported to industrial clients worldwide.",
+      "viewDetails": "View Product",
+      "transformer": { "series": "SpecVolt™ Series", "standard": "ASTM D3487", "title": "Transformer Oil", "description": "Premium naphthenic transformer oils with excellent dielectric properties and low sulfur content.", "tags": ["Zero Corrosive Sulfur", "Arctic Grade", "High Dielectric"] },
+      "rubber": { "series": "SpecFlex™ Series", "standard": "EU REACH", "title": "Rubber Process Oil", "description": "High solvency naphthenic oils for rubber compounding with low PAH content.", "tags": ["Cn% > 35%", "Low PAHs", "Tire Manufacturing"] },
+      "hydraulic": { "series": "SpecLube™ Series", "standard": "DIN 51524", "title": "Hydraulic Oil", "description": "High-performance anti-wear hydraulic oils for industrial applications.", "tags": ["High Pressure", "Anti-Wear", "Wide Temp Range"] }
     },
-    "cta": {
-      "title": "Ready to Source Specialty Oils?",
-      "description": "Our team is ready to help you find the right products for your needs",
-      "button": "Contact Us Today"
-    }
+    "benefits": {
+      "tag": "Why Choose Us",
+      "title": "Partner with Confidence",
+      "subtitle": "Experience the advantages of working with a dedicated Chinese special oil supply chain platform",
+      "pricing": { "title": "Competitive Pricing", "description": "Direct factory access without middlemen markup, providing you with the best possible prices for premium Chinese special oils." },
+      "quality": { "title": "Quality Assurance", "description": "Rigorous pre-shipment inspection and testing to ensure products meet international standards and your specific requirements." },
+      "logistics": { "title": "Hassle-Free Logistics", "description": "Complete management of export documentation, customs clearance, and shipping to your destination port worldwide." }
+    },
+    "cta": { "title": "Ready to Source Specialty Oils?", "description": "Our team is ready to help you find the right products for your needs", "button": "Request a Quote" }
   },
   "about": {
     "hero": {
@@ -603,23 +575,154 @@
     "mobileFooter": { "contact": "Contact Us" }
   },
   "contact": {
-    "title": "Contact Us",
-    "subtitle": "Get in touch with our team",
+    "hero": {
+      "title": "Contact Our China Special Oil Team",
+      "alt": "Contact Us for Chinese Special Oil"
+    },
     "form": {
-      "title": "Send us a Message",
-      "name": "Your Name",
-      "email": "Email Address",
-      "phone": "Phone Number",
+      "title": "Request a Quote",
+      "subtitle": "Fill out the form below to get a competitive quote for Chinese special oils. Our team will respond within 24 hours.",
+      "name": "Contact Person",
+      "namePlaceholder": "Your full name",
       "company": "Company Name",
-      "subject": "Subject",
-      "message": "Your Message",
-      "submit": "Send Message"
+      "companyPlaceholder": "Your company",
+      "email": "Email Address",
+      "emailPlaceholder": "your.email@company.com",
+      "productCategory": "Product Category",
+      "selectProduct": "Select product type",
+      "products": {
+        "transformer": "Transformer Oil",
+        "rubber": "Rubber Process Oil",
+        "hydraulic": "Hydraulic Oil",
+        "gear": "Gear Oil",
+        "other": "Other Special Oil"
+      },
+      "destinationPort": "Destination Port",
+      "destinationPortPlaceholder": "For CIF/CFR quote",
+      "quantity": "Estimated Quantity",
+      "quantityPlaceholder": "e.g. 500 drums, 20 containers, 100 MT",
+      "message": "Additional Requirements",
+      "messagePlaceholder": "Tell us about your specific requirements, technical specifications, or any questions",
+      "submit": "Get Competitive Quote",
+      "processing": "Processing...",
+      "protectedBy": "This form is protected by hCaptcha and its",
+      "privacyPolicy": "Privacy Policy",
+      "and": "and",
+      "termsOfService": "Terms of Service",
+      "apply": "apply"
     },
     "info": {
-      "title": "Contact Information",
-      "address": "Address",
-      "phone": "Phone",
-      "email": "Email"
+      "title": "Contact Our Team",
+      "email": {
+        "title": "Email Us",
+        "description": "For fastest response, email our international team"
+      },
+      "whatsapp": {
+        "title": "WhatsApp",
+        "description": "Direct messaging available 24/7"
+      },
+      "phone": {
+        "title": "Call Us",
+        "description": "International sales hotline"
+      },
+      "hours": {
+        "title": "Business Hours",
+        "weekdays": "Monday - Friday: 9:00 AM - 6:00 PM (GMT+8)",
+        "saturday": "Saturday: 9:00 AM - 12:00 PM (GMT+8)",
+        "whatsapp": "24/7 support via WhatsApp"
+      },
+      "address": {
+        "title": "Office Address",
+        "line1": "10th Floor, No. 197, Songling Road",
+        "line2": "Laoshan District, Qingdao",
+        "line3": "Shandong, China"
+      }
+    },
+    "team": {
+      "title": "Business Support Team",
+      "steven": {
+        "name": "Steven Zhang",
+        "role": "International Sales Director",
+        "languages": "Speaks: English, Chinese"
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": {
+        "question": "What types of special oils do you supply from China?",
+        "answer": "We supply a wide range of Chinese special oils including transformer oil, rubber process oil, hydraulic oil, gear oil, turbine oil, heat transfer oil, and other industrial lubricants."
+      },
+      "q2": {
+        "question": "What certifications do your products have?",
+        "answer": "Our products meet various international standards including ISO 9001, ISO 14001, ASTM, DIN, IEC, and EU REACH compliance. We can provide specific certificates for each product upon request."
+      },
+      "q3": {
+        "question": "What Incoterms do you support?",
+        "answer": "We support all major Incoterms including EXW, FOB, CFR, CIF, DAP, and DDP to provide flexibility for our international customers."
+      },
+      "q4": {
+        "question": "What is your lead time for orders?",
+        "answer": "Standard lead time is 7-14 days after order confirmation and receipt of payment. For large volume orders or custom products, lead time may be extended accordingly."
+      },
+      "q5": {
+        "question": "Can you provide product samples?",
+        "answer": "Yes, we can provide free product samples for quality evaluation. Customers are responsible for shipping costs. Contact our sales team to request samples."
+      },
+      "q6": {
+        "question": "How do you ensure product quality?",
+        "answer": "We conduct rigorous quality control through multiple inspections, laboratory testing, and factory audits. All products undergo testing before shipment to ensure they meet international standards and customer requirements."
+      }
+    },
+    "mobile": {
+      "call": "Call Us",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "China Special Oil Industry News & Insights",
+      "alt": "China Special Oil Industry News"
+    },
+    "loading": "Loading articles...",
+    "searchPlaceholder": "Search for articles...",
+    "categories": {
+      "all": "All",
+      "industryNews": "Industry News",
+      "technicalInfo": "Technical Information",
+      "marketAnalysis": "Market Analysis",
+      "productUpdates": "Product Updates"
+    },
+    "latestArticles": "Latest Articles",
+    "noArticles": "No articles found",
+    "viewAll": "View All Articles",
+    "insights": {
+      "title": "Key Insights on Chinese Special Oil Market",
+      "trends": {
+        "title": "Market Trends",
+        "description": "Stay updated with the latest trends in China's special oil industry and global market developments.",
+        "link": "Explore trends"
+      },
+      "guides": {
+        "title": "Technical Guides",
+        "description": "Detailed technical information and guidelines for proper application of Chinese special oils.",
+        "link": "View guides"
+      },
+      "regulatory": {
+        "title": "Regulatory Updates",
+        "description": "Latest regulatory changes and compliance requirements affecting the special oil industry.",
+        "link": "Read updates"
+      }
+    },
+    "subscribe": {
+      "title": "Subscribe to Our Newsletter",
+      "description": "Get the latest China special oil industry news and technical insights delivered to your inbox",
+      "placeholder": "Your email address",
+      "button": "Subscribe",
+      "subscribing": "Subscribing..."
+    },
+    "mobile": {
+      "contact": "Contact Us",
+      "whatsapp": "WhatsApp"
     }
   }
 }

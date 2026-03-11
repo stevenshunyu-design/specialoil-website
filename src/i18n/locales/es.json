@@ -48,49 +48,102 @@
   },
   "home": {
     "hero": {
-      "title": "Su Puerta de Confianza a la Cadena de Suministro de Aceites Especiales de China",
-      "subtitle": "Conectamos a compradores globales con los principales fabricantes de aceites especiales de China, proporcionando soluciones de adquisición, aseguramiento de calidad y logística.",
-      "cta": "Solicitar cotización"
+      "title": "Su Puerta de Entrada Confiable a la Cadena de Suministro de Aceites Especiales de China",
+      "subtitle": "Conectamos compradores globales con los principales fabricantes chinos de aceites especiales, proporcionando adquisición fluida, garantía de calidad y soluciones logísticas.",
+      "cta": "Solicitar Cotización"
     },
     "slides": {
+      "cta": "Más Información",
       "slide1": {
-        "title": "Fuente de Aceites Especiales Premium de China",
-        "subtitle": "Conectando compradores globales con los mejores fabricantes de China"
+        "title": "Fuente Premium de Aceites Especiales de China",
+        "subtitle": "Conectando Compradores Globales con los Mejores Fabricantes de China"
       },
       "slide2": {
         "title": "Aceite Especial de Alta Calidad",
-        "subtitle": "Cumple con estándares y especificaciones globales"
+        "subtitle": "Cumplimiento con Estándares y Especificaciones Globales"
       },
       "slide3": {
         "title": "Logística Global Sin Problemas",
-        "subtitle": "Envío confiable a más de 50 países"
+        "subtitle": "Envío Confiable a Más de 50 Países"
       }
     },
     "sourceStory": {
-      "tag": "Su socio de cadena de suministro",
-      "title": "Su Puerta de Confianza a la Cadena de Suministro de Aceites Especiales de China",
-      "description": "CN-SpecLube Chain sirve como su enlace estratégico con la industria de aceites especiales de China. Proporcionamos servicios integrales de cadena de suministro incluyendo coordinación de adquisiciones, control de calidad, gestión logística y documentación aduanera.",
-      "feature1": { "title": "Aseguramiento de calidad", "description": "Control de calidad riguroso en cada paso" },
-      "feature2": { "title": "Logística global", "description": "Envío confiable a más de 50 países" },
-      "feature3": { "title": "Soporte técnico", "description": "Orientación experta para sus necesidades" }
+      "tag": "Su Socio en la Cadena de Suministro",
+      "title": "Su Puerta de Entrada Confiable a la Cadena de Suministro de Aceites Especiales de China",
+      "description1": "Como plataforma profesional de servicios de cadena de suministro, nos especializamos en conectar compradores internacionales con los principales fabricantes chinos de aceites especiales—incluyendo aceite para transformadores, aceite blanco, aceite para caucho y otros productos refinados.",
+      "description2": "Ofrecemos soluciones integrales diseñadas para simplificar la adquisición transfronteriza. Nuestros servicios cubren todo el proceso: coordinación de abastecimiento, garantía de calidad, logística, consolidación portuaria y despacho de aduanas de exportación.",
+      "button": "Conozca Nuestra Cadena de Suministro"
     },
     "features": {
-      "title": "Por qué elegirnos",
-      "subtitle": "Proporcionamos soluciones de cadena de suministro integrales para aceites especiales",
-      "quality": { "title": "Certificado ISO 9001", "description": "Excelencia en sistema de gestión de calidad" },
-      "global": { "title": "Más de 50 países", "description": "Red de exportación global" },
-      "standards": { "title": "Estándares de calidad", "description": "Cumplimiento internacional" },
-      "logistics": { "title": "Entrega rápida", "description": "Soluciones logísticas eficientes" }
+      "quality": {
+        "title": "Certificado ISO 9001",
+        "description": "Excelencia en sistema de gestión de calidad"
+      },
+      "global": {
+        "title": "Más de 50 países",
+        "description": "Red de exportación global"
+      },
+      "standards": {
+        "title": "Estándares de calidad",
+        "description": "Cumplimiento internacional"
+      },
+      "logistics": {
+        "title": "Entrega rápida",
+        "description": "Soluciones logísticas eficientes"
+      },
+      "support": {
+        "title": "Soporte 24/7",
+        "description": "Asistencia técnica"
+      }
     },
     "products": {
-      "title": "Nuestros productos",
-      "subtitle": "Aceites especiales premium de fabricantes chinos de confianza",
-      "viewDetails": "Ver detalles"
+      "tag": "Portafolio de Productos",
+      "title": "Productos de Aceites Especiales de China",
+      "subtitle": "Ofrecemos una gama completa de aceites especiales chinos que cumplen estándares internacionales y se exportan a clientes industriales de todo el mundo.",
+      "viewDetails": "Ver Producto",
+      "transformer": {
+        "series": "Serie SpecVolt™",
+        "standard": "ASTM D3487",
+        "title": "Aceite para Transformadores",
+        "description": "Aceites nafténicos premium con excelentes propiedades dieléctricas y bajo contenido de azufre.",
+        "tags": ["Sin Azufre Corrosivo", "Grado Ártico", "Alta Dieléctrica"]
+      },
+      "rubber": {
+        "series": "Serie SpecFlex™",
+        "standard": "EU REACH",
+        "title": "Aceite para Caucho",
+        "description": "Aceites nafténicos de alta solvencia para compuestos de caucho con bajo contenido de PAH.",
+        "tags": ["Cn% > 35%", "Bajos PAHs", "Fabricación de Neumáticos"]
+      },
+      "hydraulic": {
+        "series": "Serie SpecLube™",
+        "standard": "DIN 51524",
+        "title": "Aceite Hidráulico",
+        "description": "Aceites hidráulicos anti-desgaste de alto rendimiento para aplicaciones industriales.",
+        "tags": ["Alta Presión", "Anti-Desgaste", "Amplio Rango de Temp"]
+      }
+    },
+    "benefits": {
+      "tag": "Por Qué Elegirnos",
+      "title": "Colabore con Confianza",
+      "subtitle": "Experimente las ventajas de trabajar con una plataforma dedicada de cadena de suministro de aceites especiales chinos",
+      "pricing": {
+        "title": "Precios Competitivos",
+        "description": "Acceso directo a fábrica sin intermediarios, proporcionándole los mejores precios posibles para aceites especiales chinos premium."
+      },
+      "quality": {
+        "title": "Garantía de Calidad",
+        "description": "Inspección y pruebas rigurosas antes del envío para asegurar que los productos cumplan estándares internacionales y sus requisitos específicos."
+      },
+      "logistics": {
+        "title": "Logística Sin Problemas",
+        "description": "Gestión completa de documentación de exportación, despacho de aduanas y envío a su puerto de destino worldwide."
+      }
     },
     "cta": {
-      "title": "¿Listo para adquirir aceites especiales?",
+      "title": "¿Listo para Adquirir Aceites Especiales?",
       "description": "Nuestro equipo está listo para ayudarle a encontrar los productos adecuados",
-      "button": "Contáctenos hoy"
+      "button": "Solicitar Cotización"
     }
   },
   "about": {
@@ -363,9 +416,154 @@
     "mobileFooter": { "contact": "Contáctenos" }
   },
   "contact": {
-    "title": "Contáctenos",
-    "subtitle": "Póngase en contacto con nuestro equipo",
-    "form": { "title": "Envíenos un mensaje", "name": "Su nombre", "email": "Correo electrónico", "phone": "Teléfono", "company": "Nombre de empresa", "subject": "Asunto", "message": "Su mensaje", "submit": "Enviar mensaje" },
-    "info": { "title": "Información de contacto", "address": "Dirección", "phone": "Teléfono", "email": "Correo electrónico" }
+    "hero": {
+      "title": "Contacte a Nuestro Equipo de Aceites Especiales de China",
+      "alt": "Contáctenos para Aceites Especiales de China"
+    },
+    "form": {
+      "title": "Solicitar Cotización",
+      "subtitle": "Complete el formulario para obtener una cotización competitiva para aceites especiales chinos. Nuestro equipo responderá en 24 horas.",
+      "name": "Persona de Contacto",
+      "namePlaceholder": "Su nombre completo",
+      "company": "Nombre de Empresa",
+      "companyPlaceholder": "Su empresa",
+      "email": "Correo Electrónico",
+      "emailPlaceholder": "su.correo@empresa.com",
+      "productCategory": "Categoría de Producto",
+      "selectProduct": "Seleccionar tipo de producto",
+      "products": {
+        "transformer": "Aceite para Transformadores",
+        "rubber": "Aceite para Caucho",
+        "hydraulic": "Aceite Hidráulico",
+        "gear": "Aceite para Engranajes",
+        "other": "Otro Aceite Especial"
+      },
+      "destinationPort": "Puerto de Destino",
+      "destinationPortPlaceholder": "Para cotización CIF/CFR",
+      "quantity": "Cantidad Estimada",
+      "quantityPlaceholder": "ej. 500 tambores, 20 contenedores, 100 MT",
+      "message": "Requisitos Adicionales",
+      "messagePlaceholder": "Cuéntenos sobre sus requisitos específicos, especificaciones técnicas o preguntas",
+      "submit": "Obtener Cotización Competitiva",
+      "processing": "Procesando...",
+      "protectedBy": "Este formulario está protegido por hCaptcha y su",
+      "privacyPolicy": "Política de Privacidad",
+      "and": "y",
+      "termsOfService": "Términos de Servicio",
+      "apply": "aplican"
+    },
+    "info": {
+      "title": "Contacte a Nuestro Equipo",
+      "email": {
+        "title": "Envíenos un Correo",
+        "description": "Para respuesta más rápida, envíe correo a nuestro equipo internacional"
+      },
+      "whatsapp": {
+        "title": "WhatsApp",
+        "description": "Mensajería directa disponible 24/7"
+      },
+      "phone": {
+        "title": "Llámenos",
+        "description": "Línea de ventas internacionales"
+      },
+      "hours": {
+        "title": "Horario de Atención",
+        "weekdays": "Lunes - Viernes: 9:00 AM - 6:00 PM (GMT+8)",
+        "saturday": "Sábado: 9:00 AM - 12:00 PM (GMT+8)",
+        "whatsapp": "Soporte 24/7 vía WhatsApp"
+      },
+      "address": {
+        "title": "Dirección de Oficina",
+        "line1": "Piso 10, No. 197, Calle Songling",
+        "line2": "Distrito Laoshan, Qingdao",
+        "line3": "Shandong, China"
+      }
+    },
+    "team": {
+      "title": "Equipo de Soporte Comercial",
+      "steven": {
+        "name": "Steven Zhang",
+        "role": "Director de Ventas Internacionales",
+        "languages": "Idiomas: Inglés, Chino"
+      }
+    },
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "q1": {
+        "question": "¿Qué tipos de aceites especiales suministran desde China?",
+        "answer": "Suministramos una amplia gama de aceites especiales chinos incluyendo aceite para transformadores, aceite para caucho, aceite hidráulico, aceite para engranajes, aceite para turbinas, aceite térmico y otros lubricantes industriales."
+      },
+      "q2": {
+        "question": "¿Qué certificaciones tienen sus productos?",
+        "answer": "Nuestros productos cumplen con varios estándares internacionales incluyendo ISO 9001, ISO 14001, ASTM, DIN, IEC y cumplimiento EU REACH. Podemos proporcionar certificados específicos para cada producto bajo solicitud."
+      },
+      "q3": {
+        "question": "¿Qué Incoterms soportan?",
+        "answer": "Soportamos todos los Incoterms principales incluyendo EXW, FOB, CFR, CIF, DAP y DDP para proporcionar flexibilidad a nuestros clientes internacionales."
+      },
+      "q4": {
+        "question": "¿Cuál es su tiempo de entrega?",
+        "answer": "El tiempo de entrega estándar es de 7-14 días después de la confirmación del pedido y recepción del pago. Para pedidos de gran volumen o productos personalizados, el tiempo puede extenderse."
+      },
+      "q5": {
+        "question": "¿Pueden proporcionar muestras del producto?",
+        "answer": "Sí, podemos proporcionar muestras gratuitas para evaluación de calidad. Los clientes son responsables de los costos de envío. Contacte a nuestro equipo de ventas para solicitar muestras."
+      },
+      "q6": {
+        "question": "¿Cómo garantizan la calidad del producto?",
+        "answer": "Realizamos control de calidad riguroso a través de múltiples inspecciones, pruebas de laboratorio y auditorías de fábrica. Todos los productos pasan por pruebas antes del envío para asegurar que cumplan estándares internacionales y requisitos del cliente."
+      }
+    },
+    "mobile": {
+      "call": "Llámenos",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "Noticias e Información de la Industria de Aceites Especiales de China",
+      "alt": "Noticias de la Industria de Aceites Especiales de China"
+    },
+    "loading": "Cargando artículos...",
+    "searchPlaceholder": "Buscar artículos...",
+    "categories": {
+      "all": "Todos",
+      "industryNews": "Noticias de la Industria",
+      "technicalInfo": "Información Técnica",
+      "marketAnalysis": "Análisis de Mercado",
+      "productUpdates": "Actualizaciones de Productos"
+    },
+    "latestArticles": "Últimos Artículos",
+    "noArticles": "No se encontraron artículos",
+    "viewAll": "Ver Todos los Artículos",
+    "insights": {
+      "title": "Información Clave del Mercado de Aceites Especiales de China",
+      "trends": {
+        "title": "Tendencias del Mercado",
+        "description": "Manténgase actualizado con las últimas tendencias en la industria de aceites especiales de China y desarrollos del mercado global.",
+        "link": "Explorar tendencias"
+      },
+      "guides": {
+        "title": "Guías Técnicas",
+        "description": "Información técnica detallada y directrices para la correcta aplicación de aceites especiales chinos.",
+        "link": "Ver guías"
+      },
+      "regulatory": {
+        "title": "Actualizaciones Regulatorias",
+        "description": "Últimos cambios regulatorios y requisitos de cumplimiento que afectan a la industria de aceites especiales.",
+        "link": "Leer actualizaciones"
+      }
+    },
+    "subscribe": {
+      "title": "Suscríbase a Nuestro Boletín",
+      "description": "Reciba las últimas noticias de la industria de aceites especiales de China e información técnica en su buzón",
+      "placeholder": "Su dirección de correo",
+      "button": "Suscribirse",
+      "subscribing": "Suscribiendo..."
+    },
+    "mobile": {
+      "contact": "Contáctenos",
+      "whatsapp": "WhatsApp"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { SuccessModal, ErrorModal } from '@/components/ToastModal';
 
@@ -23,6 +24,7 @@ declare global {
 }
 
 const Contact = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -214,12 +216,12 @@ const Contact = () => {
             <div className="absolute inset-0 bg-black/40 z-10"></div>
             <img 
               src="https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_16_9&prompt=International%20trade%20and%20logistics%20meeting%2C%20industrial%20cinematic%20style%2C%20high%20contrast%2C%20blue%20and%20gold%20lighting&sign=fbedf4ff8595f4cc9f103a565cb8c1df" 
-              alt="Contact Us for Chinese Special Oil" 
+              alt={t('contact.hero.alt')} 
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 z-20 flex items-center justify-center">
                 <h1 className="text-4xl md:text-5xl font-bold text-white font-['Montserrat'] tracking-tight text-center px-4 text-shadow-sm">
-                  Contact Our China Special Oil Team
+                  {t('contact.hero.title')}
                 </h1>
             </div>
           </div>
@@ -229,17 +231,17 @@ const Contact = () => {
           {/* Contact Form */}
           <div className="bg-[#F4F6F9] p-8 rounded-sm">
               <h2 className="text-3xl font-bold mb-6 text-[var(--primary-brand)] font-['Montserrat'] tracking-tight">
-                Request a Quote
+                {t('contact.form.title')}
               </h2>
               <p className="text-[#333333] mb-8">
-                Fill out the form below to get a competitive quote for Chinese special oils. Our team will respond within 24 hours.
+                {t('contact.form.subtitle')}
               </p>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-[#222222] mb-2">
-                    Contact Person *
+                    {t('contact.form.name')} *
                   </label>
                   <input
                     type="text"
@@ -248,7 +250,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
-                    placeholder="Your full name"
+                    placeholder={t('contact.form.namePlaceholder')}
                     required
                     maxLength={100}
                     autoComplete="name"
@@ -257,7 +259,7 @@ const Contact = () => {
                 
                 <div>
                   <label htmlFor="company" className="block text-sm font-medium text-[#222222] mb-2">
-                    Company Name *
+                    {t('contact.form.company')} *
                   </label>
                   <input
                     type="text"
@@ -266,7 +268,7 @@ const Contact = () => {
                     value={formData.company}
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
-                    placeholder="Your company"
+                    placeholder={t('contact.form.companyPlaceholder')}
                     required
                     maxLength={200}
                     autoComplete="organization"
@@ -276,7 +278,7 @@ const Contact = () => {
               
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-[#222222] mb-2">
-                  Email Address *
+                  {t('contact.form.email')} *
                 </label>
                 <input
                   type="email"
@@ -285,7 +287,7 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
-                  placeholder="your.email@company.com"
+                  placeholder={t('contact.form.emailPlaceholder')}
                   required
                   maxLength={254}
                   autoComplete="email"
@@ -295,7 +297,7 @@ const Contact = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="productCategory" className="block text-sm font-medium text-[#222222] mb-2">
-                    Product Category
+                    {t('contact.form.productCategory')}
                   </label>
                   <select
                     id="productCategory"
@@ -304,18 +306,18 @@ const Contact = () => {
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
                   >
-                    <option value="">Select product type</option>
-                    <option value="transformer-oil">Transformer Oil</option>
-                    <option value="rubber-process-oil">Rubber Process Oil</option>
-                    <option value="hydraulic-oil">Hydraulic Oil</option>
-                    <option value="gear-oil">Gear Oil</option>
-                    <option value="other">Other Special Oil</option>
+                    <option value="">{t('contact.form.selectProduct')}</option>
+                    <option value="transformer-oil">{t('contact.form.products.transformer')}</option>
+                    <option value="rubber-process-oil">{t('contact.form.products.rubber')}</option>
+                    <option value="hydraulic-oil">{t('contact.form.products.hydraulic')}</option>
+                    <option value="gear-oil">{t('contact.form.products.gear')}</option>
+                    <option value="other">{t('contact.form.products.other')}</option>
                   </select>
                 </div>
                 
                 <div>
                   <label htmlFor="portOfDestination" className="block text-sm font-medium text-[#222222] mb-2">
-                    Destination Port *
+                    {t('contact.form.destinationPort')} *
                   </label>
                   <input
                     type="text"
@@ -324,7 +326,7 @@ const Contact = () => {
                     value={formData.portOfDestination}
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
-                    placeholder="For CIF/CFR quote"
+                    placeholder={t('contact.form.destinationPortPlaceholder')}
                     required
                     maxLength={200}
                   />
@@ -333,7 +335,7 @@ const Contact = () => {
               
               <div>
                 <label htmlFor="estimatedQuantity" className="block text-sm font-medium text-[#222222] mb-2">
-                  Estimated Quantity
+                  {t('contact.form.quantity')}
                 </label>
                 <input
                   type="text"
@@ -342,14 +344,14 @@ const Contact = () => {
                   value={formData.estimatedQuantity}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
-                  placeholder="e.g. 500 drums, 20 containers, 100 MT"
+                  placeholder={t('contact.form.quantityPlaceholder')}
                   maxLength={100}
                 />
               </div>
               
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-[#222222] mb-2">
-                  Additional Requirements
+                  {t('contact.form.message')}
                 </label>
                 <textarea
                   id="message"
@@ -358,7 +360,7 @@ const Contact = () => {
                   onChange={handleChange}
                   rows={4}
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors resize-none"
-                  placeholder="Tell us about your specific requirements, technical specifications, or any questions"
+                  placeholder={t('contact.form.messagePlaceholder')}
                   maxLength={2000}
                 ></textarea>
               </div>
@@ -404,25 +406,25 @@ const Contact = () => {
                   {isSubmitting ? (
                     <span className="flex items-center justify-center">
                       <i className="fa-solid fa-spinner fa-spin mr-2"></i>
-                      Processing...
+                      {t('contact.form.processing')}
                     </span>
                   ) : (
-                    'Get Competitive Quote'
+                    t('contact.form.submit')
                   )}
                 </button>
               </div>
               
               <p className="text-xs text-gray-500 text-center mt-4">
                 <i className="fa-solid fa-shield-halved mr-1"></i>
-                This form is protected by hCaptcha and its{' '}
+                {t('contact.form.protectedBy')}{' '}
                 <a href="https://www.hcaptcha.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#003366]">
-                  Privacy Policy
+                  {t('contact.form.privacyPolicy')}
                 </a>{' '}
-                and{' '}
+                {t('contact.form.and')}{' '}
                 <a href="https://www.hcaptcha.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#003366]">
-                  Terms of Service
+                  {t('contact.form.termsOfService')}
                 </a>{' '}
-                apply.
+                {t('contact.form.apply')}.
               </p>
             </form>
           </div>
@@ -431,7 +433,7 @@ const Contact = () => {
           <div>
             <div className="bg-[#F4F6F9] p-8 rounded-sm mb-8">
               <h2 className="text-3xl font-bold mb-6 text-[#003366] font-['Montserrat']">
-                Contact Our Team
+                {t('contact.info.title')}
               </h2>
               
               <div className="space-y-6">
@@ -440,8 +442,8 @@ const Contact = () => {
                     <i className="fa-solid fa-envelope"></i>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg text-[#222222] mb-1">Email Us</h3>
-                    <p className="text-[#333333] mb-2">For fastest response, email our international team</p>
+                    <h3 className="font-semibold text-lg text-[#222222] mb-1">{t('contact.info.email.title')}</h3>
+                    <p className="text-[#333333] mb-2">{t('contact.info.email.description')}</p>
                     <a href="mailto:steven.shunyu@gmail.com" className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors">
                       steven.shunyu@gmail.com
                     </a>
@@ -453,8 +455,8 @@ const Contact = () => {
                     <i className="fa-brands fa-whatsapp"></i>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg text-[#222222] mb-1">WhatsApp</h3>
-                    <p className="text-[#333333] mb-2">Direct messaging available 24/7</p>
+                    <h3 className="font-semibold text-lg text-[#222222] mb-1">{t('contact.info.whatsapp.title')}</h3>
+                    <p className="text-[#333333] mb-2">{t('contact.info.whatsapp.description')}</p>
                     <a href="https://wa.me/8613793280176" className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors">
                       +86 137 9328 0176
                     </a>
@@ -466,8 +468,8 @@ const Contact = () => {
                     <i className="fa-solid fa-phone"></i>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg text-[#222222] mb-1">Call Us</h3>
-                    <p className="text-[#333333] mb-2">International sales hotline</p>
+                    <h3 className="font-semibold text-lg text-[#222222] mb-1">{t('contact.info.phone.title')}</h3>
+                    <p className="text-[#333333] mb-2">{t('contact.info.phone.description')}</p>
                     <a href="tel:+8613793280176" className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors">
                       +86 137 9328 0176
                     </a>
@@ -479,11 +481,11 @@ const Contact = () => {
                     <i className="fa-solid fa-clock"></i>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg text-[#222222] mb-1">Business Hours</h3>
+                    <h3 className="font-semibold text-lg text-[#222222] mb-1">{t('contact.info.hours.title')}</h3>
                     <p className="text-[#333333]">
-                      Monday - Friday: 9:00 AM - 6:00 PM (GMT+8)<br />
-                      Saturday: 9:00 AM - 12:00 PM (GMT+8)<br />
-                      24/7 support via WhatsApp
+                      {t('contact.info.hours.weekdays')}<br />
+                      {t('contact.info.hours.saturday')}<br />
+                      {t('contact.info.hours.whatsapp')}
                     </p>
                   </div>
                 </div>
@@ -493,11 +495,11 @@ const Contact = () => {
                     <i className="fa-solid fa-location-dot"></i>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg text-[#222222] mb-1">Office Address</h3>
+                    <h3 className="font-semibold text-lg text-[#222222] mb-1">{t('contact.info.address.title')}</h3>
                     <p className="text-[#333333]">
-                      10th Floor, No. 197, Songling Road<br />
-                      Laoshan District, Qingdao<br />
-                      Shandong, China
+                      {t('contact.info.address.line1')}<br />
+                      {t('contact.info.address.line2')}<br />
+                      {t('contact.info.address.line3')}
                     </p>
                   </div>
                 </div>
@@ -506,7 +508,7 @@ const Contact = () => {
             
             <div className="bg-[#F4F6F9] p-8 rounded-sm">
               <h2 className="text-3xl font-bold mb-6 text-[#003366] font-['Montserrat']">
-                Business Support Team
+                {t('contact.team.title')}
               </h2>
               
               <div className="space-y-6">
@@ -515,12 +517,12 @@ const Contact = () => {
                     <i className="fa-solid fa-user-tie"></i>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg text-[#222222]">Steven Zhang</h3>
-                    <p className="text-[#333333] mb-1">International Sales Director</p>
+                    <h3 className="font-semibold text-lg text-[#222222]">{t('contact.team.steven.name')}</h3>
+                    <p className="text-[#333333] mb-1">{t('contact.team.steven.role')}</p>
                     <a href="mailto:steven.shunyu@gmail.com" className="text-[#003366] hover:text-[#D4AF37] transition-colors">
                       steven.shunyu@gmail.com
                     </a>
-                    <p className="text-[#333333] mt-1">Speaks: English, Chinese</p>
+                    <p className="text-[#333333] mt-1">{t('contact.team.steven.languages')}</p>
                   </div>
                 </div>
               </div>
@@ -543,38 +545,38 @@ const Contact = () => {
         {/* FAQ Section */}
         <section className="mt-16 bg-[#F4F6F9] p-8 rounded-sm">
           <h2 className="text-3xl font-bold mb-8 text-center text-[#003366] font-['Montserrat']">
-            Frequently Asked Questions
+            {t('contact.faq.title')}
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white p-6 rounded-sm shadow-sm">
-              <h3 className="text-xl font-semibold mb-3 text-[#222222]">What types of special oils do you supply from China?</h3>
-              <p className="text-[#333333]">We supply a wide range of Chinese special oils including transformer oil, rubber process oil, hydraulic oil, gear oil, turbine oil, heat transfer oil, and other industrial lubricants.</p>
+              <h3 className="text-xl font-semibold mb-3 text-[#222222]">{t('contact.faq.q1.question')}</h3>
+              <p className="text-[#333333]">{t('contact.faq.q1.answer')}</p>
             </div>
             
             <div className="bg-white p-6 rounded-sm shadow-sm">
-              <h3 className="text-xl font-semibold mb-3 text-[#222222]">What certifications do your products have?</h3>
-              <p className="text-[#333333]">Our products meet various international standards including ISO 9001, ISO 14001, ASTM, DIN, IEC, and EU REACH compliance. We can provide specific certificates for each product upon request.</p>
+              <h3 className="text-xl font-semibold mb-3 text-[#222222]">{t('contact.faq.q2.question')}</h3>
+              <p className="text-[#333333]">{t('contact.faq.q2.answer')}</p>
             </div>
             
             <div className="bg-white p-6 rounded-sm shadow-sm">
-              <h3 className="text-xl font-semibold mb-3 text-[#222222]">What Incoterms do you support?</h3>
-              <p className="text-[#333333]">We support all major Incoterms including EXW, FOB, CFR, CIF, DAP, and DDP to provide flexibility for our international customers.</p>
+              <h3 className="text-xl font-semibold mb-3 text-[#222222]">{t('contact.faq.q3.question')}</h3>
+              <p className="text-[#333333]">{t('contact.faq.q3.answer')}</p>
             </div>
             
             <div className="bg-white p-6 rounded-sm shadow-sm">
-              <h3 className="text-xl font-semibold mb-3 text-[#222222]">What is your lead time for orders?</h3>
-              <p className="text-[#333333]">Standard lead time is 7-14 days after order confirmation and receipt of payment. For large volume orders or custom products, lead time may be extended accordingly.</p>
+              <h3 className="text-xl font-semibold mb-3 text-[#222222]">{t('contact.faq.q4.question')}</h3>
+              <p className="text-[#333333]">{t('contact.faq.q4.answer')}</p>
             </div>
             
             <div className="bg-white p-6 rounded-sm shadow-sm">
-              <h3 className="text-xl font-semibold mb-3 text-[#222222]">Can you provide product samples?</h3>
-              <p className="text-[#333333]">Yes, we can provide free product samples for quality evaluation. Customers are responsible for shipping costs. Contact our sales team to request samples.</p>
+              <h3 className="text-xl font-semibold mb-3 text-[#222222]">{t('contact.faq.q5.question')}</h3>
+              <p className="text-[#333333]">{t('contact.faq.q5.answer')}</p>
             </div>
             
             <div className="bg-white p-6 rounded-sm shadow-sm">
-              <h3 className="text-xl font-semibold mb-3 text-[#222222]">How do you ensure product quality?</h3>
-              <p className="text-[#333333]">We conduct rigorous quality control through multiple inspections, laboratory testing, and factory audits. All products undergo testing before shipment to ensure they meet international standards and customer requirements.</p>
+              <h3 className="text-xl font-semibold mb-3 text-[#222222]">{t('contact.faq.q6.question')}</h3>
+              <p className="text-[#333333]">{t('contact.faq.q6.answer')}</p>
             </div>
           </div>
         </section>
@@ -584,11 +586,11 @@ const Contact = () => {
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg flex">
         <a href="tel:+8613793280176" className="flex-1 py-4 bg-[#003366] text-white flex items-center justify-center">
           <i className="fa-solid fa-phone mr-2"></i>
-          <span>Call Us</span>
+          <span>{t('contact.mobile.call')}</span>
         </a>
         <a href="https://wa.me/8613793280176" className="flex-1 py-4 bg-[#D4AF37] text-white flex items-center justify-center">
           <i className="fa-brands fa-whatsapp mr-2"></i>
-          <span>WhatsApp</span>
+          <span>{t('contact.mobile.whatsapp')}</span>
         </a>
       </div>
 
