@@ -299,9 +299,659 @@
     },
     "mobileFooter": { "call": "Appelez-nous" }
   },
-  "transformerOil": { "title": "Huile pour transformateurs", "subtitle": "Huiles isolantes haute performance", "cta": { "title": "Besoin de spécifications techniques?", "button": "Demander les données techniques" } },
-  "rubberProcessOil": { "title": "Huile pour caoutchouc", "hero": { "title": "Huile pour traitement du caoutchouc" }, "cta": { "button": "Demander les données techniques" } },
-  "finishedLubricants": { "title": "Lubrifiants finis", "hero": { "title": "Lubrifiants finis" }, "cta": { "button": "Demander les données techniques" } },
+  "transformerOil": {
+    "title": "Huile pour transformateurs",
+    "subtitle": "Huiles isolantes haute performance",
+    "hero": {
+      "tag": "Huile pour transformateurs premium",
+      "title": "Série SpecVolt™",
+      "subtitle": "Conçue pour les applications haute tension les plus exigeantes"
+    },
+    "tabs": {
+      "overview": "Aperçu",
+      "specifications": "Spécifications",
+      "applications": "Applications",
+      "benefits": "Avantages",
+      "packaging": "Emballage"
+    },
+    "overview": {
+      "title": "Protection supérieure des transformateurs",
+      "description1": "Les huiles SpecVolt™ pour transformateurs sont des lubrifiants naphténiques premium spécialement conçus pour fournir une isolation, un refroidissement et une protection exceptionnels pour les transformateurs haute tension et les équipements électriques.",
+      "description2": "Nous nous approvisionnons en huiles pour transformateurs auprès des principaux fabricants chinois, offrant des produits à faible teneur naturelle en soufre et aux propriétés diélectriques supérieures. Nos services de chaîne d'approvisionnement garantissent une qualité constante et des performances fiables pour les applications exigeantes.",
+      "keyFeatures": "Caractéristiques de performance clés",
+      "feature1": {
+        "title": "Zéro soufre corrosif",
+        "description": "Prévient la corrosion du cuivre dans les transformateurs"
+      },
+      "feature2": {
+        "title": "Fiabilité arctique",
+        "description": "Fonctionne jusqu'à -45°C"
+      },
+      "feature3": {
+        "title": "Faible teneur en humidité",
+        "description": "Rigidité diélectrique améliorée"
+      },
+      "feature4": {
+        "title": "Stabilité thermique",
+        "description": "Résiste à l'oxydation à haute température"
+      },
+      "requestQuote": "Demander un devis",
+      "downloadDatasheet": "Télécharger la fiche technique"
+    },
+    "specifications": {
+      "title": "Spécifications du produit",
+      "description": "Les huiles SpecVolt™ pour transformateurs sont disponibles en trois grades premium, chacun conçu pour répondre à des exigences d'application et des conditions de fonctionnement spécifiques. Tous les grades respectent ou dépassent les normes internationales pour les huiles de transformateurs.",
+      "table": {
+        "grade": "Grade du produit",
+        "viscosity": "Viscosité (40°C)",
+        "pourPoint": "Point d'écoulement",
+        "dielectricStrength": "Rigidité diélectrique"
+      },
+      "grades": {
+        "i20x": {
+          "name": "SpecVolt I-20X",
+          "viscosity": "10-12 cSt",
+          "pourPoint": "-22°C",
+          "dielectric": ">70kV"
+        },
+        "i30x": {
+          "name": "SpecVolt I-30X",
+          "viscosity": "9-11 cSt",
+          "pourPoint": "-30°C",
+          "dielectric": ">70kV"
+        },
+        "i40x": {
+          "name": "SpecVolt I-40X",
+          "viscosity": "<12 cSt",
+          "pourPoint": "-45°C",
+          "dielectric": ">70kV"
+        }
+      },
+      "technical": {
+        "title": "Spécifications techniques",
+        "baseOilType": "Type d'huile de base:",
+        "baseOilValue": "Naphténique",
+        "flashPoint": "Point d'éclair (COC):",
+        "flashPointValue": "> 140°C",
+        "firePoint": "Point de feu (COC):",
+        "firePointValue": "> 160°C",
+        "acidity": "Acidité (TAN):",
+        "acidityValue": "< 0.03 mg KOH/g",
+        "interfacialTension": "Tension interfaciale:",
+        "interfacialTensionValue": "> 35 mN/m",
+        "resistivity": "Résistivité (90°C):",
+        "resistivityValue": "> 10^12 Ω·m",
+        "oxidationStability": "Stabilité à l'oxydation:",
+        "oxidationStabilityValue": "Excellent"
+      },
+      "compliance": {
+        "title": "Normes de conformité",
+        "items": ["ASTM D3487", "IEC 60296", "BS 148", "GB 2536", "Conformité TOST", "Sans PCB", "Conformité RoHS"]
+      }
+    },
+    "applications": {
+      "title": "Applications",
+      "description": "Les huiles SpecVolt™ pour transformateurs sont conçues pour une utilisation dans une large gamme d'équipements électriques où d'excellentes propriétés d'isolation, des capacités de transfert de chaleur et une résistance à l'oxydation sont des exigences critiques.",
+      "items": {
+        "highVoltage": {
+          "title": "Transformateurs haute tension",
+          "description": "Idéal pour les transformateurs de production et de transport d'électricité fonctionnant dans des conditions extrêmes."
+        },
+        "distribution": {
+          "title": "Transformateurs de distribution",
+          "description": "Fournit une excellente protection pour les réseaux de distribution moyenne et basse tension."
+        },
+        "instrument": {
+          "title": "Transformateurs de mesure",
+          "description": "Assure des performances fiables pour les transformateurs de courant et de tension dans les systèmes de comptage."
+        },
+        "switchgear": {
+          "title": "Appareillage de commutation",
+          "description": "Offre des propriétés supérieures d'isolation et de refroidissement pour les disjoncteurs et l'appareillage."
+        }
+      },
+      "recommendedTitle": "Applications recommandées par grade",
+      "recommendedTable": {
+        "grade": "Grade du produit",
+        "bestApplications": "Meilleures applications",
+        "operatingEnvironment": "Environnement de fonctionnement",
+        "i20x": {
+          "applications": "Transformateurs de distribution, équipements moyenne tension",
+          "environment": "Climats tempérés, applications standard"
+        },
+        "i30x": {
+          "applications": "Transformateurs de puissance, applications industrielles",
+          "environment": "Climats froids, installations extérieures"
+        },
+        "i40x": {
+          "applications": "Transformateurs haute tension, applications critiques",
+          "environment": "Climats extrêmement froids, régions arctiques"
+        }
+      }
+    },
+    "benefits": {
+      "title": "Avantages de performance",
+      "description": "Les huiles SpecVolt™ pour transformateurs offrent de nombreux avantages par rapport aux huiles conventionnelles, aidant à prolonger la durée de vie des équipements, à améliorer la fiabilité et à réduire les coûts de maintenance.",
+      "performance": {
+        "dielectric": {
+          "title": "Rigidité diélectrique améliorée",
+          "description": "Propriétés d'isolation supérieures qui maintiennent l'intégrité du système sous contrainte haute tension."
+        },
+        "serviceLife": {
+          "title": "Durée de vie prolongée",
+          "description": "Excellente résistance à l'oxydation qui prolonge la durée de vie de l'huile et réduit la fréquence de maintenance."
+        },
+        "heatTransfer": {
+          "title": "Transfert de chaleur supérieur",
+          "description": "Propriétés thermiques optimisées qui améliorent l'efficacité de refroidissement et réduisent les points chauds."
+        },
+        "protection": {
+          "title": "Protection des équipements",
+          "description": "Formulation zéro soufre corrosif qui prévient la corrosion du cuivre et la formation de boues."
+        }
+      },
+      "economic": {
+        "title": "Avantages économiques",
+        "items": [
+          "Coûts de maintenance réduits grâce à la durée de vie prolongée de l'huile",
+          "Coûts de remplacement d'équipement réduits grâce à une meilleure protection",
+          "Minimisation des temps d'arrêt et amélioration de la fiabilité du système",
+          "Améliorations de l'efficacité énergétique grâce à un refroidissement optimisé",
+          "Économies à long terme par rapport aux huiles conventionnelles"
+        ]
+      },
+      "environmental": {
+        "title": "Avantages environnementaux",
+        "items": [
+          "Faible teneur naturelle en soufre réduit l'impact environnemental",
+          "Durée de vie prolongée de l'huile réduit la génération de déchets et les besoins d'élimination",
+          "Conformité aux réglementations environnementales internationales",
+          "Produit recyclable qui soutient les principes d'économie circulaire"
+        ],
+        "contactButton": "Contacter notre équipe technique"
+      }
+    },
+    "packaging": {
+      "title": "Emballage et livraison",
+      "description": "Les huiles SpecVolt™ pour transformateurs sont disponibles dans une variété d'options d'emballage pour répondre à vos besoins spécifiques, des petits conteneurs pour la maintenance aux livraisons en vrac pour les grandes installations.",
+      "options": {
+        "bucket18L": {
+          "title": "Seau plastique 18L",
+          "description": "Idéal pour les petits travaux de maintenance et les compléments",
+          "capacity": "18L / 5 Gal"
+        },
+        "drum200L": {
+          "title": "Fût acier 200L",
+          "description": "Parfait pour les installations et projets moyens",
+          "capacity": "200L / 55 Gal"
+        },
+        "ibc1000L": {
+          "title": "Cuve IBC 1000L",
+          "description": "Pour les applications et projets industriels plus importants",
+          "capacity": "1000L / 275 Gal"
+        }
+      },
+      "bulkTitle": "Options de livraison en vrac",
+      "bulkDescription": "Pour les besoins en grand volume, nous offrons des options de livraison en vrac pour minimiser les déchets d'emballage et réduire les coûts:",
+      "bulkOptions": {
+        "tanker": {
+          "title": "Camions-citernes",
+          "description": "Transport routier en vrac pour les livraisons dans un rayon de 500km de nos installations"
+        },
+        "isoTank": {
+          "title": "Conteneurs-citernes ISO",
+          "description": "Cuves en acier inoxydable de 26 000L pour l'expédition internationale"
+        }
+      },
+      "learnMoreLogistics": "En savoir plus sur notre logistique"
+    },
+    "relatedProducts": {
+      "title": "Produits connexes",
+      "rubberOil": {
+        "series": "Série SpecFlex™",
+        "title": "Huile pour caoutchouc",
+        "description": "Huiles naphténiques à haute solvance pour le compoundage du caoutchouc et la fabrication de pneus.",
+        "viewProduct": "Voir le produit"
+      },
+      "hydraulicOil": {
+        "series": "Série SpecLube™",
+        "title": "Huile hydraulique",
+        "description": "Huiles hydrauliques haute performance pour équipements industriels et mobiles.",
+        "viewProduct": "Voir le produit"
+      }
+    },
+    "cta": {
+      "title": "Besoin de spécifications techniques?",
+      "description": "Contactez notre équipe pour des informations détaillées sur les produits et les prix",
+      "button": "Demander les données techniques"
+    },
+    "mobile": {
+      "contact": "Contactez-nous",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "rubberProcessOil": {
+    "title": "Huile pour caoutchouc",
+    "hero": {
+      "tag": "Huile pour caoutchouc premium",
+      "title": "Série SpecFlex™",
+      "subtitle": "Conçue pour un traitement du caoutchouc supérieur et des performances du produit final"
+    },
+    "tabs": {
+      "overview": "Aperçu",
+      "specifications": "Spécifications",
+      "applications": "Applications",
+      "benefits": "Avantages",
+      "packaging": "Emballage"
+    },
+    "overview": {
+      "title": "Solutions supérieures de traitement du caoutchouc",
+      "description1": "Les huiles SpecFlex™ pour caoutchouc sont des huiles naphténiques premium spécialement conçues pour améliorer le traitement et les performances des composés de caoutchouc.",
+      "description2": "Nous fournissons des huiles pour caoutchouc de producteurs chinois de confiance, avec une haute solvance (Cn% > 35%) et une excellente compatibilité avec divers types de caoutchouc. Nos solutions complètes soutiennent l'approvisionnement fluide pour les applications industrielles spécialisées.",
+      "keyFeatures": "Caractéristiques de performance clés",
+      "feature1": {
+        "title": "Haute solvance",
+        "description": "Cn% > 35% pour une excellente pénétration du caoutchouc"
+      },
+      "feature2": {
+        "title": "Conformité REACH UE",
+        "description": "Faible teneur en PAH pour la conformité réglementaire"
+      },
+      "feature3": {
+        "title": "Faible point d'écoulement",
+        "description": "Excellentes performances à basse température"
+      },
+      "feature4": {
+        "title": "Stabilité à l'oxydation",
+        "description": "Résiste à la dégradation pendant le traitement"
+      },
+      "requestQuote": "Demander un devis",
+      "downloadDatasheet": "Télécharger la fiche technique"
+    },
+    "specifications": {
+      "title": "Spécifications du produit",
+      "description": "Les huiles SpecFlex™ pour caoutchouc sont disponibles en trois grades soigneusement formulés pour répondre aux exigences spécifiques de différentes applications de caoutchouc, des semelles de chaussures aux pneus haute performance.",
+      "table": {
+        "grade": "Grade du produit",
+        "application": "Application recommandée",
+        "solvency": "Solvance (Cn%)",
+        "viscosity": "Viscosité (40°C)"
+      },
+      "grades": {
+        "4006": {
+          "name": "SpecFlex 4006",
+          "application": "EPDM et semelles de chaussures",
+          "solvency": "Cn% > 35%",
+          "viscosity": "60-70 cSt"
+        },
+        "4010": {
+          "name": "SpecFlex 4010",
+          "application": "Pneus haute performance",
+          "solvency": "Cn% > 35%",
+          "viscosity": "90-110 cSt"
+        },
+        "4016": {
+          "name": "SpecFlex 4016",
+          "application": "Bandes transporteuses",
+          "solvency": "Cn% > 35%",
+          "viscosity": "150-170 cSt"
+        }
+      },
+      "technical": {
+        "title": "Spécifications techniques",
+        "baseOilType": "Type d'huile de base:",
+        "baseOilValue": "Naphténique",
+        "flashPoint": "Point d'éclair (COC):",
+        "flashPointValue": "> 200°C",
+        "pourPoint": "Point d'écoulement:",
+        "pourPointValue": "< -15°C",
+        "anilinePoint": "Point d'aniline:",
+        "anilinePointValue": "< 80°C",
+        "sulfurContent": "Teneur en soufre:",
+        "sulfurContentValue": "< 0.5%",
+        "color": "Couleur (Saybolt):",
+        "colorValue": "+20 à +30",
+        "density": "Densité (15°C):",
+        "densityValue": "0.91-0.95 g/cm³"
+      },
+      "regulatory": {
+        "title": "Conformité réglementaire",
+        "items": [
+          "Règlement REACH UE (EC 1907/2006)",
+          "Faible teneur en PAH (Hydrocarbures Aromatiques Polycycliques)",
+          "Conformité RoHS",
+          "FDA 21 CFR 178.3620(a) pour contact alimentaire indirect",
+          "Non cancérigène (selon les directives IARC)",
+          "Système de Management Qualité ISO 9001",
+          "Système de Management Environnemental ISO 14001"
+        ]
+      }
+    },
+    "applications": {
+      "title": "Applications",
+      "description": "Les huiles SpecFlex™ pour caoutchouc sont conçues pour une utilisation dans une large gamme de produits et applications de caoutchouc, fournissant d'excellentes propriétés de traitement et améliorant les performances du produit final.",
+      "categories": {
+        "shoeSoles": {
+          "name": "Semelles et chaussures",
+          "description": "SpecFlex 4006 fournit une excellente flexibilité et durabilité pour les semelles et autres composants de chaussures.",
+          "grade": "Grade recommandé: SpecFlex 4006"
+        },
+        "tires": {
+          "name": "Pneus et automobile",
+          "description": "SpecFlex 4010 offre des performances supérieures pour les pneus haute performance, fournissant une excellente adhérence et résistance à l'usure.",
+          "grade": "Grade recommandé: SpecFlex 4010"
+        },
+        "industrialBelts": {
+          "name": "Bandes industrielles",
+          "description": "SpecFlex 4016 est idéal pour les bandes transporteuses et les produits en caoutchouc industriel nécessitant haute durabilité et résistance.",
+          "grade": "Grade recommandé: SpecFlex 4016"
+        }
+      },
+      "otherApplications": {
+        "title": "Autres applications",
+        "items": {
+          "sealsGaskets": {
+            "name": "Joints et garnitures",
+            "description": "Fournit une excellente flexibilité et résistance aux facteurs environnementaux"
+          },
+          "cableInsulation": {
+            "name": "Isolation de câbles et fils",
+            "description": "Améliore les propriétés électriques et la flexibilité de l'isolation en caoutchouc"
+          },
+          "automotiveComponents": {
+            "name": "Composants automobiles",
+            "description": "Idéal pour les joints, tuyaux et autres pièces en caoutchouc automobile"
+          },
+          "buildingConstruction": {
+            "name": "Bâtiment et construction",
+            "description": "Adapté aux joints, membranes de toiture et matériaux d'étanchéité"
+          }
+        }
+      }
+    },
+    "benefits": {
+      "title": "Avantages de performance",
+      "description": "Les huiles SpecFlex™ pour caoutchouc offrent de nombreux avantages dans le traitement du caoutchouc et les performances du produit final, aidant les fabricants à obtenir une meilleure qualité et efficacité.",
+      "items": {
+        "superiorProcessing": {
+          "title": "Traitement supérieur",
+          "description": "Améliore les propriétés d'écoulement du caoutchouc et le remplissage des moules pendant le traitement."
+        },
+        "environmentallyFriendly": {
+          "title": "Respectueux de l'environnement",
+          "description": "Faible teneur en PAH conforme aux exigences REACH de l'UE."
+        },
+        "costEffective": {
+          "title": "Rentable",
+          "description": "Formulations optimisées réduisant les coûts de production."
+        },
+        "consistentQuality": {
+          "title": "Qualité constante",
+          "description": "Cohérence de lot en lot pour une production fiable."
+        }
+      },
+      "processingAdvantages": {
+        "title": "Avantages de traitement",
+        "items": [
+          "Meilleure dispersion des charges et additifs",
+          "Consommation d'énergie réduite pendant le mélange",
+          "Températures de traitement et temps de cycle réduits",
+          "Meilleur écoulement dans le moule et remplissage des cavités",
+          "Taux de rebuts et déchets de production réduits"
+        ]
+      },
+      "endProductImprovements": {
+        "title": "Améliorations du produit final",
+        "items": [
+          "Flexibilité améliorée et propriétés à basse température",
+          "Meilleure résistance à la traction et allongement",
+          "Supérieure résistance au vieillissement et aux facteurs environnementaux",
+          "Qualité et performance constantes de lot en lot",
+          "Conformité aux normes réglementaires internationales"
+        ]
+      },
+      "cta": "Contacter notre équipe technique"
+    },
+    "packaging": {
+      "title": "Emballage et livraison",
+      "description": "Les huiles SpecFlex™ pour caoutchouc sont disponibles dans une variété d'options d'emballage pour répondre à vos besoins de production spécifiques, des petits lots aux besoins de fabrication à grande échelle.",
+      "options": {
+        "buckets": {
+          "18l": {
+            "name": "Seau plastique 18L",
+            "description": "Parfait pour la production en petits lots et les tests",
+            "capacity": "18L / 5 Gal"
+          }
+        },
+        "drums": {
+          "200l": {
+            "name": "Fût acier 200L",
+            "description": "Idéal pour les opérations de fabrication moyennes",
+            "capacity": "200L / 55 Gal"
+          }
+        },
+        "ibc": {
+          "1000l": {
+            "name": "Cuve IBC 1000L",
+            "description": "Pour les installations de production à grande échelle",
+            "capacity": "1000L / 275 Gal"
+          }
+        }
+      },
+      "bulkDelivery": {
+        "title": "Options de livraison en vrac",
+        "description": "Pour les besoins en grand volume, nous offrons des options de livraison en vrac efficaces:",
+        "options": {
+          "tankerTrucks": {
+            "name": "Camions-citernes",
+            "description": "Transport routier en vrac pour les livraisons dans un rayon de 500km de nos installations"
+          },
+          "isoTanks": {
+            "name": "Conteneurs-citernes ISO",
+            "description": "Cuves en acier inoxydable de 26 000L pour l'expédition internationale"
+          }
+        },
+        "cta": "En savoir plus sur notre logistique"
+      }
+    },
+    "relatedProducts": {
+      "title": "Produits connexes",
+      "transformerOil": {
+        "series": "Série SpecVolt™",
+        "name": "Huile pour transformateurs",
+        "description": "Huiles naphténiques premium pour applications haute tension."
+      },
+      "hydraulicOil": {
+        "series": "Série SpecLube™",
+        "name": "Huile hydraulique",
+        "description": "Huiles hydrauliques haute performance pour équipements industriels."
+      },
+      "viewProduct": "Voir le produit"
+    },
+    "mobileFooter": {
+      "contactUs": "Contactez-nous",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "finishedLubricants": {
+    "title": "Lubrifiants finis",
+    "hero": {
+      "tag": "Lubrifiants finis premium",
+      "title": "Série SpecLube™",
+      "subtitle": "Conçus pour conditions extrêmes et performance maximale"
+    },
+    "tabs": {
+      "overview": "Aperçu",
+      "productLineup": "Gamme de produits",
+      "hydraulicOils": "Huiles hydrauliques",
+      "packaging": "Emballage"
+    },
+    "overview": {
+      "title": "Solutions avancées de lubrification industrielle",
+      "description1": "Les lubrifiants finis SpecLube™ sont des lubrifiants formulés premium conçus pour fournir une protection et des performances exceptionnelles dans les applications industrielles les plus exigeantes.",
+      "description2": "Nous offrons des lubrifiants finis de fabricants chinois spécialisés, formulés avec une technologie d'additifs avancée, fournissant des performances supérieures, une durée de vie prolongée des équipements et des coûts de maintenance réduits.",
+      "keyFeatures": "Caractéristiques de performance clés",
+      "feature1": {
+        "title": "Protection contre l'usure supérieure",
+        "description": "Prolonge la durée de vie des équipements dans les applications à forte charge"
+      },
+      "feature2": {
+        "title": "Large plage de température",
+        "description": "Excellentes performances des climats arctiques aux environnements extrêmement chauds"
+      },
+      "feature3": {
+        "title": "Résistance à l'eau",
+        "description": "Maintient les performances dans les environnements humides"
+      },
+      "feature4": {
+        "title": "Stabilité à l'oxydation",
+        "description": "Durée de vie prolongée et réduction des dépôts"
+      },
+      "requestQuote": "Demander un devis",
+      "downloadGuide": "Télécharger le guide produits"
+    },
+    "productLineup": {
+      "title": "Notre gamme de produits",
+      "description": "SpecLube™ offre une gamme complète de lubrifiants haute performance conçus pour répondre aux besoins spécifiques de diverses applications industrielles. Chaque produit est formulé avec nos huiles de base naphténiques premium et des additifs avancés.",
+      "categories": {
+        "hydraulic": {
+          "name": "Huiles hydrauliques",
+          "description": "Huiles hydrauliques haute performance conçues pour applications à pression extrême et larges plages de température.",
+          "grades": ["L-HM (Haute pression)", "L-HV (Basse température)", "L-HS (Synthétique)"],
+          "standard": "Conforme à DIN 51524"
+        },
+        "gear": {
+          "name": "Huiles pour engrenages",
+          "description": "Huiles premium pour engrenages conçues pour protéger les systèmes d'engrenages industriels contre l'usure, le grippage et la piqûre.",
+          "grades": ["L-CKD (Charge lourde)", "L-CKE/P (Extrême pression)", "Huile synthétique pour engrenages"],
+          "standard": "Conforme à DIN 51517"
+        },
+        "fleet": {
+          "name": "Flotte commerciale",
+          "description": "Huiles moteur haute performance conçues pour véhicules commerciaux et applications lourdes.",
+          "grades": ["Huile moteur diesel (CJ-4/CH-4)", "Huile moteur essence (API SN)", "Huiles moteur multigrades"],
+          "standard": "Conforme aux spécifications API"
+        },
+        "specialty": {
+          "name": "Lubrifiants spéciaux",
+          "description": "Lubrifiants spécialisés pour applications industrielles uniques avec exigences de performance spécifiques.",
+          "grades": ["Huile pour turbines (L-TSA)", "Huile thermique (L-QD)", "Huile pour compresseurs", "Lubrifiants qualité alimentaire"],
+          "standard": "Diverses normes industrielles"
+        }
+      },
+      "availableGrades": "Grades disponibles:",
+      "contactTeam": "Contacter notre équipe technique pour la sélection de produits"
+    },
+    "hydraulicOils": {
+      "title": "Huiles hydrauliques haute performance",
+      "description": "Nos huiles hydrauliques sont spécialement formulées pour fournir une protection et des performances exceptionnelles pour les systèmes hydrauliques modernes haute pression fonctionnant dans des conditions sévères.",
+      "products": {
+        "lhm": {
+          "name": "SpecLube L-HM (Haute pression)",
+          "description": "Huile hydraulique anti-usure avancée, conçue pour les systèmes haute pression fonctionnant dans des conditions normales à hautes températures. Conforme à la spécification DIN 51524 Partie 2."
+        },
+        "lhv": {
+          "name": "SpecLube L-HV (Basse température)",
+          "description": "Huile hydraulique premium avec excellente fluidité à basse température, adaptée aux systèmes fonctionnant dans les climats froids. Fournit une protection excellente à des températures descendant à -40°C."
+        },
+        "lhs": {
+          "name": "SpecLube L-HS (Synthétique)",
+          "description": "Huile hydraulique entièrement synthétique pour applications extrêmes nécessitant une protection maximale contre l'usure, l'oxydation et la dégradation thermique."
+        }
+      },
+      "benefits": {
+        "title": "Avantages clés",
+        "items": [
+          "Durée de vie prolongée des pompes et composants",
+          "Amélioration de l'efficacité du système et économies d'énergie",
+          "Réduction des coûts de maintenance et des temps d'arrêt",
+          "Excellente filtrabilité et propreté du système",
+          "Compatibilité avec les matériaux d'étanchéité"
+        ]
+      },
+      "specifications": {
+        "title": "Spécifications techniques",
+        "property": "Propriété",
+        "lhm32": "L-HM 32",
+        "lhm46": "L-HM 46",
+        "lhv46": "L-HV 46",
+        "viscosity40": "Viscosité@40°C (cSt)",
+        "viscosityIndex": "Indice de viscosité",
+        "pourPoint": "Point d'écoulement (°C)",
+        "flashPoint": "Point d'éclair (°C)",
+        "antiWear": "Performance anti-usure (quatre billes, mm)"
+      },
+      "applications": {
+        "title": "Applications recommandées",
+        "industrial": {
+          "name": "Hydraulique industrielle",
+          "description": "Machines d'injection, presses, machines-outils et autres équipements industriels"
+        },
+        "mobile": {
+          "name": "Équipements mobiles",
+          "description": "Engins de construction, équipements agricoles et systèmes de manutention"
+        },
+        "marine": {
+          "name": "Applications marines",
+          "description": "Systèmes hydrauliques sur navires et plateformes offshore"
+        },
+        "coldClimate": {
+          "name": "Fonctionnement en climat froid",
+          "description": "Systèmes de réfrigération et équipements extérieurs dans les régions froides"
+        }
+      },
+      "requestConsultation": "Demander une consultation produit"
+    },
+    "packaging": {
+      "title": "Emballage et livraison",
+      "description": "Les lubrifiants finis SpecLube™ sont disponibles dans des options complètes d'emballage pour répondre aux besoins spécifiques de vos opérations, des petites applications de maintenance aux usages industriels à grande échelle.",
+      "options": {
+        "drum200l": {
+          "name": "Fût acier 200L",
+          "description": "Fûts en acier lourds pour applications industrielles, scellement sûr et fiable"
+        },
+        "ibc1000l": {
+          "name": "Cuve IBC 1000L",
+          "description": "Conteneur intermédiaire vrac pour stockage et manutention efficaces"
+        },
+        "bucket18l": {
+          "name": "Seau plastique 18L",
+          "description": "Seaux en plastique pratiques pour petites applications et maintenance"
+        }
+      },
+      "bulkDelivery": {
+        "title": "Options de livraison en vrac",
+        "description": "Pour les besoins en grand volume, nous offrons des options de livraison en vrac efficaces pour minimiser les déchets d'emballage et réduire les coûts:",
+        "tankerTrucks": {
+          "name": "Camions-citernes",
+          "description": "Transport routier en vrac pour les livraisons dans un rayon de 500km de nos installations"
+        },
+        "isoTanks": {
+          "name": "Conteneurs-citernes ISO",
+          "description": "Cuves en acier inoxydable de 26 000L pour l'expédition internationale"
+        }
+      },
+      "learnMoreLogistics": "En savoir plus sur notre logistique"
+    },
+    "relatedProducts": {
+      "title": "Produits connexes",
+      "transformerOil": {
+        "series": "Série SpecVolt™",
+        "name": "Huile pour transformateurs",
+        "description": "Huiles naphténiques premium pour applications haute tension."
+      },
+      "rubberProcessOil": {
+        "series": "Série SpecFlex™",
+        "name": "Huile pour caoutchouc",
+        "description": "Huiles naphténiques à haute solvance pour le compoundage du caoutchouc et la fabrication de pneus."
+      },
+      "viewProduct": "Voir le produit"
+    },
+    "mobileFooter": {
+      "contactUs": "Contactez-nous",
+      "whatsapp": "WhatsApp"
+    }
+  },
   "quality": { "title": "Assurance qualité", "hero": { "title": "Qualité et Conformité" }, "tabs": { "process": "Processus Qualité", "certificates": "Certificats", "standards": "Normes", "testing": "Méthodes de Test" }, "process": { "title": "Notre Processus Qualité", "intro": "Chez CN-SpecLube Chain, nous maintenons un contrôle qualité rigoureux tout au long de notre chaîne d'approvisionnement.", "step1": { "title": "Approvisionnement Stratégique", "desc": "Nous nous associons avec les principaux fabricants d'huiles spéciales de Chine." }, "step2": { "title": "Hydrotraitement", "desc": "Notre processus avancé élimine les impuretés et stabilise l'huile de base." }, "step3": { "title": "Test Laboratoire CNAS", "desc": "Tous nos produits passent des tests rigoureux dans des laboratoires accrédités." }, "step4": { "title": "Expédition", "desc": "Nous assurons un emballage et une manipulation appropriés pendant le transport." }, "qms": { "title": "Système de Management Qualité", "intro": "Notre système certifié ISO 9001 assure une qualité constante.", "item1": "Contrôle des Documents", "item1Desc": "Traçabilité complète", "item2": "Contrôle des Processus", "item2Desc": "Procédures standardisées", "item3": "Amélioration Continue", "item3Desc": "Audits réguliers" } }, "certificates": { "title": "Nos Certifications", "intro": "Nous maintenons plusieurs certifications internationales.", "iso9001": "Système de Management Qualité", "iso14001": "Système de Management Environnemental", "iso45001": "Santé et Sécurité au Travail", "ohsas": "Évaluation de la Santé et Sécurité au Travail" }, "standards": { "title": "Normes Internationales", "intro": "Tous nos produits sont conformes aux normes internationales.", "astm": "Normes ASTM pour produits pétroliers", "iso": "Spécifications ISO pour lubrifiants", "din": "Spécifications DIN pour applications industrielles", "gb": "Normes nationales chinoises", "api": "Standards de performance API", "reach": "Conformité REACH" }, "testing": { "title": "Méthodes de Test", "intro": "Des tests complets assurent la qualité des produits.", "viscosity": { "name": "Mesure de Viscosité", "desc": "Test de viscosité à différentes températures" }, "flashPoint": { "name": "Test Point d'Éclair", "desc": "Détermination de la température d'inflammation la plus basse" }, "pourPoint": { "name": "Test Point d'Écoulement", "desc": "Mesure de la température d'écoulement la plus basse" }, "acidNumber": { "name": "Détermination Indice d'Acide", "desc": "Évaluation de l'oxydation et de la dégradation" }, "elemental": { "name": "Analyse Élémentaire", "desc": "Mesure de la concentration d'additifs" }, "particle": { "name": "Comptage de Particules", "desc": "Évaluation du niveau de propreté" } }, "cta": { "title": "Besoin de documentation d'assurance qualité?", "desc": "Contactez-nous pour demander des certificats d'analyse.", "button": "Demander Documentation" } },
   "logistics": {
     "title": "Solutions logistiques et d'emballage",

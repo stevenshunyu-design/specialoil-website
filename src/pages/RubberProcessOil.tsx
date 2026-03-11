@@ -174,7 +174,7 @@ const RubberProcessOil = () => {
           {activeTab === 'specifications' && (
             <div>
               <h2 className="text-3xl font-bold mb-6 text-[#003366] font-['Montserrat']">
-                Product Specifications
+                {t('rubberProcessOil.specifications.title')}
               </h2>
               
               <div className="mb-8">

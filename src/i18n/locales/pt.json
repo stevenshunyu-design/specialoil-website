@@ -304,9 +304,659 @@
     },
     "mobileFooter": { "call": "Ligue para nós" }
   },
-  "transformerOil": { "title": "Óleo para transformadores", "subtitle": "Óleos isolantes de alto desempenho", "cta": { "title": "Precisa de especificações técnicas?", "button": "Solicitar dados técnicos" } },
-  "rubberProcessOil": { "title": "Óleo para borracha", "hero": { "title": "Óleo para processamento de borracha" }, "cta": { "button": "Solicitar dados técnicos" } },
-  "finishedLubricants": { "title": "Lubrificantes acabados", "hero": { "title": "Lubrificantes acabados" }, "cta": { "button": "Solicitar dados técnicos" } },
+  "transformerOil": {
+    "title": "Óleo para transformadores",
+    "subtitle": "Óleos isolantes de alto desempenho",
+    "hero": {
+      "tag": "Óleo para transformadores premium",
+      "title": "Série SpecVolt™",
+      "subtitle": "Projetado para as aplicações de alta tensão mais exigentes"
+    },
+    "tabs": {
+      "overview": "Visão geral",
+      "specifications": "Especificações",
+      "applications": "Aplicações",
+      "benefits": "Benefícios",
+      "packaging": "Embalagem"
+    },
+    "overview": {
+      "title": "Proteção superior para transformadores",
+      "description1": "Os óleos SpecVolt™ para transformadores são lubrificantes naftênicos premium especificamente projetados para fornecer isolamento, resfriamento e proteção excepcionais para transformadores de alta tensão e equipamentos elétricos.",
+      "description2": "Nós obtemos óleos para transformadores dos principais fabricantes chineses, oferecendo produtos com baixo teor de enxofre natural e propriedades dielétricas superiores. Nossos serviços de cadeia de suprimentos garantem qualidade consistente e desempenho confiável para aplicações exigentes.",
+      "keyFeatures": "Características de desempenho principais",
+      "feature1": {
+        "title": "Enxofre corrosivo zero",
+        "description": "Previne corrosão de cobre em transformadores"
+      },
+      "feature2": {
+        "title": "Confiabilidade ártica",
+        "description": "Funciona até -45°C"
+      },
+      "feature3": {
+        "title": "Baixo teor de umidade",
+        "description": "Rigidez dielétrica aprimorada"
+      },
+      "feature4": {
+        "title": "Estabilidade térmica",
+        "description": "Resiste à oxidação em altas temperaturas"
+      },
+      "requestQuote": "Solicitar cotação",
+      "downloadDatasheet": "Baixar ficha técnica"
+    },
+    "specifications": {
+      "title": "Especificações do produto",
+      "description": "Os óleos SpecVolt™ para transformadores estão disponíveis em três graus premium, cada um projetado para atender requisitos específicos de aplicação e condições de operação. Todos os graus atendem ou excedem os padrões internacionais para óleos de transformadores.",
+      "table": {
+        "grade": "Grau do produto",
+        "viscosity": "Viscosidade (40°C)",
+        "pourPoint": "Ponto de fluidez",
+        "dielectricStrength": "Rigidez dielétrica"
+      },
+      "grades": {
+        "i20x": {
+          "name": "SpecVolt I-20X",
+          "viscosity": "10-12 cSt",
+          "pourPoint": "-22°C",
+          "dielectric": ">70kV"
+        },
+        "i30x": {
+          "name": "SpecVolt I-30X",
+          "viscosity": "9-11 cSt",
+          "pourPoint": "-30°C",
+          "dielectric": ">70kV"
+        },
+        "i40x": {
+          "name": "SpecVolt I-40X",
+          "viscosity": "<12 cSt",
+          "pourPoint": "-45°C",
+          "dielectric": ">70kV"
+        }
+      },
+      "technical": {
+        "title": "Especificações técnicas",
+        "baseOilType": "Tipo de óleo base:",
+        "baseOilValue": "Naftênico",
+        "flashPoint": "Ponto de fulgor (COC):",
+        "flashPointValue": "> 140°C",
+        "firePoint": "Ponto de combustão (COC):",
+        "firePointValue": "> 160°C",
+        "acidity": "Acidez (TAN):",
+        "acidityValue": "< 0.03 mg KOH/g",
+        "interfacialTension": "Tensão interfacial:",
+        "interfacialTensionValue": "> 35 mN/m",
+        "resistivity": "Resistividade (90°C):",
+        "resistivityValue": "> 10^12 Ω·m",
+        "oxidationStability": "Estabilidade à oxidação:",
+        "oxidationStabilityValue": "Excelente"
+      },
+      "compliance": {
+        "title": "Normas de conformidade",
+        "items": ["ASTM D3487", "IEC 60296", "BS 148", "GB 2536", "Conformidade TOST", "Sem PCB", "Conformidade RoHS"]
+      }
+    },
+    "applications": {
+      "title": "Aplicações",
+      "description": "Os óleos SpecVolt™ para transformadores são projetados para uso em uma ampla gama de equipamentos elétricos onde excelentes propriedades de isolamento, capacidades de transferência de calor e resistência à oxidação são requisitos críticos.",
+      "items": {
+        "highVoltage": {
+          "title": "Transformadores de alta tensão",
+          "description": "Ideal para transformadores de geração e transmissão operando em condições extremas."
+        },
+        "distribution": {
+          "title": "Transformadores de distribuição",
+          "description": "Fornece excelente proteção para redes de distribuição de média e baixa tensão."
+        },
+        "instrument": {
+          "title": "Transformadores de instrumentos",
+          "description": "Garante desempenho confiável para transformadores de corrente e tensão em sistemas de medição."
+        },
+        "switchgear": {
+          "title": "Equipamentos de manobra",
+          "description": "Oferece propriedades superiores de isolamento e resfriamento para disjuntores e equipamentos de manobra."
+        }
+      },
+      "recommendedTitle": "Aplicações recomendadas por grau",
+      "recommendedTable": {
+        "grade": "Grau do produto",
+        "bestApplications": "Melhores aplicações",
+        "operatingEnvironment": "Ambiente de operação",
+        "i20x": {
+          "applications": "Transformadores de distribuição, equipamentos de média tensão",
+          "environment": "Climas temperados, aplicações padrão"
+        },
+        "i30x": {
+          "applications": "Transformadores de potência, aplicações industriais",
+          "environment": "Climas frios, instalações externas"
+        },
+        "i40x": {
+          "applications": "Transformadores de alta tensão, aplicações críticas",
+          "environment": "Climas extremamente frios, regiões árticas"
+        }
+      }
+    },
+    "benefits": {
+      "title": "Benefícios de desempenho",
+      "description": "Os óleos SpecVolt™ para transformadores fornecem numerosas vantagens sobre óleos convencionais, ajudando a estender a vida útil do equipamento, melhorar a confiabilidade e reduzir custos de manutenção.",
+      "performance": {
+        "dielectric": {
+          "title": "Rigidez dielétrica aprimorada",
+          "description": "Propriedades de isolamento superiores que mantêm a integridade do sistema sob estresse de alta tensão."
+        },
+        "serviceLife": {
+          "title": "Vida útil estendida",
+          "description": "Excelente resistência à oxidação que estende a vida do óleo e reduz a frequência de manutenção."
+        },
+        "heatTransfer": {
+          "title": "Transferência de calor superior",
+          "description": "Propriedades térmicas otimizadas que melhoram a eficiência de resfriamento e reduzem pontos quentes."
+        },
+        "protection": {
+          "title": "Proteção do equipamento",
+          "description": "Formulação com enxofre corrosivo zero que previne corrosão de cobre e formação de lodo."
+        }
+      },
+      "economic": {
+        "title": "Benefícios econômicos",
+        "items": [
+          "Custos de manutenção reduzidos devido à vida útil estendida do óleo",
+          "Menores custos de substituição de equipamentos através de melhor proteção",
+          "Minimização de tempo de inatividade e melhoria da confiabilidade do sistema",
+          "Melhorias de eficiência energética através de resfriamento otimizado",
+          "Economias de custo a longo prazo em comparação com óleos convencionais"
+        ]
+      },
+      "environmental": {
+        "title": "Benefícios ambientais",
+        "items": [
+          "Baixo teor de enxofre natural reduz impacto ambiental",
+          "Vida útil estendida do óleo reduz geração de resíduos e necessidades de disposição",
+          "Conformidade com regulamentações ambientais internacionais",
+          "Produto reciclável que apoia princípios de economia circular"
+        ],
+        "contactButton": "Contatar nossa equipe técnica"
+      }
+    },
+    "packaging": {
+      "title": "Embalagem e entrega",
+      "description": "Os óleos SpecVolt™ para transformadores estão disponíveis em uma variedade de opções de embalagem para atender seus requisitos específicos, de pequenos contêineres para manutenção a entregas a granel para grandes instalações.",
+      "options": {
+        "bucket18L": {
+          "title": "Balde plástico 18L",
+          "description": "Ideal para pequenos trabalhos de manutenção e reposição",
+          "capacity": "18L / 5 Gal"
+        },
+        "drum200L": {
+          "title": "Tambor de aço 200L",
+          "description": "Perfeito para instalações e projetos médios",
+          "capacity": "200L / 55 Gal"
+        },
+        "ibc1000L": {
+          "title": "Tanque IBC 1000L",
+          "description": "Para aplicações e projetos industriais maiores",
+          "capacity": "1000L / 275 Gal"
+        }
+      },
+      "bulkTitle": "Opções de entrega a granel",
+      "bulkDescription": "Para requisitos de grande volume, oferecemos opções de entrega a granel para minimizar resíduos de embalagem e reduzir custos:",
+      "bulkOptions": {
+        "tanker": {
+          "title": "Caminhões-tanque",
+          "description": "Transporte rodoviário a granel para entregas dentro de 500km de nossas instalações"
+        },
+        "isoTank": {
+          "title": "Contêineres tanque ISO",
+          "description": "Tanques de aço inoxidável de 26.000L para envio internacional"
+        }
+      },
+      "learnMoreLogistics": "Saiba mais sobre nossa logística"
+    },
+    "relatedProducts": {
+      "title": "Produtos relacionados",
+      "rubberOil": {
+        "series": "Série SpecFlex™",
+        "title": "Óleo para borracha",
+        "description": "Óleos naftênicos de alta solvência para compostos de borracha e fabricação de pneus.",
+        "viewProduct": "Ver produto"
+      },
+      "hydraulicOil": {
+        "series": "Série SpecLube™",
+        "title": "Óleo hidráulico",
+        "description": "Óleos hidráulicos de alto desempenho para equipamentos industriais e móveis.",
+        "viewProduct": "Ver produto"
+      }
+    },
+    "cta": {
+      "title": "Precisa de especificações técnicas?",
+      "description": "Contate nossa equipe para informações detalhadas do produto e preços",
+      "button": "Solicitar dados técnicos"
+    },
+    "mobile": {
+      "contact": "Contate-nos",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "rubberProcessOil": {
+    "title": "Óleo para borracha",
+    "hero": {
+      "tag": "Óleo para borracha premium",
+      "title": "Série SpecFlex™",
+      "subtitle": "Projetado para processamento de borracha superior e desempenho do produto final"
+    },
+    "tabs": {
+      "overview": "Visão geral",
+      "specifications": "Especificações",
+      "applications": "Aplicações",
+      "benefits": "Benefícios",
+      "packaging": "Embalagem"
+    },
+    "overview": {
+      "title": "Soluções superiores de processamento de borracha",
+      "description1": "Os óleos SpecFlex™ para borracha são óleos naftênicos premium especificamente projetados para melhorar o processamento e desempenho de compostos de borracha.",
+      "description2": "Fornecemos óleos para borracha de produtores chineses confiáveis, com alta solvência (Cn% > 35%) e excelente compatibilidade com vários tipos de borracha. Nossas soluções completas apoiam o suprimento sem interrupções para aplicações industriais especializadas.",
+      "keyFeatures": "Características de desempenho principais",
+      "feature1": {
+        "title": "Alta solvência",
+        "description": "Cn% > 35% para excelente penetração de borracha"
+      },
+      "feature2": {
+        "title": "Conformidade REACH da UE",
+        "description": "Baixo teor de PAH para conformidade regulatória"
+      },
+      "feature3": {
+        "title": "Baixo ponto de fluidez",
+        "description": "Excelente desempenho em baixa temperatura"
+      },
+      "feature4": {
+        "title": "Estabilidade à oxidação",
+        "description": "Resiste à degradação durante o processamento"
+      },
+      "requestQuote": "Solicitar cotação",
+      "downloadDatasheet": "Baixar ficha técnica"
+    },
+    "specifications": {
+      "title": "Especificações do produto",
+      "description": "Os óleos SpecFlex™ para borracha estão disponíveis em três graus cuidadosamente formulados para atender aos requisitos específicos de diferentes aplicações de borracha, desde solas de sapatos até pneus de alto desempenho.",
+      "table": {
+        "grade": "Grau do produto",
+        "application": "Aplicação recomendada",
+        "solvency": "Solvência (Cn%)",
+        "viscosity": "Viscosidade (40°C)"
+      },
+      "grades": {
+        "4006": {
+          "name": "SpecFlex 4006",
+          "application": "EPDM e solas de sapatos",
+          "solvency": "Cn% > 35%",
+          "viscosity": "60-70 cSt"
+        },
+        "4010": {
+          "name": "SpecFlex 4010",
+          "application": "Pneus de alto desempenho",
+          "solvency": "Cn% > 35%",
+          "viscosity": "90-110 cSt"
+        },
+        "4016": {
+          "name": "SpecFlex 4016",
+          "application": "Correias transportadoras",
+          "solvency": "Cn% > 35%",
+          "viscosity": "150-170 cSt"
+        }
+      },
+      "technical": {
+        "title": "Especificações técnicas",
+        "baseOilType": "Tipo de óleo base:",
+        "baseOilValue": "Naftênico",
+        "flashPoint": "Ponto de fulgor (COC):",
+        "flashPointValue": "> 200°C",
+        "pourPoint": "Ponto de fluidez:",
+        "pourPointValue": "< -15°C",
+        "anilinePoint": "Ponto de anilina:",
+        "anilinePointValue": "< 80°C",
+        "sulfurContent": "Teor de enxofre:",
+        "sulfurContentValue": "< 0.5%",
+        "color": "Cor (Saybolt):",
+        "colorValue": "+20 a +30",
+        "density": "Densidade (15°C):",
+        "densityValue": "0.91-0.95 g/cm³"
+      },
+      "regulatory": {
+        "title": "Conformidade regulatória",
+        "items": [
+          "Regulamento REACH da UE (EC 1907/2006)",
+          "Baixo teor de PAH (Hidrocarbonetos Aromáticos Policíclicos)",
+          "Conformidade RoHS",
+          "FDA 21 CFR 178.3620(a) para contato indireto com alimentos",
+          "Não cancerígeno (conforme diretrizes IARC)",
+          "Sistema de Gestão de Qualidade ISO 9001",
+          "Sistema de Gestão Ambiental ISO 14001"
+        ]
+      }
+    },
+    "applications": {
+      "title": "Aplicações",
+      "description": "Os óleos SpecFlex™ para borracha são projetados para uso em uma ampla gama de produtos e aplicações de borracha, fornecendo excelentes propriedades de processamento e melhorando o desempenho do produto final.",
+      "categories": {
+        "shoeSoles": {
+          "name": "Solos e calçados",
+          "description": "SpecFlex 4006 fornece excelente flexibilidade e durabilidade para solas e outros componentes de calçados.",
+          "grade": "Grau recomendado: SpecFlex 4006"
+        },
+        "tires": {
+          "name": "Pneus e automotivo",
+          "description": "SpecFlex 4010 oferece desempenho superior para pneus de alto desempenho, fornecendo excelente aderência e resistência ao desgaste.",
+          "grade": "Grau recomendado: SpecFlex 4010"
+        },
+        "industrialBelts": {
+          "name": "Correias industriais",
+          "description": "SpecFlex 4016 é ideal para correias transportadoras e produtos de borracha industrial que requerem alta durabilidade e resistência.",
+          "grade": "Grau recomendado: SpecFlex 4016"
+        }
+      },
+      "otherApplications": {
+        "title": "Outras aplicações",
+        "items": {
+          "sealsGaskets": {
+            "name": "Vedantes e juntas",
+            "description": "Fornece excelente flexibilidade e resistência a fatores ambientais"
+          },
+          "cableInsulation": {
+            "name": "Isolamento de cabos e fios",
+            "description": "Melhora as propriedades elétricas e flexibilidade do isolamento de borracha"
+          },
+          "automotiveComponents": {
+            "name": "Componentes automotivos",
+            "description": "Ideal para vedadores, mangueiras e outras peças de borracha automotiva"
+          },
+          "buildingConstruction": {
+            "name": "Construção civil",
+            "description": "Adequado para juntas, membranas de telhado e materiais impermeabilizantes"
+          }
+        }
+      }
+    },
+    "benefits": {
+      "title": "Benefícios de desempenho",
+      "description": "Os óleos SpecFlex™ para borracha fornecem numerosas vantagens no processamento de borracha e desempenho do produto final, ajudando fabricantes a alcançar melhor qualidade e eficiência.",
+      "items": {
+        "superiorProcessing": {
+          "title": "Processamento superior",
+          "description": "Melhora as propriedades de fluxo da borracha e preenchimento de moldes durante o processamento."
+        },
+        "environmentallyFriendly": {
+          "title": "Ecologicamente correto",
+          "description": "Baixo teor de PAH atende aos requisitos REACH da UE."
+        },
+        "costEffective": {
+          "title": "Custo-benefício",
+          "description": "Formulações otimizadas reduzem custos de produção."
+        },
+        "consistentQuality": {
+          "title": "Qualidade consistente",
+          "description": "Consistência de lote para lote para produção confiável."
+        }
+      },
+      "processingAdvantages": {
+        "title": "Vantagens de processamento",
+        "items": [
+          "Melhor dispersão de cargas e aditivos",
+          "Menor consumo de energia durante a mistura",
+          "Menores temperaturas de processamento e tempos de ciclo",
+          "Melhor fluxo no molde e preenchimento de cavidades",
+          "Menores taxas de rejeição e desperdício de produção"
+        ]
+      },
+      "endProductImprovements": {
+        "title": "Melhorias do produto final",
+        "items": [
+          "Flexibilidade melhorada e propriedades em baixa temperatura",
+          "Melhor resistência à tração e alongamento",
+          "Superior resistência ao envelhecimento e fatores ambientais",
+          "Qualidade e desempenho consistentes de lote para lote",
+          "Conformidade com padrões regulatórios internacionais"
+        ]
+      },
+      "cta": "Contatar nossa equipe técnica"
+    },
+    "packaging": {
+      "title": "Embalagem e entrega",
+      "description": "Os óleos SpecFlex™ para borracha estão disponíveis em uma variedade de opções de embalagem para atender seus requisitos específicos de produção, de pequenos lotes a necessidades de fabricação em grande escala.",
+      "options": {
+        "buckets": {
+          "18l": {
+            "name": "Balde plástico 18L",
+            "description": "Perfeito para produção em pequenos lotes e testes",
+            "capacity": "18L / 5 Gal"
+          }
+        },
+        "drums": {
+          "200l": {
+            "name": "Tambor de aço 200L",
+            "description": "Ideal para operações de fabricação médias",
+            "capacity": "200L / 55 Gal"
+          }
+        },
+        "ibc": {
+          "1000l": {
+            "name": "Tanque IBC 1000L",
+            "description": "Para instalações de produção em grande escala",
+            "capacity": "1000L / 275 Gal"
+          }
+        }
+      },
+      "bulkDelivery": {
+        "title": "Opções de entrega a granel",
+        "description": "Para requisitos de grande volume, oferecemos opções eficientes de entrega a granel:",
+        "options": {
+          "tankerTrucks": {
+            "name": "Caminhões-tanque",
+            "description": "Transporte rodoviário a granel para entregas dentro de 500km de nossas instalações"
+          },
+          "isoTanks": {
+            "name": "Contêineres tanque ISO",
+            "description": "Tanques de aço inoxidável de 26.000L para envio internacional"
+          }
+        },
+        "cta": "Saiba mais sobre nossa logística"
+      }
+    },
+    "relatedProducts": {
+      "title": "Produtos relacionados",
+      "transformerOil": {
+        "series": "Série SpecVolt™",
+        "name": "Óleo para transformadores",
+        "description": "Óleos naftênicos premium para aplicações de alta tensão."
+      },
+      "hydraulicOil": {
+        "series": "Série SpecLube™",
+        "name": "Óleo hidráulico",
+        "description": "Óleos hidráulicos de alto desempenho para equipamentos industriais."
+      },
+      "viewProduct": "Ver produto"
+    },
+    "mobileFooter": {
+      "contactUs": "Contate-nos",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "finishedLubricants": {
+    "title": "Lubrificantes acabados",
+    "hero": {
+      "tag": "Lubrificantes acabados premium",
+      "title": "Série SpecLube™",
+      "subtitle": "Projetados para condições extremas e desempenho máximo"
+    },
+    "tabs": {
+      "overview": "Visão geral",
+      "productLineup": "Linha de produtos",
+      "hydraulicOils": "Óleos hidráulicos",
+      "packaging": "Embalagem"
+    },
+    "overview": {
+      "title": "Soluções avançadas de lubrificação industrial",
+      "description1": "Os lubrificantes acabados SpecLube™ são lubrificantes formulados premium projetados para fornecer proteção e desempenho excepcionais nas aplicações industriais mais exigentes.",
+      "description2": "Oferecemos lubrificantes acabados de fabricantes chineses especializados, formulados com tecnologia de aditivos avançada, fornecendo desempenho superior, vida útil estendida do equipamento e menores custos de manutenção.",
+      "keyFeatures": "Características de desempenho principais",
+      "feature1": {
+        "title": "Proteção contra desgaste superior",
+        "description": "Estende a vida do equipamento em aplicações de alta carga"
+      },
+      "feature2": {
+        "title": "Ampla faixa de temperatura",
+        "description": "Excelente desempenho de climas árticos a ambientes extremamente quentes"
+      },
+      "feature3": {
+        "title": "Resistência à água",
+        "description": "Mantém o desempenho em ambientes úmidos"
+      },
+      "feature4": {
+        "title": "Estabilidade à oxidação",
+        "description": "Vida útil estendida e redução de depósitos"
+      },
+      "requestQuote": "Solicitar cotação",
+      "downloadGuide": "Baixar guia de produtos"
+    },
+    "productLineup": {
+      "title": "Nossa linha de produtos",
+      "description": "SpecLube™ oferece uma linha completa de lubrificantes de alto desempenho projetados para atender às necessidades específicas de várias aplicações industriais. Cada produto é formulado com nossos óleos base naftênicos premium e aditivos avançados.",
+      "categories": {
+        "hydraulic": {
+          "name": "Óleos hidráulicos",
+          "description": "Óleos hidráulicos de alto desempenho projetados para aplicações de pressão extrema e amplas faixas de temperatura.",
+          "grades": ["L-HM (Alta pressão)", "L-HV (Baixa temperatura)", "L-HS (Sintético)"],
+          "standard": "Conforme DIN 51524"
+        },
+        "gear": {
+          "name": "Óleos para engrenagens",
+          "description": "Óleos premium para engrenagens projetados para proteger sistemas de engrenagens industriais contra desgaste, escoriação e piclagem.",
+          "grades": ["L-CKD (Carga pesada)", "L-CKE/P (Extrema pressão)", "Óleo sintético para engrenagens"],
+          "standard": "Conforme DIN 51517"
+        },
+        "fleet": {
+          "name": "Frota comercial",
+          "description": "Óleos de motor de alto desempenho projetados para veículos comerciais e aplicações pesadas.",
+          "grades": ["Óleo para motor diesel (CJ-4/CH-4)", "Óleo para motor gasolina (API SN)", "Óleos de motor multiviscosos"],
+          "standard": "Conforme especificações API"
+        },
+        "specialty": {
+          "name": "Lubrificantes especiais",
+          "description": "Lubrificantes especializados para aplicações industriais únicas com requisitos de desempenho específicos.",
+          "grades": ["Óleo para turbinas (L-TSA)", "Óleo térmico (L-QD)", "Óleo para compressores", "Lubrificantes grau alimentício"],
+          "standard": "Vários padrões da indústria"
+        }
+      },
+      "availableGrades": "Graus disponíveis:",
+      "contactTeam": "Contatar nossa equipe técnica para seleção de produtos"
+    },
+    "hydraulicOils": {
+      "title": "Óleos hidráulicos de alto desempenho",
+      "description": "Nossos óleos hidráulicos são especialmente formulados para fornecer proteção e desempenho excepcionais para sistemas hidráulicos modernos de alta pressão operando em condições severas.",
+      "products": {
+        "lhm": {
+          "name": "SpecLube L-HM (Alta pressão)",
+          "description": "Óleo hidráulico anti-desgaste avançado, projetado para sistemas de alta pressão operando em condições normais a altas temperaturas. Conforme especificação DIN 51524 Parte 2."
+        },
+        "lhv": {
+          "name": "SpecLube L-HV (Baixa temperatura)",
+          "description": "Óleo hidráulico premium com excelente fluidez em baixa temperatura, adequado para sistemas operando em climas frios. Fornece excelente proteção em temperaturas tão baixas quanto -40°C."
+        },
+        "lhs": {
+          "name": "SpecLube L-HS (Sintético)",
+          "description": "Óleo hidráulico totalmente sintético para aplicações extremas que requerem máxima proteção contra desgaste, oxidação e degradação térmica."
+        }
+      },
+      "benefits": {
+        "title": "Benefícios principais",
+        "items": [
+          "Vida útil estendida de bombas e componentes",
+          "Maior eficiência do sistema e economia de energia",
+          "Redução de custos de manutenção e tempo de inatividade",
+          "Excelente filtrabilidade e limpeza do sistema",
+          "Compatibilidade com materiais de vedação"
+        ]
+      },
+      "specifications": {
+        "title": "Especificações técnicas",
+        "property": "Propriedade",
+        "lhm32": "L-HM 32",
+        "lhm46": "L-HM 46",
+        "lhv46": "L-HV 46",
+        "viscosity40": "Viscosidade@40°C (cSt)",
+        "viscosityIndex": "Índice de viscosidade",
+        "pourPoint": "Ponto de fluidez (°C)",
+        "flashPoint": "Ponto de fulgor (°C)",
+        "antiWear": "Desempenho anti-desgaste (quatro bolas, mm)"
+      },
+      "applications": {
+        "title": "Aplicações recomendadas",
+        "industrial": {
+          "name": "Hidráulica industrial",
+          "description": "Máquinas de injeção, prensas, máquinas-ferramenta e outros equipamentos industriais"
+        },
+        "mobile": {
+          "name": "Equipamentos móveis",
+          "description": "Máquinas de construção, equipamentos agrícolas e sistemas de manuseio de materiais"
+        },
+        "marine": {
+          "name": "Aplicações marítimas",
+          "description": "Sistemas hidráulicos em navios e plataformas offshore"
+        },
+        "coldClimate": {
+          "name": "Operação em clima frio",
+          "description": "Sistemas de refrigeração e equipamentos externos em regiões frias"
+        }
+      },
+      "requestConsultation": "Solicitar consulta de produto"
+    },
+    "packaging": {
+      "title": "Embalagem e entrega",
+      "description": "Os lubrificantes acabados SpecLube™ estão disponíveis em opções completas de embalagem para atender às necessidades específicas de suas operações, de pequenas aplicações de manutenção a usos industriais em grande escala.",
+      "options": {
+        "drum200l": {
+          "name": "Tambor de aço 200L",
+          "description": "Tambores de aço pesados para aplicações industriais, vedação segura e confiável"
+        },
+        "ibc1000l": {
+          "name": "Tanque IBC 1000L",
+          "description": "Contêiner intermediário a granel para armazenamento e manuseio eficientes"
+        },
+        "bucket18l": {
+          "name": "Balde plástico 18L",
+          "description": "Baldes de plástico convenientes para pequenas aplicações e manutenção"
+        }
+      },
+      "bulkDelivery": {
+        "title": "Opções de entrega a granel",
+        "description": "Para requisitos de grande volume, oferecemos opções eficientes de entrega a granel para minimizar resíduos de embalagem e reduzir custos:",
+        "tankerTrucks": {
+          "name": "Caminhões-tanque",
+          "description": "Transporte rodoviário a granel para entregas dentro de 500km de nossas instalações"
+        },
+        "isoTanks": {
+          "name": "Contêineres tanque ISO",
+          "description": "Tanques de aço inoxidável de 26.000L para envio internacional"
+        }
+      },
+      "learnMoreLogistics": "Saiba mais sobre nossa logística"
+    },
+    "relatedProducts": {
+      "title": "Produtos relacionados",
+      "transformerOil": {
+        "series": "Série SpecVolt™",
+        "name": "Óleo para transformadores",
+        "description": "Óleos naftênicos premium para aplicações de alta tensão."
+      },
+      "rubberProcessOil": {
+        "series": "Série SpecFlex™",
+        "name": "Óleo para borracha",
+        "description": "Óleos naftênicos de alta solvência para compostos de borracha e fabricação de pneus."
+      },
+      "viewProduct": "Ver produto"
+    },
+    "mobileFooter": {
+      "contactUs": "Contate-nos",
+      "whatsapp": "WhatsApp"
+    }
+  },
   "quality": { "title": "Garantia de qualidade", "hero": { "title": "Qualidade e Conformidade" }, "tabs": { "process": "Processo de Qualidade", "certificates": "Certificados", "standards": "Padrões", "testing": "Métodos de Teste" }, "process": { "title": "Nosso Processo de Qualidade", "intro": "Na CN-SpecLube Chain, mantemos um controle de qualidade rigoroso em toda nossa cadeia de suprimentos.", "step1": { "title": "Suprimento Estratégico", "desc": "Fazemos parceria com os principais fabricantes de óleos especiais da China." }, "step2": { "title": "Hidrotratamento", "desc": "Nosso processo avançado remove impurezas e estabiliza o óleo base." }, "step3": { "title": "Teste Laboratório CNAS", "desc": "Todos os nossos produtos passam por testes rigorosos em laboratórios credenciados." }, "step4": { "title": "Envio", "desc": "Garantimos embalagem e manuseio adequados durante o transporte." }, "qms": { "title": "Sistema de Gestão de Qualidade", "intro": "Nosso sistema certificado ISO 9001 garante qualidade consistente.", "item1": "Controle de Documentos", "item1Desc": "Rastreabilidade completa", "item2": "Controle de Processos", "item2Desc": "Procedimentos padronizados", "item3": "Melhoria Contínua", "item3Desc": "Auditorias regulares" } }, "certificates": { "title": "Nossas Certificações", "intro": "Mantemos várias certificações internacionais.", "iso9001": "Sistema de Gestão de Qualidade", "iso14001": "Sistema de Gestão Ambiental", "iso45001": "Saúde e Segurança Ocupacional", "ohsas": "Avaliação de Saúde e Segurança Ocupacional" }, "standards": { "title": "Padrões Internacionais", "intro": "Todos os nossos produtos estão em conformidade com padrões internacionais.", "astm": "Padrões ASTM para produtos petrolíferos", "iso": "Especificações ISO para lubrificantes", "din": "Especificações DIN para aplicações industriais", "gb": "Padrões nacionais chineses", "api": "Padrões de desempenho API", "reach": "Conformidade REACH" }, "testing": { "title": "Métodos de Teste", "intro": "Testes abrangentes garantem a qualidade do produto.", "viscosity": { "name": "Medição de Viscosidade", "desc": "Teste de viscosidade em várias temperaturas" }, "flashPoint": { "name": "Teste de Ponto de Fulgor", "desc": "Determinação da temperatura mais baixa de ignição" }, "pourPoint": { "name": "Teste de Ponto de Fluidez", "desc": "Medição da temperatura mais baixa de fluidez" }, "acidNumber": { "name": "Determinação de Número Ácido", "desc": "Avaliação de oxidação e degradação" }, "elemental": { "name": "Análise Elementar", "desc": "Medição de concentração de aditivos" }, "particle": { "name": "Contagem de Partículas", "desc": "Avaliação do nível de limpeza" } }, "cta": { "title": "Precisa de documentação de garantia de qualidade?", "desc": "Entre em contato para solicitar certificados de análise.", "button": "Solicitar Documentação" } },
   "logistics": {
     "title": "Soluções de logística e embalagem",

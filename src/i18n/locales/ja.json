@@ -304,9 +304,659 @@
     },
     "mobileFooter": { "call": "お電話ください" }
   },
-  "transformerOil": { "title": "変圧器油", "subtitle": "高性能絶縁油", "cta": { "title": "技術仕様が必要ですか？", "button": "技術データを請求" } },
-  "rubberProcessOil": { "title": "ゴム加工油", "hero": { "title": "ゴム加工油" }, "cta": { "button": "技術データを請求" } },
-  "finishedLubricants": { "title": "完成潤滑油", "hero": { "title": "完成潤滑油" }, "cta": { "button": "技術データを請求" } },
+  "transformerOil": {
+    "title": "変圧器油",
+    "subtitle": "高性能絶縁油",
+    "hero": {
+      "tag": "プレミアム変圧器油",
+      "title": "SpecVolt™シリーズ",
+      "subtitle": "最も厳しい高電圧用途のために設計"
+    },
+    "tabs": {
+      "overview": "概要",
+      "specifications": "仕様",
+      "applications": "用途",
+      "benefits": "利点",
+      "packaging": "梱包"
+    },
+    "overview": {
+      "title": "優れた変圧器保護",
+      "description1": "SpecVolt™変圧器油は、高電圧変圧器および電気機器に優れた絶縁、冷却、保護を提供するために特別に設計されたプレミアムナフテン系潤滑油です。",
+      "description2": "中国の主要メーカーから変圧器油を調達し、天然の低硫黄含有量と優れた誘電特性を持つ製品を提供しています。当社のサプライチェーンサービスは、厳しい用途に一貫した品質と信頼性の高い性能を保証します。",
+      "keyFeatures": "主な性能特性",
+      "feature1": {
+        "title": "腐食性硫黄ゼロ",
+        "description": "変圧器の銅腐食を防止"
+      },
+      "feature2": {
+        "title": "北極圏での信頼性",
+        "description": "-45°Cまで動作"
+      },
+      "feature3": {
+        "title": "低水分含有量",
+        "description": "誘電強度の向上"
+      },
+      "feature4": {
+        "title": "熱安定性",
+        "description": "高温での酸化に抵抗"
+      },
+      "requestQuote": "見積もり依頼",
+      "downloadDatasheet": "データシートダウンロード"
+    },
+    "specifications": {
+      "title": "製品仕様",
+      "description": "SpecVolt™変圧器油は、特定の用途要件と動作条件を満たすように設計された3つのプレミアムグレードでご利用いただけます。すべてのグレードは変圧器油の国際基準を満たすか超えています。",
+      "table": {
+        "grade": "製品グレード",
+        "viscosity": "粘度 (40°C)",
+        "pourPoint": "流動点",
+        "dielectricStrength": "誘電強度"
+      },
+      "grades": {
+        "i20x": {
+          "name": "SpecVolt I-20X",
+          "viscosity": "10-12 cSt",
+          "pourPoint": "-22°C",
+          "dielectric": ">70kV"
+        },
+        "i30x": {
+          "name": "SpecVolt I-30X",
+          "viscosity": "9-11 cSt",
+          "pourPoint": "-30°C",
+          "dielectric": ">70kV"
+        },
+        "i40x": {
+          "name": "SpecVolt I-40X",
+          "viscosity": "<12 cSt",
+          "pourPoint": "-45°C",
+          "dielectric": ">70kV"
+        }
+      },
+      "technical": {
+        "title": "技術仕様",
+        "baseOilType": "ベースオイルタイプ:",
+        "baseOilValue": "ナフテン系",
+        "flashPoint": "引火点 (COC):",
+        "flashPointValue": "> 140°C",
+        "firePoint": "発火点 (COC):",
+        "firePointValue": "> 160°C",
+        "acidity": "酸価 (TAN):",
+        "acidityValue": "< 0.03 mg KOH/g",
+        "interfacialTension": "界面張力:",
+        "interfacialTensionValue": "> 35 mN/m",
+        "resistivity": "抵抗率 (90°C):",
+        "resistivityValue": "> 10^12 Ω·m",
+        "oxidationStability": "酸化安定性:",
+        "oxidationStabilityValue": "優秀"
+      },
+      "compliance": {
+        "title": "コンプライアンス基準",
+        "items": ["ASTM D3487", "IEC 60296", "BS 148", "GB 2536", "TOST準拠", "PCBフリー", "RoHS準拠"]
+      }
+    },
+    "applications": {
+      "title": "用途",
+      "description": "SpecVolt™変圧器油は、優れた絶縁特性、熱伝達能力、酸化抵抗が重要な要件となる幅広い電気機器での使用のために設計されています。",
+      "items": {
+        "highVoltage": {
+          "title": "高電圧変圧器",
+          "description": "過酷な条件下で動作する発電・送電変圧器に最適。"
+        },
+        "distribution": {
+          "title": "配電変圧器",
+          "description": "中・低圧配電ネットワークに優れた保護を提供。"
+        },
+        "instrument": {
+          "title": "計器用変圧器",
+          "description": "計測システムの変流器・変圧器の信頼性の高い性能を確保。"
+        },
+        "switchgear": {
+          "title": "開閉器機器",
+          "description": "遮断機と開閉器に優れた絶縁・冷却特性を提供。"
+        }
+      },
+      "recommendedTitle": "グレード別推奨用途",
+      "recommendedTable": {
+        "grade": "製品グレード",
+        "bestApplications": "最適用途",
+        "operatingEnvironment": "動作環境",
+        "i20x": {
+          "applications": "配電変圧器、中圧機器",
+          "environment": "温帯気候、標準用途"
+        },
+        "i30x": {
+          "applications": "電力変圧器、産業用途",
+          "environment": "寒冷地、屋外設置"
+        },
+        "i40x": {
+          "applications": "高電圧変圧器、重要用途",
+          "environment": "極寒地、北極圏"
+        }
+      }
+    },
+    "benefits": {
+      "title": "性能上の利点",
+      "description": "SpecVolt™変圧器油は従来の変圧器油に比べて多くの利点を提供し、機器の寿命延長、信頼性向上、メンテナンスコスト削減に役立ちます。",
+      "performance": {
+        "dielectric": {
+          "title": "誘電強度の向上",
+          "description": "高電圧ストレス下でシステムの完全性を維持する優れた絶縁特性。"
+        },
+        "serviceLife": {
+          "title": "寿命の延長",
+          "description": "優れた酸化抵抗により油の寿命を延ばし、メンテナンス頻度を低減。"
+        },
+        "heatTransfer": {
+          "title": "優れた熱伝達",
+          "description": "最適化された熱特性により冷却効率を向上させ、ホットスポットを低減。"
+        },
+        "protection": {
+          "title": "機器保護",
+          "description": "腐食性硫黄ゼロ配合により銅腐食とスラッジ形成を防止。"
+        }
+      },
+      "economic": {
+        "title": "経済的利点",
+        "items": [
+          "油の寿命延長によるメンテナンスコスト削減",
+          "より良い保護による機器交換コストの削減",
+          "ダウンタイムの最小化とシステム信頼性の向上",
+          "最適化された冷却によるエネルギー効率の改善",
+          "従来油と比較した長期的コスト削減"
+        ]
+      },
+      "environmental": {
+        "title": "環境面の利点",
+        "items": [
+          "天然の低硫黄含有量が環境影響を低減",
+          "油の寿命延長により廃棄物の発生と処分の必要性を低減",
+          "国際環境規制への準拠",
+          "循環型経済原則を支持するリサイクル可能な製品"
+        ],
+        "contactButton": "技術チームにお問い合わせ"
+      }
+    },
+    "packaging": {
+      "title": "梱包と納品",
+      "description": "SpecVolt™変圧器油は、メンテナンス用の小さな容器から大規模設置用のバルク配送まで、お客様の特定の要件を満たすさまざまな梱包オプションでご利用いただけます。",
+      "options": {
+        "bucket18L": {
+          "title": "18Lプラスチックバケツ",
+          "description": "小さなメンテナンス作業や補充に最適",
+          "capacity": "18L / 5ガロン"
+        },
+        "drum200L": {
+          "title": "200Lスチールドラム",
+          "description": "中規模の設置やプロジェクトに最適",
+          "capacity": "200L / 55ガロン"
+        },
+        "ibc1000L": {
+          "title": "1000L IBCタンク",
+          "description": "より大きな産業用途やプロジェクト用",
+          "capacity": "1000L / 275ガロン"
+        }
+      },
+      "bulkTitle": "バルク配送オプション",
+      "bulkDescription": "大容量の要件に対して、梱包廃棄物を最小限に抑えコストを削減するバルク配送オプションを提供しています：",
+      "bulkOptions": {
+        "tanker": {
+          "title": "タンクローリー",
+          "description": "当社施設から500km圏内のバルク陸送"
+        },
+        "isoTank": {
+          "title": "ISOタンクコンテナ",
+          "description": "国際輸送用26,000Lステンレス鋼タンク"
+        }
+      },
+      "learnMoreLogistics": "物流について詳しく知る"
+    },
+    "relatedProducts": {
+      "title": "関連製品",
+      "rubberOil": {
+        "series": "SpecFlex™シリーズ",
+        "title": "ゴム加工油",
+        "description": "ゴム配合およびタイヤ製造用の高溶解力ナフテン系油。",
+        "viewProduct": "製品を見る"
+      },
+      "hydraulicOil": {
+        "series": "SpecLube™シリーズ",
+        "title": "作動油",
+        "description": "産業および移動機器用の高性能作動油。",
+        "viewProduct": "製品を見る"
+      }
+    },
+    "cta": {
+      "title": "技術仕様が必要ですか？",
+      "description": "詳細な製品情報と価格についてチームにお問い合わせください",
+      "button": "技術データを請求"
+    },
+    "mobile": {
+      "contact": "お問い合わせ",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "rubberProcessOil": {
+    "title": "ゴム加工油",
+    "hero": {
+      "tag": "プレミアムゴム加工油",
+      "title": "SpecFlex™シリーズ",
+      "subtitle": "優れたゴム加工と最終製品性能のために設計"
+    },
+    "tabs": {
+      "overview": "概要",
+      "specifications": "仕様",
+      "applications": "用途",
+      "benefits": "利点",
+      "packaging": "梱包"
+    },
+    "overview": {
+      "title": "優れたゴム加工ソリューション",
+      "description1": "SpecFlex™ゴム加工油は、ゴム化合物の加工と性能を向上するために特別に設計されたプレミアムナフテン系油です。",
+      "description2": "信頼できる中国の生産者からゴム加工油を提供し、高溶解力（Cn% > 35%）と様々なゴムタイプとの優れた適合性を持っています。当社のエンドツーエンドソリューションは、専門産業用途のシームレスな調達をサポートします。",
+      "keyFeatures": "主な性能特性",
+      "feature1": {
+        "title": "高溶解力",
+        "description": "Cn% > 35%で優れたゴム浸透"
+      },
+      "feature2": {
+        "title": "EU REACH準拠",
+        "description": "低PAH含有量で規制対応"
+      },
+      "feature3": {
+        "title": "低流動点",
+        "description": "優れた低温性能"
+      },
+      "feature4": {
+        "title": "酸化安定性",
+        "description": "加工中の劣化に抵抗"
+      },
+      "requestQuote": "見積もり依頼",
+      "downloadDatasheet": "データシートダウンロード"
+    },
+    "specifications": {
+      "title": "製品仕様",
+      "description": "SpecFlex™ゴム加工油は、靴底から高性能タイヤまで、異なるゴム用途の特定要件を満たすよう慎重に配合された3つのグレードでご利用いただけます。",
+      "table": {
+        "grade": "製品グレード",
+        "application": "推奨用途",
+        "solvency": "溶解力 (Cn%)",
+        "viscosity": "粘度 (40°C)"
+      },
+      "grades": {
+        "4006": {
+          "name": "SpecFlex 4006",
+          "application": "EPDM・靴底",
+          "solvency": "Cn% > 35%",
+          "viscosity": "60-70 cSt"
+        },
+        "4010": {
+          "name": "SpecFlex 4010",
+          "application": "高性能タイヤ",
+          "solvency": "Cn% > 35%",
+          "viscosity": "90-110 cSt"
+        },
+        "4016": {
+          "name": "SpecFlex 4016",
+          "application": "コンベアベルト",
+          "solvency": "Cn% > 35%",
+          "viscosity": "150-170 cSt"
+        }
+      },
+      "technical": {
+        "title": "技術仕様",
+        "baseOilType": "ベースオイルタイプ:",
+        "baseOilValue": "ナフテン系",
+        "flashPoint": "引火点 (COC):",
+        "flashPointValue": "> 200°C",
+        "pourPoint": "流動点:",
+        "pourPointValue": "< -15°C",
+        "anilinePoint": "アニリン点:",
+        "anilinePointValue": "< 80°C",
+        "sulfurContent": "硫黄分:",
+        "sulfurContentValue": "< 0.5%",
+        "color": "色 (Saybolt):",
+        "colorValue": "+20〜+30",
+        "density": "密度 (15°C):",
+        "densityValue": "0.91-0.95 g/cm³"
+      },
+      "regulatory": {
+        "title": "規制対応",
+        "items": [
+          "EU REACH規則 (EC 1907/2006)",
+          "低PAH（多環芳香族炭化水素）",
+          "RoHS準拠",
+          "FDA 21 CFR 178.3620(a)間接食品接触",
+          "非発がん性（IARCガイドライン準拠）",
+          "ISO 9001品質マネジメントシステム",
+          "ISO 14001環境マネジメントシステム"
+        ]
+      }
+    },
+    "applications": {
+      "title": "用途",
+      "description": "SpecFlex™ゴム加工油は、優れた加工特性を提供し最終製品の性能を向上させる、幅広いゴム製品と用途のために設計されています。",
+      "categories": {
+        "shoeSoles": {
+          "name": "靴底・履物",
+          "description": "SpecFlex 4006は靴底や他の履物部品に優れた柔軟性と耐久性を提供。",
+          "grade": "推奨グレード：SpecFlex 4006"
+        },
+        "tires": {
+          "name": "タイヤ・自動車",
+          "description": "SpecFlex 4010は高性能タイヤに優れた性能を提供し、優れたグリップと耐摩耗性を実現。",
+          "grade": "推奨グレード：SpecFlex 4010"
+        },
+        "industrialBelts": {
+          "name": "産業用ベルト",
+          "description": "SpecFlex 4016は高い耐久性と強度を必要とするコンベアベルトや産業用ゴム製品に最適。",
+          "grade": "推奨グレード：SpecFlex 4016"
+        }
+      },
+      "otherApplications": {
+        "title": "その他の用途",
+        "items": {
+          "sealsGaskets": {
+            "name": "シール・ガスケット",
+            "description": "優れた柔軟性と環境要因への抵抗性を提供"
+          },
+          "cableInsulation": {
+            "name": "ケーブル・電線絶縁",
+            "description": "ゴム絶縁の電気特性と柔軟性を向上"
+          },
+          "automotiveComponents": {
+            "name": "自動車部品",
+            "description": "ウェザーストリップ、ホース、その他の自動車ゴム部品に最適"
+          },
+          "buildingConstruction": {
+            "name": "建設・建築",
+            "description": "ガスケット、屋根膜、防水材に適しています"
+          }
+        }
+      }
+    },
+    "benefits": {
+      "title": "性能上の利点",
+      "description": "SpecFlex™ゴム加工油は、ゴム加工と最終製品性能において多くの利点を提供し、メーカーがより良い品質と効率を達成するのに役立ちます。",
+      "items": {
+        "superiorProcessing": {
+          "title": "優れた加工",
+          "description": "加工中のゴム流動特性と金型充填を改善。"
+        },
+        "environmentallyFriendly": {
+          "title": "環境に優しい",
+          "description": "低PAH含有量がEU REACH要件を満たす。"
+        },
+        "costEffective": {
+          "title": "コスト効率",
+          "description": "最適化された配合が生産コストを削減。"
+        },
+        "consistentQuality": {
+          "title": "一貫した品質",
+          "description": "ロット間の一貫性で信頼性の高い生産を実現。"
+        }
+      },
+      "processingAdvantages": {
+        "title": "加工上の利点",
+        "items": [
+          "充填剤と添加剤の分散改善",
+          "混練中のエネルギー消費削減",
+          "加工温度とサイクルタイムの低減",
+          "金型流動とキャビティ充填の向上",
+          "スクラップ率と生産廃棄物の削減"
+        ]
+      },
+      "endProductImprovements": {
+        "title": "最終製品の改善",
+        "items": [
+          "柔軟性と低温特性の向上",
+          "引張強さと伸びの改善",
+          "老化と環境要因に対する優れた抵抗性",
+          "ロット間の一貫した品質と性能",
+          "国際規制基準への準拠"
+        ]
+      },
+      "cta": "技術チームにお問い合わせ"
+    },
+    "packaging": {
+      "title": "梱包と納品",
+      "description": "SpecFlex™ゴム加工油は、小ロットから大規模製造ニーズまで、お客様の特定の生産要件を満たす様々な梱包オプションでご利用いただけます。",
+      "options": {
+        "buckets": {
+          "18l": {
+            "name": "18Lプラスチックバケツ",
+            "description": "小ロット生産とテストに最適",
+            "capacity": "18L / 5ガロン"
+          }
+        },
+        "drums": {
+          "200l": {
+            "name": "200Lスチールドラム",
+            "description": "中規模製造事業に最適",
+            "capacity": "200L / 55ガロン"
+          }
+        },
+        "ibc": {
+          "1000l": {
+            "name": "1000L IBCタンク",
+            "description": "大規模生産設備用",
+            "capacity": "1000L / 275ガロン"
+          }
+        }
+      },
+      "bulkDelivery": {
+        "title": "バルク配送オプション",
+        "description": "大容量の要件に対して、効率的なバルク配送オプションを提供：",
+        "options": {
+          "tankerTrucks": {
+            "name": "タンクローリー",
+            "description": "当社施設から500km圏内のバルク陸送"
+          },
+          "isoTanks": {
+            "name": "ISOタンクコンテナ",
+            "description": "国際輸送用26,000Lステンレス鋼タンク"
+          }
+        },
+        "cta": "物流について詳しく知る"
+      }
+    },
+    "relatedProducts": {
+      "title": "関連製品",
+      "transformerOil": {
+        "series": "SpecVolt™シリーズ",
+        "name": "変圧器油",
+        "description": "高電圧用途用プレミアムナフテン系変圧器油。"
+      },
+      "hydraulicOil": {
+        "series": "SpecLube™シリーズ",
+        "name": "作動油",
+        "description": "産業機器用高性能作動油。"
+      },
+      "viewProduct": "製品を見る"
+    },
+    "mobileFooter": {
+      "contactUs": "お問い合わせ",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "finishedLubricants": {
+    "title": "完成潤滑油",
+    "hero": {
+      "tag": "プレミアム完成潤滑油",
+      "title": "SpecLube™シリーズ",
+      "subtitle": "過酷な条件と最大性能のために設計"
+    },
+    "tabs": {
+      "overview": "概要",
+      "productLineup": "製品ラインナップ",
+      "hydraulicOils": "作動油",
+      "packaging": "梱包"
+    },
+    "overview": {
+      "title": "先進産業潤滑ソリューション",
+      "description1": "SpecLube™完成潤滑油は、最も要求の厳しい産業用途で優れた保護と性能を提供するために設計されたプレミアム配合潤滑油です。",
+      "description2": "専門中国メーカーから完成潤滑油を提供し、先進添加剤技術で配合され、優れた性能、機器寿命の延長、メンテナンスコストの削減を提供します。",
+      "keyFeatures": "主な性能特性",
+      "feature1": {
+        "title": "優れた摩耗保護",
+        "description": "高荷重用途で機器寿命を延長"
+      },
+      "feature2": {
+        "title": "広い温度範囲",
+        "description": "北極圏から極めて高温な環境まで優れた性能"
+      },
+      "feature3": {
+        "title": "耐水性",
+        "description": "湿潤環境で性能を維持"
+      },
+      "feature4": {
+        "title": "酸化安定性",
+        "description": "寿命の延長と堆積物の削減"
+      },
+      "requestQuote": "見積もり依頼",
+      "downloadGuide": "製品ガイドダウンロード"
+    },
+    "productLineup": {
+      "title": "製品ラインナップ",
+      "description": "SpecLube™は、様々な産業用途の特定ニーズを満たすよう設計された包括的な高性能潤滑油ラインを提供します。各製品は、プレミアムナフテン系ベースオイルと先進添加剤で配合されています。",
+      "categories": {
+        "hydraulic": {
+          "name": "作動油",
+          "description": "極圧用途と広い温度範囲のために設計された高性能作動油。",
+          "grades": ["L-HM（高圧）", "L-HV（低温）", "L-HS（合成）"],
+          "standard": "DIN 51524準拠"
+        },
+        "gear": {
+          "name": "ギアオイル",
+          "description": "産業用ギアシステムを摩耗、スコーリング、ピッチングから保護するために設計されたプレミアムギアオイル。",
+          "grades": ["L-CKD（重荷重）", "L-CKE/P（極圧）", "合成ギアオイル"],
+          "standard": "DIN 51517準拠"
+        },
+        "fleet": {
+          "name": "商用フリート",
+          "description": "商用車と過酷用途のために設計された高性能エンジンオイル。",
+          "grades": ["ディーゼルエンジンオイル（CJ-4/CH-4）", "ガソリンエンジンオイル（API SN）", "マルチグレードエンジンオイル"],
+          "standard": "API仕様準拠"
+        },
+        "specialty": {
+          "name": "特殊潤滑油",
+          "description": "特定の性能要件を持つ独特な産業用途のための専門潤滑油。",
+          "grades": ["タービン油（L-TSA）", "熱媒油（L-QD）", "コンプレッサー油", "食品グレード潤滑油"],
+          "standard": "各種業界基準"
+        }
+      },
+      "availableGrades": "利用可能グレード：",
+      "contactTeam": "製品選択について技術チームにお問い合わせ"
+    },
+    "hydraulicOils": {
+      "title": "高性能作動油",
+      "description": "当社の作動油は、厳しい条件下で動作する現代の高圧油圧システムに優れた保護と性能を提供するよう特別に配合されています。",
+      "products": {
+        "lhm": {
+          "name": "SpecLube L-HM（高圧）",
+          "description": "通常から高温条件下で動作する高圧システムのために設計された先進耐摩耗作動油。DIN 51524 Part 2仕様準拠。"
+        },
+        "lhv": {
+          "name": "SpecLube L-HV（低温）",
+          "description": "寒冷地で動作するシステムに適した優れた低温流動性を持つプレミアム作動油。-40°Cまでの温度で優れた保護を提供。"
+        },
+        "lhs": {
+          "name": "SpecLube L-HS（合成）",
+          "description": "摩耗、酸化、熱劣化に対する最大限の保護を必要とする極端な用途のための全合成作動油。"
+        }
+      },
+      "benefits": {
+        "title": "主な利点",
+        "items": [
+          "ポンプとコンポーネントの寿命延長",
+          "システム効率の向上と省エネ",
+          "メンテナンスコストとダウンタイムの削減",
+          "優れたろ過性とシステム清浄度",
+          "シール材との適合性"
+        ]
+      },
+      "specifications": {
+        "title": "技術仕様",
+        "property": "特性",
+        "lhm32": "L-HM 32",
+        "lhm46": "L-HM 46",
+        "lhv46": "L-HV 46",
+        "viscosity40": "粘度@40°C (cSt)",
+        "viscosityIndex": "粘度指数",
+        "pourPoint": "流動点 (°C)",
+        "flashPoint": "引火点 (°C)",
+        "antiWear": "耐摩耗性能（四球、mm）"
+      },
+      "applications": {
+        "title": "推奨用途",
+        "industrial": {
+          "name": "産業用油圧",
+          "description": "射出成形機、プレス、工作機械、その他の産業機器"
+        },
+        "mobile": {
+          "name": "移動機器",
+          "description": "建設機械、農業機器、マテリアルハンドリングシステム"
+        },
+        "marine": {
+          "name": "海洋用途",
+          "description": "船舶や海洋プラットフォームの油圧システム"
+        },
+        "coldClimate": {
+          "name": "寒冷地作業",
+          "description": "冷凍システムと寒冷地の屋外機器"
+        }
+      },
+      "requestConsultation": "製品相談を依頼"
+    },
+    "packaging": {
+      "title": "梱包と納品",
+      "description": "SpecLube™完成潤滑油は、小さなメンテナンス用途から大規模産業用途まで、お客様の運用の特定ニーズを満たす包括的な梱包オプションでご利用いただけます。",
+      "options": {
+        "drum200l": {
+          "name": "200Lスチールドラム",
+          "description": "産業用途用の重厚なスチールドラム、安全で信頼性の高い密封"
+        },
+        "ibc1000l": {
+          "name": "1000L IBCタンク",
+          "description": "効率的な保管と取扱いのためのバルク中間コンテナ"
+        },
+        "bucket18l": {
+          "name": "18Lプラスチックバケツ",
+          "description": "小さな用途とメンテナンスに便利なプラスチックバケツ"
+        }
+      },
+      "bulkDelivery": {
+        "title": "バルク配送オプション",
+        "description": "大容量の要件に対して、梱包廃棄物を最小限に抑えコストを削減する効率的なバルク配送オプションを提供：",
+        "tankerTrucks": {
+          "name": "タンクローリー",
+          "description": "当社施設から500km圏内のバルク陸送"
+        },
+        "isoTanks": {
+          "name": "ISOタンクコンテナ",
+          "description": "国際輸送用26,000Lステンレス鋼タンク"
+        }
+      },
+      "learnMoreLogistics": "物流について詳しく知る"
+    },
+    "relatedProducts": {
+      "title": "関連製品",
+      "transformerOil": {
+        "series": "SpecVolt™シリーズ",
+        "name": "変圧器油",
+        "description": "高電圧用途用プレミアムナフテン系変圧器油。"
+      },
+      "rubberProcessOil": {
+        "series": "SpecFlex™シリーズ",
+        "name": "ゴム加工油",
+        "description": "ゴム配合およびタイヤ製造用の高溶解力ナフテン系油。"
+      },
+      "viewProduct": "製品を見る"
+    },
+    "mobileFooter": {
+      "contactUs": "お問い合わせ",
+      "whatsapp": "WhatsApp"
+    }
+  },
   "quality": { "title": "品質保証", "hero": { "title": "品質とコンプライアンス" }, "tabs": { "process": "品質プロセス", "certificates": "認証", "standards": "規格", "testing": "試験方法" }, "process": { "title": "当社の品質プロセス", "intro": "CN-SpecLube Chainでは、サプライチェーン全体で厳格な品質管理を維持しています。", "step1": { "title": "戦略的調達", "desc": "中国の主要な特殊油メーカーと提携しています。" }, "step2": { "title": "水素化処理", "desc": "高度なプロセスで不純物を除去し、ベースオイルを安定化します。" }, "step3": { "title": "CNAS研究所試験", "desc": "全製品が認定研究所で厳格な試験を受けます。" }, "step4": { "title": "出荷", "desc": "輸送中の適切な梱包と取扱いを保証します。" }, "qms": { "title": "品質マネジメントシステム", "intro": "ISO 9001認証システムが一貫した品質を保証します。", "item1": "文書管理", "item1Desc": "完全なトレーサビリティ", "item2": "プロセス管理", "item2Desc": "標準化された手順", "item3": "継続的改善", "item3Desc": "定期的な監査" } }, "certificates": { "title": "当社の認証", "intro": "複数の国際認証を保持しています。", "iso9001": "品質マネジメントシステム", "iso14001": "環境マネジメントシステム", "iso45001": "労働安全衛生", "ohsas": "労働安全衛生評価" }, "standards": { "title": "国際規格", "intro": "全製品が国際規格に準拠しています。", "astm": "石油製品のASTM規格", "iso": "潤滑油のISO仕様", "din": "産業用途のDIN仕様", "gb": "中国国家規格", "api": "API性能基準", "reach": "REACH準拠" }, "testing": { "title": "試験方法", "intro": "包括的な試験が製品品質を保証します。", "viscosity": { "name": "粘度測定", "desc": "各温度での粘度試験" }, "flashPoint": { "name": "引火点試験", "desc": "最低引火温度の測定" }, "pourPoint": { "name": "流動点試験", "desc": "最低流動温度の測定" }, "acidNumber": { "name": "酸価測定", "desc": "酸化と劣化の評価" }, "elemental": { "name": "元素分析", "desc": "添加物濃度の測定" }, "particle": { "name": "粒子計数", "desc": "清浄度レベルの評価" } }, "cta": { "title": "品質保証文書が必要ですか?", "desc": "分析証明書の請求はお問い合わせください。", "button": "文書を請求" } },
   "logistics": {
     "title": "物流・梱包ソリューション",

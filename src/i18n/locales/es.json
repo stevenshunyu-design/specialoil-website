@@ -330,23 +330,655 @@
   "transformerOil": {
     "title": "Aceite para transformadores",
     "subtitle": "Aceites aislantes de alto rendimiento",
-    "hero": { "title": "Aceite para transformadores premium", "subtitle": "Aceites aislantes de alto rendimiento para equipos eléctricos" },
-    "overview": { "title": "Descripción del producto", "description": "Proporcionamos aceites para transformadores de fabricantes chinos líderes, con excelentes propiedades de aislamiento eléctrico." },
-    "features": { "title": "Características de rendimiento clave" },
-    "applications": { "title": "Aplicaciones" },
-    "cta": { "title": "¿Necesita especificaciones técnicas?", "description": "Contacte a nuestro equipo para información detallada", "button": "Solicitar datos técnicos" }
+    "hero": {
+      "tag": "Aceite para transformadores premium",
+      "title": "Serie SpecVolt™",
+      "subtitle": "Diseñado para las aplicaciones de alta tensión más exigentes"
+    },
+    "tabs": {
+      "overview": "Descripción general",
+      "specifications": "Especificaciones",
+      "applications": "Aplicaciones",
+      "benefits": "Beneficios",
+      "packaging": "Embalaje"
+    },
+    "overview": {
+      "title": "Protección superior para transformadores",
+      "description1": "Los aceites SpecVolt™ para transformadores son lubricantes nafténicos premium diseñados específicamente para proporcionar aislamiento, refrigeración y protección excepcionales para transformadores de alta tensión y equipos eléctricos.",
+      "description2": "Obtenemos aceites para transformadores de fabricantes chinos líderes, ofreciendo productos con contenido de azufre naturalmente bajo y propiedades dieléctricas superiores. Nuestros servicios de cadena de suministro garantizan calidad consistente y rendimiento confiable para aplicaciones exigentes.",
+      "keyFeatures": "Características de rendimiento clave",
+      "feature1": {
+        "title": "Azufre corrosivo cero",
+        "description": "Previene la corrosión del cobre en transformadores"
+      },
+      "feature2": {
+        "title": "Fiabilidad ártica",
+        "description": "Funciona hasta -45°C"
+      },
+      "feature3": {
+        "title": "Bajo contenido de humedad",
+        "description": "Resistencia dieléctrica mejorada"
+      },
+      "feature4": {
+        "title": "Estabilidad térmica",
+        "description": "Resiste la oxidación a altas temperaturas"
+      },
+      "requestQuote": "Solicitar cotización",
+      "downloadDatasheet": "Descargar ficha técnica"
+    },
+    "specifications": {
+      "title": "Especificaciones del producto",
+      "description": "Los aceites SpecVolt™ para transformadores están disponibles en tres grados premium, cada uno diseñado para cumplir con requisitos específicos de aplicación y condiciones de operación. Todos los grados cumplen o superan los estándares internacionales para aceites de transformadores.",
+      "table": {
+        "grade": "Grado del producto",
+        "viscosity": "Viscosidad (40°C)",
+        "pourPoint": "Punto de fluidez",
+        "dielectricStrength": "Resistencia dieléctrica"
+      },
+      "grades": {
+        "i20x": {
+          "name": "SpecVolt I-20X",
+          "viscosity": "10-12 cSt",
+          "pourPoint": "-22°C",
+          "dielectric": ">70kV"
+        },
+        "i30x": {
+          "name": "SpecVolt I-30X",
+          "viscosity": "9-11 cSt",
+          "pourPoint": "-30°C",
+          "dielectric": ">70kV"
+        },
+        "i40x": {
+          "name": "SpecVolt I-40X",
+          "viscosity": "<12 cSt",
+          "pourPoint": "-45°C",
+          "dielectric": ">70kV"
+        }
+      },
+      "technical": {
+        "title": "Especificaciones técnicas",
+        "baseOilType": "Tipo de aceite base:",
+        "baseOilValue": "Nafténico",
+        "flashPoint": "Punto de inflamación (COC):",
+        "flashPointValue": "> 140°C",
+        "firePoint": "Punto de combustión (COC):",
+        "firePointValue": "> 160°C",
+        "acidity": "Acidez (TAN):",
+        "acidityValue": "< 0.03 mg KOH/g",
+        "interfacialTension": "Tensión interfacial:",
+        "interfacialTensionValue": "> 35 mN/m",
+        "resistivity": "Resistividad (90°C):",
+        "resistivityValue": "> 10^12 Ω·m",
+        "oxidationStability": "Estabilidad a la oxidación:",
+        "oxidationStabilityValue": "Excelente"
+      },
+      "compliance": {
+        "title": "Normas de cumplimiento",
+        "items": ["ASTM D3487", "IEC 60296", "BS 148", "GB 2536", "Cumplimiento TOST", "Sin PCB", "Cumplimiento RoHS"]
+      }
+    },
+    "applications": {
+      "title": "Aplicaciones",
+      "description": "Los aceites SpecVolt™ para transformadores están diseñados para uso en una amplia gama de equipos eléctricos donde las excelentes propiedades de aislamiento, capacidades de transferencia de calor y resistencia a la oxidación son requisitos críticos.",
+      "items": {
+        "highVoltage": {
+          "title": "Transformadores de alta tensión",
+          "description": "Ideal para transformadores de generación y transmisión que operan en condiciones extremas."
+        },
+        "distribution": {
+          "title": "Transformadores de distribución",
+          "description": "Proporciona excelente protección para redes de distribución de media y baja tensión."
+        },
+        "instrument": {
+          "title": "Transformadores de instrumentos",
+          "description": "Garantiza rendimiento confiable para transformadores de corriente y tensión en sistemas de medición."
+        },
+        "switchgear": {
+          "title": "Equipos de interruptores",
+          "description": "Ofrece propiedades superiores de aislamiento y refrigeración para interruptores y equipos de maniobra."
+        }
+      },
+      "recommendedTitle": "Aplicaciones recomendadas por grado",
+      "recommendedTable": {
+        "grade": "Grado del producto",
+        "bestApplications": "Mejores aplicaciones",
+        "operatingEnvironment": "Ambiente de operación",
+        "i20x": {
+          "applications": "Transformadores de distribución, equipos de media tensión",
+          "environment": "Climas templados, aplicaciones estándar"
+        },
+        "i30x": {
+          "applications": "Transformadores de potencia, aplicaciones industriales",
+          "environment": "Climas fríos, instalaciones al exterior"
+        },
+        "i40x": {
+          "applications": "Transformadores de alta tensión, aplicaciones críticas",
+          "environment": "Climas extremadamente fríos, regiones árticas"
+        }
+      }
+    },
+    "benefits": {
+      "title": "Beneficios de rendimiento",
+      "description": "Los aceites SpecVolt™ para transformadores proporcionan numerosas ventajas sobre los aceites convencionales, ayudando a extender la vida útil del equipo, mejorar la confiabilidad y reducir los costos de mantenimiento.",
+      "performance": {
+        "dielectric": {
+          "title": "Resistencia dieléctrica mejorada",
+          "description": "Propiedades de aislamiento superiores que mantienen la integridad del sistema bajo estrés de alta tensión."
+        },
+        "serviceLife": {
+          "title": "Vida útil extendida",
+          "description": "Excelente resistencia a la oxidación que extiende la vida del aceite y reduce la frecuencia de mantenimiento."
+        },
+        "heatTransfer": {
+          "title": "Transferencia de calor superior",
+          "description": "Propiedades térmicas optimizadas que mejoran la eficiencia de refrigeración y reducen los puntos calientes."
+        },
+        "protection": {
+          "title": "Protección del equipo",
+          "description": "Formulación con azufre corrosivo cero que previene la corrosión del cobre y formación de lodos."
+        }
+      },
+      "economic": {
+        "title": "Beneficios económicos",
+        "items": [
+          "Costos de mantenimiento reducidos debido a la vida útil extendida del aceite",
+          "Menores costos de reemplazo de equipos gracias a mejor protección",
+          "Minimización del tiempo de inactividad y mejora de la confiabilidad del sistema",
+          "Mejoras en eficiencia energética a través de refrigeración optimizada",
+          "Ahorros de costos a largo plazo en comparación con aceites convencionales"
+        ]
+      },
+      "environmental": {
+        "title": "Beneficios ambientales",
+        "items": [
+          "Contenido de azufre naturalmente bajo reduce el impacto ambiental",
+          "Vida útil extendida del aceite reduce generación de residuos y necesidades de disposición",
+          "Cumplimiento con regulaciones ambientales internacionales",
+          "Producto reciclable que apoya principios de economía circular"
+        ],
+        "contactButton": "Contactar a nuestro equipo técnico"
+      }
+    },
+    "packaging": {
+      "title": "Embalaje y entrega",
+      "description": "Los aceites SpecVolt™ para transformadores están disponibles en una variedad de opciones de embalaje para satisfacer sus requisitos específicos, desde contenedores pequeños para mantenimiento hasta entregas a granel para grandes instalaciones.",
+      "options": {
+        "bucket18L": {
+          "title": "Cubo de plástico 18L",
+          "description": "Ideal para trabajos de mantenimiento pequeños y rellenos",
+          "capacity": "18L / 5 Gal"
+        },
+        "drum200L": {
+          "title": "Tambor de acero 200L",
+          "description": "Perfecto para instalaciones y proyectos medianos",
+          "capacity": "200L / 55 Gal"
+        },
+        "ibc1000L": {
+          "title": "Tanque IBC 1000L",
+          "description": "Para aplicaciones y proyectos industriales más grandes",
+          "capacity": "1000L / 275 Gal"
+        }
+      },
+      "bulkTitle": "Opciones de entrega a granel",
+      "bulkDescription": "Para requisitos de gran volumen, ofrecemos opciones de entrega a granel para minimizar residuos de embalaje y reducir costos:",
+      "bulkOptions": {
+        "tanker": {
+          "title": "Camiones cisterna",
+          "description": "Transporte terrestre a granel para entregas dentro de 500km de nuestras instalaciones"
+        },
+        "isoTank": {
+          "title": "Contenedores de tanque ISO",
+          "description": "Tanques de acero inoxidable de 26,000L para envío internacional"
+        }
+      },
+      "learnMoreLogistics": "Conozca más sobre nuestra logística"
+    },
+    "relatedProducts": {
+      "title": "Productos relacionados",
+      "rubberOil": {
+        "series": "Serie SpecFlex™",
+        "title": "Aceite para proceso de caucho",
+        "description": "Aceites nafténicos de alta solvencia para compuestos de caucho y fabricación de neumáticos.",
+        "viewProduct": "Ver producto"
+      },
+      "hydraulicOil": {
+        "series": "Serie SpecLube™",
+        "title": "Aceite hidráulico",
+        "description": "Aceites hidráulicos de alto rendimiento para equipos industriales y móviles.",
+        "viewProduct": "Ver producto"
+      }
+    },
+    "cta": {
+      "title": "¿Necesita especificaciones técnicas?",
+      "description": "Contacte a nuestro equipo para información detallada del producto y precios",
+      "button": "Solicitar datos técnicos"
+    },
+    "mobile": {
+      "contact": "Contáctenos",
+      "whatsapp": "WhatsApp"
+    }
   },
   "rubberProcessOil": {
     "title": "Aceite para proceso de caucho",
-    "hero": { "title": "Aceite para proceso de caucho", "subtitle": "Soluciones superiores para procesamiento de caucho" },
-    "overview": { "title": "Descripción del producto", "description": "Proporcionamos aceites para proceso de caucho de productores chinos de confianza." },
-    "cta": { "title": "¿Necesita especificaciones técnicas?", "button": "Solicitar datos técnicos" }
+    "hero": {
+      "tag": "Aceite para proceso de caucho premium",
+      "title": "Serie SpecFlex™",
+      "subtitle": "Diseñado para un procesamiento de caucho superior y rendimiento del producto final"
+    },
+    "tabs": {
+      "overview": "Descripción general",
+      "specifications": "Especificaciones",
+      "applications": "Aplicaciones",
+      "benefits": "Beneficios",
+      "packaging": "Embalaje"
+    },
+    "overview": {
+      "title": "Soluciones superiores para procesamiento de caucho",
+      "description1": "Los aceites SpecFlex™ para proceso de caucho son aceites nafténicos premium diseñados específicamente para mejorar el procesamiento y rendimiento de los compuestos de caucho.",
+      "description2": "Proporcionamos aceites para proceso de caucho de productores chinos de confianza, con alta solvencia (Cn% > 35%) y excelente compatibilidad con varios tipos de caucho. Nuestras soluciones integrales apoyan la adquisición sin problemas para aplicaciones industriales especializadas.",
+      "keyFeatures": "Características de rendimiento clave",
+      "feature1": {
+        "title": "Alta solvencia",
+        "description": "Cn% > 35% para excelente penetración del caucho"
+      },
+      "feature2": {
+        "title": "Cumplimiento REACH de la UE",
+        "description": "Bajo contenido de PAHs para cumplimiento normativo"
+      },
+      "feature3": {
+        "title": "Bajo punto de fluidez",
+        "description": "Excelente rendimiento a bajas temperaturas"
+      },
+      "feature4": {
+        "title": "Estabilidad a la oxidación",
+        "description": "Resiste la degradación durante el procesamiento"
+      },
+      "requestQuote": "Solicitar cotización",
+      "downloadDatasheet": "Descargar ficha técnica"
+    },
+    "specifications": {
+      "title": "Especificaciones del producto",
+      "description": "Los aceites SpecFlex™ para proceso de caucho están disponibles en tres grados cuidadosamente formulados para cumplir con los requisitos específicos de diferentes aplicaciones de caucho, desde suelas de zapatos hasta neumáticos de alto rendimiento.",
+      "table": {
+        "grade": "Grado del producto",
+        "application": "Aplicación recomendada",
+        "solvency": "Solvencia (Cn%)",
+        "viscosity": "Viscosidad (40°C)"
+      },
+      "grades": {
+        "4006": {
+          "name": "SpecFlex 4006",
+          "application": "EPDM y suelas de zapatos",
+          "solvency": "Cn% > 35%",
+          "viscosity": "60-70 cSt"
+        },
+        "4010": {
+          "name": "SpecFlex 4010",
+          "application": "Neumáticos de alto rendimiento",
+          "solvency": "Cn% > 35%",
+          "viscosity": "90-110 cSt"
+        },
+        "4016": {
+          "name": "SpecFlex 4016",
+          "application": "Bandas transportadoras",
+          "solvency": "Cn% > 35%",
+          "viscosity": "150-170 cSt"
+        }
+      },
+      "technical": {
+        "title": "Especificaciones técnicas",
+        "baseOilType": "Tipo de aceite base:",
+        "baseOilValue": "Nafténico",
+        "flashPoint": "Punto de inflamación (COC):",
+        "flashPointValue": "> 200°C",
+        "pourPoint": "Punto de fluidez:",
+        "pourPointValue": "< -15°C",
+        "anilinePoint": "Punto de anilina:",
+        "anilinePointValue": "< 80°C",
+        "sulfurContent": "Contenido de azufre:",
+        "sulfurContentValue": "< 0.5%",
+        "color": "Color (Saybolt):",
+        "colorValue": "+20 a +30",
+        "density": "Densidad (15°C):",
+        "densityValue": "0.91-0.95 g/cm³"
+      },
+      "regulatory": {
+        "title": "Cumplimiento normativo",
+        "items": [
+          "Reglamento REACH de la UE (EC 1907/2006)",
+          "Bajo contenido de PAH (Hidrocarburos Aromáticos Policíclicos)",
+          "Cumplimiento RoHS",
+          "FDA 21 CFR 178.3620(a) para contacto indirecto con alimentos",
+          "No cancerígeno (según directrices IARC)",
+          "Sistema de Gestión de Calidad ISO 9001",
+          "Sistema de Gestión Ambiental ISO 14001"
+        ]
+      }
+    },
+    "applications": {
+      "title": "Aplicaciones",
+      "description": "Los aceites SpecFlex™ para proceso de caucho están diseñados para uso en una amplia gama de productos y aplicaciones de caucho, proporcionando excelentes propiedades de procesamiento y mejorando el rendimiento del producto final.",
+      "categories": {
+        "shoeSoles": {
+          "name": "Suelas de zapatos y calzado",
+          "description": "SpecFlex 4006 proporciona excelente flexibilidad y durabilidad para suelas de zapatos y otros componentes de calzado.",
+          "grade": "Grado recomendado: SpecFlex 4006"
+        },
+        "tires": {
+          "name": "Neumáticos y automotriz",
+          "description": "SpecFlex 4010 ofrece rendimiento superior para neumáticos de alto rendimiento, proporcionando excelente agarre y resistencia al desgaste.",
+          "grade": "Grado recomendado: SpecFlex 4010"
+        },
+        "industrialBelts": {
+          "name": "Bandas industriales",
+          "description": "SpecFlex 4016 es ideal para bandas transportadoras y productos de caucho industrial que requieren alta durabilidad y resistencia.",
+          "grade": "Grado recomendado: SpecFlex 4016"
+        }
+      },
+      "otherApplications": {
+        "title": "Otras aplicaciones",
+        "items": {
+          "sealsGaskets": {
+            "name": "Sellos y juntas",
+            "description": "Proporciona excelente flexibilidad y resistencia a factores ambientales"
+          },
+          "cableInsulation": {
+            "name": "Aislamiento de cables y alambres",
+            "description": "Mejora las propiedades eléctricas y flexibilidad del aislamiento de caucho"
+          },
+          "automotiveComponents": {
+            "name": "Componentes automotrices",
+            "description": "Ideal para burletes, mangueras y otras piezas de caucho automotriz"
+          },
+          "buildingConstruction": {
+            "name": "Construcción y edificación",
+            "description": "Adecuado para juntas, membranas para techos y materiales impermeabilizantes"
+          }
+        }
+      }
+    },
+    "benefits": {
+      "title": "Beneficios de rendimiento",
+      "description": "Los aceites SpecFlex™ para proceso de caucho proporcionan numerosas ventajas en el procesamiento de caucho y rendimiento del producto final, ayudando a los fabricantes a lograr mejor calidad y eficiencia.",
+      "items": {
+        "superiorProcessing": {
+          "title": "Procesamiento superior",
+          "description": "Mejora las propiedades de flujo del caucho y el llenado de moldes durante el procesamiento."
+        },
+        "environmentallyFriendly": {
+          "title": "Respetuoso con el medio ambiente",
+          "description": "Bajo contenido de PAH cumple con los requisitos REACH de la UE."
+        },
+        "costEffective": {
+          "title": "Rentable",
+          "description": "Formulaciones optimizadas reducen costos de producción."
+        },
+        "consistentQuality": {
+          "title": "Calidad consistente",
+          "description": "Consistencia de lote a lote para producción confiable."
+        }
+      },
+      "processingAdvantages": {
+        "title": "Ventajas de procesamiento",
+        "items": [
+          "Mejor dispersión de cargas y aditivos",
+          "Menor consumo de energía durante la mezcla",
+          "Menores temperaturas de procesamiento y tiempos de ciclo",
+          "Mejor flujo en molde y llenado de cavidades",
+          "Menores tasas de rechazo y desperdicio de producción"
+        ]
+      },
+      "endProductImprovements": {
+        "title": "Mejoras del producto final",
+        "items": [
+          "Mayor flexibilidad y propiedades a baja temperatura",
+          "Mejor resistencia a la tracción y elongación",
+          "Superior resistencia al envejecimiento y factores ambientales",
+          "Calidad y rendimiento consistente de lote a lote",
+          "Cumplimiento con estándares normativos internacionales"
+        ]
+      },
+      "cta": "Contactar a nuestro equipo técnico"
+    },
+    "packaging": {
+      "title": "Embalaje y entrega",
+      "description": "Los aceites SpecFlex™ para proceso de caucho están disponibles en una variedad de opciones de embalaje para satisfacer sus requisitos específicos de producción, desde lotes pequeños hasta necesidades de fabricación a gran escala.",
+      "options": {
+        "buckets": {
+          "18l": {
+            "name": "Cubo de plástico 18L",
+            "description": "Perfecto para producción en lotes pequeños y pruebas",
+            "capacity": "18L / 5 Gal"
+          }
+        },
+        "drums": {
+          "200l": {
+            "name": "Tambor de acero 200L",
+            "description": "Ideal para operaciones de fabricación medianas",
+            "capacity": "200L / 55 Gal"
+          }
+        },
+        "ibc": {
+          "1000l": {
+            "name": "Tanque IBC 1000L",
+            "description": "Para instalaciones de producción a gran escala",
+            "capacity": "1000L / 275 Gal"
+          }
+        }
+      },
+      "bulkDelivery": {
+        "title": "Opciones de entrega a granel",
+        "description": "Para requisitos de gran volumen, ofrecemos eficientes opciones de entrega a granel:",
+        "options": {
+          "tankerTrucks": {
+            "name": "Camiones cisterna",
+            "description": "Transporte terrestre a granel para entregas dentro de 500km de nuestras instalaciones"
+          },
+          "isoTanks": {
+            "name": "Contenedores de tanque ISO",
+            "description": "Tanques de acero inoxidable de 26,000L para envío internacional"
+          }
+        },
+        "cta": "Conozca más sobre nuestra logística"
+      }
+    },
+    "relatedProducts": {
+      "title": "Productos relacionados",
+      "transformerOil": {
+        "series": "Serie SpecVolt™",
+        "name": "Aceite para transformadores",
+        "description": "Aceites nafténicos premium para aplicaciones de alta tensión."
+      },
+      "hydraulicOil": {
+        "series": "Serie SpecLube™",
+        "name": "Aceite hidráulico",
+        "description": "Aceites hidráulicos de alto rendimiento para equipos industriales."
+      },
+      "viewProduct": "Ver producto"
+    },
+    "mobileFooter": {
+      "contactUs": "Contáctenos",
+      "whatsapp": "WhatsApp"
+    }
   },
   "finishedLubricants": {
     "title": "Lubricantes terminados",
-    "hero": { "title": "Lubricantes terminados", "subtitle": "Soluciones avanzadas de lubricación industrial" },
-    "overview": { "title": "Descripción del producto", "description": "Ofrecemos lubricantes terminados de fabricantes chinos profesionales." },
-    "cta": { "title": "¿Necesita especificaciones técnicas?", "button": "Solicitar datos técnicos" }
+    "hero": {
+      "tag": "Lubricantes terminados premium",
+      "title": "Serie SpecLube™",
+      "subtitle": "Diseñados para condiciones extremas y máximo rendimiento"
+    },
+    "tabs": {
+      "overview": "Descripción general",
+      "productLineup": "Línea de productos",
+      "hydraulicOils": "Aceites hidráulicos",
+      "packaging": "Embalaje"
+    },
+    "overview": {
+      "title": "Soluciones avanzadas de lubricación industrial",
+      "description1": "Los lubricantes terminados SpecLube™ son lubricantes formulados premium diseñados para proporcionar protección y rendimiento excepcionales en las aplicaciones industriales más exigentes.",
+      "description2": "Ofrecemos lubricantes terminados de fabricantes chinos especializados, formulados con tecnología de aditivos avanzada, proporcionando rendimiento superior, vida útil extendida del equipo y menores costos de mantenimiento.",
+      "keyFeatures": "Características de rendimiento clave",
+      "feature1": {
+        "title": "Protección contra el desgaste superior",
+        "description": "Extiende la vida del equipo en aplicaciones de alta carga"
+      },
+      "feature2": {
+        "title": "Amplio rango de temperatura",
+        "description": "Rendimiento excelente desde climas árticos hasta ambientes extremadamente calurosos"
+      },
+      "feature3": {
+        "title": "Resistencia al agua",
+        "description": "Mantiene el rendimiento en ambientes húmedos"
+      },
+      "feature4": {
+        "title": "Estabilidad a la oxidación",
+        "description": "Vida útil extendida y reducción de depósitos"
+      },
+      "requestQuote": "Solicitar cotización",
+      "downloadGuide": "Descargar guía de productos"
+    },
+    "productLineup": {
+      "title": "Nuestra línea de productos",
+      "description": "SpecLube™ ofrece una línea completa de lubricantes de alto rendimiento diseñados para cumplir con las necesidades específicas de diversas aplicaciones industriales. Cada producto está formulado con nuestros aceites base nafténicos premium y aditivos avanzados.",
+      "categories": {
+        "hydraulic": {
+          "name": "Aceites hidráulicos",
+          "description": "Aceites hidráulicos de alto rendimiento diseñados para aplicaciones de presión extrema y amplios rangos de temperatura.",
+          "grades": ["L-HM (Alta presión)", "L-HV (Baja temperatura)", "L-HS (Sintético)"],
+          "standard": "Cumple con DIN 51524"
+        },
+        "gear": {
+          "name": "Aceites para engranajes",
+          "description": "Aceites premium para engranajes diseñados para proteger sistemas de engranajes industriales contra desgaste, escoriación y picadura.",
+          "grades": ["L-CKD (Carga pesada)", "L-CKE/P (Extrema presión)", "Aceite sintético para engranajes"],
+          "standard": "Cumple con DIN 51517"
+        },
+        "fleet": {
+          "name": "Flota comercial",
+          "description": "Aceites de motor de alto rendimiento diseñados para vehículos comerciales y aplicaciones pesadas.",
+          "grades": ["Aceite para motores diésel (CJ-4/CH-4)", "Aceite para motores gasolina (API SN)", "Aceites de motor multigrado"],
+          "standard": "Cumple con especificaciones API"
+        },
+        "specialty": {
+          "name": "Lubricantes especiales",
+          "description": "Lubricantes especializados para aplicaciones industriales únicas con requisitos de rendimiento específicos.",
+          "grades": ["Aceite para turbinas (L-TSA)", "Aceite térmico (L-QD)", "Aceite para compresores", "Lubricantes grado alimenticio"],
+          "standard": "Varios estándares de la industria"
+        }
+      },
+      "availableGrades": "Grados disponibles:",
+      "contactTeam": "Contacte a nuestro equipo técnico para selección de productos"
+    },
+    "hydraulicOils": {
+      "title": "Aceites hidráulicos de alto rendimiento",
+      "description": "Nuestros aceites hidráulicos están especialmente formulados para proporcionar protección y rendimiento excepcionales para sistemas hidráulicos modernos de alta presión que operan en condiciones severas.",
+      "products": {
+        "lhm": {
+          "name": "SpecLube L-HM (Alta presión)",
+          "description": "Aceite hidráulico anti-desgaste avanzado, diseñado para sistemas de alta presión que operan en condiciones normales a altas temperaturas. Cumple con la especificación DIN 51524 Parte 2."
+        },
+        "lhv": {
+          "name": "SpecLube L-HV (Baja temperatura)",
+          "description": "Aceite hidráulico premium con excelente fluidez a baja temperatura, adecuado para sistemas que operan en climas fríos. Proporciona protección excelente a temperaturas tan bajas como -40°C."
+        },
+        "lhs": {
+          "name": "SpecLube L-HS (Sintético)",
+          "description": "Aceite hidráulico totalmente sintético para aplicaciones extremas que requieren máxima protección contra desgaste, oxidación y degradación térmica."
+        }
+      },
+      "benefits": {
+        "title": "Beneficios clave",
+        "items": [
+          "Vida útil extendida de bombas y componentes",
+          "Mayor eficiencia del sistema y ahorro de energía",
+          "Reducción de costos de mantenimiento y tiempo de inactividad",
+          "Excelente filtrabilidad y limpieza del sistema",
+          "Compatibilidad con materiales de sellado"
+        ]
+      },
+      "specifications": {
+        "title": "Especificaciones técnicas",
+        "property": "Propiedad",
+        "lhm32": "L-HM 32",
+        "lhm46": "L-HM 46",
+        "lhv46": "L-HV 46",
+        "viscosity40": "Viscosidad@40°C (cSt)",
+        "viscosityIndex": "Índice de viscosidad",
+        "pourPoint": "Punto de fluidez (°C)",
+        "flashPoint": "Punto de inflamación (°C)",
+        "antiWear": "Rendimiento anti-desgaste (cuatro bolas, mm)"
+      },
+      "applications": {
+        "title": "Aplicaciones recomendadas",
+        "industrial": {
+          "name": "Hidráulica industrial",
+          "description": "Máquinas de inyección, prensas, máquinas herramienta y otros equipos industriales"
+        },
+        "mobile": {
+          "name": "Equipos móviles",
+          "description": "Maquinaria de construcción, equipos agrícolas y sistemas de manejo de materiales"
+        },
+        "marine": {
+          "name": "Aplicaciones marinas",
+          "description": "Sistemas hidráulicos en barcos y plataformas marinas"
+        },
+        "coldClimate": {
+          "name": "Operación en climas fríos",
+          "description": "Sistemas de refrigeración y equipos al exterior en regiones frías"
+        }
+      },
+      "requestConsultation": "Solicitar consulta de producto"
+    },
+    "packaging": {
+      "title": "Embalaje y entrega",
+      "description": "Los lubricantes terminados SpecLube™ están disponibles en opciones completas de embalaje para satisfacer las necesidades específicas de sus operaciones, desde aplicaciones de mantenimiento pequeñas hasta usos industriales a gran escala.",
+      "options": {
+        "drum200l": {
+          "name": "Tambor de acero 200L",
+          "description": "Tambores de acero pesados para aplicaciones industriales, sellado seguro y confiable"
+        },
+        "ibc1000l": {
+          "name": "Tanque IBC 1000L",
+          "description": "Contenedor intermedio a granel para almacenamiento y manejo eficientes"
+        },
+        "bucket18l": {
+          "name": "Cubo de plástico 18L",
+          "description": "Cubos de plástico convenientes para aplicaciones pequeñas y mantenimiento"
+        }
+      },
+      "bulkDelivery": {
+        "title": "Opciones de entrega a granel",
+        "description": "Para requisitos de gran volumen, ofrecemos eficientes opciones de entrega a granel para minimizar residuos de embalaje y reducir costos:",
+        "tankerTrucks": {
+          "name": "Camiones cisterna",
+          "description": "Transporte terrestre a granel para entregas dentro de 500km de nuestras instalaciones"
+        },
+        "isoTanks": {
+          "name": "Contenedores de tanque ISO",
+          "description": "Tanques de acero inoxidable de 26,000L para envío internacional"
+        }
+      },
+      "learnMoreLogistics": "Conozca más sobre nuestra logística"
+    },
+    "relatedProducts": {
+      "title": "Productos relacionados",
+      "transformerOil": {
+        "series": "Serie SpecVolt™",
+        "name": "Aceite para transformadores",
+        "description": "Aceites nafténicos premium para aplicaciones de alta tensión."
+      },
+      "rubberProcessOil": {
+        "series": "Serie SpecFlex™",
+        "name": "Aceite para proceso de caucho",
+        "description": "Aceites nafténicos de alta solvencia para compuestos de caucho y fabricación de neumáticos."
+      },
+      "viewProduct": "Ver producto"
+    },
+    "mobileFooter": {
+      "contactUs": "Contáctenos",
+      "whatsapp": "WhatsApp"
+    }
   },
   "quality": {
     "title": "Aseguramiento de calidad",

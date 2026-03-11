@@ -620,46 +620,58 @@
         "density": "Density (15°C):",
         "densityValue": "0.91-0.95 g/cm³"
       },
-      "compliance": {
+      "regulatory": {
         "title": "Regulatory Compliance",
-        "items": ["EU REACH Regulation (EC 1907/2006)", "Low PAHs (Polycyclic Aromatic Hydrocarbons)", "RoHS Compliant", "FDA 21 CFR 178.3620(a) for indirect food contact", "Non-carcinogenic (as per IARC guidelines)", "ISO 9001 Quality Management System", "ISO 14001 Environmental Management System"]
+        "items": [
+          "EU REACH Regulation (EC 1907/2006)",
+          "Low PAHs (Polycyclic Aromatic Hydrocarbons)",
+          "RoHS Compliant",
+          "FDA 21 CFR 178.3620(a) for indirect food contact",
+          "Non-carcinogenic (as per IARC guidelines)",
+          "ISO 9001 Quality Management System",
+          "ISO 14001 Environmental Management System"
+        ]
       }
     },
     "applications": {
       "title": "Applications",
       "description": "SpecFlex™ Rubber Process Oils are designed for use in a wide range of rubber products and applications, providing excellent processing properties and enhancing end-product performance.",
-      "shoeSoles": {
-        "title": "Shoe Soles & Footwear",
-        "description": "SpecFlex 4006 provides excellent flexibility and durability for shoe soles and other footwear components.",
-        "recommended": "Recommended Grade: SpecFlex 4006"
-      },
-      "tires": {
-        "title": "Tires & Automotive",
-        "description": "SpecFlex 4010 offers superior performance for high-performance tires, providing excellent grip and wear resistance.",
-        "recommended": "Recommended Grade: SpecFlex 4010"
-      },
-      "industrialBelts": {
-        "title": "Industrial Belts",
-        "description": "SpecFlex 4016 is ideal for conveyor belts and industrial rubber products requiring high durability and strength.",
-        "recommended": "Recommended Grade: SpecFlex 4016"
-      },
-      "otherTitle": "Other Applications",
-      "otherApps": {
-        "seals": {
-          "title": "Seals & Gaskets",
-          "description": "Provides excellent flexibility and resistance to environmental factors"
+      "categories": {
+        "shoeSoles": {
+          "name": "Shoe Soles & Footwear",
+          "description": "SpecFlex 4006 provides excellent flexibility and durability for shoe soles and other footwear components.",
+          "grade": "Recommended Grade: SpecFlex 4006"
         },
-        "cable": {
-          "title": "Cable & Wire Insulation",
-          "description": "Enhances electrical properties and flexibility of rubber insulation"
+        "tires": {
+          "name": "Tires & Automotive",
+          "description": "SpecFlex 4010 offers superior performance for high-performance tires, providing excellent grip and wear resistance.",
+          "grade": "Recommended Grade: SpecFlex 4010"
         },
-        "automotive": {
-          "title": "Automotive Components",
-          "description": "Ideal for weather strips, hoses, and other automotive rubber parts"
-        },
-        "construction": {
-          "title": "Building & Construction",
-          "description": "Suitable for gaskets, roofing membranes, and waterproofing materials"
+        "industrialBelts": {
+          "name": "Industrial Belts",
+          "description": "SpecFlex 4016 is ideal for conveyor belts and industrial rubber products requiring high durability and strength.",
+          "grade": "Recommended Grade: SpecFlex 4016"
+        }
+      },
+      "otherApplications": {
+        "title": "Other Applications",
+        "items": {
+          "sealsGaskets": {
+            "name": "Seals & Gaskets",
+            "description": "Provides excellent flexibility and resistance to environmental factors"
+          },
+          "cableInsulation": {
+            "name": "Cable & Wire Insulation",
+            "description": "Enhances electrical properties and flexibility of rubber insulation"
+          },
+          "automotiveComponents": {
+            "name": "Automotive Components",
+            "description": "Ideal for weather strips, hoses, and other automotive rubber parts"
+          },
+          "buildingConstruction": {
+            "name": "Building & Construction",
+            "description": "Suitable for gaskets, roofing membranes, and waterproofing materials"
+          }
         }
       }
     },
@@ -667,62 +679,103 @@
       "title": "Performance Benefits",
       "description": "SpecFlex™ Rubber Process Oils provide numerous advantages in rubber processing and end-product performance, helping manufacturers achieve better quality and efficiency.",
       "items": {
-        "processing": {
-          "title": "Enhanced Processing",
+        "superiorProcessing": {
+          "title": "Superior Processing",
           "description": "Improves rubber flow properties and mold filling during processing."
         },
-        "compatibility": {
-          "title": "Excellent Compatibility",
-          "description": "Compatible with natural rubber and various synthetic rubber types."
+        "environmentallyFriendly": {
+          "title": "Environmentally Friendly",
+          "description": "Low PAH content meets EU REACH requirements."
         },
-        "flexibility": {
-          "title": "Improved Flexibility",
-          "description": "Enhances the flexibility and low-temperature properties of rubber products."
+        "costEffective": {
+          "title": "Cost Effective",
+          "description": "Optimized formulations reduce production costs."
         },
-        "color": {
-          "title": "Color Stability",
-          "description": "Minimal impact on the color of finished rubber products."
+        "consistentQuality": {
+          "title": "Consistent Quality",
+          "description": "Batch-to-batch consistency for reliable production."
         }
       },
       "processingAdvantages": {
         "title": "Processing Advantages",
-        "items": ["Improved dispersion of fillers and additives", "Reduced energy consumption during mixing", "Lower processing temperatures and cycle times", "Enhanced mold flow and cavity filling", "Reduced scrap rates and production waste"]
+        "items": [
+          "Improved dispersion of fillers and additives",
+          "Reduced energy consumption during mixing",
+          "Lower processing temperatures and cycle times",
+          "Enhanced mold flow and cavity filling",
+          "Reduced scrap rates and production waste"
+        ]
       },
-      "endProduct": {
+      "endProductImprovements": {
         "title": "End-Product Improvements",
-        "items": ["Enhanced flexibility and low-temperature properties", "Improved tensile strength and elongation", "Superior resistance to aging and environmental factors", "Consistent quality and performance batch-to-batch", "Compliance with international regulatory standards"],
-        "contactButton": "Contact Our Technical Team"
-      }
+        "items": [
+          "Enhanced flexibility and low-temperature properties",
+          "Improved tensile strength and elongation",
+          "Superior resistance to aging and environmental factors",
+          "Consistent quality and performance batch-to-batch",
+          "Compliance with international regulatory standards"
+        ]
+      },
+      "cta": "Contact Our Technical Team"
     },
     "packaging": {
       "title": "Packaging & Delivery",
       "description": "SpecFlex™ Rubber Process Oils are available in a variety of packaging options to meet your specific production requirements, from small batches to large-scale manufacturing needs.",
       "options": {
-        "bucket18L": {
-          "title": "18L Plastic Bucket",
-          "description": "Perfect for small-batch production and testing",
-          "capacity": "18L / 5 Gal"
+        "buckets": {
+          "18l": {
+            "name": "18L Plastic Bucket",
+            "description": "Perfect for small-batch production and testing",
+            "capacity": "18L / 5 Gal"
+          }
         },
-        "drum200L": {
-          "title": "200L Steel Drum",
-          "description": "Ideal for medium-sized manufacturing operations",
-          "capacity": "200L / 55 Gal"
+        "drums": {
+          "200l": {
+            "name": "200L Steel Drum",
+            "description": "Ideal for medium-sized manufacturing operations",
+            "capacity": "200L / 55 Gal"
+          }
         },
-        "ibc1000L": {
-          "title": "1000L IBC Tank",
-          "description": "For large-scale production facilities",
-          "capacity": "1000L / 275 Gal"
+        "ibc": {
+          "1000l": {
+            "name": "1000L IBC Tank",
+            "description": "For large-scale production facilities",
+            "capacity": "1000L / 275 Gal"
+          }
         }
       },
-      "learnMoreLogistics": "Learn More About Our Logistics"
+      "bulkDelivery": {
+        "title": "Bulk Delivery Options",
+        "description": "For large volume requirements, we offer efficient bulk delivery options:",
+        "options": {
+          "tankerTrucks": {
+            "name": "Tanker Trucks",
+            "description": "Bulk road transport for deliveries within 500km of our facilities"
+          },
+          "isoTanks": {
+            "name": "ISO Tank Containers",
+            "description": "26,000L stainless steel tanks for international shipping"
+          }
+        },
+        "cta": "Learn More About Our Logistics"
+      }
     },
-    "cta": {
-      "title": "Need Technical Specifications?",
-      "description": "Contact our team for detailed product information",
-      "button": "Request Technical Data"
+    "relatedProducts": {
+      "title": "Related Products",
+      "transformerOil": {
+        "series": "SpecVolt™ Series",
+        "name": "Transformer Oil",
+        "description": "Premium naphthenic transformer oils for high-voltage applications."
+      },
+      "hydraulicOil": {
+        "series": "SpecLube™ Series",
+        "name": "Hydraulic Oil",
+        "description": "High-performance hydraulic oils for industrial equipment."
+      },
+      "viewProduct": "View Product"
     },
-    "mobile": {
-      "contact": "Contact Us",
+    "mobileFooter": {
+      "contactUs": "Contact Us",
       "whatsapp": "WhatsApp"
     }
   },

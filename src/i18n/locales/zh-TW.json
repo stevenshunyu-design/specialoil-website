@@ -364,127 +364,653 @@
     "title": "變壓器油",
     "subtitle": "高性能絕緣油",
     "hero": {
-      "title": "優質變壓器油",
-      "subtitle": "用於電氣設備的高性能絕緣油"
+      "tag": "優質變壓器油",
+      "title": "SpecVolt™系列",
+      "subtitle": "專為最苛刻的高壓應用而設計"
+    },
+    "tabs": {
+      "overview": "概述",
+      "specifications": "技術規格",
+      "applications": "應用領域",
+      "benefits": "性能優勢",
+      "packaging": "包裝"
     },
     "overview": {
-      "title": "產品概述",
-      "description": "我們提供來自中國領先製造商的變壓器油，具有優異的電氣絕緣性能、熱穩定性和抗氧化性，適用於現代電力系統。"
-    },
-    "features": {
-      "title": "關鍵性能特點",
+      "title": "卓越的變壓器保護",
+      "description1": "SpecVolt™變壓器油是優質環烷基潤滑油，專為高壓變壓器和電氣設備提供卓越的絕緣、冷卻和保護而設計。",
+      "description2": "我們採購來自中國領先製造商的變壓器油，提供天然低硫含量和優異介電性能的產品。我們的供應鏈服務確保苛刻應用的一致品質和可靠性能。",
+      "keyFeatures": "關鍵性能特點",
       "feature1": {
-        "title": "優異絕緣",
-        "description": "高介電強度，確保可靠的電氣絕緣"
+        "title": "零腐蝕性硫",
+        "description": "防止變壓器銅腐蝕"
       },
       "feature2": {
-        "title": "熱穩定性",
-        "description": "優異的散熱和熱性能"
+        "title": "北極可靠性",
+        "description": "性能可低至-45°C"
       },
       "feature3": {
-        "title": "抗氧化性",
-        "description": "使用壽命長，降解極小"
+        "title": "低水分含量",
+        "description": "增強介電強度"
       },
       "feature4": {
-        "title": "低溫流動性",
-        "description": "優異的寒冷氣候性能"
+        "title": "熱穩定性",
+        "description": "高溫下抗氧化"
+      },
+      "requestQuote": "獲取報價",
+      "downloadDatasheet": "下載數據表"
+    },
+    "specifications": {
+      "title": "產品規格",
+      "description": "SpecVolt™變壓器油提供三種優質牌號，每種都設計用於滿足特定的應用要求和操作條件。所有牌號均達到或超過變壓器油的國際標準。",
+      "table": {
+        "grade": "產品牌號",
+        "viscosity": "粘度 (40°C)",
+        "pourPoint": "傾點",
+        "dielectricStrength": "介電強度"
+      },
+      "grades": {
+        "i20x": {
+          "name": "SpecVolt I-20X",
+          "viscosity": "10-12 cSt",
+          "pourPoint": "-22°C",
+          "dielectric": ">70kV"
+        },
+        "i30x": {
+          "name": "SpecVolt I-30X",
+          "viscosity": "9-11 cSt",
+          "pourPoint": "-30°C",
+          "dielectric": ">70kV"
+        },
+        "i40x": {
+          "name": "SpecVolt I-40X",
+          "viscosity": "<12 cSt",
+          "pourPoint": "-45°C",
+          "dielectric": ">70kV"
+        }
+      },
+      "technical": {
+        "title": "技術規格",
+        "baseOilType": "基礎油類型：",
+        "baseOilValue": "環烷基",
+        "flashPoint": "閃點 (COC)：",
+        "flashPointValue": "> 140°C",
+        "firePoint": "燃點 (COC)：",
+        "firePointValue": "> 160°C",
+        "acidity": "酸值 (TAN)：",
+        "acidityValue": "< 0.03 mg KOH/g",
+        "interfacialTension": "界面張力：",
+        "interfacialTensionValue": "> 35 mN/m",
+        "resistivity": "電阻率 (90°C)：",
+        "resistivityValue": "> 10^12 Ω·m",
+        "oxidationStability": "氧化穩定性：",
+        "oxidationStabilityValue": "優異"
+      },
+      "compliance": {
+        "title": "合規標準",
+        "items": ["ASTM D3487", "IEC 60296", "BS 148", "GB 2536", "TOST合規", "無PCB", "RoHS合規"]
       }
     },
     "applications": {
       "title": "應用領域",
-      "item1": "電力變壓器",
-      "item2": "配電變壓器",
-      "item3": "儀表變壓器",
-      "item4": "斷路器"
+      "description": "SpecVolt™變壓器油專為各種電氣設備而設計，這些設備對優異的絕緣性能、傳熱能力和抗氧化性有嚴格要求。",
+      "items": {
+        "highVoltage": {
+          "title": "高壓變壓器",
+          "description": "適合在極端條件下運行的發電和輸電變壓器。"
+        },
+        "distribution": {
+          "title": "配電變壓器",
+          "description": "為中低壓配電網絡提供優異保護。"
+        },
+        "instrument": {
+          "title": "儀表變壓器",
+          "description": "確保計量系統中電流和電壓互感器的可靠性能。"
+        },
+        "switchgear": {
+          "title": "開關設備",
+          "description": "為斷路器和開關設備提供卓越的絕緣和冷卻性能。"
+        }
+      },
+      "recommendedTitle": "按牌號推薦應用",
+      "recommendedTable": {
+        "grade": "產品牌號",
+        "bestApplications": "最佳應用",
+        "operatingEnvironment": "運行環境",
+        "i20x": {
+          "applications": "配電變壓器、中壓設備",
+          "environment": "溫帶氣候、標準應用"
+        },
+        "i30x": {
+          "applications": "電力變壓器、工業應用",
+          "environment": "寒冷氣候、戶外安裝"
+        },
+        "i40x": {
+          "applications": "高壓變壓器、關鍵應用",
+          "environment": "極寒氣候、北極地區"
+        }
+      }
+    },
+    "benefits": {
+      "title": "性能優勢",
+      "description": "SpecVolt™變壓器油相比傳統變壓器油具有諸多優勢，有助於延長設備壽命、提高可靠性並降低維護成本。",
+      "performance": {
+        "dielectric": {
+          "title": "增強介電強度",
+          "description": "卓越的絕緣性能，在高電壓應力下保持系統完整性。"
+        },
+        "serviceLife": {
+          "title": "延長使用壽命",
+          "description": "優異的抗氧化性延長油品壽命並減少維護頻率。"
+        },
+        "heatTransfer": {
+          "title": "卓越傳熱",
+          "description": "優化的熱性能提高冷卻效率並減少熱點。"
+        },
+        "protection": {
+          "title": "設備保護",
+          "description": "零腐蝕性硫配方防止銅腐蝕和污泥形成。"
+        }
+      },
+      "economic": {
+        "title": "經濟效益",
+        "items": [
+          "由於延長油品壽命而降低維護成本",
+          "通過更好的保護降低設備更換成本",
+          "最大限度減少停機時間並提高系統可靠性",
+          "通過優化冷卻提高能源效率",
+          "相比傳統油品的長期成本節約"
+        ]
+      },
+      "environmental": {
+        "title": "環境效益",
+        "items": [
+          "天然低硫含量減少環境影響",
+          "延長油品壽命減少廢油產生和處理需求",
+          "符合國際環境法規",
+          "可回收產品支持循環經濟原則"
+        ],
+        "contactButton": "聯繫我們的技術團隊"
+      }
+    },
+    "packaging": {
+      "title": "包裝與交付",
+      "description": "SpecVolt™變壓器油提供多種包裝選擇，以滿足您的具體需求，從用於維護的小容器到用於大型安裝的散裝交付。",
+      "options": {
+        "bucket18L": {
+          "title": "18L塑膠桶",
+          "description": "適合小型維護工作和補油",
+          "capacity": "18L / 5加侖"
+        },
+        "drum200L": {
+          "title": "200L鋼桶",
+          "description": "適合中型安裝和專案",
+          "capacity": "200L / 55加侖"
+        },
+        "ibc1000L": {
+          "title": "1000L IBC噸桶",
+          "description": "用於大型工業應用和專案",
+          "capacity": "1000L / 275加侖"
+        }
+      },
+      "bulkTitle": "散裝交付選項",
+      "bulkDescription": "對於大批量需求，我們提供散裝交付選項以最大限度減少包裝浪費並降低成本：",
+      "bulkOptions": {
+        "tanker": {
+          "title": "罐車",
+          "description": "距離我們工廠500公里範圍內的散裝公路運輸"
+        },
+        "isoTank": {
+          "title": "ISO罐式集裝箱",
+          "description": "用於國際運輸的26,000L不銹鋼罐"
+        }
+      },
+      "learnMoreLogistics": "了解更多關於我們的物流"
+    },
+    "relatedProducts": {
+      "title": "相關產品",
+      "rubberOil": {
+        "series": "SpecFlex™系列",
+        "title": "橡膠加工油",
+        "description": "用於橡膠混煉和輪胎製造的高溶解力環烷基油。",
+        "viewProduct": "查看產品"
+      },
+      "hydraulicOil": {
+        "series": "SpecLube™系列",
+        "title": "液壓油",
+        "description": "用於工業和移動設備的高性能液壓油。",
+        "viewProduct": "查看產品"
+      }
     },
     "cta": {
       "title": "需要技術規格？",
       "description": "聯繫我們的團隊獲取詳細產品資訊和報價",
       "button": "索取技術資料"
+    },
+    "mobile": {
+      "contact": "聯繫我們",
+      "whatsapp": "WhatsApp"
     }
   },
   "rubberProcessOil": {
     "title": "橡膠加工油",
     "hero": {
-      "title": "橡膠加工油",
-      "subtitle": "卓越的橡膠加工解決方案"
+      "tag": "優質橡膠加工油",
+      "title": "SpecFlex™系列",
+      "subtitle": "專為卓越的橡膠加工和終端產品性能而設計"
+    },
+    "tabs": {
+      "overview": "概述",
+      "specifications": "技術規格",
+      "applications": "應用領域",
+      "benefits": "性能優勢",
+      "packaging": "包裝"
     },
     "overview": {
-      "title": "產品概述",
-      "description": "我們提供來自值得信賴的中國生產商的橡膠加工油，具有高溶解力（Cn% > 35%）和與各種橡膠類型的優異相容性。我們的端到端解決方案支援專業工業應用的無縫採購。"
-    },
-    "features": {
-      "title": "關鍵性能特點",
+      "title": "卓越的橡膠加工解決方案",
+      "description1": "SpecFlex™橡膠加工油是優質環烷基油，專為增強橡膠化合物的加工和性能而設計。",
+      "description2": "我們提供來自值得信賴的中國生產商的橡膠加工油，具有高溶解力（Cn% > 35%）和與各種橡膠類型的優異相容性。我們的端到端解決方案支援專業工業應用的無縫採購。",
+      "keyFeatures": "關鍵性能特點",
       "feature1": {
         "title": "高溶解力",
-        "description": "與橡膠化合物有優異的相容性"
+        "description": "Cn% > 35%，優異的橡膠滲透性"
       },
       "feature2": {
-        "title": "熱穩定性",
-        "description": "在加工條件下性能穩定"
+        "title": "歐盟REACH合規",
+        "description": "低PAH含量，符合法規要求"
       },
       "feature3": {
-        "title": "顏色穩定性",
-        "description": "保持產品外觀和品質"
+        "title": "低傾點",
+        "description": "優異的低溫性能"
       },
       "feature4": {
-        "title": "低揮發性",
-        "description": "加工過程中排放量低"
+        "title": "氧化穩定性",
+        "description": "加工過程中抗降解"
+      },
+      "requestQuote": "獲取報價",
+      "downloadDatasheet": "下載數據表"
+    },
+    "specifications": {
+      "title": "產品規格",
+      "description": "SpecFlex™橡膠加工油提供三種精心配製的牌號，以滿足不同橡膠應用的具體要求，從鞋底到高性能輪胎。",
+      "table": {
+        "grade": "產品牌號",
+        "application": "推薦應用",
+        "solvency": "溶解力 (Cn%)",
+        "viscosity": "粘度 (40°C)"
+      },
+      "grades": {
+        "4006": {
+          "name": "SpecFlex 4006",
+          "application": "EPDM和鞋底",
+          "solvency": "Cn% > 35%",
+          "viscosity": "60-70 cSt"
+        },
+        "4010": {
+          "name": "SpecFlex 4010",
+          "application": "高性能輪胎",
+          "solvency": "Cn% > 35%",
+          "viscosity": "90-110 cSt"
+        },
+        "4016": {
+          "name": "SpecFlex 4016",
+          "application": "輸送帶",
+          "solvency": "Cn% > 35%",
+          "viscosity": "150-170 cSt"
+        }
+      },
+      "technical": {
+        "title": "技術規格",
+        "baseOilType": "基礎油類型：",
+        "baseOilValue": "環烷基",
+        "flashPoint": "閃點 (COC)：",
+        "flashPointValue": "> 200°C",
+        "pourPoint": "傾點：",
+        "pourPointValue": "< -15°C",
+        "anilinePoint": "苯胺點：",
+        "anilinePointValue": "< 80°C",
+        "sulfurContent": "硫含量：",
+        "sulfurContentValue": "< 0.5%",
+        "color": "顏色 (Saybolt)：",
+        "colorValue": "+20 至 +30",
+        "density": "密度 (15°C)：",
+        "densityValue": "0.91-0.95 g/cm³"
+      },
+      "regulatory": {
+        "title": "法規合規",
+        "items": [
+          "歐盟REACH法規 (EC 1907/2006)",
+          "低PAH（多環芳烴）",
+          "RoHS合規",
+          "FDA 21 CFR 178.3620(a)間接食品接觸",
+          "非致癌性（根據IARC指南）",
+          "ISO 9001品質管理系統",
+          "ISO 14001環境管理系統"
+        ]
       }
     },
     "applications": {
       "title": "應用領域",
-      "item1": "輪胎製造",
-      "item2": "工業橡膠製品",
-      "item3": "汽車零件",
-      "item4": "密封劑和黏合劑"
+      "description": "SpecFlex™橡膠加工油專為各種橡膠產品和應用而設計，提供優異的加工性能並增強終端產品性能。",
+      "categories": {
+        "shoeSoles": {
+          "name": "鞋底和鞋類",
+          "description": "SpecFlex 4006為鞋底和其他鞋類組件提供優異的柔韌性和耐久性。",
+          "grade": "推薦牌號：SpecFlex 4006"
+        },
+        "tires": {
+          "name": "輪胎和汽車",
+          "description": "SpecFlex 4010為高性能輪胎提供卓越性能，提供優異的抓地力和耐磨性。",
+          "grade": "推薦牌號：SpecFlex 4010"
+        },
+        "industrialBelts": {
+          "name": "工業皮帶",
+          "description": "SpecFlex 4016非常適合輸送帶和需要高耐久性和強度的工業橡膠產品。",
+          "grade": "推薦牌號：SpecFlex 4016"
+        }
+      },
+      "otherApplications": {
+        "title": "其他應用",
+        "items": {
+          "sealsGaskets": {
+            "name": "密封件和墊片",
+            "description": "提供優異的柔韌性和耐環境因素性"
+          },
+          "cableInsulation": {
+            "name": "電纜和電線絕緣",
+            "description": "增強橡膠絕緣層的電氣性能和柔韌性"
+          },
+          "automotiveComponents": {
+            "name": "汽車零件",
+            "description": "適合密封條、軟管和其他汽車橡膠件"
+          },
+          "buildingConstruction": {
+            "name": "建築材料",
+            "description": "適用於墊片、屋頂膜和防水材料"
+          }
+        }
+      }
     },
-    "cta": {
-      "title": "需要技術規格？",
-      "description": "聯繫我們的團隊獲取詳細產品資訊",
-      "button": "索取技術資料"
+    "benefits": {
+      "title": "性能優勢",
+      "description": "SpecFlex™橡膠加工油在橡膠加工和終端產品性能方面提供諸多優優勢，幫助製造商實現更好的品質和效率。",
+      "items": {
+        "superiorProcessing": {
+          "title": "卓越加工",
+          "description": "改善加工過程中橡膠流動性和模具填充。"
+        },
+        "environmentallyFriendly": {
+          "title": "環境友好",
+          "description": "低PAH含量符合歐盟REACH要求。"
+        },
+        "costEffective": {
+          "title": "成本效益",
+          "description": "優化配方降低生產成本。"
+        },
+        "consistentQuality": {
+          "title": "穩定品質",
+          "description": "批次間一致性確保可靠生產。"
+        }
+      },
+      "processingAdvantages": {
+        "title": "加工優勢",
+        "items": [
+          "改善填料和添加劑的分散性",
+          "降低混煉過程中的能耗",
+          "降低加工溫度和週期時間",
+          "增強模具流動和型腔填充",
+          "降低廢品率和生產浪費"
+        ]
+      },
+      "endProductImprovements": {
+        "title": "終端產品改進",
+        "items": [
+          "增強柔韌性和低溫性能",
+          "提高拉伸強度和伸長率",
+          "優異的耐老化和環境因素性能",
+          "批次間一致的品質和性能",
+          "符合國際法規標準"
+        ]
+      },
+      "cta": "聯繫我們的技術團隊"
+    },
+    "packaging": {
+      "title": "包裝與交付",
+      "description": "SpecFlex™橡膠加工油提供多種包裝選擇，以滿足您的具體生產需求，從小批量到大規模製造需求。",
+      "options": {
+        "buckets": {
+          "18l": {
+            "name": "18L塑膠桶",
+            "description": "適合小批量生產和測試",
+            "capacity": "18L / 5加侖"
+          }
+        },
+        "drums": {
+          "200l": {
+            "name": "200L鋼桶",
+            "description": "適合中型製造操作",
+            "capacity": "200L / 55加侖"
+          }
+        },
+        "ibc": {
+          "1000l": {
+            "name": "1000L IBC噸桶",
+            "description": "適合大規模生產設施",
+            "capacity": "1000L / 275加侖"
+          }
+        }
+      },
+      "bulkDelivery": {
+        "title": "散裝交付選項",
+        "description": "對於大批量需求，我們提供高效的散裝交付選項：",
+        "options": {
+          "tankerTrucks": {
+            "name": "罐車",
+            "description": "距離我們工廠500公里範圍內的散裝公路運輸"
+          },
+          "isoTanks": {
+            "name": "ISO罐式集裝箱",
+            "description": "用於國際運輸的26,000L不銹鋼罐"
+          }
+        },
+        "cta": "了解更多關於我們的物流"
+      }
+    },
+    "relatedProducts": {
+      "title": "相關產品",
+      "transformerOil": {
+        "series": "SpecVolt™系列",
+        "name": "變壓器油",
+        "description": "用於高壓應用的優質環烷基變壓器油。"
+      },
+      "hydraulicOil": {
+        "series": "SpecLube™系列",
+        "name": "液壓油",
+        "description": "用於工業設備的高性能液壓油。"
+      },
+      "viewProduct": "查看產品"
+    },
+    "mobileFooter": {
+      "contactUs": "聯繫我們",
+      "whatsapp": "WhatsApp"
     }
   },
   "finishedLubricants": {
     "title": "成品潤滑油",
     "hero": {
-      "title": "成品潤滑油",
-      "subtitle": "先進的工業潤滑解決方案"
+      "tag": "優質成品潤滑油",
+      "title": "SpecLube™系列",
+      "subtitle": "專為極端條件和最大性能而設計"
+    },
+    "tabs": {
+      "overview": "概述",
+      "productLineup": "產品系列",
+      "hydraulicOils": "液壓油",
+      "packaging": "包裝"
     },
     "overview": {
-      "title": "產品概述",
-      "description": "我們提供來自專業中國製造商的成品潤滑油，採用先進添加劑技術配方，提供卓越性能、延長設備壽命並降低維護成本。"
-    },
-    "features": {
-      "title": "關鍵性能特點",
+      "title": "先進的工業潤滑解決方案",
+      "description1": "SpecLube™成品潤滑油是優質配方潤滑油，旨在在最苛刻的工業應用中提供卓越的保護和性能。",
+      "description2": "我們提供來自專業中國製造商的成品潤滑油，採用先進添加劑技術配方，提供卓越性能、延長設備壽命並降低維護成本。",
+      "keyFeatures": "關鍵性能特點",
       "feature1": {
-        "title": "耐磨保護",
-        "description": "優異的抗磨性能"
+        "title": "卓越的耐磨保護",
+        "description": "在高負荷應用中延長設備壽命"
       },
       "feature2": {
-        "title": "氧化穩定性",
-        "description": "延長油品壽命和換油週期"
+        "title": "寬廣的溫度範圍",
+        "description": "從北極到極端高溫環境均能表現優異"
       },
       "feature3": {
-        "title": "溫度範圍",
-        "description": "在各種溫度範圍內性能優異"
+        "title": "耐水性",
+        "description": "在潮濕環境中保持性能"
       },
       "feature4": {
-        "title": "防腐保護",
-        "description": "保護金屬表面免受腐蝕"
-      }
+        "title": "氧化穩定性",
+        "description": "延長使用壽命並減少沉積物"
+      },
+      "requestQuote": "獲取報價",
+      "downloadGuide": "下載產品指南"
     },
-    "applications": {
-      "title": "應用領域",
-      "item1": "工業機械",
-      "item2": "汽車引擎",
-      "item3": "液壓系統",
-      "item4": "齒輪系統"
+    "productLineup": {
+      "title": "我們的產品系列",
+      "description": "SpecLube™提供全面的高性能潤滑油系列，旨在滿足各種工業應用的具體需求。每種產品都採用我們的優質環烷基基礎油和先進添加劑配方。",
+      "categories": {
+        "hydraulic": {
+          "name": "液壓油",
+          "description": "為極端壓力應用和寬溫度範圍設計的高性能液壓油。",
+          "grades": ["L-HM（高壓）", "L-HV（低溫）", "L-HS（合成）"],
+          "standard": "符合DIN 51524標準"
+        },
+        "gear": {
+          "name": "齒輪油",
+          "description": "優質齒輪油，旨在保護工業齒輪系統免受磨損、擦傷和微點蝕。",
+          "grades": ["L-CKD（重載）", "L-CKE/P（極壓）", "合成齒輪油"],
+          "standard": "符合DIN 51517標準"
+        },
+        "fleet": {
+          "name": "商業車隊",
+          "description": "為商用車和重型應用設計的高性能引擎油。",
+          "grades": ["柴油引擎油（CJ-4/CH-4）", "汽油引擎油（API SN）", "多級引擎油"],
+          "standard": "符合API規格"
+        },
+        "specialty": {
+          "name": "特種潤滑油",
+          "description": "針對具有特定性能要求的獨特工業應用的專業潤滑油。",
+          "grades": ["汽輪機油（L-TSA）", "導熱油（L-QD）", "壓縮機油", "食品級潤滑油"],
+          "standard": "各種行業標準"
+        }
+      },
+      "availableGrades": "可選牌號：",
+      "contactTeam": "聯繫我們的技術團隊進行產品選擇"
     },
-    "cta": {
-      "title": "需要技術規格？",
-      "description": "聯繫我們的團隊獲取詳細產品資訊",
-      "button": "索取技術資料"
+    "hydraulicOils": {
+      "title": "高性能液壓油",
+      "description": "我們的液壓油專門配方，為在嚴苛條件下運行的現代高壓液壓系統提供卓越的保護和性能。",
+      "products": {
+        "lhm": {
+          "name": "SpecLube L-HM（高壓）",
+          "description": "先進抗磨液壓油，專為在正常到高溫條件下運行的高壓系統設計。符合DIN 51524 Part 2規格。"
+        },
+        "lhv": {
+          "name": "SpecLube L-HV（低溫）",
+          "description": "優質液壓油，具有優異的低溫流動性，適用於在寒冷氣候下運行的系統。在低至-40°C的溫度下提供卓越保護。"
+        },
+        "lhs": {
+          "name": "SpecLube L-HS（合成）",
+          "description": "全合成液壓油，適用於需要最大程度防止磨損、氧化和熱降解的極端應用。"
+        }
+      },
+      "benefits": {
+        "title": "主要優勢",
+        "items": [
+          "延長泵和組件壽命",
+          "提高系統效率和節能",
+          "降低維護成本和停機時間",
+          "優異的過濾性和系統清潔度",
+          "與密封材料相容"
+        ]
+      },
+      "specifications": {
+        "title": "技術規格",
+        "property": "性能指標",
+        "lhm32": "L-HM 32",
+        "lhm46": "L-HM 46",
+        "lhv46": "L-HV 46",
+        "viscosity40": "粘度@40°C (cSt)",
+        "viscosityIndex": "粘度指數",
+        "pourPoint": "傾點 (°C)",
+        "flashPoint": "閃點 (°C)",
+        "antiWear": "抗磨性能（四球機，mm）"
+      },
+      "applications": {
+        "title": "推薦應用",
+        "industrial": {
+          "name": "工業液壓",
+          "description": "注塑機、壓力機、機床和其他工業設備"
+        },
+        "mobile": {
+          "name": "移動設備",
+          "description": "建築機械、農業設備和物料搬運系統"
+        },
+        "marine": {
+          "name": "海洋應用",
+          "description": "船舶和海上平台的液壓系統"
+        },
+        "coldClimate": {
+          "name": "寒冷氣候作業",
+          "description": "製冷系統和寒冷地區的戶外設備"
+        }
+      },
+      "requestConsultation": "索取產品諮詢"
+    },
+    "packaging": {
+      "title": "包裝與交付",
+      "description": "SpecLube™成品潤滑油提供全面的包裝選擇，以滿足您運營的具體需求，從小型維護應用到大規模工業用途。",
+      "options": {
+        "drum200l": {
+          "name": "200L鋼桶",
+          "description": "工業應用重型鋼桶，密封安全可靠"
+        },
+        "ibc1000l": {
+          "name": "1000L IBC噸桶",
+          "description": "中型散裝容器，便於高效存儲和處理"
+        },
+        "bucket18l": {
+          "name": "18L塑膠桶",
+          "description": "便捷的塑膠桶，適用於小型應用和維護"
+        }
+      },
+      "bulkDelivery": {
+        "title": "散裝交付選項",
+        "description": "對於大批量需求，我們提供高效的散裝交付選項，以最大限度地減少包裝浪費並降低成本：",
+        "tankerTrucks": {
+          "name": "罐車",
+          "description": "距離我們工廠500公里範圍內的散裝公路運輸"
+        },
+        "isoTanks": {
+          "name": "ISO罐式集裝箱",
+          "description": "用於國際運輸的26,000L不銹鋼罐"
+        }
+      },
+      "learnMoreLogistics": "了解更多關於我們的物流"
+    },
+    "relatedProducts": {
+      "title": "相關產品",
+      "transformerOil": {
+        "series": "SpecVolt™系列",
+        "name": "變壓器油",
+        "description": "用於高壓應用的優質環烷基變壓器油。"
+      },
+      "rubberProcessOil": {
+        "series": "SpecFlex™系列",
+        "name": "橡膠加工油",
+        "description": "用於橡膠混煉和輪胎製造的高溶解力環烷基油。"
+      },
+      "viewProduct": "查看產品"
+    },
+    "mobileFooter": {
+      "contactUs": "聯繫我們",
+      "whatsapp": "WhatsApp"
     }
   },
   "quality": {

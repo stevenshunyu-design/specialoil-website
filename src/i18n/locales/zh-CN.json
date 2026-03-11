@@ -364,85 +364,474 @@
     "title": "变压器油",
     "subtitle": "高性能绝缘油",
     "hero": {
-      "title": "优质变压器油",
-      "subtitle": "用于电气设备的高性能绝缘油"
+      "tag": "优质变压器油",
+      "title": "SpecVolt™系列",
+      "subtitle": "专为最苛刻的高压应用而设计"
+    },
+    "tabs": {
+      "overview": "概述",
+      "specifications": "技术规格",
+      "applications": "应用领域",
+      "benefits": "性能优势",
+      "packaging": "包装"
     },
     "overview": {
-      "title": "产品概述",
-      "description": "我们提供来自中国领先制造商的变压器油，具有优异的电气绝缘性能、热稳定性和抗氧化性，适用于现代电力系统。"
-    },
-    "features": {
-      "title": "关键性能特点",
+      "title": "卓越的变压器保护",
+      "description1": "SpecVolt™变压器油是优质环烷基润滑油，专为高压变压器和电气设备提供卓越的绝缘、冷却和保护而设计。",
+      "description2": "我们采购来自中国领先制造商的变压器油，提供天然低硫含量和优异介电性能的产品。我们的供应链服务确保苛刻应用的一致质量和可靠性能。",
+      "keyFeatures": "关键性能特点",
       "feature1": {
-        "title": "优异绝缘",
-        "description": "高介电强度，确保可靠的电气绝缘"
+        "title": "零腐蚀性硫",
+        "description": "防止变压器铜腐蚀"
       },
       "feature2": {
-        "title": "热稳定性",
-        "description": "优异的散热和热性能"
+        "title": "北极可靠性",
+        "description": "性能可低至-45°C"
       },
       "feature3": {
-        "title": "抗氧化性",
-        "description": "使用寿命长，降解极小"
+        "title": "低水分含量",
+        "description": "增强介电强度"
       },
       "feature4": {
-        "title": "低温流动性",
-        "description": "优异的寒冷气候性能"
+        "title": "热稳定性",
+        "description": "高温下抗氧化"
+      },
+      "requestQuote": "获取报价",
+      "downloadDatasheet": "下载数据表"
+    },
+    "specifications": {
+      "title": "产品规格",
+      "description": "SpecVolt™变压器油提供三种优质牌号，每种都设计用于满足特定的应用要求和操作条件。所有牌号均达到或超过变压器油的国际标准。",
+      "table": {
+        "grade": "产品牌号",
+        "viscosity": "粘度 (40°C)",
+        "pourPoint": "倾点",
+        "dielectricStrength": "介电强度"
+      },
+      "grades": {
+        "i20x": {
+          "name": "SpecVolt I-20X",
+          "viscosity": "10-12 cSt",
+          "pourPoint": "-22°C",
+          "dielectric": ">70kV"
+        },
+        "i30x": {
+          "name": "SpecVolt I-30X",
+          "viscosity": "9-11 cSt",
+          "pourPoint": "-30°C",
+          "dielectric": ">70kV"
+        },
+        "i40x": {
+          "name": "SpecVolt I-40X",
+          "viscosity": "<12 cSt",
+          "pourPoint": "-45°C",
+          "dielectric": ">70kV"
+        }
+      },
+      "technical": {
+        "title": "技术规格",
+        "baseOilType": "基础油类型：",
+        "baseOilValue": "环烷基",
+        "flashPoint": "闪点 (COC)：",
+        "flashPointValue": "> 140°C",
+        "firePoint": "燃点 (COC)：",
+        "firePointValue": "> 160°C",
+        "acidity": "酸值 (TAN)：",
+        "acidityValue": "< 0.03 mg KOH/g",
+        "interfacialTension": "界面张力：",
+        "interfacialTensionValue": "> 35 mN/m",
+        "resistivity": "电阻率 (90°C)：",
+        "resistivityValue": "> 10^12 Ω·m",
+        "oxidationStability": "氧化稳定性：",
+        "oxidationStabilityValue": "优异"
+      },
+      "compliance": {
+        "title": "合规标准",
+        "items": ["ASTM D3487", "IEC 60296", "BS 148", "GB 2536", "TOST合规", "无PCB", "RoHS合规"]
       }
     },
     "applications": {
       "title": "应用领域",
-      "item1": "电力变压器",
-      "item2": "配电变压器",
-      "item3": "仪表变压器",
-      "item4": "断路器"
+      "description": "SpecVolt™变压器油专为各种电气设备而设计，这些设备对优异的绝缘性能、传热能力和抗氧化性有严格要求。",
+      "items": {
+        "highVoltage": {
+          "title": "高压变压器",
+          "description": "适合在极端条件下运行的发电和输电变压器。"
+        },
+        "distribution": {
+          "title": "配电变压器",
+          "description": "为中低压配电网络提供优异保护。"
+        },
+        "instrument": {
+          "title": "仪表变压器",
+          "description": "确保计量系统中电流和电压互感器的可靠性能。"
+        },
+        "switchgear": {
+          "title": "开关设备",
+          "description": "为断路器和开关设备提供卓越的绝缘和冷却性能。"
+        }
+      },
+      "recommendedTitle": "按牌号推荐应用",
+      "recommendedTable": {
+        "grade": "产品牌号",
+        "bestApplications": "最佳应用",
+        "operatingEnvironment": "运行环境",
+        "i20x": {
+          "applications": "配电变压器、中压设备",
+          "environment": "温带气候、标准应用"
+        },
+        "i30x": {
+          "applications": "电力变压器、工业应用",
+          "environment": "寒冷气候、户外安装"
+        },
+        "i40x": {
+          "applications": "高压变压器、关键应用",
+          "environment": "极寒气候、北极地区"
+        }
+      }
+    },
+    "benefits": {
+      "title": "性能优势",
+      "description": "SpecVolt™变压器油相比传统变压器油具有诸多优势，有助于延长设备寿命、提高可靠性并降低维护成本。",
+      "performance": {
+        "dielectric": {
+          "title": "增强介电强度",
+          "description": "卓越的绝缘性能，在高电压应力下保持系统完整性。"
+        },
+        "serviceLife": {
+          "title": "延长使用寿命",
+          "description": "优异的抗氧化性延长油品寿命并减少维护频率。"
+        },
+        "heatTransfer": {
+          "title": "卓越传热",
+          "description": "优化的热性能提高冷却效率并减少热点。"
+        },
+        "protection": {
+          "title": "设备保护",
+          "description": "零腐蚀性硫配方防止铜腐蚀和污泥形成。"
+        }
+      },
+      "economic": {
+        "title": "经济效益",
+        "items": [
+          "由于延长油品寿命而降低维护成本",
+          "通过更好的保护降低设备更换成本",
+          "最大限度减少停机时间并提高系统可靠性",
+          "通过优化冷却提高能源效率",
+          "相比传统油品的长期成本节约"
+        ]
+      },
+      "environmental": {
+        "title": "环境效益",
+        "items": [
+          "天然低硫含量减少环境影响",
+          "延长油品寿命减少废油产生和处理需求",
+          "符合国际环境法规",
+          "可回收产品支持循环经济原则"
+        ],
+        "contactButton": "联系我们的技术团队"
+      }
+    },
+    "packaging": {
+      "title": "包装与交付",
+      "description": "SpecVolt™变压器油提供多种包装选择，以满足您的具体需求，从用于维护的小容器到用于大型安装的散装交付。",
+      "options": {
+        "bucket18L": {
+          "title": "18L塑料桶",
+          "description": "适合小型维护工作和补油",
+          "capacity": "18L / 5加仑"
+        },
+        "drum200L": {
+          "title": "200L钢桶",
+          "description": "适合中型安装和项目",
+          "capacity": "200L / 55加仑"
+        },
+        "ibc1000L": {
+          "title": "1000L IBC吨桶",
+          "description": "用于大型工业应用和项目",
+          "capacity": "1000L / 275加仑"
+        }
+      },
+      "bulkTitle": "散装交付选项",
+      "bulkDescription": "对于大批量需求，我们提供散装交付选项以最大限度减少包装浪费并降低成本：",
+      "bulkOptions": {
+        "tanker": {
+          "title": "罐车",
+          "description": "距离我们工厂500公里范围内的散装公路运输"
+        },
+        "isoTank": {
+          "title": "ISO罐式集装箱",
+          "description": "用于国际运输的26,000L不锈钢罐"
+        }
+      },
+      "learnMoreLogistics": "了解更多关于我们的物流"
+    },
+    "relatedProducts": {
+      "title": "相关产品",
+      "rubberOil": {
+        "series": "SpecFlex™系列",
+        "title": "橡胶加工油",
+        "description": "用于橡胶混炼和轮胎制造的高溶解力环烷基油。",
+        "viewProduct": "查看产品"
+      },
+      "hydraulicOil": {
+        "series": "SpecLube™系列",
+        "title": "液压油",
+        "description": "用于工业和移动设备的高性能液压油。",
+        "viewProduct": "查看产品"
+      }
     },
     "cta": {
       "title": "需要技术规格？",
       "description": "联系我们的团队获取详细产品信息和报价",
       "button": "索取技术资料"
+    },
+    "mobile": {
+      "contact": "联系我们",
+      "whatsapp": "WhatsApp"
     }
   },
   "rubberProcessOil": {
     "title": "橡胶加工油",
     "hero": {
-      "title": "橡胶加工油",
-      "subtitle": "卓越的橡胶加工解决方案"
+      "tag": "优质橡胶加工油",
+      "title": "SpecFlex™系列",
+      "subtitle": "专为卓越的橡胶加工和终端产品性能而设计"
+    },
+    "tabs": {
+      "overview": "概述",
+      "specifications": "技术规格",
+      "applications": "应用领域",
+      "benefits": "性能优势",
+      "packaging": "包装"
     },
     "overview": {
-      "title": "产品概述",
-      "description": "我们提供来自值得信赖的中国生产商的橡胶加工油，具有高溶解力（Cn% > 35%）和与各种橡胶类型的优异相容性。我们的端到端解决方案支持专业工业应用的无缝采购。"
-    },
-    "features": {
-      "title": "关键性能特点",
+      "title": "卓越的橡胶加工解决方案",
+      "description1": "SpecFlex™橡胶加工油是优质环烷基油，专为增强橡胶化合物的加工和性能而设计。",
+      "description2": "我们提供来自值得信赖的中国生产商的橡胶加工油，具有高溶解力（Cn% > 35%）和与各种橡胶类型的优异相容性。我们的端到端解决方案支持专业工业应用的无缝采购。",
+      "keyFeatures": "关键性能特点",
       "feature1": {
         "title": "高溶解力",
-        "description": "与橡胶化合物有优异的相容性"
+        "description": "Cn% > 35%，优异的橡胶渗透性"
       },
       "feature2": {
-        "title": "热稳定性",
-        "description": "在加工条件下性能稳定"
+        "title": "欧盟REACH合规",
+        "description": "低PAH含量，符合法规要求"
       },
       "feature3": {
-        "title": "颜色稳定性",
-        "description": "保持产品外观和质量"
+        "title": "低倾点",
+        "description": "优异的低温性能"
       },
       "feature4": {
-        "title": "低挥发性",
-        "description": "加工过程中排放量低"
+        "title": "氧化稳定性",
+        "description": "加工过程中抗降解"
+      },
+      "requestQuote": "获取报价",
+      "downloadDatasheet": "下载数据表"
+    },
+    "specifications": {
+      "title": "产品规格",
+      "description": "SpecFlex™橡胶加工油提供三种精心配制的牌号，以满足不同橡胶应用的具体要求，从鞋底到高性能轮胎。",
+      "table": {
+        "grade": "产品牌号",
+        "application": "推荐应用",
+        "solvency": "溶解力 (Cn%)",
+        "viscosity": "粘度 (40°C)"
+      },
+      "grades": {
+        "4006": {
+          "name": "SpecFlex 4006",
+          "application": "EPDM和鞋底",
+          "solvency": "Cn% > 35%",
+          "viscosity": "60-70 cSt"
+        },
+        "4010": {
+          "name": "SpecFlex 4010",
+          "application": "高性能轮胎",
+          "solvency": "Cn% > 35%",
+          "viscosity": "90-110 cSt"
+        },
+        "4016": {
+          "name": "SpecFlex 4016",
+          "application": "输送带",
+          "solvency": "Cn% > 35%",
+          "viscosity": "150-170 cSt"
+        }
+      },
+      "technical": {
+        "title": "技术规格",
+        "baseOilType": "基础油类型：",
+        "baseOilValue": "环烷基",
+        "flashPoint": "闪点 (COC)：",
+        "flashPointValue": "> 200°C",
+        "pourPoint": "倾点：",
+        "pourPointValue": "< -15°C",
+        "anilinePoint": "苯胺点：",
+        "anilinePointValue": "< 80°C",
+        "sulfurContent": "硫含量：",
+        "sulfurContentValue": "< 0.5%",
+        "color": "颜色 (Saybolt)：",
+        "colorValue": "+20 至 +30",
+        "density": "密度 (15°C)：",
+        "densityValue": "0.91-0.95 g/cm³"
+      },
+      "regulatory": {
+        "title": "法规合规",
+        "items": [
+          "欧盟REACH法规 (EC 1907/2006)",
+          "低PAH（多环芳烃）",
+          "RoHS合规",
+          "FDA 21 CFR 178.3620(a)间接食品接触",
+          "非致癌性（根据IARC指南）",
+          "ISO 9001质量管理体系",
+          "ISO 14001环境管理体系"
+        ]
       }
     },
     "applications": {
       "title": "应用领域",
-      "item1": "轮胎制造",
-      "item2": "工业橡胶制品",
-      "item3": "汽车零部件",
-      "item4": "密封剂和粘合剂"
+      "description": "SpecFlex™橡胶加工油专为各种橡胶产品和应用而设计，提供优异的加工性能并增强终端产品性能。",
+      "categories": {
+        "shoeSoles": {
+          "name": "鞋底和鞋类",
+          "description": "SpecFlex 4006为鞋底和其他鞋类组件提供优异的柔韧性和耐久性。",
+          "grade": "推荐牌号：SpecFlex 4006"
+        },
+        "tires": {
+          "name": "轮胎和汽车",
+          "description": "SpecFlex 4010为高性能轮胎提供卓越性能，提供优异的抓地力和耐磨性。",
+          "grade": "推荐牌号：SpecFlex 4010"
+        },
+        "industrialBelts": {
+          "name": "工业皮带",
+          "description": "SpecFlex 4016非常适合输送带和需要高耐久性和强度的工业橡胶产品。",
+          "grade": "推荐牌号：SpecFlex 4016"
+        }
+      },
+      "otherApplications": {
+        "title": "其他应用",
+        "items": {
+          "sealsGaskets": {
+            "name": "密封件和垫片",
+            "description": "提供优异的柔韧性和耐环境因素性"
+          },
+          "cableInsulation": {
+            "name": "电缆和电线绝缘",
+            "description": "增强橡胶绝缘层的电气性能和柔韧性"
+          },
+          "automotiveComponents": {
+            "name": "汽车零部件",
+            "description": "适合密封条、软管和其他汽车橡胶件"
+          },
+          "buildingConstruction": {
+            "name": "建筑材料",
+            "description": "适用于垫片、屋顶膜和防水材料"
+          }
+        }
+      }
     },
-    "cta": {
-      "title": "需要技术规格？",
-      "description": "联系我们的团队获取详细产品信息",
-      "button": "索取技术资料"
+    "benefits": {
+      "title": "性能优势",
+      "description": "SpecFlex™橡胶加工油在橡胶加工和终端产品性能方面提供诸多优势，帮助制造商实现更好的质量和效率。",
+      "items": {
+        "superiorProcessing": {
+          "title": "卓越加工",
+          "description": "改善加工过程中橡胶流动性和模具填充。"
+        },
+        "environmentallyFriendly": {
+          "title": "环境友好",
+          "description": "低PAH含量符合欧盟REACH要求。"
+        },
+        "costEffective": {
+          "title": "成本效益",
+          "description": "优化配方降低生产成本。"
+        },
+        "consistentQuality": {
+          "title": "稳定质量",
+          "description": "批次间一致性确保可靠生产。"
+        }
+      },
+      "processingAdvantages": {
+        "title": "加工优势",
+        "items": [
+          "改善填料和添加剂的分散性",
+          "降低混炼过程中的能耗",
+          "降低加工温度和周期时间",
+          "增强模具流动和型腔填充",
+          "降低废品率和生产浪费"
+        ]
+      },
+      "endProductImprovements": {
+        "title": "终端产品改进",
+        "items": [
+          "增强柔韧性和低温性能",
+          "提高拉伸强度和伸长率",
+          "优异的耐老化和环境因素性能",
+          "批次间一致的质量和性能",
+          "符合国际法规标准"
+        ]
+      },
+      "cta": "联系我们的技术团队"
+    },
+    "packaging": {
+      "title": "包装与交付",
+      "description": "SpecFlex™橡胶加工油提供多种包装选择，以满足您的具体生产需求，从小批量到大规模制造需求。",
+      "options": {
+        "buckets": {
+          "18l": {
+            "name": "18L塑料桶",
+            "description": "适合小批量生产和测试",
+            "capacity": "18L / 5加仑"
+          }
+        },
+        "drums": {
+          "200l": {
+            "name": "200L钢桶",
+            "description": "适合中型制造操作",
+            "capacity": "200L / 55加仑"
+          }
+        },
+        "ibc": {
+          "1000l": {
+            "name": "1000L IBC吨桶",
+            "description": "适合大规模生产设施",
+            "capacity": "1000L / 275加仑"
+          }
+        }
+      },
+      "bulkDelivery": {
+        "title": "散装交付选项",
+        "description": "对于大批量需求，我们提供高效的散装交付选项：",
+        "options": {
+          "tankerTrucks": {
+            "name": "罐车",
+            "description": "距离我们工厂500公里范围内的散装公路运输"
+          },
+          "isoTanks": {
+            "name": "ISO罐式集装箱",
+            "description": "用于国际运输的26,000L不锈钢罐"
+          }
+        },
+        "cta": "了解更多关于我们的物流"
+      }
+    },
+    "relatedProducts": {
+      "title": "相关产品",
+      "transformerOil": {
+        "series": "SpecVolt™系列",
+        "name": "变压器油",
+        "description": "用于高压应用的优质环烷基变压器油。"
+      },
+      "hydraulicOil": {
+        "series": "SpecLube™系列",
+        "name": "液压油",
+        "description": "用于工业设备的高性能液压油。"
+      },
+      "viewProduct": "查看产品"
+    },
+    "mobileFooter": {
+      "contactUs": "联系我们",
+      "whatsapp": "WhatsApp"
     }
   },
   "finishedLubricants": {
