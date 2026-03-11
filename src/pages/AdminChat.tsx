@@ -334,9 +334,9 @@ const AdminChat = () => {
   const historyGroups = groupedHistory();
 
   return (
-    <div className="min-h-screen bg-slate-100 flex">
+    <div className="h-screen bg-slate-100 flex overflow-hidden">
       {/* Sessions Sidebar */}
-      <div className={`${sidebarCollapsed ? 'w-20' : 'w-80'} bg-gradient-to-b from-slate-800 to-slate-900 flex flex-col transition-all duration-300`}>
+      <div className={`${sidebarCollapsed ? 'w-20' : 'w-80'} bg-gradient-to-b from-slate-800 to-slate-900 flex flex-col transition-all duration-300 h-full`}>
         {/* Header */}
         <div className="p-4 border-b border-white/10 flex-shrink-0">
           <div className="flex items-center justify-between">
@@ -557,7 +557,7 @@ const AdminChat = () => {
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 flex flex-col bg-slate-50">
+      <div className="flex-1 flex flex-col bg-slate-50 h-full overflow-hidden">
         {selectedSession ? (
           <>
             {/* Chat Header */}
