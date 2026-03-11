@@ -187,6 +187,11 @@ const AdminChat = () => {
 
   const waitingCount = sessions.filter(s => s.status === 'waiting').length;
   const activeCount = sessions.filter(s => s.status === 'active').length;
+  const closedCount = sessions.filter(s => s.status === 'closed').length;
+  
+  // 分离活跃会话和历史会话
+  const activeSessions = sessions.filter(s => s.status !== 'closed');
+  const closedSessions = sessions.filter(s => s.status === 'closed');
 
   // Login form
   if (!isAdmin) {
@@ -266,14 +271,18 @@ const AdminChat = () => {
 
         {/* Stats */}
         {!sidebarCollapsed && (
-          <div className="p-3 grid grid-cols-2 gap-2">
-            <div className="bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-xl p-3 text-center">
-              <p className="text-2xl font-bold text-amber-400">{waitingCount}</p>
-              <p className="text-xs text-amber-400/70">Waiting</p>
+          <div className="p-3 grid grid-cols-3 gap-2">
+            <div className="bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-xl p-2 text-center">
+              <p className="text-lg font-bold text-amber-400">{waitingCount}</p>
+              <p className="text-[10px] text-amber-400/70">Waiting</p>
             </div>
-            <div className="bg-gradient-to-br from-emerald-500/20 to-green-500/20 border border-emerald-500/30 rounded-xl p-3 text-center">
-              <p className="text-2xl font-bold text-emerald-400">{activeCount}</p>
-              <p className="text-xs text-emerald-400/70">Active</p>
+            <div className="bg-gradient-to-br from-emerald-500/20 to-green-500/20 border border-emerald-500/30 rounded-xl p-2 text-center">
+              <p className="text-lg font-bold text-emerald-400">{activeCount}</p>
+              <p className="text-[10px] text-emerald-400/70">Active</p>
+            </div>
+            <div className="bg-gradient-to-br from-slate-500/20 to-slate-600/20 border border-slate-500/30 rounded-xl p-2 text-center">
+              <p className="text-lg font-bold text-slate-400">{closedCount}</p>
+              <p className="text-[10px] text-slate-400/70">History</p>
             </div>
           </div>
         )}
@@ -283,62 +292,112 @@ const AdminChat = () => {
           {sessions.length === 0 ? (
             <div className="p-4 text-center">
               <i className="fa-solid fa-inbox text-3xl text-white/20 mb-2"></i>
-              {!sidebarCollapsed && <p className="text-white/40 text-sm">No active chats</p>}
+              {!sidebarCollapsed && <p className="text-white/40 text-sm">No chats yet</p>}
             </div>
           ) : (
-            sessions.map(session => (
-              <div
-                key={session.id}
-                onClick={() => handleSelectSession(session)}
-                className={`p-3 border-b border-white/5 cursor-pointer transition-all ${
-                  selectedSession?.id === session.id 
-                    ? 'bg-gradient-to-r from-[#D4AF37]/20 to-transparent border-l-2 border-l-[#D4AF37]' 
-                    : 'hover:bg-white/5'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="relative flex-shrink-0">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      session.status === 'closed'
-                        ? 'bg-slate-500/20 text-slate-400'
-                        : session.status === 'waiting' 
-                        ? 'bg-amber-500/20 text-amber-400' 
-                        : 'bg-emerald-500/20 text-emerald-400'
-                    }`}>
-                      <i className="fa-solid fa-user text-sm"></i>
-                    </div>
-                    <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-slate-800 ${
-                      session.status === 'closed' 
-                        ? 'bg-slate-500' 
-                        : session.status === 'waiting' 
-                        ? 'bg-amber-400' 
-                        : 'bg-emerald-400'
-                    }`}></span>
-                  </div>
+            <>
+              {/* Active Sessions */}
+              {activeSessions.length > 0 && (
+                <>
                   {!sidebarCollapsed && (
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium text-white text-sm">
-                          {session.visitor_name ? `${session.visitor_name} (${session.customer_no || `#${session.id.substring(0, 4)}`})` : session.customer_no || `#${session.id.substring(0, 4)}`}
-                        </span>
-                        <span className={`text-xs px-2 py-0.5 rounded-full ${
-                          session.status === 'closed'
-                            ? 'bg-slate-500/20 text-slate-400'
-                            : session.status === 'waiting' 
-                            ? 'bg-amber-500/20 text-amber-400' 
-                            : 'bg-emerald-500/20 text-emerald-400'
-                        }`}>
-                          {session.status}
-                        </span>
-                      </div>
-                      <p className="text-xs text-white/40 truncate mt-0.5">
-                        {session.visitor_email || 'No email'} • {formatDate(session.updated_at)}
-                      </p>
+                    <div className="px-3 py-2 text-xs text-white/40 font-medium uppercase tracking-wider">
+                      Active Chats ({activeSessions.length})
                     </div>
                   )}
-                </div>
-              </div>
-            ))
+                  {activeSessions.map(session => (
+                    <div
+                      key={session.id}
+                      onClick={() => handleSelectSession(session)}
+                      className={`p-3 border-b border-white/5 cursor-pointer transition-all ${
+                        selectedSession?.id === session.id 
+                          ? 'bg-gradient-to-r from-[#D4AF37]/20 to-transparent border-l-2 border-l-[#D4AF37]' 
+                          : 'hover:bg-white/5'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="relative flex-shrink-0">
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            session.status === 'waiting' 
+                              ? 'bg-amber-500/20 text-amber-400' 
+                              : 'bg-emerald-500/20 text-emerald-400'
+                          }`}>
+                            <i className="fa-solid fa-user text-sm"></i>
+                          </div>
+                          <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-slate-800 ${
+                            session.status === 'waiting' ? 'bg-amber-400' : 'bg-emerald-400'
+                          }`}></span>
+                        </div>
+                        {!sidebarCollapsed && (
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between">
+                              <span className="font-medium text-white text-sm">
+                                {session.visitor_name ? `${session.visitor_name} (${session.customer_no || `#${session.id.substring(0, 4)}`})` : session.customer_no || `#${session.id.substring(0, 4)}`}
+                              </span>
+                              <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                session.status === 'waiting' 
+                                  ? 'bg-amber-500/20 text-amber-400' 
+                                  : 'bg-emerald-500/20 text-emerald-400'
+                              }`}>
+                                {session.status}
+                              </span>
+                            </div>
+                            <p className="text-xs text-white/40 truncate mt-0.5">
+                              {session.visitor_email || 'No email'} • {formatDate(session.updated_at)}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+              
+              {/* Closed Sessions (History) */}
+              {closedSessions.length > 0 && (
+                <>
+                  {!sidebarCollapsed && (
+                    <div className="px-3 py-2 text-xs text-white/40 font-medium uppercase tracking-wider border-t border-white/10 mt-1">
+                      📁 History ({closedSessions.length})
+                    </div>
+                  )}
+                  {closedSessions.map(session => (
+                    <div
+                      key={session.id}
+                      onClick={() => handleSelectSession(session)}
+                      className={`p-3 border-b border-white/5 cursor-pointer transition-all ${
+                        selectedSession?.id === session.id 
+                          ? 'bg-gradient-to-r from-slate-600/30 to-transparent border-l-2 border-l-slate-400' 
+                          : 'hover:bg-white/5'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="relative flex-shrink-0">
+                          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-slate-500/20 text-slate-400">
+                            <i className="fa-solid fa-user text-sm"></i>
+                          </div>
+                          <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-slate-800 bg-slate-500"></span>
+                        </div>
+                        {!sidebarCollapsed && (
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between">
+                              <span className="font-medium text-white/70 text-sm">
+                                {session.visitor_name ? `${session.visitor_name} (${session.customer_no || `#${session.id.substring(0, 4)}`})` : session.customer_no || `#${session.id.substring(0, 4)}`}
+                              </span>
+                              <span className="text-xs px-2 py-0.5 rounded-full bg-slate-500/20 text-slate-400">
+                                closed
+                              </span>
+                            </div>
+                            <p className="text-xs text-white/30 truncate mt-0.5">
+                              {session.visitor_email || 'No email'} • {formatDate(session.updated_at)}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+            </>
           )}
         </div>
 
