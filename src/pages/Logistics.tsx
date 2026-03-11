@@ -140,15 +140,6 @@ const Logistics = () => {
                 We offer efficient and cost-effective bulk liquid transportation solutions for our raw materials, designed to meet the specific requirements of the oil and lubricants industry.
               </p>
               
-              {/* ISO Tank Hero Image */}
-              <div className="mb-10 rounded-sm overflow-hidden shadow-lg">
-                <img 
-                  src="/iso-tank-product.jpg" 
-                  alt="ISO Tank Container for Bulk Liquid Transportation" 
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                 {bulkOptions.map((option, index) => (
                   <div key={index} className="bg-white p-6 rounded-sm shadow-sm">
