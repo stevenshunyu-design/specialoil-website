@@ -36,7 +36,7 @@ const Home = () => {
       subtitle: "Reliable Shipping to 50+ Countries Worldwide",
       ctaText: "Check Logistics",
       ctaLink: "/logistics",
-      imageUrl: "/iso-tanks-port.jpg"
+      imageUrl: "/iso-tanks-port.jpg?v=2"
     }
   ];
 
