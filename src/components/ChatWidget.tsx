@@ -54,6 +54,7 @@ const ChatWidget = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [chatMode, setChatMode] = useState<'ai' | 'human' | 'form'>('ai');
   const [session, setSession] = useState<ChatSession | null>(null);
+  const [isSessionClosed, setIsSessionClosed] = useState(false);
   const [isWaitingForAgent, setIsWaitingForAgent] = useState(false);
   const [showCustomerForm, setShowCustomerForm] = useState(false);
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({ name: '', email: '', phone: '' });
@@ -76,6 +77,32 @@ const ChatWidget = () => {
     if (!session?.id) return;
     
     try {
+      // First check session status
+      const statusResponse = await fetch(`/api/chat/sessions/${session.id}/status`);
+      if (statusResponse.ok) {
+        const statusData = await statusResponse.json();
+        if (statusData.success && statusData.status === 'closed') {
+          // Session has been closed by admin
+          setIsSessionClosed(true);
+          if (pollIntervalRef.current) {
+            clearInterval(pollIntervalRef.current);
+            pollIntervalRef.current = null;
+          }
+          // Add system message about closed session
+          setMessages(prev => {
+            const hasClosedMsg = prev.some(m => m.content.includes('conversation has been ended'));
+            if (!hasClosedMsg) {
+              return [...prev, {
+                role: 'system',
+                content: '🔒 This conversation has been ended by support. Click "Start New Chat" if you have more questions.'
+              }];
+            }
+            return prev;
+          });
+          return;
+        }
+      }
+
       const response = await fetch(`/api/chat/messages?sessionId=${session.id}&after=${lastMessageId}`);
       if (response.ok) {
         const data = await response.json();
@@ -240,6 +267,26 @@ const ChatWidget = () => {
   const switchToHumanSupport = () => {
     setChatMode('form');
     setShowCustomerForm(true);
+  };
+
+  // Restart chat after session closed
+  const restartChat = () => {
+    // Reset all states
+    setMessages([]);
+    setSession(null);
+    setIsSessionClosed(false);
+    setLastMessageId('');
+    setChatMode('ai');
+    // Clear any existing poll interval
+    if (pollIntervalRef.current) {
+      clearInterval(pollIntervalRef.current);
+      pollIntervalRef.current = null;
+    }
+    // Show welcome message
+    setMessages([{
+      role: 'assistant',
+      content: '👋 Hello! I\'m your AI assistant. How can I help you today?\n\nYou can ask me about our products, services, or click "Human Support" to talk with a real person.'
+    }]);
   };
 
   // 提交客户信息并连接人工客服
@@ -488,34 +535,52 @@ const ChatWidget = () => {
             </div>
           )}
 
-          {/* Input Area */}
-          <div className="p-3 sm:p-4 border-t border-gray-100 bg-white flex-shrink-0">
-            <div className="flex gap-1.5 sm:gap-2 items-center">
-              <div className="flex-1 relative">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder={chatMode === 'human' ? "Type your message..." : "Ask me anything..."}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 focus:border-[#D4AF37] transition-all bg-gray-50 focus:bg-white"
-                  disabled={isLoading || (chatMode === 'human' && isWaitingForAgent)}
-                />
+          {/* Session Closed - Show Restart Button */}
+          {isSessionClosed && (
+            <div className="px-3 sm:px-4 py-3 sm:py-4 border-t border-gray-100 bg-white flex-shrink-0">
+              <div className="text-center">
+                <p className="text-xs sm:text-sm text-gray-500 mb-3">This conversation has ended</p>
+                <button
+                  onClick={restartChat}
+                  className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-[#003366] to-[#004080] text-white rounded-lg sm:rounded-xl font-medium text-xs sm:text-sm hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
+                >
+                  <i className="fa-solid fa-comments"></i>
+                  Start New Chat
+                </button>
               </div>
-              <button
-                onClick={sendMessage}
-                disabled={!inputValue.trim() || isLoading || (chatMode === 'human' && isWaitingForAgent)}
-                className="w-9 h-9 sm:w-11 sm:h-11 bg-gradient-to-r from-[#003366] to-[#004080] text-white rounded-lg sm:rounded-xl flex items-center justify-center hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95 flex-shrink-0"
-                aria-label="Send message"
-              >
-                <i className="fa-solid fa-paper-plane text-xs sm:text-sm"></i>
-              </button>
             </div>
-            <p className="text-[10px] sm:text-xs text-gray-400 mt-1.5 sm:mt-2 text-center">
-              Press Enter to send
-            </p>
-          </div>
+          )}
+
+          {/* Input Area - Only show when session is not closed */}
+          {!isSessionClosed && (
+            <div className="p-3 sm:p-4 border-t border-gray-100 bg-white flex-shrink-0">
+              <div className="flex gap-1.5 sm:gap-2 items-center">
+                <div className="flex-1 relative">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder={chatMode === 'human' ? "Type your message..." : "Ask me anything..."}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 focus:border-[#D4AF37] transition-all bg-gray-50 focus:bg-white"
+                    disabled={isLoading || (chatMode === 'human' && isWaitingForAgent)}
+                  />
+                </div>
+                <button
+                  onClick={sendMessage}
+                  disabled={!inputValue.trim() || isLoading || (chatMode === 'human' && isWaitingForAgent)}
+                  className="w-9 h-9 sm:w-11 sm:h-11 bg-gradient-to-r from-[#003366] to-[#004080] text-white rounded-lg sm:rounded-xl flex items-center justify-center hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95 flex-shrink-0"
+                  aria-label="Send message"
+                >
+                  <i className="fa-solid fa-paper-plane text-xs sm:text-sm"></i>
+                </button>
+              </div>
+              <p className="text-[10px] sm:text-xs text-gray-400 mt-1.5 sm:mt-2 text-center">
+                Press Enter to send
+              </p>
+            </div>
+          )}
         </div>
       )}
 

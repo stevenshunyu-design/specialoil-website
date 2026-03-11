@@ -719,6 +719,32 @@ app.get('/api/chat/sessions/:sessionId/messages', async (req: Request, res: Resp
   }
 });
 
+// 获取会话状态 API - 用于前端检测会话是否已关闭
+app.get('/api/chat/sessions/:sessionId/status', async (req: Request, res: Response) => {
+  try {
+    const { sessionId } = req.params;
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.json({ success: false, error: 'Database not configured' });
+    }
+
+    const { data: session, error } = await client
+      .from('chat_sessions')
+      .select('status')
+      .eq('id', sessionId)
+      .single();
+
+    if (error || !session) {
+      return res.json({ success: false, error: 'Session not found' });
+    }
+
+    res.json({ success: true, status: session.status });
+  } catch (error) {
+    console.error('Get session status error:', error);
+    res.status(500).json({ error: 'Failed to get session status' });
+  }
+});
+
 // 管理员发送消息 API
 app.post('/api/chat/admin/message', async (req: Request, res: Response) => {
   try {
