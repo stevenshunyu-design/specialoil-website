@@ -918,23 +918,11 @@ app.post('/api/chat/human', async (req: Request, res: Response) => {
       const customerNo = existingSession.customer_no || `#${sessionId.substring(0, 8)}`;
       const visitorName = existingSession.visitor_name || 'Visitor';
       
-      // 使用简单的文本消息格式（webhook v2 不支持复杂的卡片元素）
+      // 使用最简单的文本消息格式，确保兼容性
       const notification = {
-        msg_type: 'interactive',
-        card: {
-          header: { 
-            title: { tag: 'plain_text', content: `💬 新消息 ${customerNo}` }, 
-            template: 'blue' 
-          },
-          elements: [
-            { 
-              tag: 'div', 
-              text: { 
-                tag: 'lark_md', 
-                content: `**${visitorName}**: ${message.substring(0, 200)}${message.length > 200 ? '...' : ''}\n\n👉 [点击前往后台回复](${process.env.SITE_URL || 'https://cnspecialtyoils.com'}/admin/chat)` 
-              } 
-            }
-          ]
+        msg_type: 'text',
+        content: {
+          text: `💬 新消息 ${customerNo}\n\n${visitorName}: ${message.substring(0, 200)}${message.length > 200 ? '...' : ''}\n\n请前往后台回复: ${process.env.SITE_URL || 'https://cnspecialtyoils.com'}/admin/chat`
         }
       };
 
@@ -1032,23 +1020,11 @@ app.post('/api/chat', async (req: Request, res: Response) => {
         console.log(`📤 Preparing to send Feishu notification for human support request...`);
         console.log(`   Webhook URL: ${FEISHU_WEBHOOK_URL}`);
         
-        // 使用简单的文本消息格式（webhook v2 不支持复杂的卡片元素）
+        // 使用最简单的文本消息格式，确保兼容性
         const notification = {
-          msg_type: 'interactive',
-          card: {
-            header: { 
-              title: { tag: 'plain_text', content: `🔔 新客户咨询 ${customerNo}` }, 
-              template: 'blue' 
-            },
-            elements: [
-              { 
-                tag: 'div', 
-                text: { 
-                  tag: 'lark_md', 
-                  content: `**客户信息**\n👤 姓名: ${customerName}\n📧 邮箱: ${customerEmail}\n📱 电话: ${customerPhone}\n💬 消息: ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}\n\n👉 [点击前往后台回复](${process.env.SITE_URL || 'https://cnspecialtyoils.com'}/admin/chat)` 
-                } 
-              }
-            ]
+          msg_type: 'text',
+          content: {
+            text: `🔔 新客户咨询 ${customerNo}\n\n客户信息:\n👤 姓名: ${customerName}\n📧 邮箱: ${customerEmail}\n📱 电话: ${customerPhone}\n💬 消息: ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}\n\n请前往后台回复: ${process.env.SITE_URL || 'https://cnspecialtyoils.com'}/admin/chat`
           }
         };
         
@@ -1200,21 +1176,9 @@ app.post('/api/inquiries', async (req: Request, res: Response) => {
       try {
         console.log(`📤 Sending inquiry notification to Feishu...`);
         const notification = {
-          msg_type: 'interactive',
-          card: {
-            header: { 
-              title: { tag: 'plain_text', content: `📧 新客户询价` }, 
-              template: 'green' 
-            },
-            elements: [
-              { 
-                tag: 'div', 
-                text: { 
-                  tag: 'lark_md', 
-                  content: `**客户信息**\n👤 姓名: ${name}\n🏢 公司: ${company}\n📧 邮箱: ${email}\n📦 产品: ${productCategory || '未指定'}\n🚢 目的港: ${portOfDestination}\n📊 数量: ${estimatedQuantity || '未指定'}\n\n💬 消息: ${message || '无'}`
-                } 
-              }
-            ]
+          msg_type: 'text',
+          content: {
+            text: `📧 新客户询价\n\n客户信息:\n👤 姓名: ${name}\n🏢 公司: ${company}\n📧 邮箱: ${email}\n📦 产品: ${productCategory || '未指定'}\n🚢 目的港: ${portOfDestination}\n📊 数量: ${estimatedQuantity || '未指定'}\n\n💬 消息: ${message || '无'}`
           }
         };
 
