@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import useSEO from '@/hooks/useSEO';
 
 const Home = () => {
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
+  
+  // Initialize SEO for this page
+  useSEO('home');
 
   // Auto slide change
   useEffect(() => {

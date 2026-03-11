@@ -1,9 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import useSEO from '@/hooks/useSEO';
 
 const Products = () => {
   const { t } = useTranslation();
+  
+  // Initialize SEO for this page
+  useSEO('products');
   
   const productCategories = [
     {

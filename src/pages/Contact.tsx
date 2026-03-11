@@ -2,9 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { SuccessModal, ErrorModal } from '@/components/ToastModal';
+import useSEO from '@/hooks/useSEO';
 
 // hCaptcha site key (public key)
 const HCAPTCHA_SITE_KEY = import.meta.env.VITE_HCAPTCHA_SITE_KEY || '80a2bfa8-da8c-4326-bada-a5e8ad02727e';
+
+// Initialize SEO hook outside of component
+const useContactSEO = () => useSEO('contact');
 
 declare global {
   interface Window {
@@ -24,6 +28,9 @@ declare global {
 }
 
 const Contact = () => {
+  // Initialize SEO for this page
+  useContactSEO();
+  
   const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',

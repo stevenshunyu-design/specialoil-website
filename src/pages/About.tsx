@@ -1,10 +1,14 @@
 import React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import useSEO from '@/hooks/useSEO';
 
 const About = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('story');
+  
+  // Initialize SEO for this page
+  useSEO('about');
   
   return (
     <div className="min-h-screen bg-white pt-24 pb-16">

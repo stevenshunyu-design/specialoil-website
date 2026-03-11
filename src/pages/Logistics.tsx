@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import useSEO from '@/hooks/useSEO';
 
 const Logistics = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('bulk');
+  
+  // Initialize SEO for this page
+  useSEO('logistics');
   
   const bulkOptions = [
     {

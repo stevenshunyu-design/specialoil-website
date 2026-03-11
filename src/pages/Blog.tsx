@@ -4,9 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { useBlog } from '../hooks/useBlog';
 import BlogCard from '../components/BlogCard';
 import { SubscribeSuccessModal, SubscribeErrorModal } from '@/components/ToastModal';
+import useSEO from '@/hooks/useSEO';
 
 const Blog = () => {
   const { t } = useTranslation();
+  
+  // Initialize SEO for this page
+  useSEO('blog');
+  
   // 所有Hooks必须放在组件顶部，确保每次渲染都以相同顺序调用
   const { posts, isLoading, searchPosts } = useBlog();
   const [searchQuery, setSearchQuery] = useState('');

@@ -2,10 +2,14 @@ import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import useSEO from '@/hooks/useSEO';
 
 const Quality = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('process');
+  
+  // Initialize SEO for this page
+  useSEO('quality');
   
   const certificates = [
     {

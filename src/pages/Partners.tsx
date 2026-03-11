@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import useSEO from '@/hooks/useSEO';
 
 const Partners = () => {
   const { t } = useTranslation();
+  
+  // Initialize SEO for this page
+  useSEO('partners');
   
   // 合作伙伴数据 - 使用翻译
   const partners = [

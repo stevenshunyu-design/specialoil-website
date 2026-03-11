@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import useSEO from '@/hooks/useSEO';
 
 const RubberProcessOil = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('overview');
+  
+  // Initialize SEO for this page
+  useSEO('rubberProcessOil');
   
   return (
     <div className="min-h-screen bg-white pt-24 pb-16">
