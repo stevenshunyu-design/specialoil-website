@@ -932,6 +932,127 @@ app.post("/api/chat", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+app.get("/api/inquiries", async (req, res) => {
+  try {
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.json({ data: [] });
+    }
+    const { data, error } = await client.from("inquiries").select("*").order("created_at", { ascending: false });
+    if (error) {
+      console.error("Error fetching inquiries:", error);
+      return res.json({ data: [] });
+    }
+    res.json({ data: data || [] });
+  } catch (error) {
+    console.error("Get inquiries error:", error);
+    res.status(500).json({ error: "Failed to fetch inquiries" });
+  }
+});
+app.post("/api/inquiries", async (req, res) => {
+  try {
+    const { name, company, email, productCategory, portOfDestination, estimatedQuantity, message, captchaToken } = req.body;
+    if (!name || !company || !email || !portOfDestination) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+    if (captchaToken) {
+      const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET_KEY;
+      if (HCAPTCHA_SECRET) {
+        const captchaResponse = await fetch("https://api.hcaptcha.com/siteverify", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `secret=${HCAPTCHA_SECRET}&response=${captchaToken}`
+        });
+        const captchaResult = await captchaResponse.json();
+        if (!captchaResult.success) {
+          return res.status(400).json({ error: "Captcha verification failed" });
+        }
+      }
+    }
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ error: "Database not configured" });
+    }
+    const { data, error } = await client.from("inquiries").insert({
+      name,
+      company,
+      email,
+      product_category: productCategory || null,
+      port_of_destination: portOfDestination,
+      estimated_quantity: estimatedQuantity || null,
+      message: message || null,
+      status: "new"
+    }).select().single();
+    if (error) {
+      console.error("Error creating inquiry:", error);
+      return res.status(500).json({ error: "Failed to save inquiry" });
+    }
+    console.log(`\u2705 New inquiry created: ${name} from ${company}`);
+    if (FEISHU_WEBHOOK_URL) {
+      try {
+        const notification = {
+          msg_type: "interactive",
+          card: {
+            header: {
+              title: { tag: "plain_text", content: `\u{1F4E7} \u65B0\u5BA2\u6237\u8BE2\u4EF7` },
+              template: "green"
+            },
+            elements: [
+              {
+                tag: "div",
+                text: {
+                  tag: "lark_md",
+                  content: `**\u5BA2\u6237\u4FE1\u606F**
+\u{1F464} \u59D3\u540D: ${name}
+\u{1F3E2} \u516C\u53F8: ${company}
+\u{1F4E7} \u90AE\u7BB1: ${email}
+\u{1F4E6} \u4EA7\u54C1: ${productCategory || "\u672A\u6307\u5B9A"}
+\u{1F6A2} \u76EE\u7684\u6E2F: ${portOfDestination}
+\u{1F4CA} \u6570\u91CF: ${estimatedQuantity || "\u672A\u6307\u5B9A"}
+
+\u{1F4AC} \u6D88\u606F: ${message || "\u65E0"}`
+                }
+              }
+            ]
+          }
+        };
+        await fetch(FEISHU_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(notification)
+        });
+      } catch (feishuError) {
+        console.error("Failed to send Feishu notification:", feishuError);
+      }
+    }
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error("Create inquiry error:", error);
+    res.status(500).json({ error: "Failed to submit inquiry" });
+  }
+});
+app.patch("/api/inquiries/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, notes } = req.body;
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ error: "Database not configured" });
+    }
+    const updateData = { updated_at: (/* @__PURE__ */ new Date()).toISOString() };
+    if (status) updateData.status = status;
+    if (notes !== void 0) updateData.notes = notes;
+    const { error } = await client.from("inquiries").update(updateData).eq("id", id);
+    if (error) {
+      console.error("Error updating inquiry:", error);
+      return res.status(500).json({ error: "Failed to update inquiry" });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Update inquiry error:", error);
+    res.status(500).json({ error: "Failed to update inquiry" });
+  }
+});
 app.get("/api/health", (_req, res) => {
   res.json({
     status: "ok",

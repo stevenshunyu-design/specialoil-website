@@ -1114,6 +1114,158 @@ app.post('/api/chat', async (req: Request, res: Response) => {
   }
 });
 
+// ==================== Inquiries API ====================
+
+// 获取所有查询
+app.get('/api/inquiries', async (req: Request, res: Response) => {
+  try {
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.json({ data: [] });
+    }
+
+    const { data, error } = await client
+      .from('inquiries')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching inquiries:', error);
+      return res.json({ data: [] });
+    }
+
+    res.json({ data: data || [] });
+  } catch (error) {
+    console.error('Get inquiries error:', error);
+    res.status(500).json({ error: 'Failed to fetch inquiries' });
+  }
+});
+
+// 创建新查询
+app.post('/api/inquiries', async (req: Request, res: Response) => {
+  try {
+    const { name, company, email, productCategory, portOfDestination, estimatedQuantity, message, captchaToken } = req.body;
+
+    // 基本验证
+    if (!name || !company || !email || !portOfDestination) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // hCaptcha 验证（如果配置了）
+    if (captchaToken) {
+      const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET_KEY;
+      if (HCAPTCHA_SECRET) {
+        const captchaResponse = await fetch('https://api.hcaptcha.com/siteverify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `secret=${HCAPTCHA_SECRET}&response=${captchaToken}`
+        });
+        const captchaResult = await captchaResponse.json();
+        if (!captchaResult.success) {
+          return res.status(400).json({ error: 'Captcha verification failed' });
+        }
+      }
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ error: 'Database not configured' });
+    }
+
+    // 插入数据库
+    const { data, error } = await client
+      .from('inquiries')
+      .insert({
+        name,
+        company,
+        email,
+        product_category: productCategory || null,
+        port_of_destination: portOfDestination,
+        estimated_quantity: estimatedQuantity || null,
+        message: message || null,
+        status: 'new'
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error creating inquiry:', error);
+      return res.status(500).json({ error: 'Failed to save inquiry' });
+    }
+
+    console.log(`✅ New inquiry created: ${name} from ${company}`);
+
+    // 发送飞书通知（可选）
+    if (FEISHU_WEBHOOK_URL) {
+      try {
+        const notification = {
+          msg_type: 'interactive',
+          card: {
+            header: { 
+              title: { tag: 'plain_text', content: `📧 新客户询价` }, 
+              template: 'green' 
+            },
+            elements: [
+              { 
+                tag: 'div', 
+                text: { 
+                  tag: 'lark_md', 
+                  content: `**客户信息**\n👤 姓名: ${name}\n🏢 公司: ${company}\n📧 邮箱: ${email}\n📦 产品: ${productCategory || '未指定'}\n🚢 目的港: ${portOfDestination}\n📊 数量: ${estimatedQuantity || '未指定'}\n\n💬 消息: ${message || '无'}`
+                } 
+              }
+            ]
+          }
+        };
+
+        await fetch(FEISHU_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(notification)
+        });
+      } catch (feishuError) {
+        console.error('Failed to send Feishu notification:', feishuError);
+      }
+    }
+
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error('Create inquiry error:', error);
+    res.status(500).json({ error: 'Failed to submit inquiry' });
+  }
+});
+
+// 更新查询状态/备注
+app.patch('/api/inquiries/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { status, notes } = req.body;
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ error: 'Database not configured' });
+    }
+
+    const updateData: Record<string, unknown> = { updated_at: new Date().toISOString() };
+    if (status) updateData.status = status;
+    if (notes !== undefined) updateData.notes = notes;
+
+    const { error } = await client
+      .from('inquiries')
+      .update(updateData)
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error updating inquiry:', error);
+      return res.status(500).json({ error: 'Failed to update inquiry' });
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Update inquiry error:', error);
+    res.status(500).json({ error: 'Failed to update inquiry' });
+  }
+});
+
 app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ 
     status: 'ok', 
