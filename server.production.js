@@ -817,12 +817,14 @@ app.post("/api/chat", async (req, res) => {
     const { message, customerInfo } = req.body;
     if (!message) return res.status(400).json({ error: "Message required" });
     if (needsHumanAgent(message)) {
+      console.log(`\u{1F514} needsHumanAgent triggered for message: "${message.substring(0, 50)}..."`);
       const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       const shortId = sessionId.substring(0, 8);
       const customerNo = customerInfo?.customerNo || `#${shortId}`;
       const customerName = customerInfo?.name || "Unknown";
       const customerEmail = customerInfo?.email || "Not provided";
       const customerPhone = customerInfo?.phone || "Not provided";
+      console.log(`\u{1F4CB} Creating chat session: ${customerNo}, Name: ${customerName}, Email: ${customerEmail}`);
       const client = getSupabaseClient();
       if (client) {
         await client.from("chat_sessions").insert({
@@ -843,7 +845,10 @@ app.post("/api/chat", async (req, res) => {
         });
         console.log(`\u2705 Session saved: ${customerNo}`);
       }
+      console.log(`\u{1F50D} Checking FEISHU_WEBHOOK_URL: ${FEISHU_WEBHOOK_URL ? "SET" : "NOT SET"}`);
       if (FEISHU_WEBHOOK_URL) {
+        console.log(`\u{1F4E4} Preparing to send Feishu notification for human support request...`);
+        console.log(`   Webhook URL: ${FEISHU_WEBHOOK_URL}`);
         const notification = {
           msg_type: "interactive",
           card: {
@@ -903,6 +908,8 @@ app.post("/api/chat", async (req, res) => {
         } catch (error) {
           console.error("\u274C Feishu notification error:", error);
         }
+      } else {
+        console.log("\u26A0\uFE0F FEISHU_WEBHOOK_URL not configured, skipping Feishu notification for human support");
       }
       return res.json({
         response: "I'll connect you with a human agent. Please wait...",

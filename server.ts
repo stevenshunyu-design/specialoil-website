@@ -990,6 +990,8 @@ app.post('/api/chat', async (req: Request, res: Response) => {
     if (!message) return res.status(400).json({ error: 'Message required' });
 
     if (needsHumanAgent(message)) {
+      console.log(`🔔 needsHumanAgent triggered for message: "${message.substring(0, 50)}..."`);
+      
       // 创建会话 ID
       const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       const shortId = sessionId.substring(0, 8);
@@ -997,6 +999,8 @@ app.post('/api/chat', async (req: Request, res: Response) => {
       const customerName = customerInfo?.name || 'Unknown';
       const customerEmail = customerInfo?.email || 'Not provided';
       const customerPhone = customerInfo?.phone || 'Not provided';
+      
+      console.log(`📋 Creating chat session: ${customerNo}, Name: ${customerName}, Email: ${customerEmail}`);
       
       // 获取 Supabase 客户端
       const client = getSupabaseClient();
@@ -1024,7 +1028,11 @@ app.post('/api/chat', async (req: Request, res: Response) => {
       }
       
       // 发送飞书通知 - 提醒管理员去后台查看
+      console.log(`🔍 Checking FEISHU_WEBHOOK_URL: ${FEISHU_WEBHOOK_URL ? 'SET' : 'NOT SET'}`);
       if (FEISHU_WEBHOOK_URL) {
+        console.log(`📤 Preparing to send Feishu notification for human support request...`);
+        console.log(`   Webhook URL: ${FEISHU_WEBHOOK_URL}`);
+        
         const notification = {
           msg_type: 'interactive',
           card: {
@@ -1084,6 +1092,8 @@ app.post('/api/chat', async (req: Request, res: Response) => {
         } catch (error) {
           console.error('❌ Feishu notification error:', error);
         }
+      } else {
+        console.log('⚠️ FEISHU_WEBHOOK_URL not configured, skipping Feishu notification for human support');
       }
 
       return res.json({
