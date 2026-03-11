@@ -549,7 +549,10 @@ function needsHumanAgent(message) {
     "partnership",
     "bulk order",
     "wholesale",
-    "distributor"
+    "distributor",
+    "human support",
+    "customer service",
+    "live chat"
   ];
   return keywords.some((k) => message.toLowerCase().includes(k));
 }
@@ -813,9 +816,16 @@ app.post("/api/chat/human", async (req, res) => {
   }
 });
 app.post("/api/chat", async (req, res) => {
+  console.log(`\u{1F4E9} POST /api/chat received`);
+  console.log(`   Body:`, JSON.stringify(req.body).substring(0, 200));
   try {
     const { message, customerInfo } = req.body;
-    if (!message) return res.status(400).json({ error: "Message required" });
+    if (!message) {
+      console.log(`\u26A0\uFE0F No message in request body`);
+      return res.status(400).json({ error: "Message required" });
+    }
+    console.log(`\u{1F4DD} Processing message: "${message.substring(0, 50)}..."`);
+    console.log(`\u{1F50D} needsHumanAgent check: ${needsHumanAgent(message)}`);
     if (needsHumanAgent(message)) {
       console.log(`\u{1F514} needsHumanAgent triggered for message: "${message.substring(0, 50)}..."`);
       const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
