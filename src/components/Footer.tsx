@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -20,7 +22,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="font-body text-white/70 mb-6 leading-relaxed text-sm">
-              Premium industrial lubricants and special oils from China, connecting global buyers with reliable Chinese manufacturers through a seamless supply chain.
+              {t('footer.description')}
             </p>
             <div className="flex space-x-3">
               <a
@@ -54,7 +56,7 @@ const Footer = () => {
           {/* Quick Links */}
           <div>
             <h3 className="font-display font-semibold text-base uppercase tracking-wider mb-6 text-white border-l-2 border-[var(--accent-600)] pl-3">
-              Quick Links
+              {t('footer.quickLinks')}
             </h3>
             <ul className="space-y-3">
               <li>
@@ -63,7 +65,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Home
+                  {t('nav.home')}
                 </Link>
               </li>
               <li>
@@ -72,7 +74,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  About Us
+                  {t('footer.linkAbout', 'About Us')}
                 </Link>
               </li>
               <li>
@@ -81,7 +83,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Partners
+                  {t('nav.partners')}
                 </Link>
               </li>
               <li>
@@ -90,7 +92,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Products
+                  {t('nav.products')}
                 </Link>
               </li>
               <li>
@@ -99,7 +101,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Logistics
+                  {t('nav.logistics')}
                 </Link>
               </li>
               <li>
@@ -108,7 +110,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Quality
+                  {t('nav.quality')}
                 </Link>
               </li>
               <li>
@@ -117,7 +119,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Industry News
+                  {t('footer.linkBlog', 'Industry News')}
                 </Link>
               </li>
               <li>
@@ -126,7 +128,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Contact
+                  {t('nav.contact')}
                 </Link>
               </li>
             </ul>
@@ -135,7 +137,7 @@ const Footer = () => {
           {/* Products */}
           <div>
             <h3 className="font-display font-semibold text-base uppercase tracking-wider mb-6 text-white border-l-2 border-[var(--accent-600)] pl-3">
-              Products
+              {t('footer.products')}
             </h3>
             <ul className="space-y-3">
               <li>
@@ -144,7 +146,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Transformer Oil
+                  {t('footer.productTransformer', 'Transformer Oil')}
                 </Link>
               </li>
               <li>
@@ -153,7 +155,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Rubber Process Oil
+                  {t('footer.productRubber', 'Rubber Process Oil')}
                 </Link>
               </li>
               <li>
@@ -162,7 +164,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Hydraulic & Industrial Oils
+                  {t('footer.productHydraulic', 'Hydraulic & Industrial Oils')}
                 </Link>
               </li>
               <li>
@@ -171,7 +173,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Gear Oils
+                  {t('footer.productGear', 'Gear Oils')}
                 </a>
               </li>
               <li>
@@ -180,7 +182,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Turbine Oils
+                  {t('footer.productTurbine', 'Turbine Oils')}
                 </a>
               </li>
               <li>
@@ -189,7 +191,7 @@ const Footer = () => {
                   className="font-body text-white/70 hover:text-[var(--accent-600)] transition-colors duration-300 text-sm flex items-center group"
                 >
                   <span className="w-1.5 h-1.5 bg-[var(--accent-600)] rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Specialty Lubricants
+                  {t('footer.productSpecialty', 'Specialty Lubricants')}
                 </a>
               </li>
             </ul>
@@ -198,7 +200,7 @@ const Footer = () => {
           {/* Contact Info */}
           <div>
             <h3 className="font-display font-semibold text-base uppercase tracking-wider mb-6 text-white border-l-2 border-[var(--accent-600)] pl-3">
-              Contact Us
+              {t('footer.contact')}
             </h3>
             <ul className="space-y-4">
               <li className="flex items-start group">
@@ -206,7 +208,7 @@ const Footer = () => {
                   <i className="fa-solid fa-location-dot text-sm"></i>
                 </div>
                 <span className="font-body text-white/70 text-sm leading-relaxed">
-                  10th Floor, No. 197, Songling Road, Laoshan District, Qingdao, Shandong, China
+                  {t('footer.address', '10th Floor, No. 197, Songling Road, Laoshan District, Qingdao, Shandong, China')}
                 </span>
               </li>
               <li className="flex items-center group">
@@ -236,7 +238,7 @@ const Footer = () => {
                   <i className="fa-solid fa-clock text-sm"></i>
                 </div>
                 <span className="font-body text-white/70 text-sm">
-                  Mon-Fri: 9AM-6PM (GMT+8)
+                  {t('footer.workingHours', 'Mon-Fri: 9AM-6PM (GMT+8)')}
                 </span>
               </li>
             </ul>
@@ -246,32 +248,32 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="font-body text-white/50 text-sm">
-            © {currentYear} CN-SpecLube Chain. All rights reserved.
+            © {currentYear} CN-SpecLube Chain. {t('footer.allRightsReserved')}.
           </p>
           <div className="flex flex-wrap gap-6 justify-center">
             <Link
               to="/privacy-policy"
               className="font-body text-white/50 hover:text-white text-sm transition-colors duration-300"
             >
-              Privacy Policy
+              {t('footer.privacyPolicy')}
             </Link>
             <Link
               to="/terms-of-service"
               className="font-body text-white/50 hover:text-white text-sm transition-colors duration-300"
             >
-              Terms of Service
+              {t('footer.termsOfService')}
             </Link>
             <Link
               to="/cookie-policy"
               className="font-body text-white/50 hover:text-white text-sm transition-colors duration-300"
             >
-              Cookie Policy
+              {t('footer.cookiePolicy', 'Cookie Policy')}
             </Link>
             <a
               href="#"
               className="font-body text-white/50 hover:text-white text-sm transition-colors duration-300"
             >
-              Sitemap
+              {t('footer.sitemap', 'Sitemap')}
             </a>
           </div>
         </div>

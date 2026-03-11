@@ -32,7 +32,19 @@
     "followUs": "关注我们",
     "allRightsReserved": "版权所有",
     "privacyPolicy": "隐私政策",
-    "termsOfService": "服务条款"
+    "termsOfService": "服务条款",
+    "cookiePolicy": "Cookie政策",
+    "sitemap": "网站地图",
+    "linkAbout": "关于我们",
+    "linkBlog": "行业资讯",
+    "productTransformer": "变压器油",
+    "productRubber": "橡胶加工油",
+    "productHydraulic": "液压与工业油",
+    "productGear": "齿轮油",
+    "productTurbine": "汽轮机油",
+    "productSpecialty": "特种润滑油",
+    "address": "中国山东省青岛市崂山区松岭路197号10楼",
+    "workingHours": "周一至周五: 上午9点-下午6点 (GMT+8)"
   },
   "home": {
     "hero": {
@@ -109,14 +121,25 @@
   },
   "about": {
     "hero": {
-      "title": "关于 CN-SpecLube Chain",
+      "title": "中国特种油供应链",
       "subtitle": "您在中国特种油供应链中的可信赖合作伙伴"
+    },
+    "tabs": {
+      "story": "我们的故事",
+      "supplyChain": "供应链",
+      "qualityControl": "质量控制",
+      "globalMarkets": "全球市场"
     },
     "story": {
       "tag": "我们的故事",
-      "title": "连接全球市场与中国特种油产业",
-      "description": "CN-SpecLube Chain 是一家专业的供应链服务提供商，专注于连接国际买家与中国特种油制造商。我们提供包括采购协调、质量保证、物流管理和报关文件在内的全面解决方案。",
-      "p2": "我们的团队拥有深厚的行业专业知识，并与领先的中国制造商建立了稳固的合作关系。我们作为您的战略合作伙伴，确保从采购到交付的无缝交易和可靠的产品质量。"
+      "title": "将中国优质特种油连接到全球市场",
+      "p1": "成立于2025年，我们迅速成为一家专注的供应链平台，拥有明确的使命：为全球提供来自中国最信誉制造商的优质特种油。",
+      "p2": "我们专门从事高品质中国特种油的采购和交付，将全球工业客户与优质制造商连接起来。我们的核心专业领域是提供采购、质量控制和物流的整合供应链解决方案。",
+      "p3": "我们的团队由石油和天然气行业经验丰富的专业人士组成，我们与制造商建立了稳固的合作关系，确保客户每次都能以具有竞争力的价格获得优质产品。",
+      "stat1": "年行业经验",
+      "stat2": "服务国家",
+      "stat3": "成功运输",
+      "stat4": "合作工厂"
     },
     "mission": {
       "title": "我们的使命",
@@ -141,6 +164,73 @@
         "description": "每一步都有专人支持"
       }
     },
+    "supplyChain": {
+      "title": "我们的完整供应链解决方案",
+      "intro": "我们提供无缝的供应链解决方案，涵盖从采购到交付的每个步骤，确保客户高效可靠地获得高品质的中国特种油。",
+      "step1Title": "采购与选择",
+      "step1Desc": "直接接触中国优质特种油制造商，具有严格的供应商资格审核流程。",
+      "step2Title": "质量控制",
+      "step2Desc": "在多个阶段进行全面的测试和检验，确保产品符合国际标准。",
+      "step3Title": "文件与合规",
+      "step3Desc": "完整处理出口文件、清关和国际贸易法规合规。",
+      "step4Title": "物流与交付",
+      "step4Desc": "为全球港口提供可靠的运输解决方案，提供灵活选择以满足您的特定需求。",
+      "learnMore": "了解我们的物流服务"
+    },
+    "quality": {
+      "title": "严格的质量控制",
+      "intro": "我们深知质量对于工业润滑油至关重要。我们全面的质量控制系统确保每个产品都符合最高的国际标准和您的特定要求。",
+      "lab": {
+        "title": "实验室测试",
+        "intro": "我们的产品在ISO认证的实验室进行严格测试，确保符合所有技术规格。",
+        "item1": "物理和化学分析",
+        "item2": "各种条件下的性能测试",
+        "item3": "污染物和杂质检测"
+      },
+      "inspection": {
+        "title": "工厂检验",
+        "intro": "定期的工厂审核和检验确保持续的制造质量。",
+        "item1": "生产过程监控",
+        "item2": "原材料质量验证",
+        "item3": "质量管理系统审查"
+      },
+      "certifications": {
+        "title": "认证与标准"
+      },
+      "viewDetails": "查看详细质量流程"
+    },
+    "global": {
+      "title": "我们的全球布局",
+      "intro": "我们已成功将中国特种油交付给全球50多个国家的工业客户。我们在国际贸易方面的经验确保交易顺利和准时交付。",
+      "distribution": {
+        "title": "区域分销",
+        "desc": "在关键地区策略性设立仓库，确保快速交付和本地支持。"
+      },
+      "support": {
+        "title": "多语言支持",
+        "desc": "我们的团队会说英语和中文，更好地服务全球客户。"
+      },
+      "shipping": {
+        "title": "灵活运输",
+        "desc": "提供FOB、CFR、CIF和DDP等多种运输选项，满足您的特定需求。"
+      },
+      "markets": {
+        "title": "主要出口市场",
+        "europe": "欧洲（德国、意大利、法国、西班牙）",
+        "northAmerica": "北美（美国、加拿大、墨西哥）",
+        "middleEast": "中东（沙特阿拉伯、阿联酋、卡塔尔）",
+        "southeastAsia": "东南亚（印尼、马来西亚、泰国）",
+        "africa": "非洲（南非、尼日利亚、埃及）",
+        "southAmerica": "南美洲（巴西、阿根廷、智利）"
+      },
+      "testimonials": {
+        "title": "客户评价",
+        "quote1": "我们收到的中国特种油质量卓越，供应链服务让整个过程无缝对接。",
+        "author1": "欧洲制造公司",
+        "quote2": "我们通过这个平台从中国进口变压器油已经5年了。每次都能保持稳定的质量和可靠的交付。",
+        "author2": "中东电力公司"
+      }
+    },
     "cta": {
       "title": "准备好与我们合作了吗？",
       "description": "让我们帮助您开拓中国特种油市场",
@@ -150,19 +240,97 @@
   "products": {
     "title": "我们的产品",
     "subtitle": "源自值得信赖的中国制造商的优质特种油",
+    "hero": {
+      "tag": "产品组合",
+      "title": "中国优质特种油产品",
+      "subtitle": "探索我们符合国际标准、服务全球工业客户的全面优质中国特种油产品系列。"
+    },
+    "whyChina": {
+      "title": "为什么从中国采购特种油？",
+      "desc": "中国已崛起为高质量特种油的领先生产商，拥有先进的炼油技术和具有竞争力的价格。",
+      "learnMore": "了解中国的优势",
+      "getQuote": "获取竞争报价"
+    },
+    "advantages": {
+      "pricing": "价格优势",
+      "technology": "先进技术",
+      "workforce": "熟练劳动力",
+      "supplyChain": "完整供应链"
+    },
+    "ourProducts": "我们的产品",
+    "rangeTitle": "中国特种油产品系列",
+    "rangeDesc": "满足工业应用的全面解决方案，制造符合全球标准",
+    "keyFeatures": "主要特点",
+    "viewSpecs": "查看规格",
     "categories": {
       "transformer": {
         "title": "变压器油",
-        "description": "用于电气设备的高性能绝缘油"
+        "description": "来自中国的优质环烷基变压器油，具有优异的介电性能和低硫含量，是高压应用的理想选择。"
       },
       "rubber": {
         "title": "橡胶加工油",
-        "description": "用于橡胶制造的特种油"
+        "description": "来自中国的高溶解力环烷基橡胶加工油，低多环芳烃含量，非常适合轮胎制造和橡胶混炼。"
       },
       "lubricants": {
-        "title": "成品润滑油",
-        "description": "工业和汽车润滑油"
+        "title": "液压与工业油",
+        "description": "来自中国的高性能液压油和工业润滑油，专为极端条件和重型应用而设计。"
       }
+    },
+    "features": {
+      "zeroCorrosive": "零腐蚀性硫",
+      "arcticReliability": "极地可靠性 (-45°C)",
+      "highDielectric": "高介电强度",
+      "astmCompliant": "符合 ASTM D3487 标准",
+      "cnContent": "环烷烃含量 > 35%",
+      "euReach": "符合欧盟 REACH 标准",
+      "lowPah": "低多环芳烃",
+      "excellentCompat": "优异的相容性",
+      "isoGrades": "ISO 68/46/32 粘度等级",
+      "dinCompliant": "符合 DIN 51524 标准",
+      "antiWear": "抗磨保护",
+      "wideTemp": "宽温度范围"
+    },
+    "standards": {
+      "iso9001": "质量管理体系",
+      "iso14001": "环境管理体系",
+      "reach": "低多环芳烃含量合规",
+      "astm": "国际产品标准"
+    },
+    "stats": {
+      "capacity": {
+        "title": "生产能力",
+        "unit": "公吨/年",
+        "desc": "我们在中国的合作工厂拥有巨大的生产能力，可满足大批量订单。"
+      },
+      "qc": {
+        "title": "质量控制",
+        "unit": "出货前检验",
+        "desc": "所有产品在发货前都经过严格测试，确保符合规格要求。"
+      },
+      "export": {
+        "title": "出口经验",
+        "unit": "出口国家",
+        "desc": "向全球工业客户出口中国特种油的丰富经验。"
+      }
+    },
+    "compliance": {
+      "tag": "合规与标准",
+      "title": "国际标准与合规",
+      "desc": "我们所有的中国特种油产品都达到或超过国际标准，确保工业应用的质量和可靠性。"
+    },
+    "brochure": {
+      "tag": "资源",
+      "title": "下载中国特种油指南",
+      "desc": "获取有关中国特种油规格、应用和行业优势的详细信息。",
+      "button": "下载指南 (PDF)"
+    },
+    "cta": {
+      "title": "对中国特种油感兴趣？",
+      "desc": "联系我们的团队获取个性化推荐和竞争价格。",
+      "button": "免费索取报价"
+    },
+    "mobileFooter": {
+      "call": "致电我们"
     }
   },
   "transformerOil": {
@@ -294,144 +462,106 @@
   },
   "quality": {
     "title": "质量保证",
-    "hero": {
-      "title": "质量保证",
-      "subtitle": "我们对卓越的承诺"
+    "hero": { "title": "质量与合规" },
+    "tabs": {
+      "process": "质量流程",
+      "certificates": "认证证书",
+      "standards": "标准规范",
+      "testing": "测试方法"
     },
     "process": {
       "title": "我们的质量流程",
-      "description": "在 CN-SpecLube Chain，我们在整个供应链中保持严格的质量管控，从原材料采购到成品交付。我们对质量的承诺确保每个产品都符合最高的行业标准。"
+      "intro": "在CN-SpecLube Chain，我们在整个供应链中保持严格的质量控制，从原材料采购到成品交付。我们对质量的承诺确保每个产品都符合最高的行业标准。",
+      "step1": { "title": "战略采购", "desc": "我们与中国领先的特种油制造商合作，精心挑选以卓越质量标准和稳定产品品质著称的供应商。" },
+      "step2": { "title": "加氢处理", "desc": "我们先进的加氢处理工艺去除杂质并稳定基础油，确保卓越的性能特征和延长使用寿命。" },
+      "step3": { "title": "CNAS实验室测试", "desc": "我们所有产品都在CNAS认证实验室进行严格测试，确保符合国际标准和规格。" },
+      "step4": { "title": "出货", "desc": "我们确保在运输过程中进行适当的包装和处理，以保持产品完整性，并提供完整的清关和质量保证文件。" },
+      "qms": {
+        "title": "质量管理体系",
+        "intro": "我们ISO 9001认证的质量管理体系确保整个运营过程中产品质量的一致性和持续改进。",
+        "item1": "文件控制", "item1Desc": "全面的文档可追溯性",
+        "item2": "过程控制", "item2Desc": "标准化程序确保一致性",
+        "item3": "持续改进", "item3Desc": "定期审核和流程优化"
+      }
     },
-    "sourcing": {
-      "title": "战略采购",
-      "description": "我们与领先的中国特种油制造商合作，精心选择以卓越质量标准和一致产品质量著称的供应商。"
+    "certificates": {
+      "title": "我们的认证",
+      "intro": "我们持有各种国际认证，确保我们的产品和流程符合最高标准。",
+      "iso9001": "质量管理体系",
+      "iso14001": "环境管理体系",
+      "iso45001": "职业健康安全",
+      "ohsas": "职业健康安全评估"
     },
     "standards": {
       "title": "国际标准",
-      "description": "我们所有的产品都符合国际质量标准和规格。",
-      "item1": "ISO 9001 质量管理",
-      "item2": "ASTM 标准",
-      "item3": "IEC 规格",
-      "item4": "API 标准"
+      "intro": "我们所有产品都符合国际质量标准和规范。",
+      "astm": "美国材料与试验协会石油产品标准",
+      "iso": "国际标准化组织润滑油规范",
+      "din": "德国工业标准工业应用规范",
+      "gb": "中国石油和化工产品国家标准",
+      "api": "美国石油协会发动机油性能标准",
+      "reach": "化学品注册、评估、授权和限制"
     },
     "testing": {
       "title": "测试方法",
-      "description": "全面的测试确保产品质量和性能。",
-      "item1": "物理性能测试",
-      "item2": "化学成分分析",
-      "item3": "性能测试",
-      "item4": "污染测试"
+      "intro": "全面的测试确保产品质量和性能。",
+      "viscosity": { "name": "粘度测量", "desc": "在各种温度下测试油的粘度以确保适当的润滑性能" },
+      "flashPoint": { "name": "闪点测试", "desc": "测定油蒸气点燃的最低温度" },
+      "pourPoint": { "name": "倾点测试", "desc": "测量油保持流动的最低温度" },
+      "acidNumber": { "name": "酸值测定", "desc": "测试酸性特性以评估氧化和降解程度" },
+      "elemental": { "name": "元素分析", "desc": "使用先进光谱技术测量添加剂元素浓度" },
+      "particle": { "name": "颗粒计数", "desc": "使用激光颗粒计数器评估润滑油的清洁度等级" }
     },
-    "cta": {
-      "title": "每一滴都值得信赖",
-      "description": "我们对质量的承诺确保您获得最适合工业需求的优质产品",
-      "button": "索取产品样品"
-    }
+    "cta": { "title": "需要质量保证文件？", "desc": "联系我们索取分析证书、测试报告或质量文件。", "button": "索取文件" }
   },
   "logistics": {
     "title": "物流与包装解决方案",
-    "hero": {
-      "title": "物流与包装解决方案",
-      "subtitle": "高效可靠的全球运输"
-    },
-    "tabs": {
-      "bulk": "散装液体运输",
-      "packaged": "包装货物运输",
-      "shipping": "全球航线",
-      "customs": "报关与合规"
-    },
+    "hero": { "title": "物流与包装解决方案" },
+    "tabs": { "bulk": "散装液体运输", "packaged": "包装货物运输", "shipping": "全球航线", "customs": "报关与合规" },
     "bulk": {
       "title": "散装液体运输",
       "description": "我们为原材料提供高效且具成本效益的散装液体运输解决方案，专为满足石油和润滑油行业的特定要求而设计。",
-      "isoTank": {
-        "title": "ISO 储罐",
-        "capacity": "26,000升",
-        "description": "专为安全高效运输散装液体而设计的不锈钢储罐。装载量因产品密度而异——通常为21,000-26,000升，取决于所运输液体的比重。"
-      },
-      "flexibag": {
-        "title": "液体囊袋",
-        "capacity": "20英尺集装箱",
-        "description": "柔性中型散装容器，可为温度敏感产品提供加热垫。",
-        "badge": "可加装加热垫"
-      },
-      "benefits": {
-        "title": "散装液体运输的优势",
-        "cost": {
-          "title": "成本效益",
-          "description": "降低包装成本和处理费用"
-        },
-        "environment": {
-          "title": "环保",
-          "description": "减少包装废弃物，降低碳足迹"
-        },
-        "handling": {
-          "title": "高效处理",
-          "description": "简化物流，加快装卸流程"
-        }
-      }
+      "isoTank": { "title": "ISO 储罐", "capacity": "26,000升", "description": "专为安全高效运输散装液体而设计的不锈钢储罐。装载量因产品密度而异——通常为21,000-26,000升，取决于所运输液体的比重。" },
+      "flexibag": { "title": "液体囊袋", "capacity": "20英尺集装箱", "description": "柔性中型散装容器，可为温度敏感产品提供加热垫。", "badge": "可加装加热垫" },
+      "benefits": { "title": "散装液体运输的优势", "cost": { "title": "成本效益", "description": "降低包装成本和处理费用" }, "environment": { "title": "环保", "description": "减少包装废弃物，降低碳足迹" }, "handling": { "title": "高效处理", "description": "简化物流，加快装卸流程" } }
     },
     "packaged": {
       "title": "包装货物运输",
-      "description": "我们提供灵活的包装选项以满足您的特定要求。",
-      "drums": {
-        "title": "铁桶",
-        "details": "每托盘4桶，缠绕膜加固",
-        "description": "200L钢桶牢固地包装在木托盘上，确保运输过程中的稳定性。"
-      },
-      "ibc": {
-        "title": "IBC中型散装容器",
-        "details": "叉车搬运",
-        "description": "1000L中型散装容器，专为高效存储和叉车或托盘车搬运而设计。"
-      },
-      "smallPacks": {
-        "title": "小包装",
-        "details": "纸箱包装",
-        "description": "18L塑料桶和更小的容器牢固地包装在坚固的纸箱中，确保安全运输。"
-      }
+      "description": "我们的成品润滑油提供多种包装选项，每种都旨在确保运输和储存过程中的产品完整性。",
+      "drums": { "title": "铁桶", "details": "每托盘4桶，缠绕膜加固", "description": "200L钢桶牢固地包装在木托盘上，确保运输过程中的稳定性。" },
+      "ibc": { "title": "IBC中型散装容器", "details": "叉车搬运", "description": "1000L中型散装容器，专为高效存储和叉车或托盘车搬运而设计。" },
+      "smallPacks": { "title": "小包装", "details": "纸箱包装", "description": "18L塑料桶和更小的容器牢固地包装在坚固的纸箱中，确保安全运输。" },
+      "specs": { "title": "包装规格", "type": "包装类型", "capacityCol": "容量", "perPallet": "每托盘数量", "perContainer": "每20尺柜数量", "bucket18L": { "name": "18L塑料桶", "capacity": "18L", "pallet": "48桶", "container": "1,152桶" }, "drum200L": { "name": "200L钢桶", "capacity": "200L", "pallet": "4桶", "container": "80桶" }, "ibc1000L": { "name": "1000L IBC容器", "capacity": "1000L", "pallet": "1个IBC", "container": "18个IBC" } }
     },
     "shipping": {
       "title": "全球航线",
-      "description": "我们运送到全球主要港口，运输时间可靠。",
-      "routes": {
-        "asiaEurope": {
-          "route": "亚洲至欧洲",
-          "transitTime": "21-28天",
-          "ports": "上海、宁波 → 鹿特丹、汉堡"
-        },
-        "asiaNorthAmerica": {
-          "route": "亚洲至北美洲",
-          "transitTime": "18-25天",
-          "ports": "青岛、天津 → 洛杉矶、纽约"
-        },
-        "asiaSouthAmerica": {
-          "route": "亚洲至南美洲",
-          "transitTime": "30-40天",
-          "ports": "上海 → 圣保罗、布宜诺斯艾利斯"
-        },
-        "asiaOceania": {
-          "route": "亚洲至大洋洲",
-          "transitTime": "12-18天",
-          "ports": "上海 → 悉尼、墨尔本"
-        }
-      }
+      "description": "我们建立了可靠的运输航线，确保及时将产品交付给全球客户。我们的全球物流网络覆盖所有主要地区。",
+      "routesTitle": "主要运输航线",
+      "route": "航线", "transitTime": "运输时间", "mainPorts": "主要港口",
+      "asiaEurope": { "route": "亚洲至欧洲", "transitTime": "21-28天", "ports": "上海、宁波 → 鹿特丹、汉堡" },
+      "asiaNorthAmerica": { "route": "亚洲至北美洲", "transitTime": "18-25天", "ports": "青岛、天津 → 洛杉矶、纽约" },
+      "asiaSouthAmerica": { "route": "亚洲至南美洲", "transitTime": "30-40天", "ports": "上海 → 圣保罗、布宜诺斯艾利斯" },
+      "asiaOceania": { "route": "亚洲至大洋洲", "transitTime": "12-18天", "ports": "上海 → 悉尼、墨尔本" },
+      "methods": { "title": "运输方式", "ocean": { "title": "海运", "description": "大批量货物最经济的选择，提供整箱（FCL）和拼箱（LCL）服务" }, "air": { "title": "空运", "description": "紧急订单的快速运输，适合小批量和时间敏感的交付" }, "land": { "title": "陆运", "description": "内陆运输和邻国跨境运输的卡车服务" } },
+      "incoterms": { "title": "国际贸易术语", "exw": "工厂交货", "fob": "离岸价", "cfr": "成本加运费", "cif": "成本、保险加运费", "dap": "目的地交货", "ddp": "完税后交货" },
+      "quoteButton": "索取运输报价"
     },
     "customs": {
       "title": "报关与合规",
-      "description": "我们处理所有报关文件和合规要求。",
-      "items": {
-        "item1": "出口文件",
-        "item2": "进口文件",
-        "item3": "原产地证明书",
-        "item4": "质量证明书",
-        "item5": "危险品文件",
-        "item6": "保险安排"
-      }
+      "description": "我们在国际贸易法规和海关程序方面拥有丰富经验，确保货物顺利合规地运往全球各地。",
+      "documentation": { "title": "文件服务", "commercialInvoice": "商业发票", "packingList": "装箱单", "billOfLading": "提单/航空运单", "certificateOfOrigin": "原产地证明书", "insuranceCertificate": "保险凭证（CIF运输）", "msds": "MSDS（材料安全数据表）", "technicalCertificates": "技术证明书" },
+      "regulatory": { "title": "法规合规", "adr": "ADR/RID危险品运输", "imo": "IMO海运法规", "icao": "ICAO/IATA空运法规", "reach": "欧盟REACH合规", "epa": "美国EPA法规", "clearance": "全球清关协助", "tariff": "关税归类专业知识" },
+      "faq": { "title": "常见问题", "q1": "国际运输需要提供哪些文件？", "a1": "对于大多数国际运输，我们需要您的公司详情、目的港和首选贸易术语。我们将根据您的具体要求处理所有必要运输文件的准备工作。", "q2": "您如何确保符合国际法规？", "a2": "我们的物流团队时刻关注最新的国际贸易法规，并与监管机构保持密切关系。我们定期进行培训和审核，确保完全符合所有适用法律法规。", "q3": "您可以在目的港协助清关吗？", "a3": "是的，我们拥有全球报关行和代理网络，几乎可以在全球任何目的港协助清关。我们可以提供DDP（完税后交货）服务，实现完整的门到门解决方案。", "contactButton": "联系我们的物流团队" }
     },
-    "cta": {
-      "title": "准备好运送您的订单了吗？",
-      "description": "我们的物流专家随时准备为您提供定制化的运输解决方案",
-      "button": "获取运输报价"
-    }
+    "advantage": {
+      "title": "我们的物流优势",
+      "globalNetwork": { "title": "全球网络", "description": "覆盖全球所有主要地区的综合物流网络" },
+      "productSafety": { "title": "产品安全", "description": "严格的安全协议确保运输过程中的产品完整性" },
+      "onTimeDelivery": { "title": "准时交付", "description": "可靠的运输解决方案，承诺按时交付" },
+      "dedicatedSupport": { "title": "专属支持", "description": "专业物流团队在整个运输过程中提供个性化支持" }
+    },
+    "cta": { "title": "准备好运送您的订单了吗？", "description": "我们的物流专家随时准备为您提供定制化的运输解决方案", "button": "获取运输报价" },
+    "mobileFooter": { "contact": "联系我们" }
   },
   "contact": {
     "title": "联系我们",

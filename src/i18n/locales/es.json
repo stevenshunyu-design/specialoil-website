@@ -28,11 +28,23 @@
     "description": "Su socio de confianza para soluciones de cadena de suministro de aceites especiales desde China.",
     "quickLinks": "Enlaces rápidos",
     "products": "Productos",
-    "contact": "Contacto",
+    "contact": "Contáctenos",
     "followUs": "Síguenos",
     "allRightsReserved": "Todos los derechos reservados",
     "privacyPolicy": "Política de privacidad",
-    "termsOfService": "Términos de servicio"
+    "termsOfService": "Términos de servicio",
+    "cookiePolicy": "Política de cookies",
+    "sitemap": "Mapa del sitio",
+    "linkAbout": "Nosotros",
+    "linkBlog": "Noticias de la industria",
+    "productTransformer": "Aceite para transformadores",
+    "productRubber": "Aceite de proceso de caucho",
+    "productHydraulic": "Aceites hidráulicos e industriales",
+    "productGear": "Aceites de engranajes",
+    "productTurbine": "Aceites de turbina",
+    "productSpecialty": "Lubricantes especiales",
+    "address": "Piso 10, No. 197, Calle Songling, Distrito Laoshan, Qingdao, Shandong, China",
+    "workingHours": "Lun-Vie: 9AM-6PM (GMT+8)"
   },
   "home": {
     "hero": {
@@ -82,13 +94,25 @@
     }
   },
   "about": {
-    "hero": { "title": "Sobre CN-SpecLube Chain", "subtitle": "Su socio de confianza en la cadena de suministro de aceites especiales de China" },
+    "hero": { "title": "Cadena de Suministro de Aceites Especiales de China", "subtitle": "Su socio de confianza en la cadena de suministro de aceites especiales de China" },
+    "tabs": {
+      "story": "Nuestra Historia",
+      "supplyChain": "Cadena de Suministro",
+      "qualityControl": "Control de Calidad",
+      "globalMarkets": "Mercados Globales"
+    },
     "story": {
       "tag": "Nuestra historia",
-      "title": "Conectando mercados globales con la industria de aceites especiales de China",
-      "description": "CN-SpecLube Chain es un proveedor especializado de servicios de cadena de suministro enfocado en conectar compradores internacionales con fabricantes de aceites especiales de China."
+      "title": "Conectando los aceites especiales premium de China con los mercados globales",
+      "p1": "Fundada en 2025, nos hemos establecido rápidamente como una plataforma de cadena de suministro dedicada con una misión clara: proporcionar al mundo acceso a aceites especiales de alta calidad de los fabricantes más reputados de China.",
+      "p2": "Nos especializamos en la adquisición y entrega de aceites especiales chinos de alta calidad, conectando clientes industriales globales con fabricantes premium. Nuestra experiencia principal radica en proporcionar soluciones integradas de cadena de suministro para adquisiciones, control de calidad y logística.",
+      "p3": "Con un equipo de profesionales de la industria con amplia experiencia en el sector petrolero y de gas, hemos construido fuertes asociaciones con fabricantes para asegurar que nuestros clientes reciban productos excepcionales a precios competitivos, cada vez.",
+      "stat1": "Años de Experiencia",
+      "stat2": "Países Atendidos",
+      "stat3": "Envíos Exitosos",
+      "stat4": "Fábricas Asociadas"
     },
-    "mission": { "title": "Nuestra misión", "description": "Proporcionar servicios de cadena de suministro confiables, eficientes y transparentes." },
+    "mission": { "title": "Nuestra misión", "description": "Proporcionar servicios de cadena de suministro confiables, eficientes y transparentes que conecten a compradores globales con fabricantes de aceites especiales de China." },
     "vision": { "title": "Nuestra visión", "description": "Convertirse en el puente más confiable entre los mercados internacionales y la industria de aceites especiales de China." },
     "values": {
       "title": "Nuestros valores",
@@ -96,15 +120,158 @@
       "integrity": { "title": "Integridad", "description": "Prácticas comerciales transparentes y honestas" },
       "service": { "title": "Excelencia en servicio", "description": "Soporte dedicado en cada paso" }
     },
+    "supplyChain": {
+      "title": "Nuestra Solución Completa de Cadena de Suministro",
+      "intro": "Ofrecemos una solución de cadena de suministro perfecta que cubre cada paso desde el abastecimiento hasta la entrega, asegurando que nuestros clientes reciban aceites especiales chinos de alta calidad de manera eficiente y confiable.",
+      "step1Title": "Abastecimiento y Selección",
+      "step1Desc": "Acceso directo a fabricantes premium de aceites especiales en China, con procesos rigurosos de calificación de proveedores.",
+      "step2Title": "Control de Calidad",
+      "step2Desc": "Pruebas e inspecciones integrales en múltiples etapas para asegurar que los productos cumplan con estándares internacionales.",
+      "step3Title": "Documentación y Cumplimiento",
+      "step3Desc": "Manejo completo de documentación de exportación, despacho de aduanas y cumplimiento de regulaciones comerciales internacionales.",
+      "step4Title": "Logística y Entrega",
+      "step4Desc": "Soluciones de envío confiables a puertos de todo el mundo, con opciones flexibles para satisfacer sus necesidades específicas.",
+      "learnMore": "Conozca Nuestra Logística"
+    },
+    "quality": {
+      "title": "Control de Calidad Riguroso",
+      "intro": "Entendemos que la calidad es primordial para los lubricantes industriales. Nuestro sistema integral de control de calidad asegura que cada producto cumpla con los más altos estándares internacionales y sus requisitos específicos.",
+      "lab": {
+        "title": "Pruebas de Laboratorio",
+        "intro": "Nuestros productos se someten a pruebas rigurosas en laboratorios certificados ISO para asegurar que cumplan con todas las especificaciones técnicas.",
+        "item1": "Análisis físico y químico",
+        "item2": "Pruebas de rendimiento en diversas condiciones",
+        "item3": "Detección de contaminantes e impurezas"
+      },
+      "inspection": {
+        "title": "Inspección de Fábrica",
+        "intro": "Auditorías e inspecciones regulares de fábrica aseguran una calidad de fabricación consistente.",
+        "item1": "Monitoreo del proceso de producción",
+        "item2": "Verificación de calidad de materias primas",
+        "item3": "Revisión del sistema de gestión de calidad"
+      },
+      "certifications": { "title": "Certificaciones y Estándares" },
+      "viewDetails": "Ver Proceso de Calidad Detallado"
+    },
+    "global": {
+      "title": "Nuestra Presencia Global",
+      "intro": "Hemos entregado exitosamente aceites especiales chinos a clientes industriales en más de 50 países de todo el mundo. Nuestra experiencia en comercio internacional asegura transacciones fluidas y entregas a tiempo.",
+      "distribution": { "title": "Distribución Regional", "desc": "Almacenes estratégicamente ubicados en regiones clave para asegurar entrega rápida y soporte local." },
+      "support": { "title": "Soporte Multilingüe", "desc": "Nuestro equipo habla inglés y chino para servir mejor a nuestros clientes globales." },
+      "shipping": { "title": "Envío Flexible", "desc": "Varias opciones de envío incluyendo FOB, CFR, CIF y DDP para satisfacer sus requisitos específicos." },
+      "markets": {
+        "title": "Principales Mercados de Exportación",
+        "europe": "Europa (Alemania, Italia, Francia, España)",
+        "northAmerica": "América del Norte (EE.UU., Canadá, México)",
+        "middleEast": "Medio Oriente (Arabia Saudita, EAU, Qatar)",
+        "southeastAsia": "Sudeste Asiático (Indonesia, Malasia, Tailandia)",
+        "africa": "África (Sudáfrica, Nigeria, Egipto)",
+        "southAmerica": "Sudamérica (Brasil, Argentina, Chile)"
+      },
+      "testimonials": {
+        "title": "Testimonios de Clientes",
+        "quote1": "La calidad de los aceites especiales chinos que recibimos fue excepcional, y el servicio de cadena de suministro hizo que todo el proceso fuera perfecto.",
+        "author1": "Empresa Manufacturera Europea",
+        "quote2": "Hemos estado importando aceite para transformadores de China a través de esta plataforma durante 5 años. Calidad consistente y entregas confiables cada vez.",
+        "author2": "Empresa de Energía del Medio Oriente"
+      }
+    },
     "cta": { "title": "¿Listo para asociarse con nosotros?", "description": "Permítanos ayudarle a navegar el mercado de aceites especiales de China", "button": "Póngase en contacto" }
   },
   "products": {
-    "title": "Nuestros productos",
+    "title": "Nuestros Productos",
     "subtitle": "Aceites especiales premium de fabricantes chinos de confianza",
+    "hero": {
+      "tag": "Portafolio de Productos",
+      "title": "Productos Premium de Aceites Especiales de China",
+      "subtitle": "Descubra nuestra amplia gama de aceites especiales chinos de alta calidad que cumplen estándares internacionales y sirven a clientes industriales en todo el mundo."
+    },
+    "whyChina": {
+      "title": "¿Por qué obtener aceites especiales de China?",
+      "desc": "China ha surgido como un productor líder de aceites especiales de alta calidad con tecnología de refinación avanzada y precios competitivos.",
+      "learnMore": "Conozca las ventajas de China",
+      "getQuote": "Obtener cotización competitiva"
+    },
+    "advantages": {
+      "pricing": "Precios competitivos",
+      "technology": "Tecnología avanzada",
+      "workforce": "Mano de obra calificada",
+      "supplyChain": "Cadena de suministro completa"
+    },
+    "ourProducts": "Nuestros Productos",
+    "rangeTitle": "Gama de Productos de Aceites Especiales de China",
+    "rangeDesc": "Soluciones integrales para aplicaciones industriales, fabricados para cumplir estándares globales",
+    "keyFeatures": "Características clave",
+    "viewSpecs": "Ver especificaciones",
     "categories": {
-      "transformer": { "title": "Aceite para transformadores", "description": "Aceites aislantes de alto rendimiento" },
-      "rubber": { "title": "Aceite para proceso de caucho", "description": "Aceites especiales para fabricación de caucho" },
-      "lubricants": { "title": "Lubricantes terminados", "description": "Lubricantes industriales y automotrices" }
+      "transformer": {
+        "title": "Aceite para transformadores",
+        "description": "Aceites para transformadores nafténicos premium de China con excelentes propiedades dieléctricas y bajo contenido de azufre, ideales para aplicaciones de alta tensión."
+      },
+      "rubber": {
+        "title": "Aceite para proceso de caucho",
+        "description": "Aceites para proceso de caucho nafténicos de alta solvencia de China con bajo contenido de PAH, perfectos para fabricación de neumáticos y compuestos de caucho."
+      },
+      "lubricants": {
+        "title": "Aceites hidráulicos e industriales",
+        "description": "Aceites hidráulicos y lubricantes industriales de alto rendimiento de China, diseñados para condiciones extremas y aplicaciones de servicio pesado."
+      }
+    },
+    "features": {
+      "zeroCorrosive": "Azufre corrosivo cero",
+      "arcticReliability": "Confiabilidad ártica (-45°C)",
+      "highDielectric": "Alta resistencia dieléctrica",
+      "astmCompliant": "Cumple ASTM D3487",
+      "cnContent": "Cn% > 35%",
+      "euReach": "Cumple EU REACH",
+      "lowPah": "Bajos PAH",
+      "excellentCompat": "Excelente compatibilidad",
+      "isoGrades": "Grados ISO 68/46/32",
+      "dinCompliant": "Cumple DIN 51524",
+      "antiWear": "Protección antidesgaste",
+      "wideTemp": "Amplio rango de temperatura"
+    },
+    "standards": {
+      "iso9001": "Sistema de gestión de calidad",
+      "iso14001": "Sistema de gestión ambiental",
+      "reach": "Cumplimiento de bajo contenido de PAH",
+      "astm": "Estándares internacionales de productos"
+    },
+    "stats": {
+      "capacity": {
+        "title": "Capacidad de producción",
+        "unit": "Toneladas métricas anuales",
+        "desc": "Nuestras fábricas asociadas en China tienen extensa capacidad de producción para satisfacer pedidos de gran volumen."
+      },
+      "qc": {
+        "title": "Control de calidad",
+        "unit": "Inspección previa al envío",
+        "desc": "Todos los productos pasan por pruebas rigurosas antes del envío para asegurar el cumplimiento de especificaciones."
+      },
+      "export": {
+        "title": "Experiencia en exportación",
+        "unit": "Países exportados",
+        "desc": "Amplia experiencia en exportación de aceites especiales chinos a clientes industriales en todo el mundo."
+      }
+    },
+    "compliance": {
+      "tag": "Cumplimiento y Estándares",
+      "title": "Estándares Internacionales y Cumplimiento",
+      "desc": "Todos nuestros productos de aceites especiales chinos cumplen o superan los estándares internacionales, asegurando calidad y confiabilidad."
+    },
+    "brochure": {
+      "tag": "Recursos",
+      "title": "Descargue Nuestra Guía de Aceites Especiales Chinos",
+      "desc": "Obtenga información detallada sobre especificaciones, aplicaciones y beneficios de los aceites especiales chinos.",
+      "button": "Descargar Guía (PDF)"
+    },
+    "cta": {
+      "title": "¿Interesado en aceites especiales chinos?",
+      "desc": "Contacte a nuestro equipo para recomendaciones personalizadas y precios competitivos.",
+      "button": "Solicitar cotización gratuita"
+    },
+    "mobileFooter": {
+      "call": "Llámenos"
     }
   },
   "transformerOil": {
@@ -130,25 +297,70 @@
   },
   "quality": {
     "title": "Aseguramiento de calidad",
-    "hero": { "title": "Aseguramiento de calidad", "subtitle": "Nuestro compromiso con la excelencia" },
-    "process": { "title": "Nuestro proceso de calidad", "description": "Mantenemos un control de calidad riguroso en toda nuestra cadena de suministro." },
-    "sourcing": { "title": "Adquisición estratégica", "description": "Nos asociamos con fabricantes líderes de aceites especiales de China." },
-    "cta": { "title": "Confianza en cada gota", "description": "Nuestro compromiso con la calidad garantiza que reciba los mejores productos", "button": "Solicitar muestras" }
+    "hero": { "title": "Calidad y Cumplimiento" },
+    "tabs": { "process": "Proceso de Calidad", "certificates": "Certificados", "standards": "Estándares", "testing": "Métodos de Prueba" },
+    "process": {
+      "title": "Nuestro Proceso de Calidad",
+      "intro": "En CN-SpecLube Chain, mantenemos un control de calidad riguroso en toda nuestra cadena de suministro.",
+      "step1": { "title": "Adquisición Estratégica", "desc": "Nos asociamos con fabricantes líderes de aceites especiales de China." },
+      "step2": { "title": "Hidrotratamiento", "desc": "Nuestro proceso avanzado elimina impurezas y estabiliza el aceite base." },
+      "step3": { "title": "Prueba de Laboratorio CNAS", "desc": "Todos nuestros productos pasan por pruebas rigurosas en laboratorios acreditados." },
+      "step4": { "title": "Envío", "desc": "Aseguramos el embalaje y manejo adecuado durante el transporte." },
+      "qms": { "title": "Sistema de Gestión de Calidad", "intro": "Nuestro sistema certificado ISO 9001 asegura calidad consistente.", "item1": "Control de Documentos", "item1Desc": "Trazabilidad completa", "item2": "Control de Procesos", "item2Desc": "Procedimientos estandarizados", "item3": "Mejora Continua", "item3Desc": "Auditorías regulares" }
+    },
+    "certificates": { "title": "Nuestras Certificaciones", "intro": "Mantenemos varias certificaciones internacionales.", "iso9001": "Sistema de Gestión de Calidad", "iso14001": "Sistema de Gestión Ambiental", "iso45001": "Salud y Seguridad Ocupacional", "ohsas": "Evaluación de Salud y Seguridad Ocupacional" },
+    "standards": { "title": "Estándares Internacionales", "intro": "Todos nuestros productos cumplen con estándares internacionales.", "astm": "Estándares ASTM para productos petrolíferos", "iso": "Especificaciones ISO para lubricantes", "din": "Especificaciones DIN para aplicaciones industriales", "gb": "Estándares nacionales chinos", "api": "Estándares de rendimiento API", "reach": "Cumplimiento REACH" },
+    "testing": { "title": "Métodos de Prueba", "intro": "Pruebas integrales aseguran calidad del producto.", "viscosity": { "name": "Medición de Viscosidad", "desc": "Prueba de viscosidad a varias temperaturas" }, "flashPoint": { "name": "Prueba de Punto de Inflamación", "desc": "Determinación de la temperatura más baja de ignición" }, "pourPoint": { "name": "Prueba de Punto de Fluidez", "desc": "Medición de la temperatura más baja de fluidez" }, "acidNumber": { "name": "Determinación de Número Ácido", "desc": "Evaluación de oxidación y degradación" }, "elemental": { "name": "Análisis Elemental", "desc": "Medición de concentración de aditivos" }, "particle": { "name": "Conteo de Partículas", "desc": "Evaluación del nivel de limpieza" } },
+    "cta": { "title": "¿Necesita documentación de aseguramiento de calidad?", "desc": "Contáctenos para solicitar certificados de análisis.", "button": "Solicitar Documentación" }
   },
   "logistics": {
     "title": "Soluciones de logística y embalaje",
-    "hero": { "title": "Soluciones de logística y embalaje", "subtitle": "Envío global eficiente y confiable" },
+    "hero": { "title": "Soluciones de logística y embalaje" },
     "tabs": { "bulk": "Transporte de líquidos a granel", "packaged": "Transporte de bienes embalados", "shipping": "Rutas de envío global", "customs": "Aduanas y cumplimiento" },
     "bulk": {
       "title": "Transporte de líquidos a granel",
-      "description": "Ofrecemos soluciones eficientes y rentables para el transporte de líquidos a granel.",
+      "description": "Ofrecemos soluciones eficientes y rentables para el transporte de líquidos a granel para nuestras materias primas.",
       "isoTank": { "title": "Tanque ISO", "capacity": "26,000L", "description": "Tanques de acero inoxidable para transporte seguro de líquidos a granel." },
-      "flexibag": { "title": "Flexibag", "capacity": "Contenedor de 20 pies", "description": "Contenedores flexibles con almohadilla de calentamiento disponibles.", "badge": "Almohadilla de calentamiento disponible" }
+      "flexibag": { "title": "Flexibag", "capacity": "Contenedor de 20 pies", "description": "Contenedores flexibles con almohadilla de calentamiento disponibles.", "badge": "Almohadilla de calentamiento disponible" },
+      "benefits": { "title": "Beneficios del transporte a granel", "cost": { "title": "Eficiente en costos", "description": "Costos de embalaje reducidos" }, "environment": { "title": "Respetuoso con el medio ambiente", "description": "Menos residuos de embalaje" }, "handling": { "title": "Manejo eficiente", "description": "Procesos simplificados" } }
     },
-    "packaged": { "title": "Transporte de bienes embalados" },
-    "shipping": { "title": "Rutas de envío global" },
-    "customs": { "title": "Aduanas y cumplimiento" },
-    "cta": { "title": "¿Listo para enviar su pedido?", "description": "Nuestros expertos en logística están listos para proporcionarle una solución", "button": "Obtener cotización de envío" }
+    "packaged": {
+      "title": "Transporte de bienes embalados",
+      "description": "Nuestros lubricantes terminados están disponibles en varias opciones de embalaje.",
+      "drums": { "title": "Tambores", "details": "4 tambores/palet", "description": "Tambores de acero de 200L empacados de forma segura." },
+      "ibc": { "title": "IBC", "details": "Manejo con montacargas", "description": "Contenedores intermedios de 1000L." },
+      "smallPacks": { "title": "Paquetes pequeños", "details": "Embalaje en cajas", "description": "Cubos de plástico de 18L y contenedores más pequeños." },
+      "specs": { "title": "Especificaciones de embalaje", "type": "Tipo de embalaje", "capacityCol": "Capacidad", "perPallet": "Cantidad por palet", "perContainer": "Cantidad por contenedor 20ft", "bucket18L": { "name": "Cubo de plástico 18L", "capacity": "18L", "pallet": "48 cubos", "container": "1,152 cubos" }, "drum200L": { "name": "Tambor de acero 200L", "capacity": "200L", "pallet": "4 tambores", "container": "80 tambores" }, "ibc1000L": { "name": "Tanque IBC 1000L", "capacity": "1000L", "pallet": "1 IBC", "container": "18 IBCs" } }
+    },
+    "shipping": {
+      "title": "Rutas de envío global",
+      "description": "Hemos establecido rutas de envío confiables para garantizar la entrega oportuna.",
+      "routesTitle": "Principales rutas de envío",
+      "route": "Ruta", "transitTime": "Tiempo de tránsito", "mainPorts": "Puertos principales",
+      "asiaEurope": { "route": "Asia a Europa", "transitTime": "21-28 días", "ports": "Shanghai, Ningbo → Rotterdam, Hamburgo" },
+      "asiaNorthAmerica": { "route": "Asia a Norteamérica", "transitTime": "18-25 días", "ports": "Qingdao, Tianjin → Los Ángeles, Nueva York" },
+      "asiaSouthAmerica": { "route": "Asia a Sudamérica", "transitTime": "30-40 días", "ports": "Shanghai → Santos, Buenos Aires" },
+      "asiaOceania": { "route": "Asia a Oceanía", "transitTime": "12-18 días", "ports": "Shanghai → Sídney, Melbourne" },
+      "methods": { "title": "Métodos de envío", "ocean": { "title": "Flete marítimo", "description": "Opción más económica para grandes volúmenes" }, "air": { "title": "Flete aéreo", "description": "Envío acelerado para pedidos urgentes" }, "land": { "title": "Transporte terrestre", "description": "Servicios de camiones para entregas interiores" } },
+      "incoterms": { "title": "Opciones Incoterms", "exw": "En fábrica", "fob": "FOB", "cfr": "Costo y flete", "cif": "Costo, seguro y flete", "dap": "Entregado en lugar", "ddp": "Entregado con derechos pagados" },
+      "quoteButton": "Solicitar cotización de envío"
+    },
+    "customs": {
+      "title": "Aduanas y cumplimiento",
+      "description": "Tenemos amplia experiencia en regulaciones comerciales internacionales.",
+      "documentation": { "title": "Servicios de documentación", "commercialInvoice": "Factura comercial", "packingList": "Lista de empaque", "billOfLading": "Conocimiento de embarque", "certificateOfOrigin": "Certificado de origen", "insuranceCertificate": "Certificado de seguro", "msds": "Hoja de datos de seguridad", "technicalCertificates": "Certificados técnicos" },
+      "regulatory": { "title": "Cumplimiento regulatorio", "adr": "ADR/RID para transporte de mercancías peligrosas", "imo": "Regulaciones IMO para transporte marítimo", "icao": "Regulaciones ICAO/IATA para transporte aéreo", "reach": "Cumplimiento REACH de la UE", "epa": "Regulaciones EPA de EE.UU.", "clearance": "Asistencia en despacho de aduanas", "tariff": "Experiencia en clasificación arancelaria" },
+      "faq": { "title": "Preguntas frecuentes", "q1": "¿Qué documentación necesito para el envío internacional?", "a1": "Para la mayoría de los envíos internacionales, necesitamos los detalles de su empresa, puerto de destino e Incoterms preferidos.", "q2": "¿Cómo garantizan el cumplimiento de las regulaciones internacionales?", "a2": "Nuestro equipo logístico se mantiene actualizado sobre las últimas regulaciones comerciales internacionales.", "q3": "¿Pueden ayudar con el despacho de aduanas en el puerto de destino?", "a3": "Sí, tenemos una red global de agentes de aduanas que pueden asistir en prácticamente cualquier puerto.", "contactButton": "Contactar a nuestro equipo logístico" }
+    },
+    "advantage": {
+      "title": "Nuestra ventaja logística",
+      "globalNetwork": { "title": "Red global", "description": "Red logística integral que cubre todas las principales regiones" },
+      "productSafety": { "title": "Seguridad del producto", "description": "Protocolos de seguridad estrictos para garantizar la integridad" },
+      "onTimeDelivery": { "title": "Entrega a tiempo", "description": "Soluciones de transporte confiables con compromiso de horarios" },
+      "dedicatedSupport": { "title": "Soporte dedicado", "description": "Equipo logístico experto que brinda soporte personalizado" }
+    },
+    "cta": { "title": "¿Listo para enviar su pedido?", "description": "Nuestros expertos en logística están listos para proporcionarle una solución", "button": "Obtener cotización de envío" },
+    "mobileFooter": { "contact": "Contáctenos" }
   },
   "contact": {
     "title": "Contáctenos",

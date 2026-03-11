@@ -28,11 +28,23 @@
     "description": "Votre partenaire de confiance pour les solutions de chaîne d'approvisionnement en huiles spéciales depuis la Chine.",
     "quickLinks": "Liens rapides",
     "products": "Produits",
-    "contact": "Contact",
+    "contact": "Nous contacter",
     "followUs": "Suivez-nous",
     "allRightsReserved": "Tous droits réservés",
     "privacyPolicy": "Politique de confidentialité",
-    "termsOfService": "Conditions d'utilisation"
+    "termsOfService": "Conditions d'utilisation",
+    "cookiePolicy": "Politique des cookies",
+    "sitemap": "Plan du site",
+    "linkAbout": "À propos",
+    "linkBlog": "Actualités de l'industrie",
+    "productTransformer": "Huile pour transformateurs",
+    "productRubber": "Huile de traitement du caoutchouc",
+    "productHydraulic": "Huiles hydrauliques et industrielles",
+    "productGear": "Huiles d'engrenages",
+    "productTurbine": "Huiles de turbine",
+    "productSpecialty": "Lubrifiants spéciaux",
+    "address": "10ème étage, N° 197, Rue Songling, District de Laoshan, Qingdao, Shandong, Chine",
+    "workingHours": "Lun-Ven: 9h-18h (GMT+8)"
   },
   "home": {
     "hero": {
@@ -65,24 +77,210 @@
     "cta": { "title": "Prêt à acheter des huiles spéciales?", "description": "Notre équipe est prête à vous aider à trouver les bons produits", "button": "Contactez-nous aujourd'hui" }
   },
   "about": {
-    "hero": { "title": "À propos de CN-SpecLube Chain", "subtitle": "Votre partenaire de confiance dans la chaîne d'approvisionnement en huiles spéciales de Chine" },
-    "story": { "tag": "Notre histoire", "title": "Connecter les marchés mondiaux à l'industrie des huiles spéciales de Chine", "description": "CN-SpecLube Chain est un fournisseur spécialisé de services de chaîne d'approvisionnement." },
-    "mission": { "title": "Notre mission", "description": "Fournir des services de chaîne d'approvisionnement fiables, efficaces et transparents." },
+    "hero": { "title": "Chaîne d'Approvisionnement en Huiles Spéciales de Chine", "subtitle": "Votre partenaire de confiance dans la chaîne d'approvisionnement en huiles spéciales de Chine" },
+    "tabs": {
+      "story": "Notre Histoire",
+      "supplyChain": "Chaîne d'Approvisionnement",
+      "qualityControl": "Contrôle Qualité",
+      "globalMarkets": "Marchés Mondiaux"
+    },
+    "story": {
+      "tag": "Notre histoire",
+      "title": "Connecter les huiles spéciales premium de Chine aux marchés mondiaux",
+      "p1": "Fondée en 2025, nous nous sommes rapidement établis comme une plateforme de chaîne d'approvisionnement dédiée avec une mission claire: fournir au monde un accès à des huiles spéciales de haute qualité provenant des fabricants chinois les plus réputés.",
+      "p2": "Nous nous spécialisons dans l'approvisionnement et la livraison d'huiles spéciales chinoises de haute qualité, connectant les clients industriels mondiaux avec des fabricants premium. Notre expertise principale réside dans la fourniture de solutions intégrées de chaîne d'approvisionnement pour l'approvisionnement, le contrôle qualité et la logistique.",
+      "p3": "Avec une équipe de professionnels de l'industrie apportant une vaste expérience dans le secteur pétrolier et gazier, nous avons construit de solides partenariats avec des fabricants pour assurer que nos clients reçoivent des produits exceptionnels à des prix compétitifs, à chaque fois.",
+      "stat1": "Années d'Expérience",
+      "stat2": "Pays Desservis",
+      "stat3": "Expéditions Réussies",
+      "stat4": "Usines Partenaires"
+    },
+    "mission": { "title": "Notre mission", "description": "Fournir des services de chaîne d'approvisionnement fiables, efficaces et transparents qui connectent les acheteurs mondiaux aux fabricants d'huiles spéciales de Chine." },
     "vision": { "title": "Notre vision", "description": "Devenir le pont le plus fiable entre les marchés internationaux et l'industrie des huiles spéciales de Chine." },
-    "values": { "title": "Nos valeurs", "quality": { "title": "Qualité d'abord" }, "integrity": { "title": "Intégrité" }, "service": { "title": "Excellence du service" } },
+    "values": { "title": "Nos valeurs", "quality": { "title": "Qualité d'abord", "description": "Nous assurons que chaque produit répond aux normes internationales" }, "integrity": { "title": "Intégrité", "description": "Pratiques commerciales transparentes et honnêtes" }, "service": { "title": "Excellence du service", "description": "Support dédié à chaque étape" } },
+    "supplyChain": {
+      "title": "Notre Solution Complète de Chaîne d'Approvisionnement",
+      "intro": "Nous offrons une solution de chaîne d'approvisionnement fluide couvrant chaque étape de l'approvisionnement à la livraison, assurant que nos clients reçoivent des huiles spéciales chinoises de haute qualité de manière efficace et fiable.",
+      "step1Title": "Approvisionnement et Sélection",
+      "step1Desc": "Accès direct aux fabricants premium d'huiles spéciales en Chine, avec des processus rigoureux de qualification des fournisseurs.",
+      "step2Title": "Contrôle Qualité",
+      "step2Desc": "Tests et inspections complets à plusieurs étapes pour assurer que les produits répondent aux normes internationales.",
+      "step3Title": "Documentation et Conformité",
+      "step3Desc": "Gestion complète de la documentation d'exportation, dédouanement et conformité aux réglementations commerciales internationales.",
+      "step4Title": "Logistique et Livraison",
+      "step4Desc": "Solutions d'expédition fiables vers les ports du monde entier, avec des options flexibles pour répondre à vos besoins spécifiques.",
+      "learnMore": "En Savoir Plus Sur Notre Logistique"
+    },
+    "quality": {
+      "title": "Contrôle Qualité Rigoureux",
+      "intro": "Nous comprenons que la qualité est primordiale pour les lubrifiants industriels. Notre système complet de contrôle qualité assure que chaque produit répond aux plus hautes normes internationales et à vos exigences spécifiques.",
+      "lab": {
+        "title": "Tests en Laboratoire",
+        "intro": "Nos produits subissent des tests rigoureux dans des laboratoires certifiés ISO pour assurer qu'ils répondent à toutes les spécifications techniques.",
+        "item1": "Analyse physique et chimique",
+        "item2": "Tests de performance dans diverses conditions",
+        "item3": "Détection des contaminants et impuretés"
+      },
+      "inspection": {
+        "title": "Inspection d'Usine",
+        "intro": "Des audits et inspections réguliers d'usine assurent une qualité de fabrication constante.",
+        "item1": "Surveillance du processus de production",
+        "item2": "Vérification de la qualité des matières premières",
+        "item3": "Révision du système de management qualité"
+      },
+      "certifications": { "title": "Certifications et Normes" },
+      "viewDetails": "Voir le Processus Qualité Détaillé"
+    },
+    "global": {
+      "title": "Notre Présence Mondiale",
+      "intro": "Nous avons livré avec succès des huiles spéciales chinoises à des clients industriels dans plus de 50 pays à travers le monde. Notre expérience dans le commerce international assure des transactions fluides et des livraisons à temps.",
+      "distribution": { "title": "Distribution Régionale", "desc": "Entrepôts stratégiquement situés dans les régions clés pour assurer une livraison rapide et un support local." },
+      "support": { "title": "Support Multilingue", "desc": "Notre équipe parle anglais et chinois pour mieux servir nos clients mondiaux." },
+      "shipping": { "title": "Expédition Flexible", "desc": "Diverses options d'expédition incluant FOB, CFR, CIF et DDP pour répondre à vos exigences spécifiques." },
+      "markets": {
+        "title": "Principaux Marchés d'Exportation",
+        "europe": "Europe (Allemagne, Italie, France, Espagne)",
+        "northAmerica": "Amérique du Nord (USA, Canada, Mexique)",
+        "middleEast": "Moyen-Orient (Arabie Saoudite, EAU, Qatar)",
+        "southeastAsia": "Asie du Sud-Est (Indonésie, Malaisie, Thaïlande)",
+        "africa": "Afrique (Afrique du Sud, Nigeria, Égypte)",
+        "southAmerica": "Amérique du Sud (Brésil, Argentine, Chili)"
+      },
+      "testimonials": {
+        "title": "Témoignages Clients",
+        "quote1": "La qualité des huiles spéciales chinoises que nous avons reçues était exceptionnelle, et le service de chaîne d'approvisionnement a rendu tout le processus fluide.",
+        "author1": "Entreprise Manufacturière Européenne",
+        "quote2": "Cela fait 5 ans que nous importons de l'huile pour transformateurs de Chine via cette plateforme. Qualité constante et livraisons fiables à chaque fois.",
+        "author2": "Compagnie d'Électricité du Moyen-Orient"
+      }
+    },
     "cta": { "title": "Prêt à collaborer avec nous?", "button": "Nous contacter" }
   },
-  "products": { "title": "Nos produits", "categories": { "transformer": { "title": "Huile pour transformateurs" }, "rubber": { "title": "Huile pour caoutchouc" }, "lubricants": { "title": "Lubrifiants finis" } } },
+  "products": {
+    "title": "Nos Produits",
+    "subtitle": "Huiles spéciales premium de fabricants chinois de confiance",
+    "hero": {
+      "tag": "Portefeuille de Produits",
+      "title": "Produits Premium d'Huiles Spéciales de Chine",
+      "subtitle": "Découvrez notre gamme complète d'huiles spéciales chinoises de haute qualité qui répondent aux normes internationales."
+    },
+    "whyChina": {
+      "title": "Pourquoi s'approvisionner en huiles spéciales en Chine ?",
+      "desc": "La Chine est devenue un producteur leader d'huiles spéciales de haute qualité avec une technologie de raffinage avancée.",
+      "learnMore": "En savoir plus sur les avantages de la Chine",
+      "getQuote": "Obtenir un devis compétitif"
+    },
+    "advantages": {
+      "pricing": "Prix compétitifs",
+      "technology": "Technologie avancée",
+      "workforce": "Main-d'œuvre qualifiée",
+      "supplyChain": "Chaîne d'approvisionnement complète"
+    },
+    "ourProducts": "Nos Produits",
+    "rangeTitle": "Gamme de Produits d'Huiles Spéciales de Chine",
+    "rangeDesc": "Solutions complètes pour applications industrielles",
+    "keyFeatures": "Caractéristiques clés",
+    "viewSpecs": "Voir les spécifications",
+    "categories": {
+      "transformer": { "title": "Huile pour transformateurs", "description": "Huiles pour transformateurs naphténiques premium de Chine avec d'excellentes propriétés diélectriques." },
+      "rubber": { "title": "Huile pour traitement du caoutchouc", "description": "Huiles pour caoutchouc naphténiques à haute solvabilité de Chine avec faible teneur en HAP." },
+      "lubricants": { "title": "Huiles hydrauliques et industrielles", "description": "Huiles hydrauliques et lubrifiants industriels hautes performances de Chine." }
+    },
+    "features": {
+      "zeroCorrosive": "Soufre corrosif zéro",
+      "arcticReliability": "Fiabilité arctique (-45°C)",
+      "highDielectric": "Haute rigidité diélectrique",
+      "astmCompliant": "Conforme ASTM D3487",
+      "cnContent": "Cn% > 35%",
+      "euReach": "Conforme EU REACH",
+      "lowPah": "Faible HAP",
+      "excellentCompat": "Excellente compatibilité",
+      "isoGrades": "Grades ISO 68/46/32",
+      "dinCompliant": "Conforme DIN 51524",
+      "antiWear": "Protection anti-usure",
+      "wideTemp": "Large plage de température"
+    },
+    "standards": {
+      "iso9001": "Système de management qualité",
+      "iso14001": "Système de management environnemental",
+      "reach": "Conformité faible teneur HAP",
+      "astm": "Normes produits internationales"
+    },
+    "stats": {
+      "capacity": { "title": "Capacité de production", "unit": "Tonnes métriques annuelles", "desc": "Nos usines partenaires en Chine ont une capacité de production extensive." },
+      "qc": { "title": "Contrôle qualité", "unit": "Inspection avant expédition", "desc": "Tous les produits subissent des tests rigoureux avant l'expédition." },
+      "export": { "title": "Expérience export", "unit": "Pays exportés", "desc": "Grande expérience dans l'exportation d'huiles spéciales chinoises." }
+    },
+    "compliance": {
+      "tag": "Conformité et Normes",
+      "title": "Normes Internationales et Conformité",
+      "desc": "Tous nos produits d'huiles spéciales chinoises répondent aux normes internationales."
+    },
+    "brochure": {
+      "tag": "Ressources",
+      "title": "Téléchargez Notre Guide des Huiles Spéciales Chinoises",
+      "desc": "Obtenez des informations détaillées sur les spécifications et applications.",
+      "button": "Télécharger le Guide (PDF)"
+    },
+    "cta": {
+      "title": "Intéressé par les huiles spéciales chinoises ?",
+      "desc": "Contactez notre équipe pour des recommandations personnalisées.",
+      "button": "Demander un devis gratuit"
+    },
+    "mobileFooter": { "call": "Appelez-nous" }
+  },
   "transformerOil": { "title": "Huile pour transformateurs", "subtitle": "Huiles isolantes haute performance", "cta": { "title": "Besoin de spécifications techniques?", "button": "Demander les données techniques" } },
   "rubberProcessOil": { "title": "Huile pour caoutchouc", "hero": { "title": "Huile pour traitement du caoutchouc" }, "cta": { "button": "Demander les données techniques" } },
   "finishedLubricants": { "title": "Lubrifiants finis", "hero": { "title": "Lubrifiants finis" }, "cta": { "button": "Demander les données techniques" } },
-  "quality": { "title": "Assurance qualité", "hero": { "title": "Assurance qualité" }, "cta": { "title": "Confiance dans chaque goutte", "button": "Demander des échantillons" } },
+  "quality": { "title": "Assurance qualité", "hero": { "title": "Qualité et Conformité" }, "tabs": { "process": "Processus Qualité", "certificates": "Certificats", "standards": "Normes", "testing": "Méthodes de Test" }, "process": { "title": "Notre Processus Qualité", "intro": "Chez CN-SpecLube Chain, nous maintenons un contrôle qualité rigoureux tout au long de notre chaîne d'approvisionnement.", "step1": { "title": "Approvisionnement Stratégique", "desc": "Nous nous associons avec les principaux fabricants d'huiles spéciales de Chine." }, "step2": { "title": "Hydrotraitement", "desc": "Notre processus avancé élimine les impuretés et stabilise l'huile de base." }, "step3": { "title": "Test Laboratoire CNAS", "desc": "Tous nos produits passent des tests rigoureux dans des laboratoires accrédités." }, "step4": { "title": "Expédition", "desc": "Nous assurons un emballage et une manipulation appropriés pendant le transport." }, "qms": { "title": "Système de Management Qualité", "intro": "Notre système certifié ISO 9001 assure une qualité constante.", "item1": "Contrôle des Documents", "item1Desc": "Traçabilité complète", "item2": "Contrôle des Processus", "item2Desc": "Procédures standardisées", "item3": "Amélioration Continue", "item3Desc": "Audits réguliers" } }, "certificates": { "title": "Nos Certifications", "intro": "Nous maintenons plusieurs certifications internationales.", "iso9001": "Système de Management Qualité", "iso14001": "Système de Management Environnemental", "iso45001": "Santé et Sécurité au Travail", "ohsas": "Évaluation de la Santé et Sécurité au Travail" }, "standards": { "title": "Normes Internationales", "intro": "Tous nos produits sont conformes aux normes internationales.", "astm": "Normes ASTM pour produits pétroliers", "iso": "Spécifications ISO pour lubrifiants", "din": "Spécifications DIN pour applications industrielles", "gb": "Normes nationales chinoises", "api": "Standards de performance API", "reach": "Conformité REACH" }, "testing": { "title": "Méthodes de Test", "intro": "Des tests complets assurent la qualité des produits.", "viscosity": { "name": "Mesure de Viscosité", "desc": "Test de viscosité à différentes températures" }, "flashPoint": { "name": "Test Point d'Éclair", "desc": "Détermination de la température d'inflammation la plus basse" }, "pourPoint": { "name": "Test Point d'Écoulement", "desc": "Mesure de la température d'écoulement la plus basse" }, "acidNumber": { "name": "Détermination Indice d'Acide", "desc": "Évaluation de l'oxydation et de la dégradation" }, "elemental": { "name": "Analyse Élémentaire", "desc": "Mesure de la concentration d'additifs" }, "particle": { "name": "Comptage de Particules", "desc": "Évaluation du niveau de propreté" } }, "cta": { "title": "Besoin de documentation d'assurance qualité?", "desc": "Contactez-nous pour demander des certificats d'analyse.", "button": "Demander Documentation" } },
   "logistics": {
     "title": "Solutions logistiques et d'emballage",
     "hero": { "title": "Solutions logistiques et d'emballage" },
     "tabs": { "bulk": "Transport de liquides en vrac", "packaged": "Transport de marchandises emballées", "shipping": "Routes d'expédition mondiales", "customs": "Douanes et conformité" },
-    "bulk": { "title": "Transport de liquides en vrac", "isoTank": { "title": "Tank ISO", "capacity": "26 000 L" }, "flexibag": { "title": "Flexibag", "capacity": "Conteneur 20 pieds" } },
-    "cta": { "title": "Prêt à expédier votre commande?", "button": "Obtenir un devis d'expédition" }
+    "bulk": {
+      "title": "Transport de liquides en vrac",
+      "description": "Nous offrons des solutions efficaces et rentables pour le transport de liquides en vrac.",
+      "isoTank": { "title": "Tank ISO", "capacity": "26 000 L", "description": "Cuves en acier inoxydable pour le transport sécurisé." },
+      "flexibag": { "title": "Flexibag", "capacity": "Conteneur 20 pieds", "description": "Conteneurs flexibles avec coussin chauffant disponible.", "badge": "Coussin chauffant disponible" },
+      "benefits": { "title": "Avantages du transport en vrac", "cost": { "title": "Efficace en coût", "description": "Coûts d'emballage réduits" }, "environment": { "title": "Respectueux de l'environnement", "description": "Moins de déchets d'emballage" }, "handling": { "title": "Manutention efficace", "description": "Processus simplifiés" } }
+    },
+    "packaged": {
+      "title": "Transport de marchandises emballées",
+      "description": "Nos lubrifiants finis sont disponibles dans diverses options d'emballage.",
+      "drums": { "title": "Fûts", "details": "4 fûts/palette", "description": "Fûts en acier de 200L emballés de façon sécurisée." },
+      "ibc": { "title": "IBC", "details": "Manutention par chariot élévateur", "description": "Conteneurs intermédiaires de 1000L." },
+      "smallPacks": { "title": "Petits emballages", "details": "Emballage en carton", "description": "Seaux en plastique de 18L et contenants plus petits." },
+      "specs": { "title": "Spécifications d'emballage", "type": "Type d'emballage", "capacityCol": "Capacité", "perPallet": "Quantité par palette", "perContainer": "Quantité par conteneur 20ft", "bucket18L": { "name": "Seau plastique 18L", "capacity": "18L", "pallet": "48 seaux", "container": "1 152 seaux" }, "drum200L": { "name": "Fût acier 200L", "capacity": "200L", "pallet": "4 fûts", "container": "80 fûts" }, "ibc1000L": { "name": "Cuve IBC 1000L", "capacity": "1000L", "pallet": "1 IBC", "container": "18 IBCs" } }
+    },
+    "shipping": {
+      "title": "Routes d'expédition mondiales",
+      "description": "Nous avons établi des routes d'expédition fiables pour assurer une livraison ponctuelle.",
+      "routesTitle": "Principales routes d'expédition",
+      "route": "Route", "transitTime": "Temps de transit", "mainPorts": "Principaux ports",
+      "asiaEurope": { "route": "Asie vers Europe", "transitTime": "21-28 jours", "ports": "Shanghai, Ningbo → Rotterdam, Hambourg" },
+      "asiaNorthAmerica": { "route": "Asie vers Amérique du Nord", "transitTime": "18-25 jours", "ports": "Qingdao, Tianjin → Los Angeles, New York" },
+      "asiaSouthAmerica": { "route": "Asie vers Amérique du Sud", "transitTime": "30-40 jours", "ports": "Shanghai → Santos, Buenos Aires" },
+      "asiaOceania": { "route": "Asie vers Océanie", "transitTime": "12-18 jours", "ports": "Shanghai → Sydney, Melbourne" },
+      "methods": { "title": "Méthodes d'expédition", "ocean": { "title": "Fret maritime", "description": "Option la plus économique pour les grands volumes" }, "air": { "title": "Fret aérien", "description": "Expédition accélérée pour les commandes urgentes" }, "land": { "title": "Transport terrestre", "description": "Services de camionnage pour les livraisons intérieures" } },
+      "incoterms": { "title": "Options Incoterms", "exw": "Ex Works", "fob": "FOB", "cfr": "Coût et fret", "cif": "Coût, assurance et fret", "dap": "Rendu au lieu de destination", "ddp": "Rendu droits acquittés" },
+      "quoteButton": "Demander un devis d'expédition"
+    },
+    "customs": {
+      "title": "Douanes et conformité",
+      "description": "Nous avons une vaste expérience des réglementations commerciales internationales.",
+      "documentation": { "title": "Services de documentation", "commercialInvoice": "Facture commerciale", "packingList": "Liste de colisage", "billOfLading": "Connaissement", "certificateOfOrigin": "Certificat d'origine", "insuranceCertificate": "Certificat d'assurance", "msds": "Fiche de données de sécurité", "technicalCertificates": "Certificats techniques" },
+      "regulatory": { "title": "Conformité réglementaire", "adr": "ADR/RID pour le transport de marchandises dangereuses", "imo": "Réglementations IMO pour le transport maritime", "icao": "Réglementations ICAO/IATA pour le transport aérien", "reach": "Conformité REACH de l'UE", "epa": "Réglementations EPA des États-Unis", "clearance": "Assistance au dédouanement", "tariff": "Expertise en classification tarifaire" },
+      "faq": { "title": "Questions fréquentes", "q1": "Quelle documentation dois-je fournir pour l'expédition internationale?", "a1": "Pour la plupart des expéditions internationales, nous avons besoin des détails de votre entreprise, du port de destination et des Incoterms préférés.", "q2": "Comment assurez-vous la conformité avec les réglementations internationales?", "a2": "Notre équipe logistique reste informée des dernières réglementations commerciales internationales.", "q3": "Pouvez-vous aider au dédouanement au port de destination?", "a3": "Oui, nous avons un réseau mondial de courtiers en douane qui peuvent aider dans pratiquement tous les ports.", "contactButton": "Contacter notre équipe logistique" }
+    },
+    "advantage": {
+      "title": "Notre avantage logistique",
+      "globalNetwork": { "title": "Réseau mondial", "description": "Réseau logistique complet couvrant toutes les principales régions" },
+      "productSafety": { "title": "Sécurité du produit", "description": "Protocoles de sécurité stricts pour garantir l'intégrité" },
+      "onTimeDelivery": { "title": "Livraison à temps", "description": "Solutions de transport fiables avec engagement sur les délais" },
+      "dedicatedSupport": { "title": "Support dédié", "description": "Équipe logistique experte fournissant un support personnalisé" }
+    },
+    "cta": { "title": "Prêt à expédier votre commande?", "description": "Nos experts logistiques sont prêts à vous fournir une solution personnalisée", "button": "Obtenir un devis d'expédition" },
+    "mobileFooter": { "contact": "Nous contacter" }
   },
   "contact": { "title": "Nous contacter", "subtitle": "Contactez notre équipe", "form": { "title": "Envoyez-nous un message" }, "info": { "title": "Informations de contact" } }
 }

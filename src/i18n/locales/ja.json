@@ -32,7 +32,19 @@
     "followUs": "フォローする",
     "allRightsReserved": "全著作権所有",
     "privacyPolicy": "プライバシーポリシー",
-    "termsOfService": "利用規約"
+    "termsOfService": "利用規約",
+    "cookiePolicy": "Cookieポリシー",
+    "sitemap": "サイトマップ",
+    "linkAbout": "会社概要",
+    "linkBlog": "業界ニュース",
+    "productTransformer": "変圧器油",
+    "productRubber": "ゴム加工油",
+    "productHydraulic": "油圧・工業用油",
+    "productGear": "ギアオイル",
+    "productTurbine": "タービン油",
+    "productSpecialty": "特殊潤滑油",
+    "address": "中国山東省青島市嶗山区松嶺路197号10階",
+    "workingHours": "月-金: 午前9時-午後6時 (GMT+8)"
   },
   "home": {
     "hero": {
@@ -65,23 +77,215 @@
     "cta": { "title": "特殊油の調達準備はできましたか？", "description": "チームが適切な製品を見つけるお手伝いをします", "button": "今すぐお問い合わせ" }
   },
   "about": {
-    "hero": { "title": "CN-SpecLube Chainについて", "subtitle": "中国の特殊油サプライチェーンにおける信頼できるパートナー" },
-    "story": { "tag": "私たちの物語", "title": "グローバル市場と中国の特殊油産業を接続", "description": "CN-SpecLube Chainは、国際的なバイヤーと中国の特殊油メーカーを結ぶ専門サプライチェーンサービスプロバイダーです。" },
-    "mission": { "title": "私たちのミッション", "description": "信頼性が高く、効率的で透明なサプライチェーンサービスを提供すること。" },
+    "hero": { "title": "中国特殊油サプライチェーン", "subtitle": "中国の特殊油サプライチェーンにおける信頼できるパートナー" },
+    "tabs": {
+      "story": "私たちの物語",
+      "supplyChain": "サプライチェーン",
+      "qualityControl": "品質管理",
+      "globalMarkets": "グローバル市場"
+    },
+    "story": {
+      "tag": "私たちの物語",
+      "title": "中国のプレミアム特殊油をグローバル市場に接続",
+      "p1": "2025年に設立され、私たちは迅速に専用サプライチェーンプラットフォームとして確立されました。明確なミッションを持って：中国で最も信頼されるメーカーから高品質な特殊油へのアクセスを世界に提供します。",
+      "p2": "私たちは高品質な中国特殊油の調達と配送を専門とし、グローバルな産業クライアントをプレミアムメーカーと接続しています。私たちの核心的専門分野は、調達、品質管理、物流の統合サプライチェーンソリューションを提供することです。",
+      "p3": "石油・ガス業界での豊富な経験を持つ業界専門家のチームにより、メーカーとの強力なパートナーシップを構築し、お客様が毎回競争力のある価格で優れた製品を受け取れることを保証します。",
+      "stat1": "年の経験",
+      "stat2": "カ国でサービス",
+      "stat3": "回の成功した出荷",
+      "stat4": "提携工場"
+    },
+    "mission": { "title": "私たちのミッション", "description": "グローバルなバイヤーと中国の特殊油メーカーを接続する、信頼性が高く、効率的で透明なサプライチェーンサービスを提供すること。" },
     "vision": { "title": "私たちのビジョン", "description": "国際市場と中国の特殊油産業の間で最も信頼される架け橋になること。" },
+    "values": {
+      "title": "私たちの価値観",
+      "quality": { "title": "品質第一", "description": "すべての製品が国際基準を満たすことを保証します" },
+      "integrity": { "title": "誠実さ", "description": "透明で誠実なビジネス慣行" },
+      "service": { "title": "サービス卓越", "description": "各ステップでの専用サポート" }
+    },
+    "supplyChain": {
+      "title": "包括的サプライチェーンソリューション",
+      "intro": "調達から配送までのすべてのステップをカバーするシームレスなサプライチェーンソリューションを提供し、お客様が効率的かつ確実に高品質な中国特殊油を受け取れるようにします。",
+      "step1Title": "調達と選定",
+      "step1Desc": "厳格なサプライヤー資格認定プロセスを備えた、中国のプレミアム特殊油メーカーへの直接アクセス。",
+      "step2Title": "品質管理",
+      "step2Desc": "製品が国際基準を満たすことを保証するための、複数段階での包括的なテストと検査。",
+      "step3Title": "書類とコンプライアンス",
+      "step3Desc": "輸出書類、通関、国際貿易規制への準拠の完全な処理。",
+      "step4Title": "物流と配送",
+      "step4Desc": "特定のニーズを満たす柔軟なオプションを備えた、世界中の港への信頼できる配送ソリューション。",
+      "learnMore": "物流について詳しく"
+    },
+    "quality": {
+      "title": "厳格な品質管理",
+      "intro": "品質が産業用潤滑油にとって最も重要であることを理解しています。私たちの包括的な品質管理システムは、すべての製品が最高の国際基準とお客様の特定の要件を満たすことを保証します。",
+      "lab": {
+        "title": "研究所テスト",
+        "intro": "当社の製品はISO認定研究所で厳格なテストを受け、すべての技術仕様を満たしていることを保証します。",
+        "item1": "物理的および化学的分析",
+        "item2": "様々な条件下での性能テスト",
+        "item3": "汚染物質と不純物の検出"
+      },
+      "inspection": {
+        "title": "工場検査",
+        "intro": "定期的な工場監査と検査により、一貫した製造品質を保証します。",
+        "item1": "生産プロセスの監視",
+        "item2": "原材料品質の検証",
+        "item3": "品質管理システムのレビュー"
+      },
+      "certifications": { "title": "認証と規格" },
+      "viewDetails": "詳細な品質プロセスを見る"
+    },
+    "global": {
+      "title": "グローバルプレゼンス",
+      "intro": "世界中の50以上の国の産業用顧客に中国特殊油を正常に届けています。国際貿易における当社の経験により、スムーズな取引と時間通りの配送が保証されます。",
+      "distribution": { "title": "地域流通", "desc": "主要地域に戦略的に配置された倉庫で、迅速な配送とローカルサポートを保証します。" },
+      "support": { "title": "多言語サポート", "desc": "当チームは英語と中国語を話し、グローバルなお客様により良いサービスを提供します。" },
+      "shipping": { "title": "柔軟な配送", "desc": "FOB、CFR、CIF、DDPを含む様々な配送オプションで、お客様の特定の要件を満たします。" },
+      "markets": {
+        "title": "主要輸出市場",
+        "europe": "ヨーロッパ（ドイツ、イタリア、フランス、スペイン）",
+        "northAmerica": "北米（米国、カナダ、メキシコ）",
+        "middleEast": "中東（サウジアラビア、UAE、カタール）",
+        "southeastAsia": "東南アジア（インドネシア、マレーシア、タイ）",
+        "africa": "アフリカ（南アフリカ、ナイジェリア、エジプト）",
+        "southAmerica": "南米（ブラジル、アルゼンチン、チリ）"
+      },
+      "testimonials": {
+        "title": "お客様の声",
+        "quote1": "受け取った中国特殊油の品質は卓越しており、サプライチェーンサービスにより全プロセスがシームレスでした。",
+        "author1": "ヨーロッパ製造会社",
+        "quote2": "このプラットフォームを通じて中国から変圧器油を輸入して5年になります。毎回一貫した品質と信頼できる配送です。",
+        "author2": "中東電力会社"
+      }
+    },
     "cta": { "title": "パートナーシップの準備はできましたか？", "button": "お問い合わせ" }
   },
-  "products": { "title": "製品紹介", "categories": { "transformer": { "title": "変圧器油" }, "rubber": { "title": "ゴム加工油" }, "lubricants": { "title": "完成潤滑油" } } },
+  "products": {
+    "title": "製品紹介",
+    "subtitle": "信頼できる中国メーカーからのプレミアム特殊油",
+    "hero": {
+      "tag": "製品ポートフォリオ",
+      "title": "中国のプレミアム特殊油製品",
+      "subtitle": "国際基準を満たし、世界中の産業クライアントにサービスを提供する高品質な中国特殊油の包括的なラインナップをご覧ください。"
+    },
+    "whyChina": {
+      "title": "なぜ中国から特殊油を調達するのか？",
+      "desc": "中国は先進的な精製技術と競争力のある価格を備えた高品質特殊油の主要生産国として台頭しています。",
+      "learnMore": "中国の優位性を知る",
+      "getQuote": "競争力のある見積もりを取得"
+    },
+    "advantages": {
+      "pricing": "競争力のある価格",
+      "technology": "先進技術",
+      "workforce": "熟練した労働力",
+      "supplyChain": "完全なサプライチェーン"
+    },
+    "ourProducts": "製品紹介",
+    "rangeTitle": "中国特殊油製品ラインナップ",
+    "rangeDesc": "グローバル基準を満たす産業用途向け包括的ソリューション",
+    "keyFeatures": "主な特徴",
+    "viewSpecs": "仕様を見る",
+    "categories": {
+      "transformer": { "title": "変圧器油", "description": "優れた誘電特性と低硫黄分を備えた中国産プレミアムナフテン系変圧器油。" },
+      "rubber": { "title": "ゴム加工油", "description": "低PAH含有量の中国産高溶解力ナフテン系ゴム加工油。" },
+      "lubricants": { "title": "油圧・工業用油", "description": "過酷な条件と重負荷用途向けに設計された中国産高性能油圧油と工業用潤滑油。" }
+    },
+    "features": {
+      "zeroCorrosive": "腐食性硫黄ゼロ",
+      "arcticReliability": "極地対応 (-45°C)",
+      "highDielectric": "高誘電強度",
+      "astmCompliant": "ASTM D3487準拠",
+      "cnContent": "ナフテン分 > 35%",
+      "euReach": "EU REACH準拠",
+      "lowPah": "低PAH",
+      "excellentCompat": "優れた互換性",
+      "isoGrades": "ISO 68/46/32等級",
+      "dinCompliant": "DIN 51524準拠",
+      "antiWear": "耐摩耗保護",
+      "wideTemp": "広温度範囲"
+    },
+    "standards": {
+      "iso9001": "品質マネジメントシステム",
+      "iso14001": "環境マネジメントシステム",
+      "reach": "低PAH含有量コンプライアンス",
+      "astm": "国際製品規格"
+    },
+    "stats": {
+      "capacity": { "title": "生産能力", "unit": "年間メトリックトン", "desc": "中国の提携工場は大量注文に対応する広範な生産能力を持っています。" },
+      "qc": { "title": "品質管理", "unit": "出荷前検査", "desc": "すべての製品は仕様への準拠を確認するため出荷前に厳格なテストを受けます。" },
+      "export": { "title": "輸出経験", "unit": "輸出先国", "desc": "世界中の産業用顧客への中国特殊油輸出の豊富な経験。" }
+    },
+    "compliance": {
+      "tag": "コンプライアンスと規格",
+      "title": "国際規格とコンプライアンス",
+      "desc": "すべての中国特殊油製品は国際規格を満たすか上回り、品質と信頼性を確保します。"
+    },
+    "brochure": {
+      "tag": "リソース",
+      "title": "中国特殊油ガイドをダウンロード",
+      "desc": "仕様、用途、メリットの詳細情報を入手してください。",
+      "button": "ガイドをダウンロード (PDF)"
+    },
+    "cta": {
+      "title": "中国特殊油にご興味がありますか？",
+      "desc": "パーソナライズされた推奨と競争力のある価格についてはチームにお問い合わせください。",
+      "button": "無料見積もりを依頼"
+    },
+    "mobileFooter": { "call": "お電話ください" }
+  },
   "transformerOil": { "title": "変圧器油", "subtitle": "高性能絶縁油", "cta": { "title": "技術仕様が必要ですか？", "button": "技術データを請求" } },
   "rubberProcessOil": { "title": "ゴム加工油", "hero": { "title": "ゴム加工油" }, "cta": { "button": "技術データを請求" } },
   "finishedLubricants": { "title": "完成潤滑油", "hero": { "title": "完成潤滑油" }, "cta": { "button": "技術データを請求" } },
-  "quality": { "title": "品質保証", "hero": { "title": "品質保証" }, "cta": { "title": "一滴一滴への信頼", "button": "製品サンプルを請求" } },
+  "quality": { "title": "品質保証", "hero": { "title": "品質とコンプライアンス" }, "tabs": { "process": "品質プロセス", "certificates": "認証", "standards": "規格", "testing": "試験方法" }, "process": { "title": "当社の品質プロセス", "intro": "CN-SpecLube Chainでは、サプライチェーン全体で厳格な品質管理を維持しています。", "step1": { "title": "戦略的調達", "desc": "中国の主要な特殊油メーカーと提携しています。" }, "step2": { "title": "水素化処理", "desc": "高度なプロセスで不純物を除去し、ベースオイルを安定化します。" }, "step3": { "title": "CNAS研究所試験", "desc": "全製品が認定研究所で厳格な試験を受けます。" }, "step4": { "title": "出荷", "desc": "輸送中の適切な梱包と取扱いを保証します。" }, "qms": { "title": "品質マネジメントシステム", "intro": "ISO 9001認証システムが一貫した品質を保証します。", "item1": "文書管理", "item1Desc": "完全なトレーサビリティ", "item2": "プロセス管理", "item2Desc": "標準化された手順", "item3": "継続的改善", "item3Desc": "定期的な監査" } }, "certificates": { "title": "当社の認証", "intro": "複数の国際認証を保持しています。", "iso9001": "品質マネジメントシステム", "iso14001": "環境マネジメントシステム", "iso45001": "労働安全衛生", "ohsas": "労働安全衛生評価" }, "standards": { "title": "国際規格", "intro": "全製品が国際規格に準拠しています。", "astm": "石油製品のASTM規格", "iso": "潤滑油のISO仕様", "din": "産業用途のDIN仕様", "gb": "中国国家規格", "api": "API性能基準", "reach": "REACH準拠" }, "testing": { "title": "試験方法", "intro": "包括的な試験が製品品質を保証します。", "viscosity": { "name": "粘度測定", "desc": "各温度での粘度試験" }, "flashPoint": { "name": "引火点試験", "desc": "最低引火温度の測定" }, "pourPoint": { "name": "流動点試験", "desc": "最低流動温度の測定" }, "acidNumber": { "name": "酸価測定", "desc": "酸化と劣化の評価" }, "elemental": { "name": "元素分析", "desc": "添加物濃度の測定" }, "particle": { "name": "粒子計数", "desc": "清浄度レベルの評価" } }, "cta": { "title": "品質保証文書が必要ですか?", "desc": "分析証明書の請求はお問い合わせください。", "button": "文書を請求" } },
   "logistics": {
     "title": "物流・梱包ソリューション",
     "hero": { "title": "物流・梱包ソリューション" },
     "tabs": { "bulk": "バルク液体輸送", "packaged": "包装貨物輸送", "shipping": "グローバル配送ルート", "customs": "通関・コンプライアンス" },
-    "bulk": { "title": "バルク液体輸送", "isoTank": { "title": "ISOタンク", "capacity": "26,000L" }, "flexibag": { "title": "フレキシバッグ", "capacity": "20フィートコンテナ" } },
-    "cta": { "title": "注文の出荷準備はできましたか？", "button": "配送見積もりを取得" }
+    "bulk": {
+      "title": "バルク液体輸送",
+      "description": "原材料のバルク液体輸送に効率的で費用対効果の高いソリューションを提供します。",
+      "isoTank": { "title": "ISOタンク", "capacity": "26,000L", "description": "バルク液体の安全な輸送のためのステンレス鋼タンク。" },
+      "flexibag": { "title": "フレキシバッグ", "capacity": "20フィートコンテナ", "description": "温度敏感製品用の加熱パッド付きフレキシブルコンテナ。", "badge": "加熱パッド利用可能" },
+      "benefits": { "title": "バルク輸送の利点", "cost": { "title": "コスト効率", "description": "梱包コスト削減" }, "environment": { "title": "環境に優しい", "description": "梱包廃棄物の削減" }, "handling": { "title": "効率的な取扱", "description": "プロセスの簡素化" } }
+    },
+    "packaged": {
+      "title": "包装貨物輸送",
+      "description": "完成潤滑油は様々な梱包オプションでご利用いただけます。",
+      "drums": { "title": "ドラム缶", "details": "4本/パレット", "description": "200L鋼鉄ドラムを安全に梱包。" },
+      "ibc": { "title": "IBC", "details": "フォークリフト取扱", "description": "1000L中間バルクコンテナ。" },
+      "smallPacks": { "title": "小分け包装", "details": "段ボール梱包", "description": "18Lプラスチックバケットと小さな容器。" },
+      "specs": { "title": "梱包仕様", "type": "梱包タイプ", "capacityCol": "容量", "perPallet": "パレットあたり数量", "perContainer": "20ftコンテナあたり数量", "bucket18L": { "name": "18Lプラスチックバケット", "capacity": "18L", "pallet": "48バケット", "container": "1,152バケット" }, "drum200L": { "name": "200L鋼鉄ドラム", "capacity": "200L", "pallet": "4ドラム", "container": "80ドラム" }, "ibc1000L": { "name": "1000L IBCタンク", "capacity": "1000L", "pallet": "1 IBC", "container": "18 IBC" } }
+    },
+    "shipping": {
+      "title": "グローバル配送ルート",
+      "description": "適時配送を確保するための信頼性の高い配送ルートを確立しています。",
+      "routesTitle": "主要配送ルート",
+      "route": "ルート", "transitTime": "輸送時間", "mainPorts": "主要港",
+      "asiaEurope": { "route": "アジア〜欧州", "transitTime": "21-28日", "ports": "上海、寧波 → ロッテルダム、ハンブルク" },
+      "asiaNorthAmerica": { "route": "アジア〜北米", "transitTime": "18-25日", "ports": "青島、天津 → ロサンゼルス、ニューヨーク" },
+      "asiaSouthAmerica": { "route": "アジア〜南米", "transitTime": "30-40日", "ports": "上海 → サントス、ブエノスアイレス" },
+      "asiaOceania": { "route": "アジア〜オセアニア", "transitTime": "12-18日", "ports": "上海 → シドニー、メルボルン" },
+      "methods": { "title": "配送方法", "ocean": { "title": "海上輸送", "description": "大量貨物に最も経済的な選択肢" }, "air": { "title": "航空輸送", "description": "緊急注文の迅速配送" }, "land": { "title": "陸上輸送", "description": "内陸配送のトラックサービス" } },
+      "incoterms": { "title": "インコタームズオプション", "exw": "工場渡し", "fob": "FOB", "cfr": "運賃込", "cif": "運賃保険料込", "dap": "仕向地持込渡し", "ddp": "関税込持込渡し" },
+      "quoteButton": "配送見積もり依頼"
+    },
+    "customs": {
+      "title": "通関・コンプライアンス",
+      "description": "国際貿易規制において豊富な経験を持っています。",
+      "documentation": { "title": "書類サービス", "commercialInvoice": "商業送り状", "packingList": "パッキングリスト", "billOfLading": "船荷証券", "certificateOfOrigin": "原産地証明書", "insuranceCertificate": "保険証明書", "msds": "MSDS（安全データシート）", "technicalCertificates": "技術証明書" },
+      "regulatory": { "title": "規制コンプライアンス", "adr": "ADR/RID危険物輸送", "imo": "IMO海上輸送規制", "icao": "ICAO/IATA航空輸送規制", "reach": "EU REACH準拠", "epa": "米国EPA規制", "clearance": "世界的な通関支援", "tariff": "関税分類の専門知識" },
+      "faq": { "title": "よくある質問", "q1": "国際輸送に必要な書類は？", "a1": "ほとんどの国際輸送には、会社情報、仕向港、希望するインコタームズが必要です。", "q2": "国際規制への準拠をどのように保証しますか？", "a2": "当社の物流チームは最新の国際貿易規制について常に把握しています。", "q3": "仕向港での通関を支援できますか？", "a3": "はい、世界中のほぼすべての港で通関を支援できる通関業者のグローバルネットワークを持っています。", "contactButton": "物流チームにお問い合わせ" }
+    },
+    "advantage": {
+      "title": "当社の物流の優位性",
+      "globalNetwork": { "title": "グローバルネットワーク", "description": "すべての主要地域をカバーする包括的な物流ネットワーク" },
+      "productSafety": { "title": "製品の安全性", "description": "製品の完全性を保証する厳格な安全プロトコル" },
+      "onTimeDelivery": { "title": "納期遵守", "description": "配送スケジュールへのコミットメントを持つ信頼性の高い輸送ソリューション" },
+      "dedicatedSupport": { "title": "専用サポート", "description": "輸送プロセス全体を通じて個別サポートを提供する専門物流チーム" }
+    },
+    "cta": { "title": "注文の出荷準備はできましたか？", "description": "当社の物流専門家がカスタマイズされた輸送ソリューションを提供する準備ができています", "button": "配送見積もりを取得" },
+    "mobileFooter": { "contact": "お問い合わせ" }
   },
   "contact": { "title": "お問い合わせ", "subtitle": "チームにご連絡ください", "form": { "title": "メッセージを送信" }, "info": { "title": "連絡先情報" } }
 }

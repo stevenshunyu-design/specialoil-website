@@ -28,11 +28,23 @@
     "description": "Your trusted partner for specialty oil supply chain solutions from China.",
     "quickLinks": "Quick Links",
     "products": "Products",
-    "contact": "Contact",
+    "contact": "Contact Us",
     "followUs": "Follow Us",
-    "allRightsReserved": "All Rights Reserved",
+    "allRightsReserved": "All rights reserved",
     "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service"
+    "termsOfService": "Terms of Service",
+    "cookiePolicy": "Cookie Policy",
+    "sitemap": "Sitemap",
+    "linkAbout": "About Us",
+    "linkBlog": "Industry News",
+    "productTransformer": "Transformer Oil",
+    "productRubber": "Rubber Process Oil",
+    "productHydraulic": "Hydraulic & Industrial Oils",
+    "productGear": "Gear Oils",
+    "productTurbine": "Turbine Oils",
+    "productSpecialty": "Specialty Lubricants",
+    "address": "10th Floor, No. 197, Songling Road, Laoshan District, Qingdao, Shandong, China",
+    "workingHours": "Mon-Fri: 9AM-6PM (GMT+8)"
   },
   "home": {
     "hero": {
@@ -109,14 +121,25 @@
   },
   "about": {
     "hero": {
-      "title": "About CN-SpecLube Chain",
+      "title": "China Special Oil Supply Chain",
       "subtitle": "Your Trusted Partner in China's Specialty Oil Supply Chain"
+    },
+    "tabs": {
+      "story": "Our Story",
+      "supplyChain": "Supply Chain",
+      "qualityControl": "Quality Control",
+      "globalMarkets": "Global Markets"
     },
     "story": {
       "tag": "Our Story",
-      "title": "Connecting Global Markets with China's Specialty Oil Industry",
-      "description": "CN-SpecLube Chain is a specialized supply chain service provider focused on connecting international buyers with China's specialty oil manufacturers. We offer comprehensive solutions including procurement coordination, quality assurance, logistics management, and customs documentation.",
-      "p2": "Our team brings deep industry expertise and strong relationships with leading Chinese manufacturers. We serve as your strategic partner, ensuring seamless transactions and reliable product quality from sourcing to delivery."
+      "title": "Connecting China's Premium Special Oils to Global Markets",
+      "p1": "Founded in 2025, we have quickly established ourselves as a dedicated supply chain platform with a clear mission: to provide the world with access to premium quality special oils from China's most reputable manufacturers.",
+      "p2": "We specialize in sourcing and delivering high-quality Chinese special oils, connecting global industrial clients with premium manufacturers. Our core expertise lies in providing integrated supply chain solutions for procurement, quality control, and logistics.",
+      "p3": "With a team of industry professionals who bring extensive experience in the oil and gas sector, we've built strong partnerships with manufacturers to ensure our customers receive exceptional products at competitive prices, every time.",
+      "stat1": "Years of Experience",
+      "stat2": "Countries Served",
+      "stat3": "Successful Shipments",
+      "stat4": "Partner Factories"
     },
     "mission": {
       "title": "Our Mission",
@@ -141,6 +164,73 @@
         "description": "Dedicated support at every step"
       }
     },
+    "supplyChain": {
+      "title": "Our Complete Supply Chain Solution",
+      "intro": "We offer a seamless supply chain solution that covers every step from sourcing to delivery, ensuring our customers receive high-quality Chinese special oils efficiently and reliably.",
+      "step1Title": "Sourcing & Selection",
+      "step1Desc": "Direct access to premium special oil manufacturers in China, with rigorous supplier qualification processes.",
+      "step2Title": "Quality Control",
+      "step2Desc": "Comprehensive testing and inspection at multiple stages to ensure products meet international standards.",
+      "step3Title": "Documentation & Compliance",
+      "step3Desc": "Complete handling of export documentation, customs clearance, and compliance with international trade regulations.",
+      "step4Title": "Logistics & Delivery",
+      "step4Desc": "Reliable shipping solutions to ports worldwide, with flexible options to meet your specific needs.",
+      "learnMore": "Learn About Our Logistics"
+    },
+    "quality": {
+      "title": "Rigorous Quality Control",
+      "intro": "We understand that quality is paramount for industrial lubricants. Our comprehensive quality control system ensures that every product meets the highest international standards and your specific requirements.",
+      "lab": {
+        "title": "Laboratory Testing",
+        "intro": "Our products undergo rigorous testing in ISO-certified laboratories to ensure they meet all technical specifications.",
+        "item1": "Physical and chemical analysis",
+        "item2": "Performance testing under various conditions",
+        "item3": "Contamination and impurity detection"
+      },
+      "inspection": {
+        "title": "Factory Inspection",
+        "intro": "Regular factory audits and inspections ensure consistent manufacturing quality.",
+        "item1": "Production process monitoring",
+        "item2": "Raw material quality verification",
+        "item3": "Quality management system review"
+      },
+      "certifications": {
+        "title": "Certifications & Standards"
+      },
+      "viewDetails": "View Detailed Quality Process"
+    },
+    "global": {
+      "title": "Our Global Presence",
+      "intro": "We have successfully delivered Chinese special oils to industrial customers in more than 50 countries worldwide. Our experience in international trade ensures smooth transactions and on-time deliveries.",
+      "distribution": {
+        "title": "Regional Distribution",
+        "desc": "Strategically located warehouses in key regions to ensure prompt delivery and local support."
+      },
+      "support": {
+        "title": "Multilingual Support",
+        "desc": "Our team speaks English and Chinese to better serve our global customers."
+      },
+      "shipping": {
+        "title": "Flexible Shipping",
+        "desc": "Various shipping options including FOB, CFR, CIF, and DDP to meet your specific requirements."
+      },
+      "markets": {
+        "title": "Major Export Markets",
+        "europe": "Europe (Germany, Italy, France, Spain)",
+        "northAmerica": "North America (USA, Canada, Mexico)",
+        "middleEast": "Middle East (Saudi Arabia, UAE, Qatar)",
+        "southeastAsia": "Southeast Asia (Indonesia, Malaysia, Thailand)",
+        "africa": "Africa (South Africa, Nigeria, Egypt)",
+        "southAmerica": "South America (Brazil, Argentina, Chile)"
+      },
+      "testimonials": {
+        "title": "Customer Testimonials",
+        "quote1": "The quality of Chinese special oils we received was exceptional, and the supply chain service made the entire process seamless.",
+        "author1": "European Manufacturing Company",
+        "quote2": "We've been importing transformer oil from China through this platform for 5 years now. Consistent quality and reliable deliveries every time.",
+        "author2": "Middle Eastern Power Utility"
+      }
+    },
     "cta": {
       "title": "Ready to Partner with Us?",
       "description": "Let us help you navigate China's specialty oil market",
@@ -150,19 +240,97 @@
   "products": {
     "title": "Our Products",
     "subtitle": "Premium specialty oils sourced from trusted Chinese manufacturers",
+    "hero": {
+      "tag": "Product Portfolio",
+      "title": "China's Premium Special Oil Products",
+      "subtitle": "Discover our comprehensive range of high-quality Chinese special oils that meet international standards and serve industrial clients worldwide."
+    },
+    "whyChina": {
+      "title": "Why Source Special Oils from China?",
+      "desc": "China has emerged as a leading producer of high-quality special oils with advanced refining technology and competitive pricing.",
+      "learnMore": "Learn About China's Advantages",
+      "getQuote": "Get Competitive Quote"
+    },
+    "advantages": {
+      "pricing": "Competitive Pricing",
+      "technology": "Advanced Technology",
+      "workforce": "Skilled Workforce",
+      "supplyChain": "Complete Supply Chain"
+    },
+    "ourProducts": "Our Products",
+    "rangeTitle": "China Special Oil Product Range",
+    "rangeDesc": "Comprehensive solutions for industrial applications, manufactured to meet global standards",
+    "keyFeatures": "Key Features",
+    "viewSpecs": "View Specifications",
     "categories": {
       "transformer": {
         "title": "Transformer Oil",
-        "description": "High-performance insulating oils for electrical equipment"
+        "description": "Premium naphthenic transformer oils from China with excellent dielectric properties and low sulfur content, ideal for high-voltage applications."
       },
       "rubber": {
         "title": "Rubber Process Oil",
-        "description": "Specialty oils for rubber manufacturing"
+        "description": "High solvency naphthenic rubber process oils from China with low PAH content, perfect for tire manufacturing and rubber compounding."
       },
       "lubricants": {
-        "title": "Finished Lubricants",
-        "description": "Industrial and automotive lubricants"
+        "title": "Hydraulic & Industrial Oils",
+        "description": "High-performance hydraulic oils and industrial lubricants from China, engineered for extreme conditions and heavy-duty applications."
       }
+    },
+    "features": {
+      "zeroCorrosive": "Zero Corrosive Sulfur",
+      "arcticReliability": "Arctic Reliability (-45°C)",
+      "highDielectric": "High Dielectric Strength",
+      "astmCompliant": "ASTM D3487 Compliant",
+      "cnContent": "Cn% > 35%",
+      "euReach": "EU REACH Compliant",
+      "lowPah": "Low PAHs",
+      "excellentCompat": "Excellent Compatibility",
+      "isoGrades": "ISO 68/46/32 Grades",
+      "dinCompliant": "DIN 51524 Compliant",
+      "antiWear": "Anti-Wear Protection",
+      "wideTemp": "Wide Temperature Range"
+    },
+    "standards": {
+      "iso9001": "Quality Management System",
+      "iso14001": "Environmental Management System",
+      "reach": "Low PAH Content Compliance",
+      "astm": "International Product Standards"
+    },
+    "stats": {
+      "capacity": {
+        "title": "Production Capacity",
+        "unit": "Metric Tons Annually",
+        "desc": "Our partner factories in China have extensive production capacity to meet large volume orders."
+      },
+      "qc": {
+        "title": "Quality Control",
+        "unit": "Pre-Shipment Inspection",
+        "desc": "All products undergo rigorous testing before shipment to ensure compliance with specifications."
+      },
+      "export": {
+        "title": "Export Experience",
+        "unit": "Countries Exported",
+        "desc": "Extensive experience in exporting Chinese special oils to industrial clients worldwide."
+      }
+    },
+    "compliance": {
+      "tag": "Compliance & Standards",
+      "title": "International Standards & Compliance",
+      "desc": "All our Chinese special oil products meet or exceed international standards, ensuring quality and reliability for your industrial applications."
+    },
+    "brochure": {
+      "tag": "Resources",
+      "title": "Download Our Chinese Special Oil Guide",
+      "desc": "Get detailed information about specifications, applications, and benefits of Chinese special oils for your industry.",
+      "button": "Download Guide (PDF)"
+    },
+    "cta": {
+      "title": "Interested in Chinese Special Oils?",
+      "desc": "Contact our team for personalized recommendations and competitive pricing.",
+      "button": "Request a Free Quote"
+    },
+    "mobileFooter": {
+      "call": "Call Us"
     }
   },
   "transformerOil": {
@@ -295,143 +463,144 @@
   "quality": {
     "title": "Quality Assurance",
     "hero": {
-      "title": "Quality Assurance",
-      "subtitle": "Our Commitment to Excellence"
+      "title": "Quality & Compliance"
+    },
+    "tabs": {
+      "process": "Quality Process",
+      "certificates": "Certificates",
+      "standards": "Standards",
+      "testing": "Testing Methods"
     },
     "process": {
       "title": "Our Quality Process",
-      "description": "At CN-SpecLube Chain, we maintain rigorous quality control throughout our entire supply chain, from raw material sourcing to finished product delivery. Our commitment to quality ensures that every product meets the highest industry standards."
+      "intro": "At CN-SpecLube Chain, we maintain rigorous quality control throughout our entire supply chain, from raw material sourcing to finished product delivery. Our commitment to quality ensures that every product meets the highest industry standards.",
+      "step1": {
+        "title": "Strategic Sourcing",
+        "desc": "We partner with leading Chinese specialty oil manufacturers, carefully selecting suppliers known for their exceptional quality standards and consistent product excellence."
+      },
+      "step2": {
+        "title": "Hydro-treating",
+        "desc": "Our advanced hydro-treating process removes impurities and stabilizes the base oil, ensuring superior performance characteristics and extended service life."
+      },
+      "step3": {
+        "title": "CNAS Lab Test",
+        "desc": "All our products undergo rigorous testing in our CNAS-accredited laboratory, ensuring compliance with international standards and specifications."
+      },
+      "step4": {
+        "title": "Shipment",
+        "desc": "We ensure proper packaging and handling during shipment to maintain product integrity, with complete documentation for customs clearance and quality assurance."
+      },
+      "qms": {
+        "title": "Quality Management System",
+        "intro": "Our ISO 9001-certified Quality Management System ensures consistent product quality and continuous improvement throughout our operations.",
+        "item1": "Document Control",
+        "item1Desc": "Comprehensive documentation for traceability",
+        "item2": "Process Control",
+        "item2Desc": "Standardized procedures for consistency",
+        "item3": "Continuous Improvement",
+        "item3Desc": "Regular audits and process optimization"
+      }
     },
-    "sourcing": {
-      "title": "Strategic Sourcing",
-      "description": "We partner with leading Chinese specialty oil manufacturers, carefully selecting suppliers known for their exceptional quality standards and consistent product excellence."
+    "certificates": {
+      "title": "Our Certifications",
+      "intro": "We maintain various international certifications to ensure our products and processes meet the highest standards.",
+      "iso9001": "Quality Management System",
+      "iso14001": "Environmental Management System",
+      "iso45001": "Occupational Health and Safety",
+      "ohsas": "Occupational Health and Safety Assessment"
     },
     "standards": {
       "title": "International Standards",
-      "description": "All our products comply with international quality standards and specifications.",
-      "item1": "ISO 9001 Quality Management",
-      "item2": "ASTM Standards",
-      "item3": "IEC Specifications",
-      "item4": "API Standards"
+      "intro": "All our products comply with international quality standards and specifications.",
+      "astm": "American Society for Testing and Materials standards for petroleum products",
+      "iso": "International Organization for Standardization specifications for lubricants",
+      "din": "Deutsches Institut für Normung specifications for industrial applications",
+      "gb": "Chinese national standards for petroleum and chemical products",
+      "api": "American Petroleum Institute performance standards for engine oils",
+      "reach": "Registration, Evaluation, Authorization and Restriction of Chemicals"
     },
     "testing": {
       "title": "Testing Methods",
-      "description": "Comprehensive testing ensures product quality and performance.",
-      "item1": "Physical property testing",
-      "item2": "Chemical composition analysis",
-      "item3": "Performance testing",
-      "item4": "Contamination testing"
+      "intro": "Comprehensive testing ensures product quality and performance.",
+      "viscosity": {
+        "name": "Viscosity Measurement",
+        "desc": "Testing of oil viscosity at various temperatures to ensure proper lubrication properties"
+      },
+      "flashPoint": {
+        "name": "Flash Point Testing",
+        "desc": "Determination of the lowest temperature at which the oil vapors ignite"
+      },
+      "pourPoint": {
+        "name": "Pour Point Testing",
+        "desc": "Measurement of the lowest temperature at which the oil remains fluid"
+      },
+      "acidNumber": {
+        "name": "Acid Number Determination",
+        "desc": "Testing of acidic properties to evaluate oxidation and degradation levels"
+      },
+      "elemental": {
+        "name": "Elemental Analysis",
+        "desc": "Measurement of additive elements concentration using advanced spectroscopy techniques"
+      },
+      "particle": {
+        "name": "Particle Counting",
+        "desc": "Evaluation of the cleanliness level of lubricants using laser particle counters"
+      }
     },
     "cta": {
-      "title": "Confidence in Every Drop",
-      "description": "Our commitment to quality ensures that you receive the best products for your industrial needs",
-      "button": "Request Product Samples"
+      "title": "Need Quality Assurance Documentation?",
+      "desc": "Contact us to request certificates of analysis, test reports, or quality documentation.",
+      "button": "Request Documentation"
     }
   },
   "logistics": {
     "title": "Logistics & Packaging Solutions",
-    "hero": {
-      "title": "Logistics & Packaging Solutions",
-      "subtitle": "Efficient and Reliable Global Shipping"
-    },
-    "tabs": {
-      "bulk": "Bulk Liquid Transport",
-      "packaged": "Packaged Goods Transport",
-      "shipping": "Global Shipping Routes",
-      "customs": "Customs & Compliance"
-    },
+    "hero": { "title": "Logistics & Packaging Solutions" },
+    "tabs": { "bulk": "Bulk Liquid Transport", "packaged": "Packaged Goods Transport", "shipping": "Global Shipping Routes", "customs": "Customs & Compliance" },
     "bulk": {
       "title": "Bulk Liquid Transportation",
       "description": "We offer efficient and cost-effective bulk liquid transportation solutions for our raw materials, designed to meet the specific requirements of the oil and lubricants industry.",
-      "isoTank": {
-        "title": "ISO Tank",
-        "capacity": "26,000L",
-        "description": "Stainless steel tanks designed for safe and efficient transportation of bulk liquids. Loading capacity varies by product density—typically 21,000-26,000L depending on the specific gravity of the liquid being transported."
-      },
-      "flexibag": {
-        "title": "Flexibag",
-        "capacity": "20ft container",
-        "description": "Flexible intermediate bulk containers with heating pad available for temperature-sensitive products.",
-        "badge": "Heating Pad Available"
-      },
-      "benefits": {
-        "title": "Benefits of Bulk Liquid Transport",
-        "cost": {
-          "title": "Cost Efficient",
-          "description": "Reduced packaging costs and lower handling expenses"
-        },
-        "environment": {
-          "title": "Environmentally Friendly",
-          "description": "Minimized packaging waste and reduced carbon footprint"
-        },
-        "handling": {
-          "title": "Efficient Handling",
-          "description": "Simplified logistics and faster loading/unloading processes"
-        }
-      }
+      "isoTank": { "title": "ISO Tank", "capacity": "26,000L", "description": "Stainless steel tanks designed for safe and efficient transportation of bulk liquids. Loading capacity varies by product density—typically 21,000-26,000L depending on the specific gravity of the liquid being transported." },
+      "flexibag": { "title": "Flexibag", "capacity": "20ft container", "description": "Flexible intermediate bulk containers with heating pad available for temperature-sensitive products.", "badge": "Heating Pad Available" },
+      "benefits": { "title": "Benefits of Bulk Liquid Transport", "cost": { "title": "Cost Efficient", "description": "Reduced packaging costs and lower handling expenses" }, "environment": { "title": "Environmentally Friendly", "description": "Minimized packaging waste and reduced carbon footprint" }, "handling": { "title": "Efficient Handling", "description": "Simplified logistics and faster loading/unloading processes" } }
     },
     "packaged": {
-      "title": "Packaged Goods Transport",
-      "description": "We offer flexible packaging options to meet your specific requirements.",
-      "drums": {
-        "title": "Drums",
-        "details": "4 drums/pallet, stretch film reinforced",
-        "description": "200L steel drums securely packed on wooden pallets for stability during transport."
-      },
-      "ibc": {
-        "title": "IBC",
-        "details": "Forklift handling",
-        "description": "1000L intermediate bulk containers designed for efficient storage and handling with forklifts or pallet jacks."
-      },
-      "smallPacks": {
-        "title": "Small Packs",
-        "details": "Carton packaging",
-        "description": "18L plastic buckets and smaller containers packed in sturdy cartons for safe transportation."
-      }
+      "title": "Packaged Goods Transportation",
+      "description": "Our finished lubricants are available in various packaging options, each designed to ensure product integrity during transportation and storage.",
+      "drums": { "title": "Drums", "details": "4 drums/pallet, stretch film reinforced", "description": "200L steel drums securely packed on wooden pallets for stability during transport." },
+      "ibc": { "title": "IBC", "details": "Forklift handling", "description": "1000L intermediate bulk containers designed for efficient storage and handling with forklifts or pallet jacks." },
+      "smallPacks": { "title": "Small Packs", "details": "Carton packaging", "description": "18L plastic buckets and smaller containers packed in sturdy cartons for safe transportation." },
+      "specs": { "title": "Packaging Specifications", "type": "Packaging Type", "capacityCol": "Capacity", "perPallet": "Quantity per Pallet", "perContainer": "Quantity per 20ft Container", "bucket18L": { "name": "18L Plastic Bucket", "capacity": "18L", "pallet": "48 buckets", "container": "1,152 buckets" }, "drum200L": { "name": "200L Steel Drum", "capacity": "200L", "pallet": "4 drums", "container": "80 drums" }, "ibc1000L": { "name": "1000L IBC Tank", "capacity": "1000L", "pallet": "1 IBC", "container": "18 IBCs" } }
     },
     "shipping": {
       "title": "Global Shipping Routes",
-      "description": "We ship to major ports worldwide with reliable transit times.",
-      "routes": {
-        "asiaEurope": {
-          "route": "Asia to Europe",
-          "transitTime": "21-28 days",
-          "ports": "Shanghai, Ningbo → Rotterdam, Hamburg"
-        },
-        "asiaNorthAmerica": {
-          "route": "Asia to North America",
-          "transitTime": "18-25 days",
-          "ports": "Qingdao, Tianjin → Los Angeles, New York"
-        },
-        "asiaSouthAmerica": {
-          "route": "Asia to South America",
-          "transitTime": "30-40 days",
-          "ports": "Shanghai → Santos, Buenos Aires"
-        },
-        "asiaOceania": {
-          "route": "Asia to Oceania",
-          "transitTime": "12-18 days",
-          "ports": "Shanghai → Sydney, Melbourne"
-        }
-      }
+      "description": "We have established reliable shipping routes to ensure timely delivery of our products to customers worldwide. Our global logistics network covers all major regions.",
+      "routesTitle": "Major Shipping Routes",
+      "route": "Route", "transitTime": "Transit Time", "mainPorts": "Main Ports",
+      "asiaEurope": { "route": "Asia to Europe", "transitTime": "21-28 days", "ports": "Shanghai, Ningbo → Rotterdam, Hamburg" },
+      "asiaNorthAmerica": { "route": "Asia to North America", "transitTime": "18-25 days", "ports": "Qingdao, Tianjin → Los Angeles, New York" },
+      "asiaSouthAmerica": { "route": "Asia to South America", "transitTime": "30-40 days", "ports": "Shanghai → Santos, Buenos Aires" },
+      "asiaOceania": { "route": "Asia to Oceania", "transitTime": "12-18 days", "ports": "Shanghai → Sydney, Melbourne" },
+      "methods": { "title": "Shipping Methods", "ocean": { "title": "Ocean Freight", "description": "Most economical option for large volumes, available in FCL (Full Container Load) and LCL (Less than Container Load)" }, "air": { "title": "Air Freight", "description": "Expedited shipping for urgent orders, ideal for small volumes and time-sensitive deliveries" }, "land": { "title": "Land Transportation", "description": "Trucking services for inland deliveries and cross-border transportation in neighboring countries" } },
+      "incoterms": { "title": "Incoterms Options", "exw": "Ex Works", "fob": "Free On Board", "cfr": "Cost and Freight", "cif": "Cost, Insurance and Freight", "dap": "Delivered At Place", "ddp": "Delivered Duty Paid" },
+      "quoteButton": "Request Shipping Quote"
     },
     "customs": {
       "title": "Customs & Compliance",
-      "description": "We handle all customs documentation and compliance requirements.",
-      "items": {
-        "item1": "Export documentation",
-        "item2": "Import documentation",
-        "item3": "Certificate of Origin",
-        "item4": "Quality certificates",
-        "item5": "Dangerous goods documentation",
-        "item6": "Insurance arrangements"
-      }
+      "description": "We have extensive experience in international trade regulations and customs procedures, ensuring smooth and compliant shipments to destinations worldwide.",
+      "documentation": { "title": "Documentation Services", "commercialInvoice": "Commercial Invoice", "packingList": "Packing List", "billOfLading": "Bill of Lading/Airway Bill", "certificateOfOrigin": "Certificate of Origin", "insuranceCertificate": "Insurance Certificate (for CIF shipments)", "msds": "MSDS (Material Safety Data Sheet)", "technicalCertificates": "Technical Certificates" },
+      "regulatory": { "title": "Regulatory Compliance", "adr": "ADR/RID for dangerous goods transportation", "imo": "IMO regulations for maritime transport", "icao": "ICAO/IATA regulations for air transport", "reach": "EU REACH compliance", "epa": "US EPA regulations", "clearance": "Customs clearance assistance worldwide", "tariff": "Tariff classification expertise" },
+      "faq": { "title": "Frequently Asked Questions", "q1": "What documentation do I need to provide for international shipping?", "a1": "For most international shipments, we require your company details, port of destination, and preferred Incoterms. We will handle the preparation of all necessary shipping documents based on your specific requirements.", "q2": "How do you ensure compliance with international regulations?", "a2": "Our logistics team stays updated on the latest international trade regulations and maintains close relationships with regulatory authorities. We conduct regular training and audits to ensure full compliance with all applicable laws and standards.", "q3": "Can you assist with customs clearance at the destination port?", "a3": "Yes, we have a global network of customs brokers and agents who can assist with customs clearance at virtually any destination port worldwide. We can provide DDP (Delivered Duty Paid) services for a complete door-to-door solution.", "contactButton": "Contact Our Logistics Team" }
     },
-    "cta": {
-      "title": "Ready to Ship Your Order?",
-      "description": "Our logistics experts are ready to provide you with a customized shipping solution",
-      "button": "Get Shipping Quote"
-    }
+    "advantage": {
+      "title": "Our Logistics Advantage",
+      "globalNetwork": { "title": "Global Network", "description": "Comprehensive logistics network covering all major regions worldwide" },
+      "productSafety": { "title": "Product Safety", "description": "Stringent safety protocols to ensure product integrity during transportation" },
+      "onTimeDelivery": { "title": "On-Time Delivery", "description": "Reliable transportation solutions with commitment to delivery schedules" },
+      "dedicatedSupport": { "title": "Dedicated Support", "description": "Expert logistics team providing personalized support throughout the shipping process" }
+    },
+    "cta": { "title": "Ready to Ship Your Order?", "description": "Our logistics experts are ready to provide you with a customized shipping solution", "button": "Get Shipping Quote" },
+    "mobileFooter": { "contact": "Contact Us" }
   },
   "contact": {
     "title": "Contact Us",

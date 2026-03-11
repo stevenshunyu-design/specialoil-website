@@ -1,42 +1,73 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Products = () => {
+  const { t } = useTranslation();
+  
   const productCategories = [
     {
       id: 1,
-      name: "Transformer Oil",
+      name: t('products.categories.transformer.title'),
       brand: "SpecVolt™ Series",
-      description: "Premium naphthenic transformer oils from China with excellent dielectric properties and low sulfur content, ideal for high-voltage applications.",
+      description: t('products.categories.transformer.description'),
       imageUrl: "https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_4_3&prompt=High%20voltage%20substation%20night%20scene%2C%20transformer%20oil%20application%2C%20industrial%20cinematic%20style&sign=19d76e3848b30fa9653f475f2f81548c",
-      features: ["Zero Corrosive Sulfur", "Arctic Reliability (-45°C)", "High Dielectric Strength", "ASTM D3487 Compliant"],
+      features: [
+        t('products.features.zeroCorrosive', 'Zero Corrosive Sulfur'),
+        t('products.features.arcticReliability', 'Arctic Reliability (-45°C)'),
+        t('products.features.highDielectric', 'High Dielectric Strength'),
+        t('products.features.astmCompliant', 'ASTM D3487 Compliant')
+      ],
       link: "/products/transformer-oil"
     },
     {
       id: 2,
-      name: "Rubber Process Oil",
+      name: t('products.categories.rubber.title'),
       brand: "SpecFlex™ Series",
-      description: "High solvency naphthenic rubber process oils from China with low PAH content, perfect for tire manufacturing and rubber compounding.",
+      description: t('products.categories.rubber.description'),
       imageUrl: "https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_4_3&prompt=Black%20tire%20macro%20texture%20with%20golden%20oil%20flow%2C%20rubber%20process%20oil%2C%20industrial%20cinematic%20style&sign=c976f81101f6ee1607c0bd9d1d6ae29c",
-      features: ["Cn% > 35%", "EU REACH Compliant", "Low PAHs", "Excellent Compatibility"],
+      features: [
+        t('products.features.cnContent', 'Cn% > 35%'),
+        t('products.features.euReach', 'EU REACH Compliant'),
+        t('products.features.lowPah', 'Low PAHs'),
+        t('products.features.excellentCompat', 'Excellent Compatibility')
+      ],
       link: "/products/rubber-process-oil"
     },
     {
       id: 3,
-      name: "Hydraulic & Industrial Oils",
+      name: t('products.categories.lubricants.title'),
       brand: "SpecLube™ Series",
-      description: "High-performance hydraulic oils and industrial lubricants from China, engineered for extreme conditions and heavy-duty applications.",
+      description: t('products.categories.lubricants.description'),
       imageUrl: "https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_4_3&prompt=Hydraulic%20system%20close%20up%2C%20finished%20lubricants%2C%20industrial%20cinematic%20style&sign=caf8afa1997dfaf80a075b52078cd58a",
-      features: ["ISO 68/46/32 Grades", "DIN 51524 Compliant", "Anti-Wear Protection", "Wide Temperature Range"],
+      features: [
+        t('products.features.isoGrades', 'ISO 68/46/32 Grades'),
+        t('products.features.dinCompliant', 'DIN 51524 Compliant'),
+        t('products.features.antiWear', 'Anti-Wear Protection'),
+        t('products.features.wideTemp', 'Wide Temperature Range')
+      ],
       link: "/products/finished-lubricants"
     }
   ];
 
   const chinaAdvantages = [
-    { icon: "fa-tags", title: "Competitive Pricing" },
-    { icon: "fa-microchip", title: "Advanced Technology" },
-    { icon: "fa-users", title: "Skilled Workforce" },
-    { icon: "fa-network-wired", title: "Complete Supply Chain" }
+    { icon: "fa-tags", title: t('products.advantages.pricing') },
+    { icon: "fa-microchip", title: t('products.advantages.technology') },
+    { icon: "fa-users", title: t('products.advantages.workforce') },
+    { icon: "fa-network-wired", title: t('products.advantages.supplyChain') }
+  ];
+
+  const standards = [
+    { title: "ISO 9001", desc: t('products.standards.iso9001') },
+    { title: "ISO 14001", desc: t('products.standards.iso14001') },
+    { title: "EU REACH", desc: t('products.standards.reach') },
+    { title: "ASTM / DIN", desc: t('products.standards.astm') }
+  ];
+
+  const stats = [
+    { title: t('products.stats.capacity.title'), value: "200,000+", unit: t('products.stats.capacity.unit'), desc: t('products.stats.capacity.desc') },
+    { title: t('products.stats.qc.title'), value: "100%", unit: t('products.stats.qc.unit'), desc: t('products.stats.qc.desc') },
+    { title: t('products.stats.export.title'), value: "50+", unit: t('products.stats.export.unit'), desc: t('products.stats.export.desc') }
   ];
 
   return (
@@ -54,13 +85,13 @@ const Products = () => {
             <div className="absolute inset-0 z-20 flex items-center p-6">
               <div className="max-w-3xl">
                 <span className="font-mono text-[var(--accent-600)] text-sm uppercase tracking-wider mb-4 block font-medium">
-                  Product Portfolio
+                  {t('products.hero.tag')}
                 </span>
                 <h1 className="font-display text-5xl md:text-6xl font-semibold mb-6 text-white leading-tight">
-                  China's Premium Special Oil Products
+                  {t('products.hero.title')}
                 </h1>
                 <p className="font-body text-lg text-white/80 leading-relaxed max-w-2xl">
-                  Discover our comprehensive range of high-quality Chinese special oils that meet international standards and serve industrial clients worldwide.
+                  {t('products.hero.subtitle')}
                 </p>
               </div>
             </div>
@@ -75,10 +106,10 @@ const Products = () => {
           <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="max-w-2xl">
               <h2 className="font-display text-3xl md:text-4xl font-semibold mb-4">
-                Why Source Special Oils from China?
+                {t('products.whyChina.title')}
               </h2>
               <p className="font-body text-white/80 mb-8 leading-relaxed">
-                China has emerged as a leading producer of high-quality special oils with advanced refining technology and competitive pricing.
+                {t('products.whyChina.desc')}
               </p>
               <div className="grid grid-cols-2 gap-6">
                 {chinaAdvantages.map((item, index) => (
@@ -96,13 +127,13 @@ const Products = () => {
                 to="/about"
                 className="inline-block bg-white text-[var(--primary-900)] px-8 py-4 rounded-sm font-medium hover:bg-[var(--primary-100)] transition-all duration-300 text-center uppercase tracking-wider text-sm"
               >
-                Learn About China's Advantages
+                {t('products.whyChina.learnMore')}
               </Link>
               <Link
                 to="/contact"
                 className="inline-block bg-[var(--accent-600)] text-white px-8 py-4 rounded-sm font-medium hover:bg-[var(--accent-700)] transition-all duration-300 text-center uppercase tracking-wider text-sm"
               >
-                Get Competitive Quote
+                {t('products.whyChina.getQuote')}
               </Link>
             </div>
           </div>
@@ -112,13 +143,13 @@ const Products = () => {
         <section className="mb-20">
           <div className="text-center mb-16">
             <span className="font-mono text-[var(--accent-600)] text-sm uppercase tracking-wider mb-3 block font-medium">
-              Our Products
+              {t('products.ourProducts')}
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-semibold mb-6 text-[var(--text-dark)]">
-              China Special Oil Product Range
+              {t('products.rangeTitle')}
             </h2>
             <p className="font-body text-lg text-[var(--text-muted)] max-w-3xl mx-auto leading-relaxed">
-              Comprehensive solutions for industrial applications, manufactured to meet global standards
+              {t('products.rangeDesc')}
             </p>
           </div>
 
@@ -149,7 +180,7 @@ const Products = () => {
 
                   <div className="mb-6">
                     <h4 className="font-body font-semibold text-[var(--text-dark)] mb-4 uppercase text-xs tracking-wider">
-                      Key Features:
+                      {t('products.keyFeatures')}:
                     </h4>
                     <ul className="space-y-3">
                       {category.features.map((feature, index) => (
@@ -167,7 +198,7 @@ const Products = () => {
                     to={category.link}
                     className="inline-block bg-[var(--primary-900)] text-white px-6 py-4 rounded-sm font-medium hover:bg-[var(--primary-800)] transition-all duration-300 w-full text-center uppercase tracking-wider text-sm"
                   >
-                    View Specifications
+                    {t('products.viewSpecs')}
                   </Link>
                 </div>
               </div>
@@ -179,24 +210,19 @@ const Products = () => {
         <section className="bg-[var(--bg-light)] p-12 rounded-sm mb-20">
           <div className="text-center mb-16">
             <span className="font-mono text-[var(--accent-600)] text-sm uppercase tracking-wider mb-3 block font-medium">
-              Compliance & Standards
+              {t('products.compliance.tag')}
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-semibold mb-6 text-[var(--text-dark)]">
-              International Standards & Compliance
+              {t('products.compliance.title')}
             </h2>
 
             <p className="font-body text-lg text-[var(--text-muted)] max-w-3xl mx-auto leading-relaxed">
-              All our Chinese special oil products meet or exceed international standards, ensuring quality and reliability for your industrial applications.
+              {t('products.compliance.desc')}
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-            {[
-              { title: "ISO 9001", desc: "Quality Management System" },
-              { title: "ISO 14001", desc: "Environmental Management System" },
-              { title: "EU REACH", desc: "Low PAH Content Compliance" },
-              { title: "ASTM / DIN", desc: "International Product Standards" }
-            ].map((item, index) => (
+            {standards.map((item, index) => (
               <div key={index} className="bg-white p-8 rounded-sm text-center shadow-sm hover:shadow-md transition-shadow duration-300">
                 <div className="text-[var(--accent-600)] text-5xl mb-4">
                   <i className="fa-solid fa-certificate"></i>
@@ -212,11 +238,7 @@ const Products = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { title: "Production Capacity", value: "200,000+", unit: "Metric Tons Annually", desc: "Our partner factories in China have extensive production capacity to meet large volume orders." },
-              { title: "Quality Control", value: "100%", unit: "Pre-Shipment Inspection", desc: "All products undergo rigorous testing before shipment to ensure compliance with specifications." },
-              { title: "Export Experience", value: "50+", unit: "Countries Exported", desc: "Extensive experience in exporting Chinese special oils to industrial clients worldwide." }
-            ].map((item, index) => (
+            {stats.map((item, index) => (
               <div key={index} className="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-shadow duration-300">
                 <h3 className="font-display text-xl font-semibold mb-6 text-[var(--text-dark)]">
                   {item.title}
@@ -238,19 +260,19 @@ const Products = () => {
         {/* Product Brochure CTA */}
         <section className="text-center mb-16 bg-white p-12 border border-[var(--primary-200)] rounded-sm">
           <span className="font-mono text-[var(--accent-600)] text-sm uppercase tracking-wider mb-3 block font-medium">
-            Resources
+            {t('products.brochure.tag')}
           </span>
           <h2 className="font-display text-3xl font-semibold mb-4 text-[var(--text-dark)]">
-            Download Our Chinese Special Oil Guide
+            {t('products.brochure.title')}
           </h2>
           <p className="font-body text-[var(--text-muted)] mb-8 max-w-2xl mx-auto leading-relaxed">
-            Get detailed information about specifications, applications, and benefits of Chinese special oils for your industry.
+            {t('products.brochure.desc')}
           </p>
           <a
             href="#"
             className="inline-block bg-[var(--primary-900)] text-white px-10 py-4 rounded-sm font-medium hover:bg-[var(--primary-800)] transition-all duration-300 uppercase tracking-wider text-sm"
           >
-            <i className="fa-solid fa-download mr-2"></i> Download Guide (PDF)
+            <i className="fa-solid fa-download mr-2"></i> {t('products.brochure.button')}
           </a>
         </section>
 
@@ -259,17 +281,17 @@ const Products = () => {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="max-w-2xl">
               <h2 className="font-display text-3xl md:text-4xl font-semibold mb-4">
-                Interested in Chinese Special Oils?
+                {t('products.cta.title')}
               </h2>
               <p className="font-body text-white/90 leading-relaxed">
-                Contact our team for personalized recommendations and competitive pricing.
+                {t('products.cta.desc')}
               </p>
             </div>
             <Link
               to="/contact"
               className="inline-block bg-white text-[var(--primary-900)] px-10 py-4 rounded-sm font-medium hover:bg-[var(--primary-100)] transition-all duration-300 uppercase tracking-wider text-sm whitespace-nowrap"
             >
-              Request a Free Quote
+              {t('products.cta.button')}
             </Link>
           </div>
         </section>
@@ -279,7 +301,7 @@ const Products = () => {
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg flex z-40">
         <a href="tel:+8613793280176" className="flex-1 py-4 bg-[var(--primary-900)] text-white flex items-center justify-center">
           <i className="fa-solid fa-phone mr-2"></i>
-          <span className="font-medium text-sm">Call Us</span>
+          <span className="font-medium text-sm">{t('products.mobileFooter.call')}</span>
         </a>
         <a href="https://wa.me/8613793280176" className="flex-1 py-4 bg-[var(--accent-600)] text-white flex items-center justify-center">
           <i className="fa-brands fa-whatsapp mr-2"></i>
