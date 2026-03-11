@@ -798,7 +798,7 @@ app.post('/api/chat/sessions/:sessionId/close', async (req: Request, res: Respon
 // 人工客服消息 API - 用户发送消息（转人工后使用）
 app.post('/api/chat/human', async (req: Request, res: Response) => {
   try {
-    const { message, sessionId } = req.body;
+    const { message, sessionId, customerInfo } = req.body;
     
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
@@ -839,9 +839,58 @@ app.post('/api/chat/human', async (req: Request, res: Response) => {
       .update({ updated_at: new Date().toISOString() })
       .eq('id', sessionId);
 
+    // 发送飞书通知 - 提醒管理员有新消息
+    if (FEISHU_WEBHOOK_URL) {
+      const customerNo = existingSession.customer_no || `#${sessionId.substring(0, 8)}`;
+      const visitorName = existingSession.visitor_name || 'Visitor';
+      
+      const notification = {
+        msg_type: 'interactive',
+        card: {
+          header: { 
+            title: { tag: 'plain_text', content: `💬 新消息 ${customerNo}` }, 
+            template: 'blue' 
+          },
+          elements: [
+            { 
+              tag: 'div', 
+              text: { 
+                tag: 'lark_md', 
+                content: `**${visitorName}**: ${message.substring(0, 200)}${message.length > 200 ? '...' : ''}` 
+              } 
+            },
+            { tag: 'divider' },
+            { 
+              tag: 'action', 
+              actions: [
+                {
+                  tag: 'button',
+                  text: { tag: 'plain_text', content: '前往后台回复' },
+                  url: `${process.env.SITE_URL || 'https://cnspecialtyoils.com'}/admin/chat`,
+                  type: 'primary'
+                }
+              ]
+            }
+          ]
+        }
+      };
+
+      try {
+        await fetch(FEISHU_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(notification)
+        });
+        console.log(`✅ Feishu notification sent for new message from ${customerNo}`);
+      } catch (feishuError) {
+        console.error('Failed to send Feishu notification:', feishuError);
+      }
+    }
+
     res.json({
       success: true,
-      message: 'Message sent'
+      message: 'Message sent',
+      session: existingSession
     });
   } catch (error) {
     console.error('Human chat error:', error);

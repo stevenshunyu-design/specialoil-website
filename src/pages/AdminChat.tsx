@@ -159,8 +159,8 @@ const AdminChat = () => {
     if (confirm('Are you sure you want to close this chat?')) {
       try {
         await fetch(`/api/chat/sessions/${selectedSession.id}/close`, { method: 'POST' });
-        setSelectedSession(null);
-        setMessages([]);
+        // 更新本地状态，但保留消息历史供查看
+        setSelectedSession(prev => prev ? { ...prev, status: 'closed' } : null);
         fetchSessions();
       } catch (err) {
         console.error('Failed to close session:', err);
@@ -431,15 +431,17 @@ const AdminChat = () => {
                       </div>
                       <div className={`px-4 py-3 rounded-2xl ${
                         msg.sender_type === 'visitor'
-                          ? 'bg-white text-slate-800 rounded-bl-md shadow-sm border border-slate-100'
-                          : 'bg-[#003366] !text-white rounded-br-md shadow-lg'
+                          ? 'bg-white border border-slate-200 rounded-bl-md shadow-sm'
+                          : 'bg-[#003366] rounded-br-md shadow-lg'
                       }`}>
                         {msg.sender_type === 'admin' && (
-                          <p className="text-xs !text-[#D4AF37] mb-1 font-semibold">{msg.sender_name}</p>
+                          <p className="text-xs text-[#D4AF37] mb-1 font-semibold">{msg.sender_name}</p>
                         )}
-                        <p className="text-sm whitespace-pre-wrap leading-relaxed !text-white">{msg.message}</p>
+                        <p className={`text-sm whitespace-pre-wrap leading-relaxed ${
+                          msg.sender_type === 'visitor' ? 'text-slate-800' : 'text-white'
+                        }`}>{msg.message}</p>
                         <p className={`text-xs mt-1 ${
-                          msg.sender_type === 'visitor' ? 'text-slate-400' : '!text-white/70'
+                          msg.sender_type === 'visitor' ? 'text-slate-400' : 'text-white/60'
                         }`}>
                           {formatTime(msg.created_at)}
                         </p>
@@ -453,28 +455,35 @@ const AdminChat = () => {
 
             {/* Input */}
             <div className="p-4 bg-white border-t border-slate-200">
-              <div className="flex gap-3 items-end">
-                <div className="flex-1 relative">
-                  <textarea
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Type your message..."
-                    rows={1}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#003366]/30 focus:border-[#003366] resize-none transition-all"
-                    disabled={isLoading}
-                    style={{ minHeight: '48px', maxHeight: '120px' }}
-                  />
+              {selectedSession.status === 'closed' ? (
+                <div className="text-center py-3">
+                  <p className="text-slate-500 text-sm">🔒 This conversation has been closed</p>
+                  <p className="text-slate-400 text-xs mt-1">Messages are preserved for reference</p>
                 </div>
-                <button
-                  onClick={sendMessage}
-                  disabled={!inputValue.trim() || isLoading}
-                  className="px-6 py-3 bg-gradient-to-r from-[#003366] to-[#004080] text-white rounded-2xl font-medium hover:shadow-lg hover:shadow-[#003366]/30 transition-all disabled:opacity-50 disabled:hover:shadow-none flex items-center gap-2"
-                >
-                  <i className="fa-solid fa-paper-plane"></i>
-                  <span className="hidden sm:inline">Send</span>
-                </button>
-              </div>
+              ) : (
+                <div className="flex gap-3 items-end">
+                  <div className="flex-1 relative">
+                    <textarea
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      placeholder="Type your message..."
+                      rows={1}
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#003366]/30 focus:border-[#003366] resize-none transition-all"
+                      disabled={isLoading}
+                      style={{ minHeight: '48px', maxHeight: '120px' }}
+                    />
+                  </div>
+                  <button
+                    onClick={sendMessage}
+                    disabled={!inputValue.trim() || isLoading}
+                    className="px-6 py-3 bg-gradient-to-r from-[#003366] to-[#004080] text-white rounded-2xl font-medium hover:shadow-lg hover:shadow-[#003366]/30 transition-all disabled:opacity-50 disabled:hover:shadow-none flex items-center gap-2"
+                  >
+                    <i className="fa-solid fa-paper-plane"></i>
+                    <span className="hidden sm:inline">Send</span>
+                  </button>
+                </div>
+              )}
             </div>
           </>
         ) : (
