@@ -918,6 +918,7 @@ app.post('/api/chat/human', async (req: Request, res: Response) => {
       const customerNo = existingSession.customer_no || `#${sessionId.substring(0, 8)}`;
       const visitorName = existingSession.visitor_name || 'Visitor';
       
+      // 使用简单的文本消息格式（webhook v2 不支持复杂的卡片元素）
       const notification = {
         msg_type: 'interactive',
         card: {
@@ -930,20 +931,8 @@ app.post('/api/chat/human', async (req: Request, res: Response) => {
               tag: 'div', 
               text: { 
                 tag: 'lark_md', 
-                content: `**${visitorName}**: ${message.substring(0, 200)}${message.length > 200 ? '...' : ''}` 
+                content: `**${visitorName}**: ${message.substring(0, 200)}${message.length > 200 ? '...' : ''}\n\n👉 [点击前往后台回复](${process.env.SITE_URL || 'https://cnspecialtyoils.com'}/admin/chat)` 
               } 
-            },
-            { tag: 'divider' },
-            { 
-              tag: 'action', 
-              actions: [
-                {
-                  tag: 'button',
-                  text: { tag: 'plain_text', content: '前往后台回复' },
-                  url: `${process.env.SITE_URL || 'https://cnspecialtyoils.com'}/admin/chat`,
-                  type: 'primary'
-                }
-              ]
             }
           ]
         }
@@ -1043,6 +1032,7 @@ app.post('/api/chat', async (req: Request, res: Response) => {
         console.log(`📤 Preparing to send Feishu notification for human support request...`);
         console.log(`   Webhook URL: ${FEISHU_WEBHOOK_URL}`);
         
+        // 使用简单的文本消息格式（webhook v2 不支持复杂的卡片元素）
         const notification = {
           msg_type: 'interactive',
           card: {
@@ -1055,26 +1045,8 @@ app.post('/api/chat', async (req: Request, res: Response) => {
                 tag: 'div', 
                 text: { 
                   tag: 'lark_md', 
-                  content: `**客户信息**\n👤 姓名: ${customerName}\n📧 邮箱: ${customerEmail}\n📱 电话: ${customerPhone}\n💬 消息: ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}` 
+                  content: `**客户信息**\n👤 姓名: ${customerName}\n📧 邮箱: ${customerEmail}\n📱 电话: ${customerPhone}\n💬 消息: ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}\n\n👉 [点击前往后台回复](${process.env.SITE_URL || 'https://cnspecialtyoils.com'}/admin/chat)` 
                 } 
-              },
-              { tag: 'divider' },
-              { 
-                tag: 'action', 
-                actions: [
-                  {
-                    tag: 'button',
-                    text: { tag: 'plain_text', content: '前往后台回复' },
-                    url: `${process.env.SITE_URL || 'https://cnspecialtyoils.com'}/admin/chat`,
-                    type: 'primary'
-                  }
-                ]
-              },
-              { 
-                tag: 'note', 
-                elements: [
-                  { tag: 'plain_text', content: `请登录后台客服系统回复客户消息` }
-                ] 
               }
             ]
           }
