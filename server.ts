@@ -666,7 +666,7 @@ app.get('/api/chat/messages', async (req: Request, res: Response) => {
   }
 });
 
-// 获取所有活跃会话 API - 用于客服工作台
+// 获取所有会话 API - 用于客服工作台（包括已关闭的历史会话）
 app.get('/api/chat/sessions', async (req: Request, res: Response) => {
   try {
     const client = getSupabaseClient();
@@ -674,10 +674,10 @@ app.get('/api/chat/sessions', async (req: Request, res: Response) => {
       return res.json({ success: true, data: [] });
     }
 
+    // 获取所有会话，包括已关闭的，按更新时间倒序排列
     const { data: sessions, error } = await client
       .from('chat_sessions')
       .select('*')
-      .in('status', ['waiting', 'active'])
       .order('updated_at', { ascending: false });
 
     if (error) {
@@ -960,36 +960,6 @@ app.post('/api/chat', async (req: Request, res: Response) => {
     res.json({ response: data.choices?.[0]?.message?.content || 'Sorry, error occurred.' });
   } catch (error) {
     console.error('Chat API error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-app.get('/api/chat/sessions', async (req: Request, res: Response) => {
-  try {
-    const client = getSupabaseClient();
-    const { data, error } = await client
-      .from('chat_sessions')
-      .select('*')
-      .order('updated_at', { ascending: false });
-    if (error) return res.status(500).json({ error: 'Failed to fetch' });
-    res.json({ success: true, data });
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-app.get('/api/chat/sessions/:sessionId/messages', async (req: Request, res: Response) => {
-  try {
-    const { sessionId } = req.params;
-    const client = getSupabaseClient();
-    const { data, error } = await client
-      .from('chat_messages')
-      .select('*')
-      .eq('session_id', sessionId)
-      .order('created_at', { ascending: true });
-    if (error) return res.status(500).json({ error: 'Failed to fetch' });
-    res.json({ success: true, data });
-  } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
 });

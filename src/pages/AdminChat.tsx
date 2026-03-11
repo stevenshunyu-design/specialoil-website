@@ -432,14 +432,14 @@ const AdminChat = () => {
                       <div className={`px-4 py-3 rounded-2xl ${
                         msg.sender_type === 'visitor'
                           ? 'bg-white text-slate-800 rounded-bl-md shadow-sm border border-slate-100'
-                          : 'bg-[#003366] text-white rounded-br-md shadow-lg'
+                          : 'bg-[#003366] !text-white rounded-br-md shadow-lg'
                       }`}>
                         {msg.sender_type === 'admin' && (
-                          <p className="text-xs text-[#D4AF37] mb-1 font-semibold">{msg.sender_name}</p>
+                          <p className="text-xs !text-[#D4AF37] mb-1 font-semibold">{msg.sender_name}</p>
                         )}
-                        <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.message}</p>
+                        <p className="text-sm whitespace-pre-wrap leading-relaxed !text-white">{msg.message}</p>
                         <p className={`text-xs mt-1 ${
-                          msg.sender_type === 'visitor' ? 'text-slate-400' : 'text-white/50'
+                          msg.sender_type === 'visitor' ? 'text-slate-400' : '!text-white/70'
                         }`}>
                           {formatTime(msg.created_at)}
                         </p>
