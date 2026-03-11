@@ -36,7 +36,7 @@ const Home = () => {
       subtitle: "Reliable Shipping to 50+ Countries Worldwide",
       ctaText: "Check Logistics",
       ctaLink: "/logistics",
-      imageUrl: "https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_16_9&prompt=Port%20ISO%20Tank%20lifting%2C%20industrial%20cinematic%20style%2C%20high%20contrast%2C%20blue%20and%20gold%20lighting&sign=3dff7de8874ad1e6951f653bc316272e"
+      imageUrl: "https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/image/generate_image_6b2fc5cf-ba4c-4050-a5bf-9199d34be5e2.jpeg?sign=1804746119-b865bc939c-0-ab369dd4c7be1caead4fb41f5e91caa63b2e666ba7671a8f51c38d85b34a1cca"
     }
   ];
 
