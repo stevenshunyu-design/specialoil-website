@@ -319,7 +319,7 @@ const AdminChat = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <span className="font-medium text-white text-sm">
-                          {session.visitor_name || session.customer_no || `#${session.id.substring(0, 4)}`}
+                          {session.visitor_name ? `${session.visitor_name} (${session.customer_no || `#${session.id.substring(0, 4)}`})` : session.customer_no || `#${session.id.substring(0, 4)}`}
                         </span>
                         <span className={`text-xs px-2 py-0.5 rounded-full ${
                           session.status === 'closed'
@@ -332,7 +332,7 @@ const AdminChat = () => {
                         </span>
                       </div>
                       <p className="text-xs text-white/40 truncate mt-0.5">
-                        {session.visitor_email || 'No email'}
+                        {session.visitor_email || 'No email'} • {formatDate(session.updated_at)}
                       </p>
                     </div>
                   )}

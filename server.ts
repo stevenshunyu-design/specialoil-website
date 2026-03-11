@@ -70,6 +70,7 @@ console.log('Server Configuration:');
 console.log('FEISHU_APP_ID:', FEISHU_APP_ID || 'NOT SET');
 console.log('FEISHU_APP_SECRET:', FEISHU_APP_SECRET ? 'SET' : 'NOT SET');
 console.log('FEISHU_CHAT_ID:', FEISHU_CHAT_ID || 'NOT SET');
+console.log('FEISHU_WEBHOOK_URL:', FEISHU_WEBHOOK_URL ? 'SET' : 'NOT SET');
 console.log('OPENAI_API_KEY:', OPENAI_API_KEY ? 'SET' : 'NOT SET');
 console.log('========================================');
 
@@ -902,12 +903,13 @@ app.post('/api/chat/human', async (req: Request, res: Response) => {
       };
 
       try {
-        await fetch(FEISHU_WEBHOOK_URL, {
+        const feishuResponse = await fetch(FEISHU_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(notification)
         });
-        console.log(`✅ Feishu notification sent for new message from ${customerNo}`);
+        const feishuResult = await feishuResponse.text();
+        console.log(`✅ Feishu notification sent for new message from ${customerNo}, response: ${feishuResult}`);
       } catch (feishuError) {
         console.error('Failed to send Feishu notification:', feishuError);
       }
@@ -1003,12 +1005,13 @@ app.post('/api/chat', async (req: Request, res: Response) => {
         };
         
         try {
-          await fetch(FEISHU_WEBHOOK_URL, {
+          const feishuResponse = await fetch(FEISHU_WEBHOOK_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(notification)
           });
-          console.log(`✅ Feishu notification sent: ${customerNo}`);
+          const feishuResult = await feishuResponse.text();
+          console.log(`✅ Feishu notification sent: ${customerNo}, response: ${feishuResult}`);
         } catch (error) {
           console.error('Feishu notification error:', error);
         }
