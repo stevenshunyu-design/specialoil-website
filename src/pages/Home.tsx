@@ -36,7 +36,7 @@ const Home = () => {
       subtitle: "Reliable Shipping to 50+ Countries Worldwide",
       ctaText: "Check Logistics",
       ctaLink: "/logistics",
-      imageUrl: "https://coze-coding-project.tos.coze.site/coze_storage_7614051249499078666/image/generate_image_6b2fc5cf-ba4c-4050-a5bf-9199d34be5e2.jpeg?sign=1804746119-b865bc939c-0-ab369dd4c7be1caead4fb41f5e91caa63b2e666ba7671a8f51c38d85b34a1cca"
+      imageUrl: "/iso-tanks-port.jpg"
     }
   ];
 
