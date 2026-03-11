@@ -179,10 +179,10 @@ const Quality = () => {
                   <div className="flex flex-col md:flex-row items-center md:items-start">
                     <div className="md:w-1/2 md:pr-8 mb-6 md:mb-0 md:text-right">
                       <h3 className="text-2xl font-bold mb-3 text-[#003366] font-['Montserrat']">
-                        Bohai Bay Source
+                        Strategic Sourcing
                       </h3>
                       <p className="text-[#333333]">
-                        We source our premium naphthenic crude oil exclusively from the Suizhong 36-1 oilfield in Bohai Bay, known for its exceptional quality and naturally low sulfur content.
+                        We partner with leading Chinese specialty oil manufacturers, carefully selecting suppliers known for their exceptional quality standards and consistent product excellence.
                       </p>
                     </div>
                     <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 h-16 w-16 rounded-full bg-[#003366] text-white items-center justify-center z-10">
@@ -191,14 +191,14 @@ const Quality = () => {
                     <div className="md:block hidden md:w-1/2 md:pl-8">
                       <img 
                         src="https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_4_3&prompt=Bohai%20Bay%20oilfield%2C%20offshore%20platform%2C%20industrial%20cinematic%20style&sign=e65d65fd032ab8e40831b935e3ce9026" 
-                        alt="Bohai Bay Source" 
+                        alt="Quality Control" 
                         className="w-full h-60 object-cover rounded-sm"
                       />
                     </div>
                     <div className="md:hidden w-full mb-4">
                       <img 
                         src="https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_4_3&prompt=Bohai%20Bay%20oilfield%2C%20offshore%20platform%2C%20industrial%20cinematic%20style&sign=e65d65fd032ab8e40831b935e3ce9026" 
-                        alt="Bohai Bay Source" 
+                        alt="Quality Control" 
                         className="w-full h-48 object-cover rounded-sm"
                       />
                     </div>

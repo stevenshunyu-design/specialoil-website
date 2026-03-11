@@ -142,7 +142,7 @@ const TransformerOil = () => {
                 <p className="text-[#333333] mb-6 leading-relaxed">
                   SpecVolt™ Transformer Oils are premium naphthenic-based lubricants specifically designed to provide exceptional insulation, cooling, and protection for high-voltage transformers and electrical equipment.
                 </p>
-                <p className="text-[#333333] mb-6 leading-relaxed">Derived from the unique Suizhong 36-1 oilfield in Bohai Bay, our transformer oils offer naturally low sulfur content and superior dielectric properties, ensuring reliable performance even in the most demanding conditions.
+                <p className="text-[#333333] mb-6 leading-relaxed">We source transformer oils from leading Chinese manufacturers, offering products with naturally low sulfur content and superior dielectric properties. Our supply chain services ensure consistent quality and reliable performance for demanding applications.
                 </p>
                 
                 <div className="mb-8">

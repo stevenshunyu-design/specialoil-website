@@ -151,7 +151,7 @@ const FinishedLubricants = () => {
                   SpecLube™ Finished Lubricants are premium formulated lubricants designed to provide exceptional protection and performance in the most demanding industrial applications.
                 </p>
                 <p className="text-[#333333] mb-6 leading-relaxed">
-                  Using our unique naphthenic base oils derived from the Suizhong 36-1 oilfield in Bohai Bay, combined with advanced additive technology, our lubricants deliver superior performance, extended equipment life, and reduced maintenance costs.
+                  We offer finished lubricants from professional Chinese manufacturers, formulated with advanced additive technology to deliver superior performance, extended equipment life, and reduced maintenance costs.
                 </p>
                 
                 <div className="mb-8">

@@ -80,7 +80,7 @@ const About = () => {
                   Founded in 2025, we have quickly established ourselves as a dedicated supply chain platform with a clear mission: to provide the world with access to premium quality special oils from China's most reputable manufacturers.
                 </p>
                 <p className="text-[#333333] mb-6 leading-relaxed">
-                  Our core expertise lies in sourcing and delivering high-quality Chinese special oils, particularly those derived from the premium naphthenic crude of Bohai Bay's Suizhong 36-1 oilfield, to industrial clients across the globe.
+                  We specialize in sourcing and delivering high-quality Chinese special oils, connecting global industrial clients with premium manufacturers. Our core expertise lies in providing integrated supply chain solutions for procurement, quality control, and logistics.
                 </p>
                 <p className="text-[#333333] mb-6 leading-relaxed">
                   With a team of industry professionals who bring extensive experience in the oil and gas sector, we've built strong partnerships with manufacturers to ensure our customers receive exceptional products at competitive prices, every time.
@@ -124,7 +124,7 @@ const About = () => {
               <div className="md:w-1/2">
                 <img 
                   src="https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_4_3&prompt=Bohai%20Bay%20offshore%20oil%20platform%2C%20Suizhong%2036-1%20oilfield%2C%20industrial%20cinematic%20style&sign=89d170a2b1d9901f57812c5b2223421d" 
-                  alt="Bohai Bay Source" 
+                  alt="Supply Chain Operations" 
                   className="w-full h-auto rounded-sm mb-6"
                 />
                 <img 

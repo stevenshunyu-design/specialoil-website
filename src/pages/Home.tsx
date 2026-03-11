@@ -17,7 +17,7 @@ const Home = () => {
     {
       id: 1,
       title: "China's Premium Special Oil Source",
-      subtitle: "Direct Supply Chain from Bohai Bay to Global Markets",
+      subtitle: "Connecting Global Buyers with China's Best Manufacturers",
       ctaText: "Explore Our Products",
       ctaLink: "/products",
       imageUrl: "https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_16_9&prompt=Bohai%20Bay%20offshore%20drilling%20platform%20silhouette%2C%20deep%20blue%20color%2C%20industrial%20cinematic%20style%2C%20high%20contrast&sign=e81f5a5b6e3ca6e1f132b9baed80513c"
@@ -152,7 +152,7 @@ const Home = () => {
               <div className="absolute -top-4 -left-4 w-full h-full bg-[var(--accent-600)]/10 rounded-sm"></div>
               <img
                 src="https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_4_3&prompt=Bohai%20Bay%20Suizhong%2036-1%20oilfield%2C%20industrial%20cinematic%20style%2C%20high%20contrast%2C%20blue%20and%20gold%20lighting&sign=9f4c8c6ca66bbb1e614c3b21e28319c4"
-                alt="Bohai Bay Source"
+                alt="Supply Chain Operations"
                 className="relative w-full h-auto rounded-sm shadow-xl"
               />
             </div>

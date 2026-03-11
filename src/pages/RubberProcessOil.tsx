@@ -143,7 +143,7 @@ const RubberProcessOil = () => {
                   SpecFlex™ Rubber Process Oils are premium naphthenic-based oils specifically designed to enhance the processing and performance of rubber compounds.
                 </p>
                 <p className="text-[#333333] mb-6 leading-relaxed">
-                  Derived from the unique Suizhong 36-1 oilfield in Bohai Bay, our rubber process oils offer naturally high solvency (Cn% {'>'} 35%) and excellent compatibility with various rubber types, making them ideal for demanding applications.
+                  We provide rubber process oils from trusted Chinese producers, featuring high solvency (Cn% {'>'} 35%) and excellent compatibility with various rubber types. Our end-to-end solutions support seamless procurement for specialized industrial applications.
                 </p>
                 
                 <div className="mb-8">
