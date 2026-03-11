@@ -10,7 +10,7 @@ const Logistics = () => {
       type: "ISO Tank",
       capacity: "26,000L",
       description: "Stainless steel tanks designed for safe and efficient transportation of bulk liquids.",
-      imageUrl: "https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_4_3&prompt=ISO%20Tank%20container%20being%20loaded%2C%20industrial%20cinematic%20style&sign=d1bbe8356677a37d216f4b20d88c9fd0"
+      imageUrl: "/iso-tank-card.jpg"
     },
     {
       type: "Flexibag",
