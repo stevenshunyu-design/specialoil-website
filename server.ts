@@ -316,7 +316,7 @@ io.on('connection', (socket) => {
           visitor_id: visitorId,
           visitor_name: name || null,
           visitor_email: email || null,
-          status: 'active'
+          status: 'waiting'  // 新会话设为等待状态
         })
         .select()
         .single();
@@ -747,6 +747,16 @@ app.post('/api/chat/admin/message', async (req: Request, res: Response) => {
       return res.status(500).json({ error: 'Failed to save message' });
     }
 
+    // 如果会话是 waiting 状态，自动变为 active
+    await client
+      .from('chat_sessions')
+      .update({ 
+        status: 'active',
+        updated_at: new Date().toISOString() 
+      })
+      .eq('id', sessionId)
+      .eq('status', 'waiting');  // 只更新 waiting 状态的会话
+
     await client
       .from('chat_sessions')
       .update({ updated_at: new Date().toISOString() })
@@ -865,7 +875,7 @@ app.post('/api/chat', async (req: Request, res: Response) => {
           visitor_email: customerEmail,
           visitor_phone: customerPhone,
           customer_no: customerNo,
-          status: 'active'
+          status: 'waiting'  // 新会话设为等待状态，管理员回复后变为 active
         });
         
         // 保存用户消息
