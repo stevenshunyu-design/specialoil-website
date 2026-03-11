@@ -9,7 +9,7 @@ const Logistics = () => {
     {
       type: "ISO Tank",
       capacity: "26,000L",
-      description: "Stainless steel tanks designed for safe and efficient transportation of bulk liquids.",
+      description: "Stainless steel tanks designed for safe and efficient transportation of bulk liquids. Loading capacity varies by product density—typically 21,000-26,000L depending on the specific gravity of the liquid being transported.",
       imageUrl: "/iso-tank-card.jpg"
     },
     {
