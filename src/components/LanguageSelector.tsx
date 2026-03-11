@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { languages } from '../i18n';
 
@@ -64,13 +65,22 @@ const LanguageSelector: React.FC = () => {
         </span>
       </button>
 
-      {/* Modal Overlay */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+      {/* Modal Overlay - 使用Portal渲染到body，确保不受父元素影响 */}
+      {isOpen && createPortal(
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0
+          }}
+        >
           {/* Modal Content */}
           <div
             ref={modalRef}
-            className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden animate-scale-in"
+            className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden"
             style={{ animation: 'scaleIn 0.2s ease-out' }}
           >
             {/* Header */}
@@ -146,7 +156,8 @@ const LanguageSelector: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* 动画样式 */}
