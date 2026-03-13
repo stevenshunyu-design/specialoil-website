@@ -31,9 +31,14 @@ import { useLocation } from "react-router-dom";
 // Layout wrapper component
 function AppLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
-  const isAdminChat = location.pathname === '/admin/chat';
   
-  if (isAdminChat) {
+  // 后台管理页面不显示前端导航栏
+  const isAdminPage = location.pathname === '/login' || 
+                       location.pathname === '/admin' || 
+                       location.pathname.startsWith('/admin/') ||
+                       location.pathname === '/admin/chat';
+  
+  if (isAdminPage) {
     return <>{children}</>;
   }
   
