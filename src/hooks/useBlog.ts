@@ -1260,18 +1260,17 @@ export function useBlog() {
 
     const loadLocalPosts = () => {
       try {
-        // 检查数据版本，确保使用最新的博客数据
-        const storedVersion = localStorage.getItem('blogPostsVersion');
-        const currentVersion = '2.3'; // 更新版本号以强制刷新数据（修复图片链接）
         const storedPosts = localStorage.getItem('blogPosts');
         
-        if (storedPosts && storedVersion === currentVersion) {
-          setPosts(JSON.parse(storedPosts));
+        if (storedPosts) {
+          // 如果已有存储数据，使用用户数据（保留用户编辑）
+          const parsedPosts = JSON.parse(storedPosts);
+          setPosts(parsedPosts);
+          console.log('Loaded existing blog posts from localStorage');
         } else {
-          // 版本不匹配或首次加载，使用最新的默认数据
-          console.log('Refreshing blog data to latest version:', currentVersion);
+          // 首次访问，使用默认文章数据
+          console.log('First time loading, using default blog posts');
           localStorage.setItem('blogPosts', JSON.stringify(defaultBlogPosts));
-          localStorage.setItem('blogPostsVersion', currentVersion);
           setPosts(defaultBlogPosts);
         }
       } catch (error) {

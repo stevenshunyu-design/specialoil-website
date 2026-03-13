@@ -3,73 +3,6 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useBlog } from '../hooks/useBlog';
 import { toast } from 'sonner';
 
-// 文章配图映射 - 使用可靠的 Unsplash 图片
-const articleImages: Record<string, { hero: string; content: string[] }> = {
-  '1': {
-    hero: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=600&fit=crop',
-    content: [
-      'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&h=500&fit=crop',
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop'
-    ]
-  },
-  '2': {
-    hero: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1200&h=600&fit=crop',
-    content: [
-      'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&h=500&fit=crop',
-      'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=800&h=500&fit=crop'
-    ]
-  },
-  '3': {
-    hero: 'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=1200&h=600&fit=crop',
-    content: [
-      'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=500&fit=crop',
-      'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&h=500&fit=crop'
-    ]
-  },
-  '4': {
-    hero: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200&h=600&fit=crop',
-    content: [
-      'https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=800&h=500&fit=crop',
-      'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&h=500&fit=crop'
-    ]
-  },
-  '5': {
-    hero: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=600&fit=crop',
-    content: [
-      'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=500&fit=crop',
-      'https://images.unsplash.com/photo-1581091226830-4d0b4e7c3d7e?w=800&h=500&fit=crop'
-    ]
-  },
-  '6': {
-    hero: 'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=1200&h=600&fit=crop',
-    content: [
-      'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=500&fit=crop',
-      'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=500&fit=crop'
-    ]
-  },
-  '7': {
-    hero: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&h=600&fit=crop',
-    content: [
-      'https://images.unsplash.com/photo-1581091226830-4d0b4e7c3d7e?w=800&h=500&fit=crop',
-      'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&h=500&fit=crop'
-    ]
-  },
-  '8': {
-    hero: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop',
-    content: [
-      'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=500&fit=crop',
-      'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&h=500&fit=crop'
-    ]
-  },
-  '9': {
-    hero: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200&h=600&fit=crop',
-    content: [
-      'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=500&fit=crop',
-      'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=800&h=500&fit=crop'
-    ]
-  }
-};
-
 // 阅读进度条组件
 const ReadingProgress = () => {
   const [progress, setProgress] = useState(0);
@@ -259,8 +192,11 @@ const BlogPost = () => {
     day: 'numeric'
   });
 
-  // 获取文章配图
-  const articleImage = articleImages[post.id] || { hero: post.featuredImage, content: [] };
+  // 使用文章数据中的 featuredImage 作为主图
+  const articleImage = { 
+    hero: post.featuredImage || 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1200&h=600&fit=crop', 
+    content: [] 
+  };
 
   // 估算阅读时间
   const wordCount = post.content.replace(/<[^>]*>/g, '').split(/\s+/).length;
