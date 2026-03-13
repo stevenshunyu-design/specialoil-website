@@ -100,9 +100,6 @@ const Login = () => {
             </div>
           </form>
           
-          <div className="mt-6 text-center text-sm text-gray-500">
-               <p>Tip: Default username: admin, password: password</p>
-          </div>
         </div>
       </div>
     </div>
