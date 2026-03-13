@@ -307,7 +307,7 @@ const BlogPost = () => {
               
               {/* CTA */}
               <div className="bg-gradient-to-br from-[#003366] to-[#004d99] rounded-xl p-5 text-white">
-                <h4 className="font-semibold mb-2">Need Expert Advice?</h4>
+                <h4 className="font-bold mb-2 text-white">Need Expert Advice?</h4>
                 <p className="text-sm text-white/80 mb-4">Contact our team for product inquiries and technical support.</p>
                 <Link 
                   to="/contact"
