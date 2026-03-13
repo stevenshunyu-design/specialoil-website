@@ -137,21 +137,33 @@ const BlogPost = () => {
 
   // 当 id 变化时，加载对应的文章
   useEffect(() => {
-    if (blogLoading || !posts.length) return;
+    // 等待加载完成
+    if (blogLoading) return;
+    
+    // 确保有文章数据
+    if (!posts.length) {
+      console.log('BlogPost: No posts available yet');
+      return;
+    }
     
     if (id) {
+      console.log('BlogPost: Looking for article with id:', id);
+      console.log('BlogPost: Available posts:', posts.map(p => p.id));
       const foundPost = getPostById(id);
       if (foundPost) {
+        console.log('BlogPost: Found article:', foundPost.title);
         setPost(foundPost);
         window.scrollTo(0, 0);
       } else {
+        console.log('BlogPost: Article not found for id:', id);
         toast.error('Article not found');
         navigate('/blog');
       }
     }
   }, [id, getPostById, navigate, blogLoading, posts]);
 
-  if (blogLoading) {
+  // 显示加载状态（加载中或文章数据尚未准备好）
+  if (blogLoading || (!post && posts.length === 0)) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
@@ -453,7 +465,6 @@ const BlogPost = () => {
               .filter(p => p.id !== post.id && (p.category === post.category || p.tags.some(tag => post.tags.includes(tag))))
               .slice(0, 3)
               .map(relatedPost => {
-                const relatedImage = articleImages[relatedPost.id]?.hero || relatedPost.featuredImage;
                 return (
                   <Link 
                     key={relatedPost.id} 
@@ -462,7 +473,7 @@ const BlogPost = () => {
                   >
                     <div className="aspect-[16/10] overflow-hidden">
                       <img 
-                        src={relatedImage}
+                        src={relatedPost.featuredImage}
                         alt={relatedPost.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />

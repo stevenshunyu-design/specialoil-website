@@ -1254,7 +1254,6 @@ export function useBlog() {
       } else {
         // 使用本地数据
         loadLocalPosts();
-        setIsLoading(false);
       }
     };
 
@@ -1266,16 +1265,18 @@ export function useBlog() {
           // 如果已有存储数据，使用用户数据（保留用户编辑）
           const parsedPosts = JSON.parse(storedPosts);
           setPosts(parsedPosts);
-          console.log('Loaded existing blog posts from localStorage');
+          console.log('Loaded existing blog posts from localStorage, count:', parsedPosts.length);
         } else {
           // 首次访问，使用默认文章数据
-          console.log('First time loading, using default blog posts');
+          console.log('First time loading, using default blog posts, count:', defaultBlogPosts.length);
           localStorage.setItem('blogPosts', JSON.stringify(defaultBlogPosts));
           setPosts(defaultBlogPosts);
         }
       } catch (error) {
         console.error('Failed to load local blog posts:', error);
         setPosts(defaultBlogPosts);
+      } finally {
+        setIsLoading(false);
       }
     };
 
