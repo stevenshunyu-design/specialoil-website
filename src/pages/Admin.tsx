@@ -422,7 +422,7 @@ const Admin = () => {
 // 文章编辑组件
 export const ArticleEditor = () => {
   const { id } = useParams<{ id: string }>();
-  const { getPostById, addPost, updatePost } = useBlog();
+  const { getPostById, addPost, updatePost, isLoading: blogLoading, posts } = useBlog();
   const [postData, setPostData] = useState<Partial<BlogPost>>({
     title: '',
     excerpt: '',
@@ -435,19 +435,51 @@ export const ArticleEditor = () => {
   const [tagInput, setTagInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // 等待数据加载完成
+    if (blogLoading) return;
+    
+    // 确保有文章数据
+    if (!posts.length && id !== 'new') {
+      console.log('ArticleEditor: No posts available yet');
+      return;
+    }
+    
     if (id && id !== 'new') {
+      console.log('ArticleEditor: Looking for article with id:', id);
+      console.log('ArticleEditor: Available posts:', posts.map(p => p.id));
       const post = getPostById(id);
       if (post) {
+        console.log('ArticleEditor: Found article:', post.title);
         setPostData(post);
+        setDataLoaded(true);
       } else {
+        console.log('ArticleEditor: Article not found for id:', id);
         toast.error('未找到该文章');
         navigate('/admin');
       }
+    } else if (id === 'new') {
+      setDataLoaded(true);
     }
-  }, [id, getPostById, navigate]);
+  }, [id, getPostById, navigate, blogLoading, posts]);
+
+  // 显示加载状态
+  if (blogLoading || (!dataLoaded && id !== 'new')) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative w-16 h-16 mx-auto mb-4">
+            <div className="absolute inset-0 border-4 border-gray-200 rounded-full"></div>
+            <div className="absolute inset-0 border-4 border-[#D4AF37] rounded-full border-t-transparent animate-spin"></div>
+          </div>
+          <p className="text-gray-600 font-medium">加载中...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
