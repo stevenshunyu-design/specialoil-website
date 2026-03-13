@@ -427,6 +427,8 @@ const Admin = () => {
 // 文章编辑组件 - 类似微信公众号/今日头条风格
 export const ArticleEditor = () => {
   const { id } = useParams<{ id: string }>();
+  const location = window.location.pathname;
+  const isNewArticle = location === '/admin/new';
   const { getPostById, addPost, updatePost, isLoading: blogLoading, posts } = useBlog();
   const [postData, setPostData] = useState<Partial<BlogPost>>({
     title: '',
@@ -446,7 +448,7 @@ export const ArticleEditor = () => {
 
   useEffect(() => {
     // 新建文章时直接设置 dataLoaded
-    if (id === 'new') {
+    if (isNewArticle) {
       setDataLoaded(true);
       return;
     }
@@ -474,10 +476,10 @@ export const ArticleEditor = () => {
         navigate('/admin');
       }
     }
-  }, [id, getPostById, navigate, blogLoading, posts]);
+  }, [id, getPostById, navigate, blogLoading, posts, isNewArticle]);
 
   // 显示加载状态 - 新建文章不需要等待加载
-  if (id !== 'new' && (blogLoading || !dataLoaded)) {
+  if (!isNewArticle && (blogLoading || !dataLoaded)) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -537,11 +539,11 @@ export const ArticleEditor = () => {
 
     setTimeout(() => {
       try {
-        if (id === 'new') {
+        if (isNewArticle) {
           addPost(postData as Omit<BlogPost, 'id' | 'publishedAt'>);
           toast.success('文章创建成功');
-        } else {
-          const success = updatePost(id!, postData);
+        } else if (id) {
+          const success = updatePost(id, postData);
           if (success) {
             toast.success('文章更新成功');
           } else {
@@ -584,7 +586,7 @@ export const ArticleEditor = () => {
               <i className="fa-solid fa-arrow-left text-lg"></i>
             </button>
             <h1 className="text-lg font-semibold text-gray-900">
-              {id === 'new' ? '新建文章' : '编辑文章'}
+              {isNewArticle ? '新建文章' : '编辑文章'}
             </h1>
           </div>
           <div className="flex items-center gap-3">
