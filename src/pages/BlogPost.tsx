@@ -508,7 +508,7 @@ const BlogPost = () => {
           <div className="bg-gradient-to-br from-[#003366] via-[#004080] to-[#003366] rounded-2xl p-8 md:p-12 text-white relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
             <div className="relative z-10 max-w-2xl">
-              <h3 className="text-2xl md:text-3xl font-bold mb-4 font-['Montserrat']">
+              <h3 className="text-2xl md:text-3xl font-bold mb-4 font-['Montserrat'] text-white">
                 Stay Updated with Industry Insights
               </h3>
               <p className="text-white/80 mb-6">
