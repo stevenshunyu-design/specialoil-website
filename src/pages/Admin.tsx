@@ -6,6 +6,7 @@ import { useBlog } from '../hooks/useBlog';
 import { BlogPost } from '../types/blog';
 import InquiriesAdmin from './InquiriesAdmin';
 import RichTextEditor from '../components/RichTextEditor';
+import ImageLibrary from '../components/ImageLibrary';
 
 // 类型定义
 type AdminTab = 'dashboard' | 'articles' | 'inquiries' | 'subscribers' | 'chat';
@@ -437,6 +438,7 @@ export const ArticleEditor = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [showFeatureImageLibrary, setShowFeatureImageLibrary] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -733,26 +735,55 @@ export const ArticleEditor = () => {
                   <i className="fa-solid fa-image text-[#D4AF37]"></i>
                   特色图片
                 </h3>
-                <input
-                  type="text"
-                  name="featuredImage"
-                  value={postData.featuredImage || ''}
-                  onChange={handleChange}
-                  placeholder="输入图片URL..."
-                  className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] mb-3"
-                />
+                
+                {/* 图片预览和选择 */}
                 {postData.featuredImage ? (
-                  <img 
-                    src={postData.featuredImage} 
-                    alt="" 
-                    className="w-full h-40 object-cover rounded-lg"
-                  />
-                ) : (
-                  <div className="w-full h-40 bg-gray-100 rounded-lg flex flex-col items-center justify-center text-gray-400">
-                    <i className="fa-solid fa-image text-3xl mb-2"></i>
-                    <span className="text-sm">暂无图片</span>
+                  <div className="relative group mb-3">
+                    <img 
+                      src={postData.featuredImage} 
+                      alt="" 
+                      className="w-full h-40 object-cover rounded-lg"
+                    />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setShowFeatureImageLibrary(true)}
+                        className="px-3 py-1.5 bg-white text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-100"
+                      >
+                        更换
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPostData(prev => ({ ...prev, featuredImage: '' }))}
+                        className="px-3 py-1.5 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600"
+                      >
+                        删除
+                      </button>
+                    </div>
                   </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setShowFeatureImageLibrary(true)}
+                    className="w-full h-40 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-400 hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors"
+                  >
+                    <i className="fa-solid fa-cloud-upload text-3xl mb-2"></i>
+                    <span className="text-sm">点击选择图片</span>
+                  </button>
                 )}
+                
+                {/* 或输入URL */}
+                <div className="mt-3">
+                  <p className="text-xs text-gray-400 mb-2">或直接输入图片URL：</p>
+                  <input
+                    type="text"
+                    name="featuredImage"
+                    value={postData.featuredImage || ''}
+                    onChange={handleChange}
+                    placeholder="https://..."
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                  />
+                </div>
               </div>
 
               {/* 文章摘要 */}
@@ -784,6 +815,16 @@ export const ArticleEditor = () => {
           </div>
         )}
       </div>
+
+      {/* 封面图图片库弹窗 */}
+      <ImageLibrary
+        isOpen={showFeatureImageLibrary}
+        onClose={() => setShowFeatureImageLibrary(false)}
+        onSelect={(url) => {
+          setPostData(prev => ({ ...prev, featuredImage: url }));
+          setShowFeatureImageLibrary(false);
+        }}
+      />
     </div>
   );
 };

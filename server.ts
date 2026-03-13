@@ -3,10 +3,12 @@ import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { getSupabaseClient } from './src/storage/database/supabase-client';
+import { S3Storage } from 'coze-coding-dev-sdk';
 import 'dotenv/config';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import multer from 'multer';
 
 // ==================== 代码版本标记 ====================
 console.log('🚀 CODE VERSION: TEXT-MESSAGE-FORMAT-v1 (commit f5c0639)');
@@ -1253,6 +1255,135 @@ app.patch('/api/inquiries/:id', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Update inquiry error:', error);
     res.status(500).json({ error: 'Failed to update inquiry' });
+  }
+});
+
+// ==================== 图片存储配置 ====================
+// 初始化 S3Storage
+const imageStorage = new S3Storage({
+  endpointUrl: process.env.COZE_BUCKET_ENDPOINT_URL,
+  accessKey: "",
+  secretKey: "",
+  bucketName: process.env.COZE_BUCKET_NAME,
+  region: "cn-beijing",
+});
+
+// 配置 multer 用于处理文件上传
+const upload = multer({ 
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 限制10MB
+  fileFilter: (_req, file, cb) => {
+    // 只允许图片类型
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('只允许上传图片文件'));
+    }
+  }
+});
+
+// 图片上传 API
+app.post('/api/images/upload', upload.single('image'), async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: '没有上传文件' });
+    }
+
+    console.log(`📤 Uploading image: ${req.file.originalname}, size: ${req.file.size}`);
+
+    // 生成唯一的文件名
+    const timestamp = Date.now();
+    const ext = req.file.originalname.split('.').pop() || 'jpg';
+    const safeName = req.file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
+    const fileName = `blog-images/${timestamp}_${safeName}`;
+
+    // 上传到 S3
+    const fileKey = await imageStorage.uploadFile({
+      fileContent: req.file.buffer,
+      fileName: fileName,
+      contentType: req.file.mimetype,
+    });
+
+    console.log(`✅ Image uploaded: ${fileKey}`);
+
+    // 生成可访问的 URL
+    const imageUrl = await imageStorage.generatePresignedUrl({
+      key: fileKey,
+      expireTime: 31536000, // 1年有效期
+    });
+
+    res.json({ 
+      success: true, 
+      key: fileKey,
+      url: imageUrl,
+      filename: req.file.originalname 
+    });
+  } catch (error) {
+    console.error('Image upload error:', error);
+    res.status(500).json({ error: '上传失败' });
+  }
+});
+
+// 获取图片列表 API
+app.get('/api/images', async (req: Request, res: Response) => {
+  try {
+    const { prefix = 'blog-images/', maxKeys = 100 } = req.query;
+
+    console.log(`📋 Listing images with prefix: ${prefix}`);
+
+    const result = await imageStorage.listFiles({
+      prefix: prefix as string,
+      maxKeys: Number(maxKeys),
+    });
+
+    // 为每个图片生成访问URL
+    const images = await Promise.all(
+      (result.keys || []).map(async (key) => {
+        const url = await imageStorage.generatePresignedUrl({
+          key: key,
+          expireTime: 3600, // 1小时有效期
+        });
+        return {
+          key,
+          url,
+          name: key.split('/').pop() || key,
+        };
+      })
+    );
+
+    res.json({ 
+      success: true, 
+      images,
+      isTruncated: result.isTruncated,
+      nextToken: result.nextContinuationToken 
+    });
+  } catch (error) {
+    console.error('List images error:', error);
+    res.status(500).json({ error: '获取图片列表失败' });
+  }
+});
+
+// 删除图片 API
+app.delete('/api/images/:key', async (req: Request, res: Response) => {
+  try {
+    const { key } = req.params;
+    
+    if (!key) {
+      return res.status(400).json({ error: '缺少图片key' });
+    }
+
+    console.log(`🗑️ Deleting image: ${key}`);
+
+    const success = await imageStorage.deleteFile({ fileKey: key });
+
+    if (success) {
+      res.json({ success: true, message: '删除成功' });
+    } else {
+      res.status(404).json({ error: '图片不存在' });
+    }
+  } catch (error) {
+    console.error('Delete image error:', error);
+    res.status(500).json({ error: '删除失败' });
   }
 });
 

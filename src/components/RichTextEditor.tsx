@@ -1,61 +1,13 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import ImageLibrary from './ImageLibrary';
 
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
 }
-
-// 自定义工具栏配置 - 类似微信公众号/今日头条
-const modules = {
-  toolbar: {
-    container: [
-      [{ 'header': [1, 2, 3, false] }],  // 标题
-      ['bold', 'italic', 'underline', 'strike'],  // 加粗、斜体、下划线、删除线
-      [{ 'color': [] }, { 'background': [] }],  // 文字颜色、背景色
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],  // 有序/无序列表
-      [{ 'align': [] }],  // 对齐方式
-      ['link', 'image'],  // 链接、图片
-      ['blockquote', 'code-block'],  // 引用、代码块
-      ['clean']  // 清除格式
-    ],
-    handlers: {
-      // 自定义图片处理
-      image: function(this: any) {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.click();
-        
-        input.onchange = async () => {
-          const file = input.files?.[0];
-          if (!file) return;
-          
-          // 显示提示
-          const url = prompt('请输入图片URL，或上传图片后粘贴链接：');
-          if (url) {
-            const quill = this.quill;
-            const range = quill.getSelection(true);
-            quill.insertEmbed(range.index, 'image', url);
-            quill.setSelection(range.index + 1);
-          }
-        };
-      }
-    }
-  }
-};
-
-// 格式配置
-const formats = [
-  'header', 'bold', 'italic', 'underline', 'strike',
-  'color', 'background',
-  'list', 'bullet',
-  'align',
-  'link', 'image',
-  'blockquote', 'code-block'
-];
 
 // 自定义样式
 const editorStyle = `
@@ -180,24 +132,77 @@ const editorStyle = `
 
 const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange, placeholder }) => {
   const quillRef = useRef<ReactQuill>(null);
+  const [showImageLibrary, setShowImageLibrary] = useState(false);
+
+  // 处理图片插入
+  const handleImageSelect = useCallback((imageUrl: string) => {
+    const quill = quillRef.current?.getEditor();
+    if (quill) {
+      const range = quill.getSelection(true);
+      quill.insertEmbed(range.index, 'image', imageUrl);
+      quill.setSelection(range.index + 1);
+    }
+  }, []);
+
+  // 处理图片按钮点击
+  const handleImageButton = useCallback(() => {
+    setShowImageLibrary(true);
+  }, []);
+
+  // 动态创建 modules（避免 React 严格模式下的重复注册问题）
+  const modules = React.useMemo(() => ({
+    toolbar: {
+      container: [
+        [{ 'header': [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'align': [] }],
+        ['link', 'image'],
+        ['blockquote', 'code-block'],
+        ['clean']
+      ],
+      handlers: {
+        image: handleImageButton
+      }
+    }
+  }), [handleImageButton]);
+
+  const formats = [
+    'header', 'bold', 'italic', 'underline', 'strike',
+    'color', 'background',
+    'list', 'bullet',
+    'align',
+    'link', 'image',
+    'blockquote', 'code-block'
+  ];
 
   const handleChange = useCallback((content: string) => {
     onChange(content);
   }, [onChange]);
 
   return (
-    <div className="rich-text-editor bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-      <style>{editorStyle}</style>
-      <ReactQuill
-        ref={quillRef}
-        theme="snow"
-        value={value}
-        onChange={handleChange}
-        modules={modules}
-        formats={formats}
-        placeholder={placeholder || '开始撰写您的文章...'}
+    <>
+      <div className="rich-text-editor bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <style>{editorStyle}</style>
+        <ReactQuill
+          ref={quillRef}
+          theme="snow"
+          value={value}
+          onChange={handleChange}
+          modules={modules}
+          formats={formats}
+          placeholder={placeholder || '开始撰写您的文章...'}
+        />
+      </div>
+
+      {/* 图片库弹窗 */}
+      <ImageLibrary
+        isOpen={showImageLibrary}
+        onClose={() => setShowImageLibrary(false)}
+        onSelect={handleImageSelect}
       />
-    </div>
+    </>
   );
 };
 
