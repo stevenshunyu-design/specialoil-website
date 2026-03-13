@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { useBlog } from '../hooks/useBlog';
 import { BlogPost } from '../types/blog';
 import InquiriesAdmin from './InquiriesAdmin';
+import RichTextEditor from '../components/RichTextEditor';
 
 // 类型定义
 type AdminTab = 'dashboard' | 'articles' | 'inquiries' | 'subscribers' | 'chat';
@@ -419,7 +420,7 @@ const Admin = () => {
   );
 };
 
-// 文章编辑组件
+// 文章编辑组件 - 类似微信公众号/今日头条风格
 export const ArticleEditor = () => {
   const { id } = useParams<{ id: string }>();
   const { getPostById, addPost, updatePost, isLoading: blogLoading, posts } = useBlog();
@@ -427,7 +428,7 @@ export const ArticleEditor = () => {
     title: '',
     excerpt: '',
     content: '',
-    category: '产业动态',
+    category: 'Industry News',
     tags: [],
     featuredImage: '',
     author: 'admin'
@@ -486,6 +487,10 @@ export const ArticleEditor = () => {
     setPostData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleContentChange = (content: string) => {
+    setPostData(prev => ({ ...prev, content }));
+  };
+
   const handleAddTag = () => {
     if (tagInput.trim() && !postData.tags?.includes(tagInput.trim())) {
       setPostData(prev => ({
@@ -510,7 +515,7 @@ export const ArticleEditor = () => {
       toast.error('请输入文章标题');
       return;
     }
-    if (!postData.content?.trim()) {
+    if (!postData.content?.trim() || postData.content === '<p><br></p>') {
       toast.error('请输入文章内容');
       return;
     }
@@ -549,15 +554,26 @@ export const ArticleEditor = () => {
     }
   };
 
+  // 从内容中自动生成摘要
+  const generateExcerpt = () => {
+    const text = postData.content?.replace(/<[^>]*>/g, '').trim() || '';
+    const excerpt = text.substring(0, 150) + (text.length > 150 ? '...' : '');
+    setPostData(prev => ({ ...prev, excerpt }));
+    toast.success('已自动生成摘要');
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100">
       {/* 顶部操作栏 */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
+      <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-10 shadow-sm">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link to="/admin" className="text-gray-400 hover:text-gray-600">
-              <i className="fa-solid fa-arrow-left"></i>
-            </Link>
+            <button 
+              onClick={handleCancel}
+              className="text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              <i className="fa-solid fa-arrow-left text-lg"></i>
+            </button>
             <h1 className="text-lg font-semibold text-gray-900">
               {id === 'new' ? '新建文章' : '编辑文章'}
             </h1>
@@ -566,11 +582,7 @@ export const ArticleEditor = () => {
             <button
               type="button"
               onClick={() => setIsPreview(!isPreview)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                isPreview 
-                  ? 'bg-blue-100 text-blue-700' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+              className="px-4 py-2 rounded-lg font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200"
             >
               <i className={`fa-solid fa-${isPreview ? 'edit' : 'eye'} mr-2`}></i>
               {isPreview ? '编辑' : '预览'}
@@ -599,10 +611,10 @@ export const ArticleEditor = () => {
       </header>
 
       {/* 编辑区域 */}
-      <div className="max-w-5xl mx-auto p-6">
+      <div className="max-w-6xl mx-auto p-6">
         {isPreview ? (
           /* 预览模式 */
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+          <div className="bg-white rounded-xl shadow-sm p-8">
             <article className="prose prose-lg max-w-none">
               {postData.featuredImage && (
                 <img src={postData.featuredImage} alt="" className="w-full h-64 object-cover rounded-lg mb-6" />
@@ -627,110 +639,86 @@ export const ArticleEditor = () => {
             </article>
           </div>
         ) : (
-          /* 编辑模式 */
+          /* 编辑模式 - 类似微信公众号 */
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* 主要内容 */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* 标题 */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            {/* 左侧：主要编辑区域 */}
+            <div className="lg:col-span-2 space-y-4">
+              {/* 标题输入 */}
+              <div className="bg-white rounded-xl shadow-sm p-6">
                 <input
                   type="text"
                   name="title"
                   value={postData.title || ''}
                   onChange={handleChange}
-                  placeholder="输入文章标题..."
+                  placeholder="请输入文章标题..."
                   className="w-full text-2xl font-semibold text-gray-900 placeholder-gray-400 border-none outline-none bg-transparent"
                 />
               </div>
 
-              {/* 内容 */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <div className="flex items-center gap-4 mb-4 pb-4 border-b border-gray-100">
-                  <button type="button" className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded" title="加粗">
-                    <i className="fa-solid fa-bold"></i>
-                  </button>
-                  <button type="button" className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded" title="斜体">
-                    <i className="fa-solid fa-italic"></i>
-                  </button>
-                  <button type="button" className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded" title="标题">
-                    <i className="fa-solid fa-heading"></i>
-                  </button>
-                  <button type="button" className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded" title="列表">
-                    <i className="fa-solid fa-list"></i>
-                  </button>
-                  <button type="button" className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded" title="链接">
-                    <i className="fa-solid fa-link"></i>
-                  </button>
-                  <button type="button" className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded" title="图片">
-                    <i className="fa-solid fa-image"></i>
-                  </button>
-                </div>
-                <textarea
-                  name="content"
-                  value={postData.content || ''}
-                  onChange={handleChange}
-                  placeholder="开始写作..."
-                  rows={15}
-                  className="w-full text-gray-700 placeholder-gray-400 border-none outline-none bg-transparent resize-none leading-relaxed"
-                ></textarea>
-                <p className="text-xs text-gray-400 mt-4 pt-4 border-t border-gray-100">
-                  提示：支持 HTML 标签，如 &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;img&gt; 等
-                </p>
-              </div>
+              {/* 富文本编辑器 */}
+              <RichTextEditor
+                value={postData.content || ''}
+                onChange={handleContentChange}
+                placeholder="开始撰写您的文章内容..."
+              />
             </div>
 
-            {/* 侧边栏设置 */}
-            <div className="space-y-6">
+            {/* 右侧：设置面板 */}
+            <div className="space-y-4">
               {/* 发布设置 */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">发布设置</h3>
+              <div className="bg-white rounded-xl shadow-sm p-6">
+                <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <i className="fa-solid fa-gear text-[#D4AF37]"></i>
+                  发布设置
+                </h3>
                 
                 <div className="space-y-4">
+                  {/* 分类 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">分类</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">文章分类</label>
                     <select
                       name="category"
                       value={postData.category || ''}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                      className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
                     >
-                      <option value="产业动态">产业动态</option>
-                      <option value="技术应用">技术应用</option>
-                      <option value="产品介绍">产品介绍</option>
-                      <option value="行业知识">行业知识</option>
-                      <option value="企业新闻">企业新闻</option>
+                      <option value="Industry News">Industry News</option>
+                      <option value="Technical Information">Technical Information</option>
+                      <option value="Market Analysis">Market Analysis</option>
+                      <option value="Product Updates">Product Updates</option>
                     </select>
                   </div>
 
+                  {/* 标签 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">标签</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">文章标签</label>
                     <div className="flex gap-2 mb-2">
                       <input
                         type="text"
                         value={tagInput}
                         onChange={(e) => setTagInput(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
-                        placeholder="添加标签"
+                        placeholder="输入标签后回车添加"
                         className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
                       />
                       <button
                         type="button"
                         onClick={handleAddTag}
-                        className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+                        className="px-3 py-2 bg-[#D4AF37] text-white rounded-lg hover:bg-[#C9A227] transition-colors"
                       >
                         <i className="fa-solid fa-plus"></i>
                       </button>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {postData.tags?.map((tag) => (
-                        <span key={tag} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs">
+                        <span key={tag} className="inline-flex items-center gap-1 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">
                           {tag}
                           <button
                             type="button"
                             onClick={() => handleRemoveTag(tag)}
-                            className="hover:text-blue-900"
+                            className="hover:text-blue-900 ml-1"
                           >
-                            <i className="fa-solid fa-times"></i>
+                            <i className="fa-solid fa-times text-xs"></i>
                           </button>
                         </span>
                       ))}
@@ -740,40 +728,57 @@ export const ArticleEditor = () => {
               </div>
 
               {/* 特色图片 */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">特色图片</h3>
+              <div className="bg-white rounded-xl shadow-sm p-6">
+                <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <i className="fa-solid fa-image text-[#D4AF37]"></i>
+                  特色图片
+                </h3>
                 <input
                   type="text"
                   name="featuredImage"
                   value={postData.featuredImage || ''}
                   onChange={handleChange}
-                  placeholder="图片 URL"
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] mb-3"
+                  placeholder="输入图片URL..."
+                  className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] mb-3"
                 />
                 {postData.featuredImage ? (
                   <img 
                     src={postData.featuredImage} 
                     alt="" 
-                    className="w-full h-32 object-cover rounded-lg"
+                    className="w-full h-40 object-cover rounded-lg"
                   />
                 ) : (
-                  <div className="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
-                    <i className="fa-solid fa-image text-2xl"></i>
+                  <div className="w-full h-40 bg-gray-100 rounded-lg flex flex-col items-center justify-center text-gray-400">
+                    <i className="fa-solid fa-image text-3xl mb-2"></i>
+                    <span className="text-sm">暂无图片</span>
                   </div>
                 )}
               </div>
 
-              {/* 摘要 */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">文章摘要</h3>
+              {/* 文章摘要 */}
+              <div className="bg-white rounded-xl shadow-sm p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                    <i className="fa-solid fa-align-left text-[#D4AF37]"></i>
+                    文章摘要
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={generateExcerpt}
+                    className="text-xs text-[#D4AF37] hover:underline"
+                  >
+                    自动生成
+                  </button>
+                </div>
                 <textarea
                   name="excerpt"
                   value={postData.excerpt || ''}
                   onChange={handleChange}
-                  placeholder="简要描述文章内容..."
+                  placeholder="简要描述文章内容（用于列表展示）..."
                   rows={4}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] resize-none"
+                  className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] resize-none"
                 ></textarea>
+                <p className="text-xs text-gray-400 mt-2">建议150字以内</p>
               </div>
             </div>
           </div>
