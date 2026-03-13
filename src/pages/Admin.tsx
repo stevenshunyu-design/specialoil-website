@@ -176,7 +176,7 @@ const ArticleList = ({ onEdit }: { onEdit: (id: string) => void }) => {
 };
 
 // 仪表盘组件
-const Dashboard = ({ posts }: { posts: BlogPost[] }) => {
+const Dashboard = ({ posts, onNavigate }: { posts: BlogPost[]; onNavigate: (tab: AdminTab) => void }) => {
   const [inquiryCount, setInquiryCount] = useState(0);
   
   useEffect(() => {
@@ -221,9 +221,12 @@ const Dashboard = ({ posts }: { posts: BlogPost[] }) => {
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-gray-900">最近文章</h3>
-          <Link to="/admin/new" className="text-[#D4AF37] hover:underline text-sm font-medium">
+          <button 
+            onClick={() => onNavigate('articles')} 
+            className="text-[#D4AF37] hover:underline text-sm font-medium cursor-pointer"
+          >
             查看全部
-          </Link>
+          </button>
         </div>
         <div className="space-y-4">
           {posts.slice(0, 5).map(post => (
@@ -353,7 +356,7 @@ const Admin = () => {
 
         {/* 内容区域 */}
         <div className="flex-1 p-6 overflow-auto">
-          {activeTab === 'dashboard' && <Dashboard posts={posts} />}
+          {activeTab === 'dashboard' && <Dashboard posts={posts} onNavigate={setActiveTab} />}
           
           {activeTab === 'articles' && (
             <div className="space-y-6">
