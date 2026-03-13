@@ -445,16 +445,22 @@ export const ArticleEditor = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 等待数据加载完成
+    // 新建文章时直接设置 dataLoaded
+    if (id === 'new') {
+      setDataLoaded(true);
+      return;
+    }
+    
+    // 编辑文章时需要等待数据加载
     if (blogLoading) return;
     
     // 确保有文章数据
-    if (!posts.length && id !== 'new') {
+    if (!posts.length) {
       console.log('ArticleEditor: No posts available yet');
       return;
     }
     
-    if (id && id !== 'new') {
+    if (id) {
       console.log('ArticleEditor: Looking for article with id:', id);
       console.log('ArticleEditor: Available posts:', posts.map(p => p.id));
       const post = getPostById(id);
@@ -467,13 +473,11 @@ export const ArticleEditor = () => {
         toast.error('未找到该文章');
         navigate('/admin');
       }
-    } else if (id === 'new') {
-      setDataLoaded(true);
     }
   }, [id, getPostById, navigate, blogLoading, posts]);
 
-  // 显示加载状态
-  if (blogLoading || (!dataLoaded && id !== 'new')) {
+  // 显示加载状态 - 新建文章不需要等待加载
+  if (id !== 'new' && (blogLoading || !dataLoaded)) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
