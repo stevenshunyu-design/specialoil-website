@@ -72,27 +72,149 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
     
-    <!-- 结构化数据 -->
+    <!-- 结构化数据 - Organization -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "CN-SpecLube Chain",
-      "alternateName": "China Specialty Lubricant Supply Chain",
+      "alternateName": ["China Specialty Lubricant Supply Chain", "中国特种润滑油供应链"],
       "url": "https://cnspecialtyoils.com",
       "logo": "https://cnspecialtyoils.com/favicon.png",
-      "description": "Leading specialty lubricant supply chain platform from China, providing transformer oil, rubber process oil, finished lubricants and other high-quality industrial lubricant raw materials.",
+      "description": "Leading specialty lubricant supply chain platform from China, providing transformer oil, rubber process oil, finished lubricants and other high-quality industrial lubricant raw materials. We connect global buyers with quality Chinese lubricant manufacturers.",
       "address": {
         "@type": "PostalAddress",
         "addressCountry": "CN",
         "addressRegion": "China"
       },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "email": "steven.shunyu@gmail.com",
+          "telephone": "+8613793280176",
+          "availableLanguage": ["English", "Chinese", "Spanish", "French", "Portuguese", "Japanese", "Russian"]
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "availableLanguage": ["English", "Chinese"]
+        }
+      ],
       "sameAs": [],
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "availableLanguage": ["Chinese", "English", "Spanish", "French", "Portuguese", "Japanese", "Russian"]
+      "knowsAbout": [
+        "Transformer Oil",
+        "Insulating Oil",
+        "Rubber Process Oil", 
+        "TDAE",
+        "RAE",
+        "Naphthenic Oil",
+        "Hydraulic Oil",
+        "Gear Oil",
+        "Industrial Lubricants",
+        "Specialty Lubricants",
+        "China Lubricant Supplier"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Specialty Lubricants Catalog",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "SpecVolt Transformer Oil",
+              "description": "Premium naphthenic transformer oils for high-voltage applications. IEC 60296, ASTM D3487 compliant.",
+              "brand": {
+                "@type": "Brand",
+                "name": "SpecVolt"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "SpecFlex Rubber Process Oil",
+              "description": "High-solvency naphthenic oils for rubber compounding and tire manufacturing. EU REACH compliant.",
+              "brand": {
+                "@type": "Brand",
+                "name": "SpecFlex"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "SpecLube Finished Lubricants",
+              "description": "High-performance industrial lubricants including hydraulic oils and gear oils.",
+              "brand": {
+                "@type": "Brand",
+                "name": "SpecLube"
+              }
+            }
+          }
+        ]
       }
+    }
+    </script>
+    
+    <!-- 结构化数据 - WebSite -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "CN-SpecLube Chain",
+      "url": "https://cnspecialtyoils.com",
+      "description": "Specialty lubricant supply chain platform from China",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://cnspecialtyoils.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
+    <!-- 结构化数据 - FAQ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is CN-SpecLube Chain?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CN-SpecLube Chain is a B2B supply chain platform specializing in specialty lubricants from China. We connect global buyers with Chinese manufacturers, providing sourcing, quality assurance, and logistics services."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What products does CN-SpecLube Chain offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We offer transformer oils (SpecVolt™), rubber process oils (SpecFlex™), and finished lubricants (SpecLube™) including hydraulic oils, gear oils, and specialty industrial lubricants."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I buy transformer oil from China?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CN-SpecLube Chain supplies premium transformer oils from China. Visit https://cnspecialtyoils.com/products/transformer-oil or contact steven.shunyu@gmail.com for inquiries."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is TDAE oil?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "TDAE (Treated Distillate Aromatic Extract) is a type of rubber process oil with low PAH content. CN-SpecLube Chain offers TDAE under the SpecFlex™ series, compliant with EU REACH regulations."
+          }
+        }
+      ]
     }
     </script>
   </head>

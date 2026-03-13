@@ -15,6 +15,7 @@ import Blog from "@/pages/Blog";
 import BlogPost from "@/pages/BlogPost";
 import Admin from "@/pages/Admin";
 import Partners from "@/pages/Partners";
+import AIKnowledge from "@/pages/AIKnowledge";
 import { ArticleEditor } from "@/pages/Admin";
 import Login from "@/pages/Login";
 import Unsubscribe from "@/pages/Unsubscribe";
@@ -68,6 +69,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/partners" element={<Partners />} />
+          <Route path="/ai-knowledge" element={<AIKnowledge />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/transformer-oil" element={<TransformerOil />} />
           <Route path="/products/rubber-process-oil" element={<RubberProcessOil />} />
