@@ -4,6 +4,7 @@
   "type": "module",
   "main": "server.production.cjs",
   "scripts": {
+    "postinstall": "chmod +x node_modules/.pnpm/@esbuild+linux-x64@*/node_modules/@esbuild/linux-x64/bin/esbuild 2>/dev/null || true",
     "build": "vite build",
     "start": "node start.cjs",
     "test": "node test-server.cjs"
@@ -20,6 +21,7 @@
     "coze-coding-dev-sdk": "latest",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "esbuild": "^0.25.0",
     "express": "^4.18.2",
     "express-rate-limit": "^8.3.1",
     "framer-motion": "^12.9.2",
@@ -45,5 +47,8 @@
     "vite": "^5.4.0",
     "vite-tsconfig-paths": "^5.1.4",
     "zod": "^3.24.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   }
 }
