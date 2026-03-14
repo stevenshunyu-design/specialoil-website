@@ -1,6 +1,7 @@
 {
   "name": "specialoil",
   "version": "1.0.0",
+  "type": "module",
   "main": "server.production.cjs",
   "scripts": {
     "build": "vite build",
