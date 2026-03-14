@@ -2,13 +2,19 @@ import { createClient } from '@supabase/supabase-js';
 import { execSync } from 'child_process';
 let envLoaded = false;
 function loadEnv() {
-    if (envLoaded || (process.env.COZE_SUPABASE_URL && process.env.COZE_SUPABASE_ANON_KEY)) {
+    // 检查是否已经有环境变量（支持两种命名方式）
+    const hasUrl = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
+    const hasKey = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+    if (envLoaded || (hasUrl && hasKey)) {
         return;
     }
     try {
         try {
             require('dotenv').config();
-            if (process.env.COZE_SUPABASE_URL && process.env.COZE_SUPABASE_ANON_KEY) {
+            // 再次检查
+            const hasUrlNow = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
+            const hasKeyNow = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+            if (hasUrlNow && hasKeyNow) {
                 envLoaded = true;
                 return;
             }
@@ -59,13 +65,14 @@ except Exception as e:
 }
 function getSupabaseCredentials() {
     loadEnv();
-    const url = process.env.COZE_SUPABASE_URL;
-    const anonKey = process.env.COZE_SUPABASE_ANON_KEY;
+    // 支持两种环境变量名称：COZE_SUPABASE_* 和 SUPABASE_*
+    const url = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
+    const anonKey = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
     if (!url) {
-        throw new Error('COZE_SUPABASE_URL is not set');
+        throw new Error('SUPABASE_URL is not set');
     }
     if (!anonKey) {
-        throw new Error('COZE_SUPABASE_ANON_KEY is not set');
+        throw new Error('SUPABASE_ANON_KEY is not set');
     }
     return { url, anonKey };
 }
