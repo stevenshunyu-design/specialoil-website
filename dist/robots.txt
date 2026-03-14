@@ -1,0 +1,79 @@
+# robots.txt for cnspecialtyoils.com
+
+# Allow all crawlers including AI search engines
+User-agent: *
+Allow: /
+
+# AI Search Engines - Explicitly allow
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bard
+Allow: /
+
+User-agent: Gemini
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Doubao
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# Traditional Search Engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Sogou
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Sitemap
+Sitemap: https://cnspecialtyoils.com/sitemap.xml
+
+# Special files for AI crawlers
+Allow: /llms.txt
+Allow: /ai-knowledge
+
+# Disallow admin and login pages
+Disallow: /admin
+Disallow: /login
+Disallow: /api/
