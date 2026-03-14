@@ -2013,7 +2013,15 @@ app.post('/api/auth/send-code', async (req: Request, res: Response) => {
     const code = generateVerificationCode();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10分钟过期
 
-    // 保存验证码到数据库
+    // 先将同一邮箱的旧验证码标记为已使用
+    await client
+      .from('email_verification_codes')
+      .update({ is_used: true })
+      .eq('email', email)
+      .eq('type', type)
+      .eq('is_used', false);
+
+    // 保存新验证码到数据库
     const { error: insertError } = await client
       .from('email_verification_codes')
       .insert({
