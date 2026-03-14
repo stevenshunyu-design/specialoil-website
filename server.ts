@@ -2888,6 +2888,134 @@ app.post('/api/author/:id/change-password', async (req: Request, res: Response) 
   }
 });
 
+// 作者更新个人资料
+app.put('/api/author/:id/profile', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { display_name, username, bio, company, expertise_areas } = req.body;
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 如果修改用户名，检查是否已存在
+    if (username) {
+      const { data: existingUser } = await client
+        .from('authors')
+        .select('id')
+        .eq('username', username)
+        .neq('id', id)
+        .single();
+
+      if (existingUser) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Username already taken' 
+        });
+      }
+    }
+
+    // 构建更新对象
+    const updates: Record<string, any> = {
+      updated_at: new Date().toISOString()
+    };
+    
+    if (display_name) updates.display_name = display_name;
+    if (username) updates.username = username;
+    if (bio !== undefined) updates.bio = bio;
+    if (company !== undefined) updates.company = company;
+    if (expertise_areas) updates.expertise_areas = expertise_areas;
+
+    // 更新作者信息
+    const { data, error: updateError } = await client
+      .from('authors')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (updateError) {
+      console.error('Update profile error:', updateError);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to update profile' 
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Profile updated successfully',
+      author: {
+        id: data.id,
+        name: data.name,
+        display_name: data.display_name,
+        username: data.username,
+        email: data.email,
+        company: data.company,
+        bio: data.bio,
+        expertise_areas: data.expertise_areas,
+        avatar_url: data.avatar_url,
+        articles_count: data.articles_count,
+        total_views: data.total_views,
+        total_likes: data.total_likes,
+        created_at: data.created_at
+      }
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({ success: false, error: 'Failed to update profile' });
+  }
+});
+
+// 作者上传头像
+app.post('/api/author/:id/avatar', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { avatar_url } = req.body;
+    
+    if (!avatar_url) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Avatar URL is required' 
+      });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 更新头像
+    const { data, error: updateError } = await client
+      .from('authors')
+      .update({ 
+        avatar_url,
+        updated_at: new Date().toISOString() 
+      })
+      .eq('id', id)
+      .select('avatar_url')
+      .single();
+
+    if (updateError) {
+      console.error('Update avatar error:', updateError);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to update avatar' 
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Avatar updated successfully',
+      avatar_url: data.avatar_url
+    });
+  } catch (error) {
+    console.error('Update avatar error:', error);
+    res.status(500).json({ success: false, error: 'Failed to update avatar' });
+  }
+});
+
 // 作者提交新文章
 app.post('/api/author/articles', async (req: Request, res: Response) => {
   try {

@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS authors (
   
   -- 基本信息
   name TEXT NOT NULL,
+  display_name TEXT, -- 显示名称，可与真实姓名不同
   email TEXT NOT NULL UNIQUE,
   phone TEXT,
   company TEXT,
@@ -87,6 +88,17 @@ CREATE TABLE IF NOT EXISTS authors (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- 添加 display_name 列（如果表已存在）
+DO $$ 
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'authors' AND column_name = 'display_name'
+  ) THEN
+    ALTER TABLE authors ADD COLUMN display_name TEXT;
+  END IF;
+END $$;
 
 -- 创建索引
 CREATE INDEX IF NOT EXISTS idx_authors_email ON authors(email);

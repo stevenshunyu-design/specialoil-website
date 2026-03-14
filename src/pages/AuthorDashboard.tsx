@@ -1,14 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 interface Author {
   id: string;
   name: string;
+  display_name: string;
   email: string;
   username: string;
   company: string;
+  bio: string;
   expertise_areas: string[];
+  avatar_url: string;
   articles_count: number;
   total_views: number;
   total_likes: number;
@@ -31,9 +34,25 @@ const AuthorDashboard = () => {
   const [author, setAuthor] = useState<Author | null>(null);
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'articles' | 'profile'>('overview');
-  const [showChangePassword, setShowChangePassword] = useState(false);
-  const [passwordData, setPasswordData] = useState({ currentPassword: '', newPassword: '' });
+  const [activeTab, setActiveTab] = useState<'overview' | 'articles' | 'settings'>('overview');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Settings form state
+  const [settingsForm, setSettingsForm] = useState({
+    display_name: '',
+    username: '',
+    company: '',
+    bio: '',
+    expertise_areas: '' as string,
+  });
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [showPasswordSection, setShowPasswordSection] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   useEffect(() => {
     // 检查登录状态
@@ -45,6 +64,13 @@ const AuthorDashboard = () => {
 
     const authorObj = JSON.parse(authorData);
     setAuthor(authorObj);
+    setSettingsForm({
+      display_name: authorObj.display_name || authorObj.name || '',
+      username: authorObj.username || '',
+      company: authorObj.company || '',
+      bio: authorObj.bio || '',
+      expertise_areas: (authorObj.expertise_areas || []).join(', '),
+    });
     loadAuthorData(authorObj.id);
   }, [navigate]);
 
@@ -55,8 +81,16 @@ const AuthorDashboard = () => {
       if (authorRes.ok) {
         const authorData = await authorRes.json();
         if (authorData.success) {
-          setAuthor(authorData.author);
-          localStorage.setItem('author', JSON.stringify(authorData.author));
+          const updatedAuthor = authorData.author;
+          setAuthor(updatedAuthor);
+          setSettingsForm({
+            display_name: updatedAuthor.display_name || updatedAuthor.name || '',
+            username: updatedAuthor.username || '',
+            company: updatedAuthor.company || '',
+            bio: updatedAuthor.bio || '',
+            expertise_areas: (updatedAuthor.expertise_areas || []).join(', '),
+          });
+          localStorage.setItem('author', JSON.stringify(updatedAuthor));
         }
       }
 
@@ -80,35 +114,157 @@ const AuthorDashboard = () => {
     navigate('/author/login');
   };
 
-  const handleChangePassword = async () => {
-    if (!passwordData.currentPassword || !passwordData.newPassword) {
-      toast.error('Please fill in all fields');
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // 验证文件类型
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
       return;
     }
 
-    if (passwordData.newPassword.length < 6) {
+    // 验证文件大小 (最大 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Image size should be less than 2MB');
+      return;
+    }
+
+    setUploadingAvatar(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'avatars');
+
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const uploadData = await uploadRes.json();
+      if (!uploadData.success) {
+        throw new Error(uploadData.error || 'Failed to upload image');
+      }
+
+      // 更新头像URL
+      const avatarUrl = uploadData.url;
+      const updateRes = await fetch(`/api/author/${author?.id}/avatar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ avatar_url: avatarUrl }),
+      });
+
+      const updateData = await updateRes.json();
+      if (updateData.success) {
+        setAuthor(prev => prev ? { ...prev, avatar_url: avatarUrl } : null);
+        toast.success('Avatar updated successfully');
+        loadAuthorData(author!.id);
+      } else {
+        throw new Error(updateData.error || 'Failed to update avatar');
+      }
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to upload avatar');
+    } finally {
+      setUploadingAvatar(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleSettingsSave = async () => {
+    if (!settingsForm.username.trim()) {
+      toast.error('Username is required');
+      return;
+    }
+
+    if (settingsForm.username.length < 3) {
+      toast.error('Username must be at least 3 characters');
+      return;
+    }
+
+    if (!/^[a-zA-Z0-9_]+$/.test(settingsForm.username)) {
+      toast.error('Username can only contain letters, numbers, and underscores');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const expertiseArray = settingsForm.expertise_areas
+        .split(',')
+        .map(s => s.trim())
+        .filter(s => s.length > 0);
+
+      const response = await fetch(`/api/author/${author?.id}/profile`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          display_name: settingsForm.display_name || author?.name,
+          username: settingsForm.username,
+          company: settingsForm.company,
+          bio: settingsForm.bio,
+          expertise_areas: expertiseArray,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setAuthor(data.author);
+        localStorage.setItem('author', JSON.stringify(data.author));
+        toast.success('Profile updated successfully');
+      } else {
+        toast.error(data.error || 'Failed to update profile');
+      }
+    } catch (error) {
+      toast.error('Failed to update profile');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (!passwordForm.currentPassword || !passwordForm.newPassword) {
+      toast.error('Please fill in all password fields');
+      return;
+    }
+
+    if (passwordForm.newPassword.length < 6) {
       toast.error('New password must be at least 6 characters');
       return;
     }
 
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      toast.error('New passwords do not match');
+      return;
+    }
+
+    setSaving(true);
     try {
       const response = await fetch(`/api/author/${author?.id}/change-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(passwordData),
+        body: JSON.stringify({
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword,
+        }),
       });
 
       const data = await response.json();
-
       if (data.success) {
         toast.success('Password changed successfully');
-        setShowChangePassword(false);
-        setPasswordData({ currentPassword: '', newPassword: '' });
+        setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+        setShowPasswordSection(false);
       } else {
         toast.error(data.error || 'Failed to change password');
       }
     } catch (error) {
       toast.error('Failed to change password');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -151,7 +307,16 @@ const AuthorDashboard = () => {
               </Link>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-slate-600">Welcome, <strong>{author.name}</strong></span>
+              <div className="flex items-center gap-3">
+                {author.avatar_url ? (
+                  <img src={author.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover" />
+                ) : (
+                  <div className="w-8 h-8 bg-[#D4AF37] rounded-full flex items-center justify-center text-white font-medium text-sm">
+                    {(author.display_name || author.name || 'A').charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span className="text-slate-600">Welcome, <strong>{author.display_name || author.name}</strong></span>
+              </div>
               <button
                 onClick={handleLogout}
                 className="px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
@@ -169,7 +334,7 @@ const AuthorDashboard = () => {
           {[
             { id: 'overview', label: 'Overview', icon: 'fa-chart-line' },
             { id: 'articles', label: 'My Articles', icon: 'fa-file-lines' },
-            { id: 'profile', label: 'Profile', icon: 'fa-user' },
+            { id: 'settings', label: 'Settings', icon: 'fa-gear' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -254,6 +419,9 @@ const AuthorDashboard = () => {
                   <div className="p-12 text-center text-slate-500">
                     <i className="fa-solid fa-file-circle-plus text-4xl mb-4 opacity-50"></i>
                     <p>No articles yet. Start writing your first article!</p>
+                    <Link to="/author/write" className="inline-block mt-4 px-4 py-2 bg-[#D4AF37] text-white rounded-lg">
+                      Write Article
+                    </Link>
                   </div>
                 )}
               </div>
@@ -318,117 +486,221 @@ const AuthorDashboard = () => {
           </div>
         )}
 
-        {/* Profile Tab */}
-        {activeTab === 'profile' && (
-          <div className="max-w-2xl">
+        {/* Settings Tab */}
+        {activeTab === 'settings' && (
+          <div className="max-w-3xl space-y-6">
+            {/* 头像设置 */}
             <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-6">Profile Information</h2>
-              
+              <h2 className="text-lg font-semibold text-slate-900 mb-6">Profile Picture</h2>
+              <div className="flex items-center gap-6">
+                <div className="relative">
+                  {author.avatar_url ? (
+                    <img 
+                      src={author.avatar_url} 
+                      alt="" 
+                      className="w-24 h-24 rounded-full object-cover border-4 border-slate-200"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 bg-gradient-to-br from-[#003366] to-[#004080] rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                      {(author.display_name || author.name || 'A').charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  {uploadingAvatar && (
+                    <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                      <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
+                    className="hidden"
+                  />
+                  <button
+                    onClick={handleAvatarClick}
+                    disabled={uploadingAvatar}
+                    className="px-4 py-2 bg-[#003366] text-white rounded-lg font-medium hover:bg-[#002255] transition-colors disabled:opacity-50"
+                  >
+                    <i className="fa-solid fa-camera mr-2"></i>
+                    {uploadingAvatar ? 'Uploading...' : 'Change Avatar'}
+                  </button>
+                  <p className="text-sm text-slate-500 mt-2">JPG, PNG or GIF. Max 2MB.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 基本信息 */}
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <h2 className="text-lg font-semibold text-slate-900 mb-6">Basic Information</h2>
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm text-slate-500 mb-1">Name</label>
-                    <p className="text-slate-900 font-medium">{author.name}</p>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Display Name</label>
+                    <input
+                      type="text"
+                      value={settingsForm.display_name}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, display_name: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                      placeholder="Your display name"
+                    />
+                    <p className="text-xs text-slate-500 mt-1">This name will be shown on your articles</p>
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-500 mb-1">Username</label>
-                    <p className="text-slate-900 font-medium">{author.username}</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm text-slate-500 mb-1">Email</label>
-                    <p className="text-slate-900 font-medium">{author.email}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm text-slate-500 mb-1">Company</label>
-                    <p className="text-slate-900 font-medium">{author.company || '-'}</p>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm text-slate-500 mb-1">Expertise Areas</label>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {author.expertise_areas?.map((area) => (
-                      <span key={area} className="px-3 py-1 bg-[#003366] text-white rounded-full text-sm">
-                        {area}
-                      </span>
-                    ))}
-                    {(!author.expertise_areas || author.expertise_areas.length === 0) && (
-                      <span className="text-slate-400">Not specified</span>
-                    )}
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Username</label>
+                    <input
+                      type="text"
+                      value={settingsForm.username}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '') })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                      placeholder="username"
+                    />
+                    <p className="text-xs text-slate-500 mt-1">Only letters, numbers, and underscores</p>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm text-slate-500 mb-1">Member Since</label>
-                  <p className="text-slate-900 font-medium">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                  <input
+                    type="email"
+                    value={author.email}
+                    disabled
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg bg-slate-50 text-slate-500 cursor-not-allowed"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Contact admin to change email</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Company</label>
+                  <input
+                    type="text"
+                    value={settingsForm.company}
+                    onChange={(e) => setSettingsForm({ ...settingsForm, company: e.target.value })}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                    placeholder="Your company name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Expertise Areas</label>
+                  <input
+                    type="text"
+                    value={settingsForm.expertise_areas}
+                    onChange={(e) => setSettingsForm({ ...settingsForm, expertise_areas: e.target.value })}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                    placeholder="Transformer Oil, Lubricants, Hydraulic Fluids"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Separate with commas</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Bio</label>
+                  <textarea
+                    value={settingsForm.bio}
+                    onChange={(e) => setSettingsForm({ ...settingsForm, bio: e.target.value })}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent resize-none"
+                    rows={3}
+                    placeholder="A brief introduction about yourself..."
+                  />
+                </div>
+              </div>
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={handleSettingsSave}
+                  disabled={saving}
+                  className="px-6 py-2 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#C9A227] transition-colors disabled:opacity-50 flex items-center gap-2"
+                >
+                  {saving && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
+                  {saving ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </div>
+
+            {/* 安全设置 */}
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <h2 className="text-lg font-semibold text-slate-900 mb-6">Security</h2>
+              
+              {!showPasswordSection ? (
+                <button
+                  onClick={() => setShowPasswordSection(true)}
+                  className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors"
+                >
+                  <i className="fa-solid fa-key mr-2"></i>Change Password
+                </button>
+              ) : (
+                <div className="space-y-4 max-w-md">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Current Password</label>
+                    <input
+                      type="password"
+                      value={passwordForm.currentPassword}
+                      onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">New Password</label>
+                    <input
+                      type="password"
+                      value={passwordForm.newPassword}
+                      onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                    />
+                    <p className="text-xs text-slate-500 mt-1">At least 6 characters</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Confirm New Password</label>
+                    <input
+                      type="password"
+                      value={passwordForm.confirmPassword}
+                      onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                    />
+                  </div>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => {
+                        setShowPasswordSection(false);
+                        setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+                      }}
+                      className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleChangePassword}
+                      disabled={saving}
+                      className="px-4 py-2 bg-[#003366] text-white rounded-lg font-medium hover:bg-[#002255] disabled:opacity-50 flex items-center gap-2"
+                    >
+                      {saving && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
+                      Update Password
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 账户信息 */}
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <h2 className="text-lg font-semibold text-slate-900 mb-4">Account Information</h2>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-slate-500">Real Name:</span>
+                  <span className="ml-2 text-slate-900 font-medium">{author.name}</span>
+                </div>
+                <div>
+                  <span className="text-slate-500">Member Since:</span>
+                  <span className="ml-2 text-slate-900 font-medium">
                     {new Date(author.created_at).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
                     })}
-                  </p>
+                  </span>
                 </div>
-              </div>
-
-              <div className="mt-8 pt-6 border-t border-slate-200">
-                <h3 className="text-md font-semibold text-slate-900 mb-4">Security</h3>
-                <button
-                  onClick={() => setShowChangePassword(true)}
-                  className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors"
-                >
-                  <i className="fa-solid fa-key mr-2"></i>Change Password
-                </button>
               </div>
             </div>
           </div>
         )}
       </div>
-
-      {/* 修改密码弹窗 */}
-      {showChangePassword && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
-            <h3 className="text-xl font-semibold text-slate-900 mb-4">Change Password</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm text-slate-500 mb-1">Current Password</label>
-                <input
-                  type="password"
-                  value={passwordData.currentPassword}
-                  onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
-                />
-              </div>
-              <div>
-                <label className="block text-sm text-slate-500 mb-1">New Password</label>
-                <input
-                  type="password"
-                  value={passwordData.newPassword}
-                  onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
-                />
-              </div>
-            </div>
-            <div className="flex gap-3 mt-6">
-              <button
-                onClick={() => {
-                  setShowChangePassword(false);
-                  setPasswordData({ currentPassword: '', newPassword: '' });
-                }}
-                className="flex-1 px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleChangePassword}
-                className="flex-1 px-4 py-2 bg-gradient-to-r from-[#003366] to-[#004080] text-white rounded-lg font-medium hover:shadow-lg"
-              >
-                Update Password
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
