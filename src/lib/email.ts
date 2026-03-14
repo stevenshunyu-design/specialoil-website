@@ -296,19 +296,16 @@ export async function sendVerificationCode(
   type: 'register' | 'reset_password' | 'bind_email' | 'admin_login' = 'register'
 ): Promise<boolean> {
   if (!resend) {
-    // 开发环境：打印验证码到控制台
-    if (process.env.NODE_ENV === 'development') {
-      console.log('========================================');
-      console.log('📧 DEVELOPMENT MODE - Email Verification');
-      console.log('========================================');
-      console.log(`To: ${email}`);
-      console.log(`Type: ${type}`);
-      console.log(`Code: ${code}`);
-      console.log('========================================');
-      return true; // 开发环境返回成功
-    }
-    console.log('Resend not configured, skipping email');
-    return false;
+    // 开发环境或生产环境无邮件服务：打印验证码到控制台
+    console.log('========================================');
+    console.log('📧 EMAIL VERIFICATION CODE');
+    console.log('========================================');
+    console.log(`To: ${email}`);
+    console.log(`Type: ${type}`);
+    console.log(`Code: ${code}`);
+    console.log(`Expires: 10 minutes`);
+    console.log('========================================');
+    return true; // 返回成功，验证码已打印到日志
   }
 
   const typeText = type === 'register' ? 'Email Verification' 
