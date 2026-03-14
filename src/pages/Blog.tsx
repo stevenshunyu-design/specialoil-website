@@ -6,11 +6,24 @@ import BlogCard from '../components/BlogCard';
 import { SubscribeSuccessModal, SubscribeErrorModal } from '@/components/ToastModal';
 import useSEO from '@/hooks/useSEO';
 
+// 作者信息类型
+interface AuthorInfo {
+  id: number;
+  username: string;
+  display_name: string;
+  email: string;
+  avatar_url?: string;
+}
+
 const Blog = () => {
   const { t } = useTranslation();
   
   // Initialize SEO for this page
   useSEO('blog');
+  
+  // 作者登录状态
+  const [authorInfo, setAuthorInfo] = useState<AuthorInfo | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   
   // 所有Hooks必须放在组件顶部，确保每次渲染都以相同顺序调用
   const { posts, isLoading, searchPosts } = useBlog();
@@ -25,6 +38,35 @@ const Blog = () => {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  
+  // 检查作者登录状态
+  useEffect(() => {
+    const checkAuth = () => {
+      const storedAuthor = localStorage.getItem('authorInfo');
+      if (storedAuthor) {
+        try {
+          const author = JSON.parse(storedAuthor);
+          setAuthorInfo(author);
+          setIsLoggedIn(true);
+        } catch {
+          localStorage.removeItem('authorInfo');
+          setIsLoggedIn(false);
+        }
+      }
+    };
+    checkAuth();
+    
+    // 监听storage变化（其他标签页登录/登出）
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
+  
+  // 作者登出
+  const handleLogout = () => {
+    localStorage.removeItem('authorInfo');
+    setAuthorInfo(null);
+    setIsLoggedIn(false);
+  };
   
   // 分类列表
   const categories = ['All', 'Industry News', 'Technical Information', 'Market Analysis', 'Product Updates'];
@@ -116,6 +158,67 @@ const Blog = () => {
                   {t('blog.hero.title')}
                 </h1>
               </div>
+          </div>
+        </section>
+        
+        {/* 作者入口栏 */}
+        <section className="mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-r from-[#F4F6F9] to-white p-6 rounded-sm border border-gray-100">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-pen-nib text-2xl text-[#D4AF37]"></i>
+              <div>
+                <h3 className="font-bold text-[#003366] font-['Montserrat']">
+                  {isLoggedIn && authorInfo ? t('blog.author.welcome', { name: authorInfo.display_name }) : t('blog.author.title')}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  {isLoggedIn && authorInfo ? t('blog.author.subtitle.loggedIn') : t('blog.author.subtitle.guest')}
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              {isLoggedIn && authorInfo ? (
+                <>
+                  <Link
+                    to="/author/dashboard"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#003366] text-white rounded-sm font-semibold hover:bg-opacity-90 transition-all"
+                  >
+                    <i className="fa-solid fa-pen-to-square"></i>
+                    <span>{t('blog.author.writeArticle')}</span>
+                  </Link>
+                  <Link
+                    to="/author/dashboard"
+                    className="flex items-center gap-2 px-4 py-2 bg-white text-[#003366] border border-[#003366] rounded-sm font-semibold hover:bg-[#F4F6F9] transition-all"
+                  >
+                    <i className="fa-solid fa-user"></i>
+                    <span>{t('blog.author.myDashboard')}</span>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 text-gray-500 hover:text-red-500 font-semibold transition-all"
+                  >
+                    <i className="fa-solid fa-sign-out-alt"></i>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/author/register"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#D4AF37] text-white rounded-sm font-semibold hover:bg-opacity-90 transition-all"
+                  >
+                    <i className="fa-solid fa-user-plus"></i>
+                    <span>{t('blog.author.becomeAuthor')}</span>
+                  </Link>
+                  <Link
+                    to="/author/login"
+                    className="flex items-center gap-2 px-4 py-2 bg-white text-[#003366] border border-[#003366] rounded-sm font-semibold hover:bg-[#F4F6F9] transition-all"
+                  >
+                    <i className="fa-solid fa-sign-in-alt"></i>
+                    <span>{t('blog.author.login')}</span>
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </section>
         

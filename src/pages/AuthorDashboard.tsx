@@ -267,7 +267,7 @@ const AuthorDashboard = () => {
             <div className="p-6 border-b border-slate-200 flex items-center justify-between">
               <h2 className="text-lg font-semibold text-slate-900">My Articles</h2>
               <Link
-                to="/admin/new"
+                to="/author/write"
                 className="px-4 py-2 bg-gradient-to-r from-[#D4AF37] to-[#B8960C] text-white rounded-lg font-medium hover:shadow-lg transition-all"
               >
                 <i className="fa-solid fa-plus mr-2"></i>New Article

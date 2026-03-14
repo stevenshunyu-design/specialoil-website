@@ -534,6 +534,18 @@
     "mobile": {
       "contact": "Contact Us",
       "whatsapp": "WhatsApp"
+    },
+    "author": {
+      "title": "Author Portal",
+      "subtitle": {
+        "guest": "Join our community of industry experts and share your insights",
+        "loggedIn": "Ready to share your expertise with the industry?"
+      },
+      "welcome": "Welcome back, {{name}}!",
+      "becomeAuthor": "Become an Author",
+      "login": "Author Login",
+      "writeArticle": "Write Article",
+      "myDashboard": "My Dashboard"
     }
   },
   "rubberProcessOil": {

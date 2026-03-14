@@ -589,6 +589,18 @@
     "mobile": {
       "contact": "联系我们",
       "whatsapp": "WhatsApp"
+    },
+    "author": {
+      "title": "作者专栏",
+      "subtitle": {
+        "guest": "加入我们的行业专家社区，分享您的专业见解",
+        "loggedIn": "准备好与行业分享您的专业知识了吗？"
+      },
+      "welcome": "欢迎回来，{{name}}！",
+      "becomeAuthor": "成为作者",
+      "login": "作者登录",
+      "writeArticle": "发布文章",
+      "myDashboard": "我的后台"
     }
   },
   "rubberProcessOil": {

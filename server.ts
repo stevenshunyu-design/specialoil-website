@@ -2538,6 +2538,81 @@ app.post('/api/author/:id/change-password', async (req: Request, res: Response) 
   }
 });
 
+// 作者提交新文章
+app.post('/api/author/articles', async (req: Request, res: Response) => {
+  try {
+    const { title, excerpt, content, category, tags, featuredImage, author_id, review_status } = req.body;
+    
+    if (!title || !content || !author_id) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Title, content, and author are required' 
+      });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 验证作者是否存在
+    const { data: author, error: authorError } = await client
+      .from('authors')
+      .select('id, display_name')
+      .eq('id', author_id)
+      .single();
+
+    if (authorError || !author) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Author not found' 
+      });
+    }
+
+    // 生成文章ID
+    const postId = generateId();
+    const now = new Date().toISOString();
+
+    // 插入文章
+    const { error: insertError } = await client
+      .from('blog_posts')
+      .insert({
+        id: postId,
+        title,
+        excerpt: excerpt || content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+        content,
+        category: category || 'Industry News',
+        tags: tags || [],
+        featured_image: featuredImage,
+        author_id,
+        author: author.display_name,
+        review_status: review_status || 'pending',
+        publishedAt: now,
+        created_at: now,
+        updated_at: now,
+        view_count: 0,
+        like_count: 0
+      });
+
+    if (insertError) {
+      console.error('Insert article error:', insertError);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to create article' 
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      message: review_status === 'draft' ? 'Draft saved' : 'Article submitted for review',
+      articleId: postId 
+    });
+  } catch (error) {
+    console.error('Create article error:', error);
+    res.status(500).json({ success: false, error: 'Failed to create article' });
+  }
+});
+
 // SPA 路由回退 - 所有非 API 路由返回 index.html
 app.get('*', (req: Request, res: Response) => {
   // 如果是 API 请求但路由不存在，返回 404

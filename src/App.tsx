@@ -27,6 +27,7 @@ import CookiePolicy from "@/pages/CookiePolicy";
 import AuthorRegister from "@/pages/AuthorRegister";
 import AuthorLogin from "@/pages/AuthorLogin";
 import AuthorDashboard from "@/pages/AuthorDashboard";
+import AuthorWrite from "@/pages/AuthorWrite";
 import ChatWidget from "@/components/ChatWidget";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import VisitorTracker from "@/components/VisitorTracker";
@@ -99,6 +100,7 @@ export default function App() {
           <Route path="/author/register" element={<AuthorRegister />} />
           <Route path="/author/login" element={<AuthorLogin />} />
           <Route path="/author/dashboard" element={<AuthorDashboard />} />
+          <Route path="/author/write" element={<AuthorWrite />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
