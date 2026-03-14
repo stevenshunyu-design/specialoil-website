@@ -7,6 +7,7 @@ interface Author {
   name: string;
   display_name: string;
   email: string;
+  phone?: string;
   username: string;
   company: string;
   bio: string;
@@ -53,6 +54,18 @@ const AuthorDashboard = () => {
   const [showPasswordSection, setShowPasswordSection] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  
+  // Bind email state
+  const [showBindEmailModal, setShowBindEmailModal] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [emailCode, setEmailCode] = useState('');
+  const [sendingCode, setSendingCode] = useState(false);
+  const [verifyingCode, setVerifyingCode] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  
+  // Bind phone state
+  const [showBindPhoneModal, setShowBindPhoneModal] = useState(false);
+  const [newPhone, setNewPhone] = useState('');
 
   useEffect(() => {
     // 检查登录状态
@@ -263,6 +276,140 @@ const AuthorDashboard = () => {
       }
     } catch (error) {
       toast.error('Failed to change password');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Bind email functions
+  const handleSendBindEmailCode = async () => {
+    if (!newEmail || !newEmail.includes('@')) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    if (newEmail === author?.email) {
+      toast.error('This email is already bound to your account');
+      return;
+    }
+
+    setSendingCode(true);
+    try {
+      const response = await fetch(`/api/author/${author?.id}/send-bind-email-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newEmail }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        toast.success('Verification code sent to your email');
+        setCountdown(60);
+        const timer = setInterval(() => {
+          setCountdown(prev => {
+            if (prev <= 1) {
+              clearInterval(timer);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      } else {
+        toast.error(data.error || 'Failed to send verification code');
+      }
+    } catch (error) {
+      toast.error('Failed to send verification code');
+    } finally {
+      setSendingCode(false);
+    }
+  };
+
+  const handleBindEmail = async () => {
+    if (!emailCode || emailCode.length !== 6) {
+      toast.error('Please enter a 6-digit verification code');
+      return;
+    }
+
+    setVerifyingCode(true);
+    try {
+      const response = await fetch(`/api/author/${author?.id}/bind-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newEmail, code: emailCode }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setAuthor(data.author);
+        localStorage.setItem('author', JSON.stringify(data.author));
+        toast.success('Email bound successfully');
+        setShowBindEmailModal(false);
+        setNewEmail('');
+        setEmailCode('');
+        setCountdown(0);
+      } else {
+        toast.error(data.error || 'Failed to bind email');
+      }
+    } catch (error) {
+      toast.error('Failed to bind email');
+    } finally {
+      setVerifyingCode(false);
+    }
+  };
+
+  // Bind phone functions
+  const handleBindPhone = async () => {
+    if (!newPhone || newPhone.length < 6) {
+      toast.error('Please enter a valid phone number');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const response = await fetch(`/api/author/${author?.id}/bind-phone`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: newPhone }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setAuthor(data.author);
+        localStorage.setItem('author', JSON.stringify(data.author));
+        toast.success('Phone bound successfully');
+        setShowBindPhoneModal(false);
+        setNewPhone('');
+      } else {
+        toast.error(data.error || 'Failed to bind phone');
+      }
+    } catch (error) {
+      toast.error('Failed to bind phone');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleUnbindPhone = async () => {
+    if (!confirm('Are you sure you want to unbind your phone number?')) {
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const response = await fetch(`/api/author/${author?.id}/phone`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setAuthor(data.author);
+        localStorage.setItem('author', JSON.stringify(data.author));
+        toast.success('Phone unbound successfully');
+      } else {
+        toast.error(data.error || 'Failed to unbind phone');
+      }
+    } catch (error) {
+      toast.error('Failed to unbind phone');
     } finally {
       setSaving(false);
     }
@@ -678,6 +825,65 @@ const AuthorDashboard = () => {
               )}
             </div>
 
+            {/* 联系方式绑定 */}
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <h2 className="text-lg font-semibold text-slate-900 mb-6">Contact Binding</h2>
+              <div className="space-y-4">
+                {/* 邮箱绑定 */}
+                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                      <i className="fa-solid fa-envelope text-blue-600"></i>
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-900">Email</p>
+                      <p className="text-sm text-slate-500">
+                        {author.email || 'Not bound'}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowBindEmailModal(true)}
+                    className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-white transition-colors text-sm"
+                  >
+                    {author.email ? 'Change Email' : 'Bind Email'}
+                  </button>
+                </div>
+
+                {/* 手机号绑定 */}
+                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                      <i className="fa-solid fa-phone text-green-600"></i>
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-900">Phone</p>
+                      <p className="text-sm text-slate-500">
+                        {author.phone || 'Not bound'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    {author.phone && (
+                      <button
+                        onClick={handleUnbindPhone}
+                        disabled={saving}
+                        className="px-4 py-2 border border-red-300 rounded-lg text-red-600 hover:bg-red-50 transition-colors text-sm"
+                      >
+                        Unbind
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setShowBindPhoneModal(true)}
+                      className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-white transition-colors text-sm"
+                    >
+                      {author.phone ? 'Change Phone' : 'Bind Phone'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* 账户信息 */}
             <div className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="text-lg font-semibold text-slate-900 mb-4">Account Information</h2>
@@ -701,6 +907,109 @@ const AuthorDashboard = () => {
           </div>
         )}
       </div>
+
+      {/* Bind Email Modal */}
+      {showBindEmailModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 p-6">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">Bind Email</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">New Email</label>
+                <input
+                  type="email"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                  placeholder="your@email.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Verification Code</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={emailCode}
+                    onChange={(e) => setEmailCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                    placeholder="6-digit code"
+                    maxLength={6}
+                  />
+                  <button
+                    onClick={handleSendBindEmailCode}
+                    disabled={sendingCode || countdown > 0 || !newEmail}
+                    className="px-4 py-2 bg-[#003366] text-white rounded-lg hover:bg-[#002255] disabled:opacity-50 whitespace-nowrap text-sm"
+                  >
+                    {sendingCode ? 'Sending...' : countdown > 0 ? `${countdown}s` : 'Send Code'}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 flex gap-3 justify-end">
+              <button
+                onClick={() => {
+                  setShowBindEmailModal(false);
+                  setNewEmail('');
+                  setEmailCode('');
+                  setCountdown(0);
+                }}
+                className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleBindEmail}
+                disabled={verifyingCode || !emailCode}
+                className="px-4 py-2 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#C9A227] disabled:opacity-50 flex items-center gap-2"
+              >
+                {verifyingCode && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
+                Bind Email
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bind Phone Modal */}
+      {showBindPhoneModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 p-6">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">Bind Phone</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
+                <input
+                  type="tel"
+                  value={newPhone}
+                  onChange={(e) => setNewPhone(e.target.value)}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                  placeholder="+86 138 0000 0000"
+                />
+                <p className="text-xs text-slate-500 mt-1">Include country code, e.g., +86, +1, +44</p>
+              </div>
+            </div>
+            <div className="mt-6 flex gap-3 justify-end">
+              <button
+                onClick={() => {
+                  setShowBindPhoneModal(false);
+                  setNewPhone('');
+                }}
+                className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleBindPhone}
+                disabled={saving || !newPhone}
+                className="px-4 py-2 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#C9A227] disabled:opacity-50 flex items-center gap-2"
+              >
+                {saving && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
+                Bind Phone
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -3016,6 +3016,277 @@ app.post('/api/author/:id/avatar', async (req: Request, res: Response) => {
   }
 });
 
+// 作者绑定新邮箱 - 发送验证码
+app.post('/api/author/:id/send-bind-email-code', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { new_email } = req.body;
+    
+    if (!new_email) {
+      return res.status(400).json({ success: false, error: 'New email is required' });
+    }
+
+    // 验证邮箱格式
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(new_email)) {
+      return res.status(400).json({ success: false, error: 'Invalid email format' });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 检查邮箱是否已被其他用户使用
+    const { data: existingUser } = await client
+      .from('authors')
+      .select('id')
+      .eq('email', new_email)
+      .neq('id', id)
+      .single();
+
+    if (existingUser) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'This email is already in use by another account' 
+      });
+    }
+
+    // 生成6位验证码
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10分钟过期
+
+    // 先将同一邮箱的旧验证码标记为已使用
+    await client
+      .from('email_verification_codes')
+      .update({ is_used: true })
+      .eq('email', new_email)
+      .eq('type', 'bind_email')
+      .eq('is_used', false);
+
+    // 保存新验证码到数据库
+    const { error: insertError } = await client
+      .from('email_verification_codes')
+      .insert({
+        email: new_email,
+        code,
+        type: 'bind_email',
+        expires_at: expiresAt.toISOString(),
+      });
+
+    if (insertError) {
+      console.error('Failed to save verification code:', insertError);
+      return res.status(500).json({ success: false, error: 'Failed to generate code' });
+    }
+
+    // 发送验证码邮件
+    const sent = await sendVerificationCode(new_email, code, 'bind_email');
+    
+    if (!sent) {
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to send verification email. Please try again later.' 
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Verification code sent to your new email address',
+      // 开发环境返回验证码方便测试
+      ...(process.env.NODE_ENV === 'development' && { devCode: code })
+    });
+  } catch (error) {
+    console.error('Send bind email code error:', error);
+    res.status(500).json({ success: false, error: 'Failed to send verification code' });
+  }
+});
+
+// 作者绑定新邮箱 - 验证并更新
+app.post('/api/author/:id/bind-email', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { new_email, code } = req.body;
+    
+    if (!new_email || !code) {
+      return res.status(400).json({ success: false, error: 'Email and verification code are required' });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 验证验证码
+    const { data: codes, error } = await client
+      .from('email_verification_codes')
+      .select('*')
+      .eq('email', new_email)
+      .eq('code', code)
+      .eq('type', 'bind_email')
+      .eq('is_used', false)
+      .gte('expires_at', new Date().toISOString())
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (error || !codes || codes.length === 0) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Invalid or expired verification code' 
+      });
+    }
+
+    // 标记验证码为已使用
+    await client
+      .from('email_verification_codes')
+      .update({ is_used: true })
+      .eq('id', codes[0].id);
+
+    // 再次检查邮箱是否已被使用
+    const { data: existingUser } = await client
+      .from('authors')
+      .select('id')
+      .eq('email', new_email)
+      .neq('id', id)
+      .single();
+
+    if (existingUser) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'This email is already in use by another account' 
+      });
+    }
+
+    // 更新邮箱
+    const { data, error: updateError } = await client
+      .from('authors')
+      .update({ 
+        email: new_email,
+        updated_at: new Date().toISOString() 
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (updateError) {
+      console.error('Update email error:', updateError);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to update email' 
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Email updated successfully',
+      author: {
+        id: data.id,
+        name: data.name,
+        display_name: data.display_name,
+        username: data.username,
+        email: data.email,
+        company: data.company,
+        bio: data.bio,
+        expertise_areas: data.expertise_areas,
+        avatar_url: data.avatar_url,
+        articles_count: data.articles_count,
+        total_views: data.total_views,
+        total_likes: data.total_likes,
+        created_at: data.created_at
+      }
+    });
+  } catch (error) {
+    console.error('Bind email error:', error);
+    res.status(500).json({ success: false, error: 'Failed to bind email' });
+  }
+});
+
+// 作者绑定手机号
+app.post('/api/author/:id/bind-phone', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { phone } = req.body;
+    
+    if (!phone) {
+      return res.status(400).json({ success: false, error: 'Phone number is required' });
+    }
+
+    // 简单验证手机号格式（支持国际格式）
+    const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+      return res.status(400).json({ success: false, error: 'Invalid phone number format' });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 更新手机号
+    const { data, error: updateError } = await client
+      .from('authors')
+      .update({ 
+        phone,
+        updated_at: new Date().toISOString() 
+      })
+      .eq('id', id)
+      .select('id, phone')
+      .single();
+
+    if (updateError) {
+      console.error('Update phone error:', updateError);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to update phone number' 
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Phone number updated successfully',
+      phone: data.phone
+    });
+  } catch (error) {
+    console.error('Bind phone error:', error);
+    res.status(500).json({ success: false, error: 'Failed to bind phone' });
+  }
+});
+
+// 作者解绑手机号
+app.delete('/api/author/:id/phone', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    const { error: updateError } = await client
+      .from('authors')
+      .update({ 
+        phone: null,
+        updated_at: new Date().toISOString() 
+      })
+      .eq('id', id);
+
+    if (updateError) {
+      console.error('Unbind phone error:', updateError);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to unbind phone' 
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Phone number unbound successfully'
+    });
+  } catch (error) {
+    console.error('Unbind phone error:', error);
+    res.status(500).json({ success: false, error: 'Failed to unbind phone' });
+  }
+});
+
 // 作者提交新文章
 app.post('/api/author/articles', async (req: Request, res: Response) => {
   try {
