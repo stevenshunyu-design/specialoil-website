@@ -296,6 +296,17 @@ export async function sendVerificationCode(
   type: 'register' | 'reset_password' = 'register'
 ): Promise<boolean> {
   if (!resend) {
+    // 开发环境：打印验证码到控制台
+    if (process.env.NODE_ENV === 'development') {
+      console.log('========================================');
+      console.log('📧 DEVELOPMENT MODE - Email Verification');
+      console.log('========================================');
+      console.log(`To: ${email}`);
+      console.log(`Type: ${type}`);
+      console.log(`Code: ${code}`);
+      console.log('========================================');
+      return true; // 开发环境返回成功
+    }
     console.log('Resend not configured, skipping email');
     return false;
   }
