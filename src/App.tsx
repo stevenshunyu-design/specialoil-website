@@ -26,6 +26,7 @@ import TermsOfService from "@/pages/TermsOfService";
 import CookiePolicy from "@/pages/CookiePolicy";
 import ChatWidget from "@/components/ChatWidget";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import VisitorTracker from "@/components/VisitorTracker";
 import { useLocation } from "react-router-dom";
 
 // Layout wrapper component
@@ -56,6 +57,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <ScrollToTop />
+      <VisitorTracker />
       <Toaster 
         position="top-center"
         toastOptions={{

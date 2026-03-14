@@ -7,9 +7,10 @@ import { BlogPost } from '../types/blog';
 import InquiriesAdmin from './InquiriesAdmin';
 import RichTextEditor from '../components/RichTextEditor';
 import ImageLibrary from '../components/ImageLibrary';
+import AnalyticsDashboard from '../components/AnalyticsDashboard';
 
 // 类型定义
-type AdminTab = 'dashboard' | 'articles' | 'inquiries' | 'subscribers' | 'chat';
+type AdminTab = 'dashboard' | 'articles' | 'analytics' | 'inquiries' | 'subscribers' | 'chat';
 
 // 统计卡片组件
 const StatCard = ({ icon, label, value, color, trend }: { 
@@ -271,6 +272,7 @@ const Admin = () => {
 
   const menuItems = [
     { id: 'dashboard' as AdminTab, icon: 'fa-chart-pie', label: '仪表盘' },
+    { id: 'analytics' as AdminTab, icon: 'fa-chart-line', label: '访问统计' },
     { id: 'articles' as AdminTab, icon: 'fa-file-lines', label: '文章管理' },
     { id: 'inquiries' as AdminTab, icon: 'fa-envelope', label: '客户询价' },
     { id: 'subscribers' as AdminTab, icon: 'fa-users', label: '订阅管理' },
@@ -357,6 +359,8 @@ const Admin = () => {
         {/* 内容区域 */}
         <div className="flex-1 p-6 overflow-auto">
           {activeTab === 'dashboard' && <Dashboard posts={posts} onNavigate={setActiveTab} />}
+          
+          {activeTab === 'analytics' && <AnalyticsDashboard />}
           
           {activeTab === 'articles' && (
             <div className="space-y-6">

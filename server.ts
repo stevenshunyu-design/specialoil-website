@@ -1387,6 +1387,541 @@ app.delete('/api/images/:key', async (req: Request, res: Response) => {
   }
 });
 
+// ==================== 访客追踪 API ====================
+
+// IP地理位置缓存
+const geoCache = new Map<string, { country: string; country_code: string; region: string; city: string; latitude: number; longitude: number; timezone: string }>();
+
+// 通过IP获取地理位置信息
+async function getGeoLocation(ip: string): Promise<{ country: string; country_code: string; region: string; city: string; latitude: number; longitude: number; timezone: string } | null> {
+  // 跳过本地IP
+  if (ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip.startsWith('10.') || ip.startsWith('172.')) {
+    return {
+      country: 'Local',
+      country_code: 'LO',
+      region: 'Local',
+      city: 'Local',
+      latitude: 0,
+      longitude: 0,
+      timezone: 'UTC'
+    };
+  }
+
+  // 检查缓存
+  if (geoCache.has(ip)) {
+    return geoCache.get(ip)!;
+  }
+
+  try {
+    // 使用免费的IP地理位置API
+    const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,countryCode,region,city,lat,lon,timezone`);
+    const data = await response.json();
+    
+    if (data.status === 'success') {
+      const result = {
+        country: data.country || 'Unknown',
+        country_code: data.countryCode || 'XX',
+        region: data.region || 'Unknown',
+        city: data.city || 'Unknown',
+        latitude: data.lat || 0,
+        longitude: data.lon || 0,
+        timezone: data.timezone || 'UTC'
+      };
+      geoCache.set(ip, result);
+      return result;
+    }
+    return null;
+  } catch (error) {
+    console.error('Geo location error:', error);
+    return null;
+  }
+}
+
+// 解析User-Agent
+function parseUserAgent(userAgent: string): { browser: string; browserVersion: string; os: string; osVersion: string; deviceType: string } {
+  const result = {
+    browser: 'Unknown',
+    browserVersion: '',
+    os: 'Unknown',
+    osVersion: '',
+    deviceType: 'desktop'
+  };
+
+  if (!userAgent) return result;
+
+  // 检测操作系统
+  if (userAgent.includes('Windows NT 10')) { result.os = 'Windows'; result.osVersion = '10/11'; }
+  else if (userAgent.includes('Windows NT 6.3')) { result.os = 'Windows'; result.osVersion = '8.1'; }
+  else if (userAgent.includes('Windows NT 6.1')) { result.os = 'Windows'; result.osVersion = '7'; }
+  else if (userAgent.includes('Mac OS X')) {
+    result.os = 'macOS';
+    const match = userAgent.match(/Mac OS X (\d+[._]\d+)/);
+    if (match) result.osVersion = match[1].replace('_', '.');
+  }
+  else if (userAgent.includes('Android')) {
+    result.os = 'Android';
+    const match = userAgent.match(/Android (\d+\.?\d*)/);
+    if (match) result.osVersion = match[1];
+    result.deviceType = 'mobile';
+  }
+  else if (userAgent.includes('iPhone') || userAgent.includes('iPad')) {
+    result.os = 'iOS';
+    const match = userAgent.match(/OS (\d+[._]\d+)/);
+    if (match) result.osVersion = match[1].replace('_', '.');
+    result.deviceType = userAgent.includes('iPad') ? 'tablet' : 'mobile';
+  }
+  else if (userAgent.includes('Linux')) { result.os = 'Linux'; }
+
+  // 检测浏览器
+  if (userAgent.includes('Edg/')) {
+    result.browser = 'Edge';
+    const match = userAgent.match(/Edg\/(\d+\.?\d*)/);
+    if (match) result.browserVersion = match[1];
+  }
+  else if (userAgent.includes('Chrome/')) {
+    result.browser = 'Chrome';
+    const match = userAgent.match(/Chrome\/(\d+\.?\d*)/);
+    if (match) result.browserVersion = match[1];
+  }
+  else if (userAgent.includes('Firefox/')) {
+    result.browser = 'Firefox';
+    const match = userAgent.match(/Firefox\/(\d+\.?\d*)/);
+    if (match) result.browserVersion = match[1];
+  }
+  else if (userAgent.includes('Safari/') && !userAgent.includes('Chrome')) {
+    result.browser = 'Safari';
+    const match = userAgent.match(/Version\/(\d+\.?\d*)/);
+    if (match) result.browserVersion = match[1];
+  }
+
+  // 检测平板
+  if (userAgent.includes('Tablet') || userAgent.includes('iPad')) {
+    result.deviceType = 'tablet';
+  }
+
+  return result;
+}
+
+// 解析流量来源
+function parseTrafficSource(referrer: string | null, utmSource: string | null, utmMedium: string | null): string {
+  if (utmSource) return utmMedium || 'campaign';
+  if (!referrer) return 'direct';
+  
+  try {
+    const url = new URL(referrer);
+    const domain = url.hostname.toLowerCase();
+    
+    // 搜索引擎
+    const searchEngines = ['google', 'bing', 'yahoo', 'baidu', 'duckduckgo', 'yandex', 'sogou', '360', 'shenma'];
+    if (searchEngines.some(se => domain.includes(se))) return 'organic';
+    
+    // 社交媒体
+    const socialMedia = ['facebook', 'twitter', 'linkedin', 'instagram', 'youtube', 'weibo', 'weixin', 'wechat', 'tiktok', 'douyin', 'xiaohongshu', 'pinterest', 'reddit'];
+    if (socialMedia.some(sm => domain.includes(sm))) return 'social';
+    
+    // 邮件
+    if (domain.includes('mail') || utmMedium === 'email') return 'email';
+    
+    return 'referral';
+  } catch {
+    return 'direct';
+  }
+}
+
+// 记录访客访问
+app.post('/api/analytics/track', async (req: Request, res: Response) => {
+  try {
+    const { visitorId, sessionId, pageUrl, pagePath, pageTitle, referrer, screenResolution, language, utmSource, utmMedium, utmCampaign } = req.body;
+
+    if (!visitorId || !pageUrl) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ error: 'Database not configured' });
+    }
+
+    // 获取IP地址
+    const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || 
+               req.socket.remoteAddress || 
+               '127.0.0.1';
+
+    // 获取地理位置
+    const geo = await getGeoLocation(ip);
+
+    // 解析User-Agent
+    const userAgent = req.headers['user-agent'] || '';
+    const uaInfo = parseUserAgent(userAgent);
+
+    // 解析流量来源
+    const trafficSource = parseTrafficSource(referrer, utmSource, utmMedium);
+
+    // 解析来源域名
+    let referrerDomain = null;
+    if (referrer) {
+      try {
+        referrerDomain = new URL(referrer).hostname;
+      } catch {}
+    }
+
+    // 1. 更新或创建访客记录
+    const { data: existingVisitor } = await client
+      .from('visitors')
+      .select('*')
+      .eq('visitor_id', visitorId)
+      .single();
+
+    if (existingVisitor) {
+      // 更新现有访客
+      await client
+        .from('visitors')
+        .update({
+          last_visit_at: new Date().toISOString(),
+          visit_count: (existingVisitor.visit_count || 0) + 1,
+          ip_address: ip,
+          country: geo?.country || existingVisitor.country,
+          city: geo?.city || existingVisitor.city,
+          browser: uaInfo.browser,
+          os: uaInfo.os,
+          device_type: uaInfo.deviceType,
+          screen_resolution: screenResolution || existingVisitor.screen_resolution,
+        })
+        .eq('visitor_id', visitorId);
+    } else {
+      // 创建新访客
+      await client
+        .from('visitors')
+        .insert({
+          visitor_id: visitorId,
+          ip_address: ip,
+          country: geo?.country || 'Unknown',
+          country_code: geo?.country_code || 'XX',
+          region: geo?.region || 'Unknown',
+          city: geo?.city || 'Unknown',
+          latitude: geo?.latitude || 0,
+          longitude: geo?.longitude || 0,
+          timezone: geo?.timezone || 'UTC',
+          browser: uaInfo.browser,
+          browser_version: uaInfo.browserVersion,
+          os: uaInfo.os,
+          os_version: uaInfo.osVersion,
+          device_type: uaInfo.deviceType,
+          screen_resolution: screenResolution,
+          language: language,
+        });
+    }
+
+    // 2. 创建页面访问记录
+    await client
+      .from('page_views')
+      .insert({
+        visitor_id: visitorId,
+        session_id: sessionId,
+        page_url: pageUrl,
+        page_path: pagePath || new URL(pageUrl).pathname,
+        page_title: pageTitle,
+        referrer: referrer,
+        referrer_domain: referrerDomain,
+        traffic_source: trafficSource,
+        utm_source: utmSource,
+        utm_medium: utmMedium,
+        utm_campaign: utmCampaign,
+      });
+
+    // 3. 更新或创建在线会话
+    if (sessionId) {
+      const { data: existingSession } = await client
+        .from('active_sessions')
+        .select('*')
+        .eq('session_id', sessionId)
+        .single();
+
+      if (existingSession) {
+        await client
+          .from('active_sessions')
+          .update({
+            last_activity_at: new Date().toISOString(),
+            page_url: pageUrl,
+            page_title: pageTitle,
+            page_views: (existingSession.page_views || 0) + 1,
+          })
+          .eq('session_id', sessionId);
+      } else {
+        await client
+          .from('active_sessions')
+          .insert({
+            visitor_id: visitorId,
+            session_id: sessionId,
+            ip_address: ip,
+            country: geo?.country || 'Unknown',
+            city: geo?.city || 'Unknown',
+            page_url: pageUrl,
+            page_title: pageTitle,
+            browser: uaInfo.browser,
+            os: uaInfo.os,
+            device_type: uaInfo.deviceType,
+          });
+      }
+    }
+
+    res.json({ success: true, isNewVisitor: !existingVisitor });
+  } catch (error) {
+    console.error('Track visitor error:', error);
+    res.status(500).json({ error: 'Failed to track visitor' });
+  }
+});
+
+// 记录页面离开（更新停留时长）
+app.post('/api/analytics/leave', async (req: Request, res: Response) => {
+  try {
+    const { sessionId, pageUrl, durationSeconds, scrollDepth } = req.body;
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ error: 'Database not configured' });
+    }
+
+    // 更新最近的页面访问记录
+    const { data: pageView } = await client
+      .from('page_views')
+      .select('id')
+      .eq('session_id', sessionId)
+      .eq('page_url', pageUrl)
+      .is('exit_time', null)
+      .order('entry_time', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (pageView) {
+      await client
+        .from('page_views')
+        .update({
+          exit_time: new Date().toISOString(),
+          duration_seconds: durationSeconds,
+          scroll_depth: scrollDepth,
+          is_bounce: durationSeconds < 10,
+        })
+        .eq('id', pageView.id);
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Leave page error:', error);
+    res.status(500).json({ error: 'Failed to record leave' });
+  }
+});
+
+// 清理过期会话（用户关闭页面时调用）
+app.post('/api/analytics/end-session', async (req: Request, res: Response) => {
+  try {
+    const { sessionId } = req.body;
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ error: 'Database not configured' });
+    }
+
+    // 删除在线会话记录
+    await client
+      .from('active_sessions')
+      .delete()
+      .eq('session_id', sessionId);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('End session error:', error);
+    res.status(500).json({ error: 'Failed to end session' });
+  }
+});
+
+// 获取实时在线访客
+app.get('/api/analytics/online', async (req: Request, res: Response) => {
+  try {
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.json({ success: true, data: [] });
+    }
+
+    // 获取最近5分钟有活动的会话
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+
+    const { data, error } = await client
+      .from('active_sessions')
+      .select('*')
+      .gte('last_activity_at', fiveMinutesAgo)
+      .order('last_activity_at', { ascending: false });
+
+    if (error) {
+      console.error('Get online visitors error:', error);
+      return res.json({ success: true, data: [] });
+    }
+
+    res.json({ success: true, data: data || [] });
+  } catch (error) {
+    console.error('Get online visitors error:', error);
+    res.status(500).json({ error: 'Failed to get online visitors' });
+  }
+});
+
+// 获取访问统计数据
+app.get('/api/analytics/stats', async (req: Request, res: Response) => {
+  try {
+    const { period = '7d' } = req.query;
+    const client = getSupabaseClient();
+    
+    if (!client) {
+      return res.json({ success: true, data: getEmptyStats() });
+    }
+
+    // 计算时间范围
+    const now = new Date();
+    let startDate: Date;
+    switch (period) {
+      case '24h':
+        startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        break;
+      case '7d':
+        startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        break;
+      case '30d':
+        startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        break;
+      default:
+        startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    }
+
+    const startDateStr = startDate.toISOString();
+
+    // 并行获取各项统计数据
+    const [totalVisitors, newVisitors, totalPageViews, topPages, topCountries, trafficSources, dailyStats, avgDuration] = await Promise.all([
+      // 总访客数
+      client.from('page_views').select('visitor_id', { count: 'exact', head: true }).gte('entry_time', startDateStr),
+      
+      // 新访客数
+      client.from('visitors').select('id', { count: 'exact', head: true }).gte('first_visit_at', startDateStr),
+      
+      // 总页面浏览量
+      client.from('page_views').select('id', { count: 'exact', head: true }).gte('entry_time', startDateStr),
+      
+      // 热门页面
+      client.from('page_views').select('page_path, page_title').gte('entry_time', startDateStr).limit(100),
+      
+      // 国家分布
+      client.from('page_views').select('visitor_id').gte('entry_time', startDateStr).limit(500),
+      
+      // 流量来源
+      client.from('page_views').select('traffic_source').gte('entry_time', startDateStr).limit(500),
+      
+      // 每日统计
+      client.from('page_views').select('entry_time').gte('entry_time', startDateStr).limit(1000),
+      
+      // 平均停留时长
+      client.from('page_views').select('duration_seconds').gte('entry_time', startDateStr).not('duration_seconds', 'is', null).limit(500),
+    ]);
+
+    // 处理热门页面
+    const pageCounts: Record<string, { count: number; title: string }> = {};
+    (topPages.data || []).forEach((pv: any) => {
+      const path = pv.page_path || '/';
+      if (!pageCounts[path]) {
+        pageCounts[path] = { count: 0, title: pv.page_title || path };
+      }
+      pageCounts[path].count++;
+    });
+    const topPagesList = Object.entries(pageCounts)
+      .map(([path, data]) => ({ path, title: data.title, views: data.count }))
+      .sort((a, b) => b.views - a.views)
+      .slice(0, 10);
+
+    // 获取访客国家信息
+    const visitorIds = [...new Set((topCountries.data || []).map((pv: any) => pv.visitor_id))];
+    const { data: visitorsData } = await client
+      .from('visitors')
+      .select('country, country_code')
+      .in('visitor_id', visitorIds.slice(0, 100));
+
+    const countryCounts: Record<string, number> = {};
+    (visitorsData || []).forEach((v: any) => {
+      const country = v.country || 'Unknown';
+      countryCounts[country] = (countryCounts[country] || 0) + 1;
+    });
+    const topCountriesList = Object.entries(countryCounts)
+      .map(([country, count]) => ({ country, count }))
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10);
+
+    // 处理流量来源
+    const sourceCounts: Record<string, number> = {};
+    (trafficSources.data || []).forEach((pv: any) => {
+      const source = pv.traffic_source || 'direct';
+      sourceCounts[source] = (sourceCounts[source] || 0) + 1;
+    });
+
+    // 处理每日统计
+    const dailyData: Record<string, { visitors: Set<string>; pageViews: number }> = {};
+    (dailyStats.data || []).forEach((pv: any) => {
+      const date = new Date(pv.entry_time).toISOString().split('T')[0];
+      if (!dailyData[date]) {
+        dailyData[date] = { visitors: new Set(), pageViews: 0 };
+      }
+      dailyData[date].visitors.add(pv.visitor_id);
+      dailyData[date].pageViews++;
+    });
+    const dailyStatsList = Object.entries(dailyData)
+      .map(([date, data]) => ({ date, visitors: data.visitors.size, pageViews: data.pageViews }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    // 计算平均停留时长
+    const durations = (avgDuration.data || []).map((pv: any) => pv.duration_seconds).filter((d: number) => d > 0);
+    const avgDurationValue = durations.length > 0 ? Math.round(durations.reduce((a: number, b: number) => a + b, 0) / durations.length) : 0;
+
+    // 跳出率
+    const bounceCount = (trafficSources.data || []).filter((pv: any) => pv.traffic_source === 'direct').length;
+    const bounceRate = totalPageViews.count && totalPageViews.count > 0 
+      ? Math.round((bounceCount / totalPageViews.count) * 100) 
+      : 0;
+
+    res.json({
+      success: true,
+      data: {
+        overview: {
+          totalVisitors: totalVisitors.count || 0,
+          newVisitors: newVisitors.count || 0,
+          returningVisitors: (totalVisitors.count || 0) - (newVisitors.count || 0),
+          totalPageViews: totalPageViews.count || 0,
+          avgDuration: avgDurationValue,
+          bounceRate: bounceRate,
+        },
+        topPages: topPagesList,
+        topCountries: topCountriesList,
+        trafficSources: Object.entries(sourceCounts).map(([source, count]) => ({ source, count })),
+        dailyStats: dailyStatsList,
+      }
+    });
+  } catch (error) {
+    console.error('Get analytics stats error:', error);
+    res.status(500).json({ error: 'Failed to get stats' });
+  }
+});
+
+function getEmptyStats() {
+  return {
+    overview: {
+      totalVisitors: 0,
+      newVisitors: 0,
+      returningVisitors: 0,
+      totalPageViews: 0,
+      avgDuration: 0,
+      bounceRate: 0,
+    },
+    topPages: [],
+    topCountries: [],
+    trafficSources: [],
+    dailyStats: [],
+  };
+}
+
 app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ 
     status: 'ok', 
