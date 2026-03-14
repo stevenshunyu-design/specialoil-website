@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "server.production.cjs",
   "scripts": {
+    "build": "echo 'No build required - using pre-built files'",
     "start": "node start.cjs",
     "test": "node test-server.cjs"
   },
