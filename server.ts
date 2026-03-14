@@ -85,6 +85,9 @@ console.log('FEISHU_CHAT_ID:', FEISHU_CHAT_ID || 'NOT SET');
 console.log('FEISHU_CHAT_WEBHOOK (客服通知):', FEISHU_CHAT_WEBHOOK ? `SET` : 'NOT SET');
 console.log('FEISHU_INQUIRY_WEBHOOK (询盘通知):', FEISHU_INQUIRY_WEBHOOK ? `SET` : 'NOT SET');
 console.log('OPENAI_API_KEY:', OPENAI_API_KEY ? 'SET' : 'NOT SET');
+console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'SET' : 'NOT SET');
+console.log('FROM_EMAIL:', process.env.FROM_EMAIL || 'NOT SET');
+console.log('ADMIN_EMAIL:', process.env.ADMIN_EMAIL || 'NOT SET');
 console.log('========================================');
 
 // ==================== 飞书 Token 管理 ====================
