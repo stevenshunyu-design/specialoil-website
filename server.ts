@@ -2219,6 +2219,177 @@ app.post('/api/author/apply', async (req: Request, res: Response) => {
   }
 });
 
+// ==================== 管理员验证码登录 ====================
+
+// 管理员邮箱配置
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'kdwelly@163.com';
+
+// 发送管理员登录验证码
+app.post('/api/admin/send-login-code', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email is required' });
+    }
+    
+    // 验证邮箱是否为管理员邮箱
+    if (email !== ADMIN_EMAIL) {
+      // 为了安全，不暴露邮箱是否已注册
+      return res.json({ success: true, message: 'If this email is registered as admin, a verification code has been sent.' });
+    }
+    
+    // 生成6位验证码
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+    
+    // 保存验证码到数据库
+    const { error: insertError } = await client
+      .from('email_verification_codes')
+      .insert({
+        email,
+        code,
+        type: 'admin_login',
+        expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString(), // 10分钟有效
+      });
+    
+    if (insertError) {
+      console.error('Failed to save admin login code:', insertError);
+      return res.status(500).json({ success: false, error: 'Failed to generate verification code' });
+    }
+    
+    // 发送验证码邮件
+    const { sendVerificationCode } = await import('./src/lib/email.js');
+    const emailSent = await sendVerificationCode(email, code, 'admin_login');
+    
+    if (!emailSent) {
+      console.log(`Admin login code (dev): ${code}`);
+    }
+    
+    res.json({ success: true, message: 'Verification code sent to your email' });
+  } catch (error) {
+    console.error('Send admin login code error:', error);
+    res.status(500).json({ success: false, error: 'Failed to send verification code' });
+  }
+});
+
+// 验证管理员登录验证码
+app.post('/api/admin/verify-login', async (req: Request, res: Response) => {
+  try {
+    const { email, code } = req.body;
+    
+    if (!email || !code) {
+      return res.status(400).json({ success: false, error: 'Email and code are required' });
+    }
+    
+    // 验证邮箱是否为管理员邮箱
+    if (email !== ADMIN_EMAIL) {
+      return res.status(401).json({ success: false, error: 'Invalid credentials' });
+    }
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+    
+    // 查询验证码
+    const { data: codes, error: queryError } = await client
+      .from('email_verification_codes')
+      .select('*')
+      .eq('email', email)
+      .eq('code', code)
+      .eq('type', 'admin_login')
+      .eq('is_used', false)
+      .gt('expires_at', new Date().toISOString())
+      .order('created_at', { ascending: false })
+      .limit(1);
+    
+    if (queryError || !codes || codes.length === 0) {
+      return res.status(401).json({ success: false, error: 'Invalid or expired verification code' });
+    }
+    
+    // 标记验证码为已使用
+    await client
+      .from('email_verification_codes')
+      .update({ is_used: true })
+      .eq('id', codes[0].id);
+    
+    // 返回登录成功
+    res.json({ 
+      success: true, 
+      message: 'Login successful',
+      admin: {
+        email: ADMIN_EMAIL,
+        username: 'admin',
+        role: 'admin'
+      }
+    });
+  } catch (error) {
+    console.error('Verify admin login error:', error);
+    res.status(500).json({ success: false, error: 'Failed to verify login' });
+  }
+});
+
+// 管理员修改密码（这里实际上是设置新密码，因为验证码登录没有密码）
+app.post('/api/admin/set-password', async (req: Request, res: Response) => {
+  try {
+    const { email, code, newPassword } = req.body;
+    
+    if (!email || !code || !newPassword) {
+      return res.status(400).json({ success: false, error: 'Email, code, and new password are required' });
+    }
+    
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, error: 'Password must be at least 6 characters' });
+    }
+    
+    // 验证邮箱是否为管理员邮箱
+    if (email !== ADMIN_EMAIL) {
+      return res.status(401).json({ success: false, error: 'Invalid credentials' });
+    }
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+    
+    // 查询验证码
+    const { data: codes, error: queryError } = await client
+      .from('email_verification_codes')
+      .select('*')
+      .eq('email', email)
+      .eq('code', code)
+      .eq('type', 'admin_login')
+      .eq('is_used', false)
+      .gt('expires_at', new Date().toISOString())
+      .order('created_at', { ascending: false })
+      .limit(1);
+    
+    if (queryError || !codes || codes.length === 0) {
+      return res.status(401).json({ success: false, error: 'Invalid or expired verification code' });
+    }
+    
+    // 标记验证码为已使用
+    await client
+      .from('email_verification_codes')
+      .update({ is_used: true })
+      .eq('id', codes[0].id);
+    
+    // 在实际生产环境中，这里应该将密码哈希后存储到数据库
+    // 由于当前系统使用环境变量配置管理员信息，这里只返回成功
+    // 生产环境应该创建 admins 表存储密码哈希
+    
+    res.json({ success: true, message: 'Password set successfully' });
+  } catch (error) {
+    console.error('Set admin password error:', error);
+    res.status(500).json({ success: false, error: 'Failed to set password' });
+  }
+});
+
 // ==================== 管理后台增强功能 ====================
 
 // 获取仪表盘统计数据

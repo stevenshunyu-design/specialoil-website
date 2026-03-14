@@ -293,7 +293,7 @@ function generateNewsletterHTML(
 export async function sendVerificationCode(
   email: string, 
   code: string, 
-  type: 'register' | 'reset_password' | 'bind_email' = 'register'
+  type: 'register' | 'reset_password' | 'bind_email' | 'admin_login' = 'register'
 ): Promise<boolean> {
   if (!resend) {
     // 开发环境：打印验证码到控制台
@@ -311,11 +311,16 @@ export async function sendVerificationCode(
     return false;
   }
 
-  const typeText = type === 'register' ? 'Email Verification' : type === 'bind_email' ? 'Bind New Email' : 'Password Reset';
+  const typeText = type === 'register' ? 'Email Verification' 
+    : type === 'bind_email' ? 'Bind New Email' 
+    : type === 'admin_login' ? 'Admin Login Verification'
+    : 'Password Reset';
   const purposeText = type === 'register' 
     ? 'Please use the following code to verify your email address for author registration.'
     : type === 'bind_email'
     ? 'Please use the following code to verify your new email address for account binding.'
+    : type === 'admin_login'
+    ? 'Please use the following code to verify your identity for admin panel login.'
     : 'Please use the following code to reset your password.';
 
   try {

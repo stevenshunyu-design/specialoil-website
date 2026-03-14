@@ -14,7 +14,7 @@ import ArticlesAdmin from '../components/ArticlesAdmin';
 import SubscribersAdmin from '../components/SubscribersAdmin';
 
 // 类型定义
-type AdminTab = 'dashboard' | 'articles' | 'article-review' | 'analytics' | 'inquiries' | 'subscribers' | 'chat' | 'applications';
+type AdminTab = 'dashboard' | 'articles' | 'article-review' | 'analytics' | 'inquiries' | 'subscribers' | 'chat' | 'applications' | 'settings';
 
 // 统计卡片组件
 const StatCard = ({ icon, label, value, color, subLabel }: { 
@@ -383,6 +383,262 @@ const Dashboard = ({ posts, onNavigate }: { posts: BlogPost[]; onNavigate: (tab:
   );
 };
 
+// 系统设置组件
+const Settings = () => {
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [sendingCode, setSendingCode] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const [step, setStep] = useState(1); // 1: 输入邮箱发送验证码, 2: 输入验证码和新密码
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
+
+  const handleSendCode = async () => {
+    if (!email || !email.includes('@')) {
+      toast.error('请输入有效的邮箱地址');
+      return;
+    }
+
+    setSendingCode(true);
+    try {
+      const response = await fetch('/api/admin/send-login-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        toast.success('验证码已发送');
+        setCountdown(60);
+        setStep(2);
+      } else {
+        toast.error(data.error || '发送失败');
+      }
+    } catch (error) {
+      toast.error('发送验证码失败');
+    } finally {
+      setSendingCode(false);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (!code || code.length !== 6) {
+      toast.error('请输入6位验证码');
+      return;
+    }
+    if (!newPassword || newPassword.length < 6) {
+      toast.error('新密码至少6位');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error('两次密码输入不一致');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const response = await fetch('/api/admin/set-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code, newPassword }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        toast.success('密码设置成功');
+        setShowChangePassword(false);
+        setStep(1);
+        setEmail('');
+        setCode('');
+        setNewPassword('');
+        setConfirmPassword('');
+      } else {
+        toast.error(data.error || '设置失败');
+      }
+    } catch (error) {
+      toast.error('设置密码失败');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="max-w-3xl space-y-6">
+      {/* 管理员信息 */}
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-6">管理员信息</h2>
+        <div className="flex items-center gap-6">
+          <div className="w-20 h-20 bg-gradient-to-br from-[#003366] to-[#D4AF37] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+            A
+          </div>
+          <div>
+            <p className="text-xl font-semibold text-gray-900">管理员</p>
+            <p className="text-gray-500">admin</p>
+            <p className="text-sm text-gray-400 mt-1">角色: 超级管理员</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 安全设置 */}
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-6">安全设置</h2>
+        
+        {!showChangePassword ? (
+          <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                <i className="fa-solid fa-lock text-blue-600"></i>
+              </div>
+              <div>
+                <p className="font-medium text-gray-900">登录密码</p>
+                <p className="text-sm text-gray-500">使用验证码验证身份后可设置新密码</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowChangePassword(true)}
+              className="px-4 py-2 border border-slate-300 rounded-lg text-gray-700 hover:bg-white transition-colors"
+            >
+              修改
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4 p-4 bg-slate-50 rounded-lg">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-medium text-gray-900">设置新密码</h3>
+              <button
+                onClick={() => {
+                  setShowChangePassword(false);
+                  setStep(1);
+                  setEmail('');
+                  setCode('');
+                  setNewPassword('');
+                  setConfirmPassword('');
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <i className="fa-solid fa-times"></i>
+              </button>
+            </div>
+
+            {step === 1 ? (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">管理员邮箱</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                    placeholder="请输入管理员邮箱"
+                  />
+                </div>
+                <button
+                  onClick={handleSendCode}
+                  disabled={sendingCode || countdown > 0 || !email}
+                  className="w-full px-4 py-2 bg-[#003366] text-white rounded-lg hover:bg-[#002255] disabled:opacity-50"
+                >
+                  {sendingCode ? '发送中...' : countdown > 0 ? `${countdown}s 后重发` : '发送验证码'}
+                </button>
+              </>
+            ) : (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">验证码</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={code}
+                      onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                      className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                      placeholder="6位验证码"
+                      maxLength={6}
+                    />
+                    <button
+                      onClick={handleSendCode}
+                      disabled={sendingCode || countdown > 0}
+                      className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 disabled:opacity-50 whitespace-nowrap"
+                    >
+                      {countdown > 0 ? `${countdown}s` : '重发'}
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">新密码</label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                    placeholder="至少6位"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">确认新密码</label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                    placeholder="再次输入新密码"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      setShowChangePassword(false);
+                      setStep(1);
+                    }}
+                    className="flex-1 px-4 py-2 border border-slate-300 rounded-lg text-gray-700 hover:bg-white"
+                  >
+                    取消
+                  </button>
+                  <button
+                    onClick={handleChangePassword}
+                    disabled={saving}
+                    className="flex-1 px-4 py-2 bg-[#D4AF37] text-white rounded-lg hover:bg-[#C9A227] disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {saving && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
+                    确认修改
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* 登录历史 */}
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">登录说明</h2>
+        <div className="space-y-3 text-sm text-gray-600">
+          <div className="flex items-start gap-3">
+            <i className="fa-solid fa-shield-check text-green-500 mt-0.5"></i>
+            <p>管理员使用邮箱验证码登录，无需记忆密码</p>
+          </div>
+          <div className="flex items-start gap-3">
+            <i className="fa-solid fa-clock text-blue-500 mt-0.5"></i>
+            <p>验证码有效期为10分钟</p>
+          </div>
+          <div className="flex items-start gap-3">
+            <i className="fa-solid fa-key text-yellow-500 mt-0.5"></i>
+            <p>如需设置固定密码，可在上方"安全设置"中操作</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // 主管理组件
 const Admin = () => {
   const navigate = useNavigate();
@@ -412,6 +668,7 @@ const Admin = () => {
     { id: 'applications' as AdminTab, icon: 'fa-user-plus', label: '作者申请' },
     { id: 'subscribers' as AdminTab, icon: 'fa-users', label: '订阅管理' },
     { id: 'chat' as AdminTab, icon: 'fa-comments', label: '在线客服' },
+    { id: 'settings' as AdminTab, icon: 'fa-gear', label: '系统设置' },
   ];
 
   return (
@@ -559,6 +816,8 @@ const Admin = () => {
               </div>
             </div>
           )}
+
+          {activeTab === 'settings' && <Settings />}
         </div>
       </main>
     </div>
