@@ -1,6 +1,10 @@
 import { Resend } from 'resend';
 
 // 初始化 Resend 客户端
+console.log('📧 Email Service Config:');
+console.log('  RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'SET' : 'NOT SET');
+console.log('  FROM_EMAIL:', process.env.FROM_EMAIL || 'default: steven.shunyu@gmail.com');
+
 const resend = process.env.RESEND_API_KEY 
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
@@ -321,6 +325,9 @@ export async function sendVerificationCode(
     : 'Please use the following code to reset your password.';
 
   try {
+    console.log(`📧 Sending ${type} verification code to ${email}...`);
+    console.log(`📧 From: ${FROM_EMAIL}`);
+    
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
@@ -355,14 +362,20 @@ export async function sendVerificationCode(
     });
 
     if (error) {
-      console.error('Failed to send verification code:', error);
+      console.error('❌ Failed to send verification code:');
+      console.error('  Error name:', error.name);
+      console.error('  Error message:', error.message);
+      console.error('  Full error:', JSON.stringify(error, null, 2));
       return false;
     }
 
-    console.log('Verification code sent:', data?.id);
+    console.log('✅ Verification code sent successfully!');
+    console.log('  Email ID:', data?.id);
     return true;
-  } catch (error) {
-    console.error('Error sending verification code:', error);
+  } catch (error: any) {
+    console.error('❌ Exception sending verification code:');
+    console.error('  Message:', error?.message);
+    console.error('  Stack:', error?.stack);
     return false;
   }
 }
