@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -18,10 +18,18 @@ const EXPERTISE_OPTIONS = [
   'Technical Standards',
 ];
 
+// 发送限制配置
+const SEND_LIMIT_CONFIG = {
+  maxAttempts: 3, // 每3次后增加等待时间
+  baseCooldown: 5 * 60, // 基础冷却时间：5分钟（第3次后）
+  incrementCooldown: 5 * 60, // 每增加一组增加：5分钟
+};
+
 const AuthorRegister = () => {
   const [step, setStep] = useState(1); // 1: 邮箱验证, 2: 填写信息, 3: 提交成功
   const [loading, setLoading] = useState(false);
-  const [countdown, setCountdown] = useState(0);
+  const [countdown, setCountdown] = useState(0); // 60秒倒计时
+  const [cooldown, setCooldown] = useState(0); // 防恶意攻击冷却时间
   
   // 表单数据
   const [formData, setFormData] = useState({
@@ -33,6 +41,107 @@ const AuthorRegister = () => {
     bio: '',
     expertiseAreas: [] as string[],
   });
+
+  // 从 localStorage 恢复发送记录
+  const [sendRecord, setSendRecord] = useState<{
+    email: string;
+    count: number;
+    firstSendTime: number;
+    lastSendTime: number;
+  } | null>(null);
+
+  // 初始化：从 localStorage 加载发送记录
+  useEffect(() => {
+    const stored = localStorage.getItem('authorRegisterSendRecord');
+    if (stored) {
+      try {
+        const record = JSON.parse(stored);
+        setSendRecord(record);
+        
+        // 计算是否需要冷却
+        const now = Date.now();
+        const attempts = record.count;
+        const groups = Math.floor(attempts / SEND_LIMIT_CONFIG.maxAttempts);
+        
+        if (groups >= 1) {
+          const cooldownSeconds = groups * SEND_LIMIT_CONFIG.baseCooldown;
+          const elapsed = Math.floor((now - record.lastSendTime) / 1000);
+          const remaining = cooldownSeconds - elapsed;
+          
+          if (remaining > 0) {
+            setCooldown(remaining);
+          }
+        }
+      } catch {
+        localStorage.removeItem('authorRegisterSendRecord');
+      }
+    }
+  }, []);
+
+  // 冷却倒计时
+  useEffect(() => {
+    if (cooldown > 0) {
+      const timer = setInterval(() => {
+        setCooldown(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [cooldown]);
+
+  // 60秒倒计时
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setInterval(() => {
+        setCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [countdown]);
+
+  // 更新发送记录
+  const updateSendRecord = (email: string) => {
+    const now = Date.now();
+    const newRecord = {
+      email,
+      count: (sendRecord?.email === email ? sendRecord.count : 0) + 1,
+      firstSendTime: sendRecord?.firstSendTime || now,
+      lastSendTime: now,
+    };
+    setSendRecord(newRecord);
+    localStorage.setItem('authorRegisterSendRecord', JSON.stringify(newRecord));
+    return newRecord.count;
+  };
+
+  // 计算冷却时间
+  const calculateCooldown = (attempts: number): number => {
+    const groups = Math.floor(attempts / SEND_LIMIT_CONFIG.maxAttempts);
+    if (groups >= 1) {
+      return groups * SEND_LIMIT_CONFIG.baseCooldown;
+    }
+    return 0;
+  };
+
+  // 格式化时间显示
+  const formatTime = (seconds: number): string => {
+    if (seconds < 60) {
+      return `${seconds}s`;
+    }
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return secs > 0 ? `${mins}m ${secs}s` : `${mins}m`;
+  };
 
   // 发送验证码
   const sendCode = async () => {
@@ -48,6 +157,12 @@ const AuthorRegister = () => {
       return;
     }
 
+    // 检查冷却时间
+    if (cooldown > 0) {
+      toast.error(`Too many attempts. Please wait ${formatTime(cooldown)}`);
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await fetch('/api/auth/send-code', {
@@ -59,18 +174,24 @@ const AuthorRegister = () => {
       const data = await response.json();
 
       if (data.success) {
+        // 更新发送记录
+        const newCount = updateSendRecord(formData.email);
+        
         toast.success('Verification code sent to your email');
-        // 开始倒计时
+        
+        // 开始60秒倒计时
         setCountdown(60);
-        const timer = setInterval(() => {
-          setCountdown(prev => {
-            if (prev <= 1) {
-              clearInterval(timer);
-              return 0;
-            }
-            return prev - 1;
-          });
-        }, 1000);
+        
+        // 检查是否需要设置冷却时间
+        const cooldownTime = calculateCooldown(newCount);
+        if (cooldownTime > 0) {
+          // 显示警告
+          const remainingAttempts = SEND_LIMIT_CONFIG.maxAttempts - (newCount % SEND_LIMIT_CONFIG.maxAttempts);
+          if (remainingAttempts === SEND_LIMIT_CONFIG.maxAttempts) {
+            // 刚好达到限制
+            toast.warning(`Rate limit reached. After this, you'll need to wait ${formatTime(cooldownTime)} before sending again.`);
+          }
+        }
       } else {
         toast.error(data.error || 'Failed to send code');
       }
@@ -163,6 +284,10 @@ const AuthorRegister = () => {
     }
   };
 
+  // 计算当前发送次数
+  const currentAttempts = sendRecord?.email === formData.email ? sendRecord.count : 0;
+  const remainingBeforeCooldown = SEND_LIMIT_CONFIG.maxAttempts - (currentAttempts % SEND_LIMIT_CONFIG.maxAttempts);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50 py-12 px-4">
       <div className="max-w-xl mx-auto">
@@ -225,16 +350,53 @@ const AuthorRegister = () => {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="your@email.com"
-                    className="flex-1 px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                    disabled={countdown > 0}
+                    className="flex-1 px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent disabled:bg-slate-100 disabled:cursor-not-allowed"
                   />
                   <button
                     onClick={sendCode}
-                    disabled={loading || countdown > 0}
-                    className="px-6 py-3 bg-gradient-to-r from-[#003366] to-[#004080] text-white rounded-xl font-medium hover:shadow-lg transition-all disabled:opacity-50 whitespace-nowrap"
+                    disabled={loading || countdown > 0 || cooldown > 0}
+                    className={`px-6 py-3 rounded-xl font-medium whitespace-nowrap transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                      countdown > 0 
+                        ? 'bg-slate-200 text-slate-500' 
+                        : cooldown > 0
+                        ? 'bg-red-100 text-red-500'
+                        : 'bg-gradient-to-r from-[#003366] to-[#004080] text-white hover:shadow-lg'
+                    }`}
                   >
-                    {countdown > 0 ? `${countdown}s` : 'Send Code'}
+                    {loading ? (
+                      <span className="flex items-center gap-2">
+                        <i className="fa-solid fa-spinner fa-spin"></i>
+                        Sending...
+                      </span>
+                    ) : countdown > 0 ? (
+                      `${countdown}s`
+                    ) : cooldown > 0 ? (
+                      `Wait ${formatTime(cooldown)}`
+                    ) : (
+                      currentAttempts > 0 ? 'Resend Code' : 'Send Code'
+                    )}
                   </button>
                 </div>
+                
+                {/* 显示发送次数提示 */}
+                {currentAttempts > 0 && countdown === 0 && cooldown === 0 && (
+                  <p className="mt-2 text-sm text-amber-600">
+                    <i className="fa-solid fa-info-circle mr-1"></i>
+                    {remainingBeforeCooldown === SEND_LIMIT_CONFIG.maxAttempts 
+                      ? `Attempts: ${currentAttempts}. Next group will require a waiting period.`
+                      : `${remainingBeforeCooldown} attempts remaining before rate limit.`
+                    }
+                  </p>
+                )}
+                
+                {/* 冷却提示 */}
+                {cooldown > 0 && (
+                  <p className="mt-2 text-sm text-red-500">
+                    <i className="fa-solid fa-exclamation-triangle mr-1"></i>
+                    Too many attempts. Please wait {formatTime(cooldown)} before sending again.
+                  </p>
+                )}
               </div>
 
               <div>
@@ -244,7 +406,7 @@ const AuthorRegister = () => {
                 <input
                   type="text"
                   value={formData.verificationCode}
-                  onChange={(e) => setFormData({ ...formData, verificationCode: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, verificationCode: e.target.value.replace(/\D/g, '').slice(0, 6) })}
                   placeholder="Enter 6-digit code"
                   maxLength={6}
                   className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent text-center text-2xl tracking-widest"
@@ -253,17 +415,43 @@ const AuthorRegister = () => {
 
               <button
                 onClick={verifyCode}
-                disabled={loading || !formData.verificationCode}
-                className="w-full py-4 bg-gradient-to-r from-[#D4AF37] to-[#B8960C] text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50"
+                disabled={loading || !formData.verificationCode || formData.verificationCode.length < 6}
+                className="w-full py-4 bg-gradient-to-r from-[#D4AF37] to-[#B8960C] text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Verifying...' : 'Verify Email'}
+                {loading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <i className="fa-solid fa-spinner fa-spin"></i>
+                    Verifying...
+                  </span>
+                ) : (
+                  'Verify Email'
+                )}
               </button>
+              
+              <p className="text-center text-sm text-slate-500">
+                Already have an account?{' '}
+                <Link to="/author/login" className="text-[#D4AF37] font-medium hover:underline">
+                  Login here
+                </Link>
+              </p>
             </div>
           )}
 
           {/* Step 2: 填写信息 */}
           {step === 2 && (
             <div className="space-y-6">
+              <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <i className="fa-solid fa-check text-green-600"></i>
+                  </div>
+                  <div>
+                    <p className="font-medium text-green-800">Email Verified</p>
+                    <p className="text-sm text-green-600">{formData.email}</p>
+                  </div>
+                </div>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Full Name *
@@ -348,9 +536,16 @@ const AuthorRegister = () => {
                 <button
                   onClick={submitApplication}
                   disabled={loading || !formData.name}
-                  className="flex-1 py-4 bg-gradient-to-r from-[#D4AF37] to-[#B8960C] text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50"
+                  className="flex-1 py-4 bg-gradient-to-r from-[#D4AF37] to-[#B8960C] text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? 'Submitting...' : 'Submit Application'}
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <i className="fa-solid fa-spinner fa-spin"></i>
+                      Submitting...
+                    </span>
+                  ) : (
+                    'Submit Application'
+                  )}
                 </button>
               </div>
             </div>
@@ -360,18 +555,16 @@ const AuthorRegister = () => {
           {step === 3 && (
             <div className="text-center py-8">
               <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
+                <i className="fa-solid fa-check text-4xl text-green-600"></i>
               </div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-4">Application Submitted!</h2>
+              <h2 className="text-2xl font-bold text-slate-900 mb-3">Application Submitted!</h2>
               <p className="text-slate-600 mb-6">
-                Thank you for your interest in becoming an author. Our team will review your application within 1-3 business days.
+                Thank you for your interest in becoming an author. Our team will review your application and get back to you within 2-3 business days.
               </p>
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
-                <p className="text-amber-800 text-sm">
-                  <strong>💡 Tip:</strong> To expedite the review process, you can contact our administrator at{' '}
-                  <a href="mailto:kdwelly@163.com" className="underline font-medium">kdwelly@163.com</a>
+                <p className="text-sm text-amber-800">
+                  <i className="fa-solid fa-envelope mr-2"></i>
+                  A confirmation email has been sent to <strong>{formData.email}</strong>
                 </p>
               </div>
               <Link
@@ -385,16 +578,14 @@ const AuthorRegister = () => {
         </div>
 
         {/* 底部链接 */}
-        {step < 3 && (
-          <div className="text-center mt-6">
-            <p className="text-slate-600">
-              Already have an account?{' '}
-              <Link to="/author/login" className="text-[#D4AF37] font-medium hover:underline">
-                Login here
-              </Link>
-            </p>
-          </div>
-        )}
+        <div className="text-center mt-8 text-sm text-slate-500">
+          <p>
+            By registering, you agree to our{' '}
+            <Link to="/terms-of-service" className="text-[#003366] hover:underline">Terms of Service</Link>
+            {' '}and{' '}
+            <Link to="/privacy-policy" className="text-[#003366] hover:underline">Privacy Policy</Link>
+          </p>
+        </div>
       </div>
     </div>
   );
