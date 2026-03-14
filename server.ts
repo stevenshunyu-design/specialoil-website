@@ -1938,7 +1938,10 @@ import {
   sendApplicationConfirmation,
   sendAdminApplicationNotification,
   sendApprovalEmail,
-  sendRejectionEmail
+  sendRejectionEmail,
+  sendSubscriptionConfirmation,
+  sendArticleApprovalEmail,
+  sendArticleRejectionEmail
 } from './src/lib/email';
 
 // 密码哈希工具
@@ -2215,6 +2218,345 @@ app.post('/api/author/apply', async (req: Request, res: Response) => {
     res.status(500).json({ success: false, error: 'Failed to submit application' });
   }
 });
+
+// ==================== 管理后台增强功能 ====================
+
+// 获取仪表盘统计数据
+app.get('/api/admin/dashboard', async (req: Request, res: Response) => {
+  try {
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.json({ success: false, error: 'Database not configured' });
+    }
+
+    // 并行获取所有统计数据
+    const [
+      articlesResult,
+      authorsResult,
+      subscribersResult,
+      visitorsResult,
+      pendingArticlesResult,
+      pendingApplicationsResult
+    ] = await Promise.all([
+      // 文章统计
+      client.from('blog_posts').select('id, view_count, like_count, review_status', { count: 'exact' }),
+      // 作者统计
+      client.from('authors').select('id, status', { count: 'exact' }),
+      // 订阅用户统计
+      client.from('newsletter_subscribers').select('id', { count: 'exact' }),
+      // 访客统计
+      client.from('visitor_tracking').select('id, visit_count', { count: 'exact' }),
+      // 待审核文章
+      client.from('blog_posts').select('id', { count: 'exact' }).eq('review_status', 'pending'),
+      // 待审核作者申请
+      client.from('author_applications').select('id', { count: 'exact' }).eq('status', 'pending')
+    ]);
+
+    // 计算总浏览量和总点赞量
+    const totalViews = articlesResult.data?.reduce((sum: number, article: any) => sum + (article.view_count || 0), 0) || 0;
+    const totalLikes = articlesResult.data?.reduce((sum: number, article: any) => sum + (article.like_count || 0), 0) || 0;
+    const totalVisits = visitorsResult.data?.reduce((sum: number, visitor: any) => sum + (visitor.visit_count || 1), 0) || 0;
+
+    // 文章状态分布
+    const publishedCount = articlesResult.data?.filter((a: any) => a.review_status === 'approved').length || 0;
+    const pendingCount = articlesResult.data?.filter((a: any) => a.review_status === 'pending').length || 0;
+    const draftCount = articlesResult.data?.filter((a: any) => a.review_status === 'draft').length || 0;
+
+    const dashboardData = {
+      articles: {
+        total: articlesResult.count || 0,
+        published: publishedCount,
+        pending: pendingCount,
+        draft: draftCount,
+        totalViews,
+        totalLikes
+      },
+      authors: {
+        total: authorsResult.count || 0,
+        active: authorsResult.data?.filter((a: any) => a.status === 'active').length || 0
+      },
+      subscribers: {
+        total: subscribersResult.count || 0
+      },
+      visitors: {
+        total: visitorsResult.count || 0,
+        totalVisits
+      },
+      pendingItems: {
+        articles: pendingArticlesResult.count || 0,
+        applications: pendingApplicationsResult.count || 0
+      }
+    };
+
+    res.json({ success: true, data: dashboardData });
+  } catch (error) {
+    console.error('Dashboard stats error:', error);
+    res.status(500).json({ success: false, error: 'Failed to fetch dashboard stats' });
+  }
+});
+
+// 获取所有文章（管理员 - 包含审核状态筛选）
+app.get('/api/admin/articles', async (req: Request, res: Response) => {
+  try {
+    const { status, page = 1, limit = 20 } = req.query;
+    const client = getSupabaseClient();
+    
+    if (!client) {
+      return res.json({ success: true, data: [], total: 0 });
+    }
+
+    let query = client
+      .from('blog_posts')
+      .select('*, authors!author_id(name, display_name)', { count: 'exact' })
+      .order('created_at', { ascending: false });
+
+    // 状态筛选
+    if (status && status !== 'all') {
+      query = query.eq('review_status', status);
+    }
+
+    // 分页
+    const offset = (Number(page) - 1) * Number(limit);
+    query = query.range(offset, offset + Number(limit) - 1);
+
+    const { data, error, count } = await query;
+
+    if (error) {
+      console.error('Failed to fetch articles:', error);
+      return res.json({ success: true, data: [], total: 0 });
+    }
+
+    res.json({ success: true, data: data || [], total: count || 0 });
+  } catch (error) {
+    console.error('Get admin articles error:', error);
+    res.status(500).json({ success: false, error: 'Failed to get articles' });
+  }
+});
+
+// 审核文章（管理员）
+app.post('/api/admin/articles/:id/review', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { action, rejectionReason, adminEmail } = req.body;
+    
+    if (!action || !['approve', 'reject'].includes(action)) {
+      return res.status(400).json({ success: false, error: 'Invalid action' });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 获取文章详情
+    const { data: article, error: fetchError } = await client
+      .from('blog_posts')
+      .select('*, authors!author_id(email, display_name, name)')
+      .eq('id', id)
+      .single();
+
+    if (fetchError || !article) {
+      return res.status(404).json({ success: false, error: 'Article not found' });
+    }
+
+    if (article.review_status !== 'pending') {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'This article has already been reviewed' 
+      });
+    }
+
+    const now = new Date().toISOString();
+    const newStatus = action === 'approve' ? 'approved' : 'rejected';
+
+    // 更新文章状态
+    const { error: updateError } = await client
+      .from('blog_posts')
+      .update({
+        review_status: newStatus,
+        reviewed_at: now,
+        reviewed_by: adminEmail || 'admin',
+        rejection_reason: action === 'reject' ? rejectionReason : null,
+        publishedAt: action === 'approve' ? now : article.publishedAt
+      })
+      .eq('id', id);
+
+    if (updateError) {
+      console.error('Failed to update article:', updateError);
+      return res.status(500).json({ success: false, error: 'Failed to review article' });
+    }
+
+    // 更新作者文章统计（如果审核通过）
+    if (action === 'approve' && article.author_id) {
+      await client.rpc('increment_author_articles_count', { author_id: article.author_id });
+    }
+
+    // 发送邮件通知作者
+    const author = article.authors as any;
+    if (author?.email) {
+      if (action === 'approve') {
+        await sendArticleApprovalEmail(
+          author.email,
+          author.display_name || author.name || 'Author',
+          article.title,
+          article.id
+        );
+      } else {
+        await sendArticleRejectionEmail(
+          author.email,
+          author.display_name || author.name || 'Author',
+          article.title,
+          rejectionReason
+        );
+      }
+    }
+
+    res.json({ 
+      success: true, 
+      message: action === 'approve' ? 'Article approved!' : 'Article rejected',
+      status: newStatus
+    });
+  } catch (error) {
+    console.error('Review article error:', error);
+    res.status(500).json({ success: false, error: 'Failed to review article' });
+  }
+});
+
+// ==================== 订阅管理 ====================
+
+// 创建订阅用户表（如果不存在）
+const ensureSubscribersTable = async () => {
+  const client = getSupabaseClient();
+  if (!client) return;
+
+  // 检查表是否存在，如果不存在则创建
+  try {
+    const { error } = await client.from('newsletter_subscribers').select('id').limit(1);
+    if (error && error.code === '42P01') {
+      // 表不存在，需要创建
+      console.log('Creating newsletter_subscribers table...');
+      // 注意：Supabase 通常通过 SQL 创建表，这里我们假设表已存在
+    }
+  } catch (e) {
+    // 忽略错误
+  }
+};
+
+// 获取所有订阅用户
+app.get('/api/admin/subscribers', async (req: Request, res: Response) => {
+  try {
+    const { page = 1, limit = 20, search } = req.query;
+    const client = getSupabaseClient();
+    
+    if (!client) {
+      return res.json({ success: true, data: [], total: 0 });
+    }
+
+    let query = client
+      .from('newsletter_subscribers')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false });
+
+    // 搜索
+    if (search) {
+      query = query.ilike('email', `%${search}%`);
+    }
+
+    // 分页
+    const offset = (Number(page) - 1) * Number(limit);
+    query = query.range(offset, offset + Number(limit) - 1);
+
+    const { data, error, count } = await query;
+
+    if (error) {
+      console.error('Failed to fetch subscribers:', error);
+      return res.json({ success: true, data: [], total: 0 });
+    }
+
+    res.json({ success: true, data: data || [], total: count || 0 });
+  } catch (error) {
+    console.error('Get subscribers error:', error);
+    res.status(500).json({ success: false, error: 'Failed to get subscribers' });
+  }
+});
+
+// 添加订阅用户
+app.post('/api/subscribers', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email is required' });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 检查是否已订阅
+    const { data: existing } = await client
+      .from('newsletter_subscribers')
+      .select('id')
+      .eq('email', email)
+      .single();
+
+    if (existing) {
+      return res.json({ success: true, message: 'Already subscribed' });
+    }
+
+    // 添加订阅
+    const { error: insertError } = await client
+      .from('newsletter_subscribers')
+      .insert({
+        email,
+        status: 'active',
+        created_at: new Date().toISOString()
+      });
+
+    if (insertError) {
+      console.error('Failed to add subscriber:', insertError);
+      return res.status(500).json({ success: false, error: 'Failed to subscribe' });
+    }
+
+    // 发送确认邮件
+    await sendSubscriptionConfirmation(email);
+
+    res.json({ success: true, message: 'Subscribed successfully!' });
+  } catch (error) {
+    console.error('Subscribe error:', error);
+    res.status(500).json({ success: false, error: 'Failed to subscribe' });
+  }
+});
+
+// 删除订阅用户
+app.delete('/api/admin/subscribers/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const client = getSupabaseClient();
+    
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    const { error } = await client
+      .from('newsletter_subscribers')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('Failed to delete subscriber:', error);
+      return res.status(500).json({ success: false, error: 'Failed to delete subscriber' });
+    }
+
+    res.json({ success: true, message: 'Subscriber removed' });
+  } catch (error) {
+    console.error('Delete subscriber error:', error);
+    res.status(500).json({ success: false, error: 'Failed to delete subscriber' });
+  }
+});
+
+// ==================== 作者申请管理 ====================
 
 // 获取所有作者申请（管理员）
 app.get('/api/admin/applications', async (req: Request, res: Response) => {

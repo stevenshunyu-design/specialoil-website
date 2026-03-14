@@ -674,4 +674,154 @@ export async function sendRejectionEmail(
   }
 }
 
+/**
+ * 发送文章审核通过邮件（给作者）
+ */
+export async function sendArticleApprovalEmail(
+  email: string,
+  authorName: string,
+  articleTitle: string,
+  articleId: string
+): Promise<boolean> {
+  if (!resend) {
+    console.log('Resend not configured, skipping email');
+    return false;
+  }
+
+  const articleUrl = `${SITE_URL}/blog/${articleId}`;
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: `🎉 ${SITE_NAME} - Your Article Has Been Published!`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles}
+        </head>
+        <body>
+          <div class="header">
+            <h1>🏭 ${SITE_NAME}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>🎉 Congratulations, ${authorName}!</h2>
+            <p>Your article has been <strong style="color: #28a745;">approved and published</strong>!</p>
+            
+            <div style="background: #e8f5e9; border-left: 4px solid #28a745; padding: 20px; margin: 20px 0; border-radius: 4px;">
+              <h3 style="margin-top: 0; color: #28a745;">Article Details</h3>
+              <p style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">${articleTitle}</p>
+              <a href="${articleUrl}" class="button" style="display: inline-block; background: #D4AF37; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">View Article</a>
+            </div>
+            
+            <p>Your article is now live and visible to all visitors. Share it with your network!</p>
+            
+            <h4>What happens next:</h4>
+            <ul>
+              <li>📈 Track your article's views and engagement</li>
+              <li>💬 Respond to reader comments</li>
+              <li>✍️ Continue writing more great content</li>
+            </ul>
+            
+            <p style="margin-top: 30px;">Thank you for contributing to ${SITE_NAME}!</p>
+            <p>Best regards,<br><strong>The ${SITE_NAME} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL}/author/dashboard">Author Dashboard</a> | <a href="${SITE_URL}">Visit Website</a></p>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error('Failed to send article approval email:', error);
+      return false;
+    }
+
+    console.log('Article approval email sent:', data?.id);
+    return true;
+  } catch (error) {
+    console.error('Error sending article approval email:', error);
+    return false;
+  }
+}
+
+/**
+ * 发送文章审核拒绝邮件（给作者）
+ */
+export async function sendArticleRejectionEmail(
+  email: string,
+  authorName: string,
+  articleTitle: string,
+  reason?: string
+): Promise<boolean> {
+  if (!resend) {
+    console.log('Resend not configured, skipping email');
+    return false;
+  }
+
+  const dashboardUrl = `${SITE_URL}/author/dashboard`;
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: `${SITE_NAME} - Article Review Update`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles}
+        </head>
+        <body>
+          <div class="header">
+            <h1>🏭 ${SITE_NAME}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>Article Review Update</h2>
+            <p>Dear <strong>${authorName}</strong>,</p>
+            <p>Thank you for submitting your article to <strong>${SITE_NAME}</strong>.</p>
+            <p>After review, your article "<strong>${articleTitle}</strong>" requires some revisions before it can be published.</p>
+            
+            ${reason ? `
+            <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+              <p style="margin: 0; color: #856404;"><strong>Reviewer Feedback:</strong></p>
+              <p style="margin: 10px 0 0; color: #856404;">${reason}</p>
+            </div>
+            ` : ''}
+            
+            <p>Please review the feedback above and make the necessary changes. You can edit and resubmit your article from your dashboard.</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${dashboardUrl}" class="button">Go to Dashboard</a>
+            </div>
+            
+            <p style="margin-top: 30px;">We look forward to seeing your revised article!</p>
+            <p>Best regards,<br><strong>The ${SITE_NAME} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL}">Visit Website</a> | <a href="mailto:kdwelly@163.com">Contact Administrator</a></p>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error('Failed to send article rejection email:', error);
+      return false;
+    }
+
+    console.log('Article rejection email sent:', data?.id);
+    return true;
+  } catch (error) {
+    console.error('Error sending article rejection email:', error);
+    return false;
+  }
+}
+
 export { resend };

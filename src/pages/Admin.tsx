@@ -10,28 +10,27 @@ import ImageLibrary from '../components/ImageLibrary';
 import AnalyticsDashboard from '../components/AnalyticsDashboard';
 import ConfirmDialog from '../components/ui/ConfirmDialog';
 import ApplicationsAdmin from '../components/ApplicationsAdmin';
+import ArticlesAdmin from '../components/ArticlesAdmin';
+import SubscribersAdmin from '../components/SubscribersAdmin';
 
 // 类型定义
-type AdminTab = 'dashboard' | 'articles' | 'analytics' | 'inquiries' | 'subscribers' | 'chat' | 'applications';
+type AdminTab = 'dashboard' | 'articles' | 'article-review' | 'analytics' | 'inquiries' | 'subscribers' | 'chat' | 'applications';
 
 // 统计卡片组件
-const StatCard = ({ icon, label, value, color, trend }: { 
+const StatCard = ({ icon, label, value, color, subLabel }: { 
   icon: string; 
   label: string; 
   value: string | number; 
   color: string;
-  trend?: { value: number; isUp: boolean };
+  subLabel?: string;
 }) => (
   <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
     <div className="flex items-center justify-between">
       <div>
         <p className="text-sm text-gray-500 mb-1">{label}</p>
         <p className="text-2xl font-bold text-gray-900">{value}</p>
-        {trend && (
-          <p className={`text-xs mt-1 ${trend.isUp ? 'text-green-600' : 'text-red-600'}`}>
-            <i className={`fa-solid fa-${trend.isUp ? 'arrow-up' : 'arrow-down'} mr-1`}></i>
-            {trend.value}% vs last month
-          </p>
+        {subLabel && (
+          <p className="text-xs mt-1 text-gray-400">{subLabel}</p>
         )}
       </div>
       <div className={`w-12 h-12 rounded-lg ${color} flex items-center justify-center`}>
@@ -197,73 +196,187 @@ const ArticleList = ({ onEdit }: { onEdit: (id: string) => void }) => {
 };
 
 // 仪表盘组件
+// 仪表盘统计数据接口
+interface DashboardStats {
+  articles: {
+    total: number;
+    published: number;
+    pending: number;
+    draft: number;
+    totalViews: number;
+    totalLikes: number;
+  };
+  authors: {
+    total: number;
+    active: number;
+  };
+  subscribers: {
+    total: number;
+  };
+  visitors: {
+    total: number;
+    totalVisits: number;
+  };
+  pendingItems: {
+    articles: number;
+    applications: number;
+  };
+}
+
+// 仪表盘组件
 const Dashboard = ({ posts, onNavigate }: { posts: BlogPost[]; onNavigate: (tab: AdminTab) => void }) => {
-  const [inquiryCount, setInquiryCount] = useState(0);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    fetch('/api/inquiries')
-      .then(res => res.json())
-      .then(data => setInquiryCount(data.data?.length || 0))
-      .catch(() => {});
+    fetchDashboardStats();
   }, []);
+  
+  const fetchDashboardStats = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/admin/dashboard');
+      const data = await response.json();
+      if (data.success) {
+        setStats(data.data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch dashboard stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="w-12 h-12 border-4 border-[#003366] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
   
   return (
     <div className="space-y-6">
+      {/* 待办提醒 */}
+      {stats?.pendingItems && (stats.pendingItems.articles > 0 || stats.pendingItems.applications > 0) && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <i className="fa-solid fa-bell text-yellow-600 text-lg mt-0.5"></i>
+            <div>
+              <h4 className="font-medium text-yellow-800">待处理事项</h4>
+              <div className="mt-2 space-y-1 text-sm text-yellow-700">
+                {stats.pendingItems.articles > 0 && (
+                  <button 
+                    onClick={() => onNavigate('article-review')}
+                    className="flex items-center gap-2 hover:text-yellow-900"
+                  >
+                    <i className="fa-solid fa-file-lines"></i>
+                    {stats.pendingItems.articles} 篇文章待审核
+                  </button>
+                )}
+                {stats.pendingItems.applications > 0 && (
+                  <button 
+                    onClick={() => onNavigate('applications')}
+                    className="flex items-center gap-2 hover:text-yellow-900"
+                  >
+                    <i className="fa-solid fa-user-plus"></i>
+                    {stats.pendingItems.applications} 个作者申请待审核
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* 统计卡片 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard 
           icon="fa-file-lines" 
           label="文章总数" 
-          value={posts.length}
+          value={stats?.articles.total || 0}
           color="bg-blue-500"
-        />
-        <StatCard 
-          icon="fa-envelope" 
-          label="客户询价" 
-          value={inquiryCount}
-          color="bg-green-500"
+          subLabel={`${stats?.articles.published || 0} 已发布`}
         />
         <StatCard 
           icon="fa-users" 
           label="订阅用户" 
-          value={0}
+          value={stats?.subscribers.total || 0}
+          color="bg-green-500"
+        />
+        <StatCard 
+          icon="fa-user-pen" 
+          label="注册作者" 
+          value={stats?.authors.total || 0}
           color="bg-purple-500"
+          subLabel={`${stats?.authors.active || 0} 活跃`}
         />
         <StatCard 
           icon="fa-eye" 
-          label="本月浏览" 
-          value="1,234"
+          label="总访问量" 
+          value={(stats?.visitors.totalVisits || 0).toLocaleString()}
           color="bg-orange-500"
-          trend={{ value: 12, isUp: true }}
+          subLabel={`${stats?.visitors.total || 0} 访客`}
         />
       </div>
-
-      {/* 最近文章 */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">最近文章</h3>
-          <button 
-            onClick={() => onNavigate('articles')} 
-            className="text-[#D4AF37] hover:underline text-sm font-medium cursor-pointer"
-          >
-            查看全部
-          </button>
-        </div>
-        <div className="space-y-4">
-          {posts.slice(0, 5).map(post => (
-            <div key={post.id} className="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-              {post.featuredImage && (
-                <img src={post.featuredImage} alt="" className="w-12 h-12 object-cover rounded-lg" />
-              )}
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-gray-900 truncate">{post.title}</p>
-                <p className="text-sm text-gray-500">{post.category}</p>
-              </div>
-              <span className="text-xs text-gray-400">
-                {new Date(post.publishedAt).toLocaleDateString('zh-CN')}
-              </span>
+      
+      {/* 文章统计 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">文章状态分布</h3>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="text-center p-4 bg-green-50 rounded-lg">
+              <p className="text-2xl font-bold text-green-600">{stats?.articles.published || 0}</p>
+              <p className="text-sm text-gray-500">已发布</p>
             </div>
-          ))}
+            <div className="text-center p-4 bg-yellow-50 rounded-lg">
+              <p className="text-2xl font-bold text-yellow-600">{stats?.articles.pending || 0}</p>
+              <p className="text-sm text-gray-500">待审核</p>
+            </div>
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <p className="text-2xl font-bold text-gray-600">{stats?.articles.draft || 0}</p>
+              <p className="text-sm text-gray-500">草稿</p>
+            </div>
+          </div>
+          <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 gap-4">
+            <div className="flex items-center gap-2 text-gray-600">
+              <i className="fa-solid fa-eye text-blue-500"></i>
+              <span>{(stats?.articles.totalViews || 0).toLocaleString()} 总浏览</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-600">
+              <i className="fa-solid fa-heart text-red-500"></i>
+              <span>{(stats?.articles.totalLikes || 0).toLocaleString()} 总点赞</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 最近文章 */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">最近文章</h3>
+            <button 
+              onClick={() => onNavigate('articles')} 
+              className="text-[#D4AF37] hover:underline text-sm font-medium cursor-pointer"
+            >
+              查看全部
+            </button>
+          </div>
+          <div className="space-y-4">
+            {posts.slice(0, 5).map(post => (
+              <div key={post.id} className="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                {post.featuredImage && (
+                  <img src={post.featuredImage} alt="" className="w-12 h-12 object-cover rounded-lg" />
+                )}
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-gray-900 truncate">{post.title}</p>
+                  <p className="text-sm text-gray-500">{post.category}</p>
+                </div>
+                <span className="text-xs text-gray-400">
+                  {new Date(post.publishedAt).toLocaleDateString('zh-CN')}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -294,6 +407,7 @@ const Admin = () => {
     { id: 'dashboard' as AdminTab, icon: 'fa-chart-pie', label: '仪表盘' },
     { id: 'analytics' as AdminTab, icon: 'fa-chart-line', label: '访问统计' },
     { id: 'articles' as AdminTab, icon: 'fa-file-lines', label: '文章管理' },
+    { id: 'article-review' as AdminTab, icon: 'fa-clipboard-check', label: '文章审核' },
     { id: 'inquiries' as AdminTab, icon: 'fa-envelope', label: '客户询价' },
     { id: 'applications' as AdminTab, icon: 'fa-user-plus', label: '作者申请' },
     { id: 'subscribers' as AdminTab, icon: 'fa-users', label: '订阅管理' },
@@ -413,22 +527,17 @@ const Admin = () => {
             </div>
           )}
           
+          {activeTab === 'article-review' && (
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">文章审核</h2>
+              <ArticlesAdmin />
+            </div>
+          )}
+          
           {activeTab === 'subscribers' && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <div className="text-center py-12">
-                <i className="fa-solid fa-users text-5xl text-[#D4AF37] mb-6"></i>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">订阅管理</h2>
-                <p className="text-gray-500 mb-8 max-w-md mx-auto">
-                  管理邮件订阅用户，查看订阅统计，发送新闻通讯。
-                </p>
-                <Link
-                  to="/admin/subscribers"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#D4AF37] text-white rounded-lg font-medium hover:bg-[#C9A227] transition-colors"
-                >
-                  <i className="fa-solid fa-arrow-right"></i>
-                  进入订阅管理
-                </Link>
-              </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">订阅管理</h2>
+              <SubscribersAdmin />
             </div>
           )}
           

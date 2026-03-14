@@ -9,7 +9,8 @@ interface ConfirmDialogProps {
   message: string;
   confirmText?: string;
   cancelText?: string;
-  variant?: 'danger' | 'warning' | 'info';
+  variant?: 'danger' | 'warning' | 'info' | 'success';
+  loading?: boolean;
 }
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
@@ -21,6 +22,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   confirmText = 'Confirm',
   cancelText = 'Cancel',
   variant = 'danger',
+  loading = false,
 }) => {
   if (!isOpen) return null;
 
@@ -55,6 +57,16 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       iconColor: 'text-blue-600 dark:text-blue-400',
       confirmBg: 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600',
     },
+    success: {
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+      ),
+      iconBg: 'bg-green-100 dark:bg-green-900/30',
+      iconColor: 'text-green-600 dark:text-green-400',
+      confirmBg: 'bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600',
+    },
   };
 
   const styles = variantStyles[variant];
@@ -64,7 +76,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-dialog-fade-in"
-        onClick={onClose}
+        onClick={loading ? undefined : onClose}
       />
       
       {/* Dialog */}
@@ -89,25 +101,35 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           <div className="flex gap-3">
             <button
               onClick={onClose}
+              disabled={loading}
               className="flex-1 px-4 py-2.5 rounded-xl font-medium
                 bg-slate-100 dark:bg-slate-800 
                 text-slate-700 dark:text-slate-300
                 hover:bg-slate-200 dark:hover:bg-slate-700
-                transition-all duration-200"
+                transition-all duration-200
+                disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {cancelText}
             </button>
             <button
               onClick={() => {
                 onConfirm();
-                onClose();
               }}
+              disabled={loading}
               className={`flex-1 px-4 py-2.5 rounded-xl font-medium text-white
                 ${styles.confirmBg}
                 transition-all duration-200
-                transform hover:scale-[1.02] active:scale-[0.98]`}
+                transform hover:scale-[1.02] active:scale-[0.98]
+                disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
+                flex items-center justify-center gap-2`}
             >
-              {confirmText}
+              {loading && (
+                <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              )}
+              {loading ? 'Processing...' : confirmText}
             </button>
           </div>
         </div>
