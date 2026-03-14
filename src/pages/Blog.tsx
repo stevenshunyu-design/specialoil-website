@@ -145,140 +145,78 @@ const Blog = () => {
     <div className="min-h-screen bg-white pt-24 pb-16">
       <div className="container mx-auto px-4">
         {/* Hero Section */}
-        <section className="mb-16">
-          <div className="relative h-96 overflow-hidden rounded-sm">
-            <div className="absolute inset-0 bg-black/40 z-10"></div>
+        <section className="mb-12">
+          <div className="relative h-80 md:h-96 overflow-hidden rounded-lg">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#003366]/80 to-[#003366]/40 z-10"></div>
             <img 
               src="https://space.coze.cn/api/coze_space/gen_image?image_size=landscape_16_9&prompt=China%20special%20oil%20industry%20news%2C%20industrial%20cinematic%20style&sign=5f2862a71a389200cb51a21eb3534804" 
               alt={t('blog.hero.alt')} 
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 z-20 flex items-center justify-center">
-                <h1 className="text-4xl md:text-5xl font-bold text-white font-['Montserrat'] tracking-tight text-center px-4 text-shadow-sm">
-                  {t('blog.hero.title')}
-                </h1>
-              </div>
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4">
+              <h1 className="text-3xl md:text-5xl font-bold text-white font-['Montserrat'] tracking-tight mb-4">
+                {t('blog.hero.title')}
+              </h1>
+              <p className="text-white/80 text-lg max-w-2xl">
+                {t('blog.hero.subtitle', 'Insights, trends, and expertise from industry professionals')}
+              </p>
+            </div>
           </div>
         </section>
         
-        {/* 作者入口栏 */}
+        {/* Search & Filter Bar */}
         <section className="mb-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-r from-[#F4F6F9] to-white p-6 rounded-sm border border-gray-100">
-            <div className="flex items-center gap-3">
-              <i className="fa-solid fa-pen-nib text-2xl text-[#D4AF37]"></i>
-              <div>
-                <h3 className="font-bold text-[#003366] font-['Montserrat']">
-                  {isLoggedIn && authorInfo ? t('blog.author.welcome', { name: authorInfo.display_name }) : t('blog.author.title')}
-                </h3>
-                <p className="text-sm text-gray-500">
-                  {isLoggedIn && authorInfo ? t('blog.author.subtitle.loggedIn') : t('blog.author.subtitle.guest')}
-                </p>
-              </div>
+          <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center">
+            {/* Search */}
+            <div className="relative flex-1">
+              <input
+                type="text"
+                placeholder={t('blog.searchPlaceholder')}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-5 py-3 pl-12 bg-[#F4F6F9] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-all"
+              />
+              <i className="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
             </div>
             
-            <div className="flex items-center gap-3">
-              {isLoggedIn && authorInfo ? (
-                <>
-                  <Link
-                    to="/author/dashboard"
-                    className="flex items-center gap-2 px-4 py-2 bg-[#003366] text-white rounded-sm font-semibold hover:bg-opacity-90 transition-all"
-                  >
-                    <i className="fa-solid fa-pen-to-square"></i>
-                    <span>{t('blog.author.writeArticle')}</span>
-                  </Link>
-                  <Link
-                    to="/author/dashboard"
-                    className="flex items-center gap-2 px-4 py-2 bg-white text-[#003366] border border-[#003366] rounded-sm font-semibold hover:bg-[#F4F6F9] transition-all"
-                  >
-                    <i className="fa-solid fa-user"></i>
-                    <span>{t('blog.author.myDashboard')}</span>
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="px-4 py-2 text-gray-500 hover:text-red-500 font-semibold transition-all"
-                  >
-                    <i className="fa-solid fa-sign-out-alt"></i>
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to="/author/register"
-                    className="flex items-center gap-2 px-4 py-2 bg-[#D4AF37] text-white rounded-sm font-semibold hover:bg-opacity-90 transition-all"
-                  >
-                    <i className="fa-solid fa-user-plus"></i>
-                    <span>{t('blog.author.becomeAuthor')}</span>
-                  </Link>
-                  <Link
-                    to="/author/login"
-                    className="flex items-center gap-2 px-4 py-2 bg-white text-[#003366] border border-[#003366] rounded-sm font-semibold hover:bg-[#F4F6F9] transition-all"
-                  >
-                    <i className="fa-solid fa-sign-in-alt"></i>
-                    <span>{t('blog.author.login')}</span>
-                  </Link>
-                </>
-              )}
+            {/* Categories */}
+            <div className="flex flex-wrap gap-2">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    activeCategory === category
+                      ? 'bg-[#D4AF37] text-white shadow-md'
+                      : 'bg-[#F4F6F9] text-[#333333] hover:bg-gray-200'
+                  }`}
+                >
+                  {categoryLabels[category]}
+                </button>
+              ))}
             </div>
           </div>
         </section>
         
-        {/* Search Bar */}
-        <div className="mb-12">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder={t('blog.searchPlaceholder')}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-6 py-4 bg-[#F4F6F9] border border-gray-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
-            />
-            <button className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#D4AF37]">
-              <i className="fa-solid fa-search text-xl"></i>
-            </button>
-          </div>
-        </div>
-        
-        {/* Categories */}
-        <div className="mb-12 overflow-x-auto">
-          <div className="flex space-x-4 min-w-max">
-            {categories.map(category => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-6 py-3 rounded-sm font-semibold transition-all whitespace-nowrap ${
-                  activeCategory === category
-                    ? 'bg-[#D4AF37] text-white'
-                    : 'bg-[#F4F6F9] text-[#333333] hover:bg-gray-200'
-                }`}
-              >
-                {categoryLabels[category]}
-              </button>
-            ))}
-          </div>
-        </div>
-        
-        {/* Blog Posts */}
+        {/* Blog Posts Grid */}
         <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-[#003366] font-['Montserrat']">
-              {t('blog.latestArticles')}
-            </h2>
-          
           {filteredByCategory.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredByCategory.map((post) => (
                 <BlogCard key={post.id} post={post} />
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 bg-[#F4F6F9] rounded-sm">
-              <i className="fa-solid fa-search text-4xl text-gray-400 mb-4"></i>
-              <p className="text-xl text-[#333333]">{t('blog.noArticles')}</p>
+            <div className="text-center py-16 bg-[#F4F6F9] rounded-lg">
+              <i className="fa-solid fa-search text-5xl text-gray-300 mb-4"></i>
+              <p className="text-xl text-[#333333] mb-2">{t('blog.noArticles')}</p>
+              <p className="text-gray-500 mb-6">Try adjusting your search or filter criteria</p>
               <button 
                 onClick={() => {
                   setSearchQuery('');
                   setActiveCategory('All');
                 }}
-                className="mt-4 inline-block bg-[#003366] text-white px-6 py-2 rounded-sm font-semibold hover:bg-opacity-90 transition-all"
+                className="inline-block bg-[#003366] text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all"
               >
                 {t('blog.viewAll')}
               </button>
@@ -286,97 +224,235 @@ const Blog = () => {
           )}
         </section>
         
-        {/* Industry Insights Highlight */}
-        <section className="mb-16 bg-[#F4F6F9] p-8 rounded-sm">
-          <h2 className="text-3xl font-bold mb-8 text-center text-[#003366] font-['Montserrat']">
+        {/* Industry Insights - Compact Cards */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-6 text-[#003366] font-['Montserrat']">
             {t('blog.insights.title')}
           </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-sm shadow-sm">
-              <div className="text-[#D4AF37] text-3xl mb-4">
-                <i className="fa-solid fa-chart-line"></i>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="group bg-gradient-to-br from-[#003366] to-[#004080] p-6 rounded-lg text-white hover:shadow-xl transition-all cursor-pointer">
+              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <i className="fa-solid fa-chart-line text-xl"></i>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-[#003366] font-['Montserrat']">
-                {t('blog.insights.trends.title')}
-              </h3>
-              <p className="text-[#333333] mb-4">
-                {t('blog.insights.trends.description')}
-              </p>
-              <Link 
-                to="#"
-                className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors"
-              >
+              <h3 className="text-lg font-bold mb-2">{t('blog.insights.trends.title')}</h3>
+              <p className="text-white/70 text-sm mb-3">{t('blog.insights.trends.description')}</p>
+              <span className="text-[#D4AF37] text-sm font-medium">
                 {t('blog.insights.trends.link')} <i className="fa-solid fa-arrow-right ml-1"></i>
-              </Link>
+              </span>
             </div>
             
-            <div className="bg-white p-6 rounded-sm shadow-sm">
-              <div className="text-[#D4AF37] text-3xl mb-4">
-                <i className="fa-solid fa-lightbulb"></i>
+            <div className="group bg-gradient-to-br from-[#D4AF37] to-[#B8960C] p-6 rounded-lg text-white hover:shadow-xl transition-all cursor-pointer">
+              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <i className="fa-solid fa-lightbulb text-xl"></i>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-[#003366] font-['Montserrat']">
-                {t('blog.insights.guides.title')}
-              </h3>
-              <p className="text-[#333333] mb-4">
-                {t('blog.insights.guides.description')}
-              </p>
-              <Link 
-                to="#"
-                className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors"
-              >
+              <h3 className="text-lg font-bold mb-2">{t('blog.insights.guides.title')}</h3>
+              <p className="text-white/70 text-sm mb-3">{t('blog.insights.guides.description')}</p>
+              <span className="text-white text-sm font-medium">
                 {t('blog.insights.guides.link')} <i className="fa-solid fa-arrow-right ml-1"></i>
-              </Link>
+              </span>
             </div>
             
-            <div className="bg-white p-6 rounded-sm shadow-sm">
-              <div className="text-[#D4AF37] text-3xl mb-4">
-                <i className="fa-solid fa-certificate"></i>
+            <div className="group bg-gradient-to-br from-[#1a365d] to-[#2d4a7c] p-6 rounded-lg text-white hover:shadow-xl transition-all cursor-pointer">
+              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <i className="fa-solid fa-certificate text-xl"></i>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-[#003366] font-['Montserrat']">
-                {t('blog.insights.regulatory.title')}
-              </h3>
-              <p className="text-[#333333] mb-4">
-                {t('blog.insights.regulatory.description')}
-              </p>
-              <Link 
-                to="#"
-                className="text-[#003366] font-semibold hover:text-[#D4AF37] transition-colors"
-              >
+              <h3 className="text-lg font-bold mb-2">{t('blog.insights.regulatory.title')}</h3>
+              <p className="text-white/70 text-sm mb-3">{t('blog.insights.regulatory.description')}</p>
+              <span className="text-[#D4AF37] text-sm font-medium">
                 {t('blog.insights.regulatory.link')} <i className="fa-solid fa-arrow-right ml-1"></i>
-              </Link>
+              </span>
             </div>
           </div>
         </section>
         
-        {/* CTA Section */}
-        <section className="bg-[var(--primary-900)] text-white p-8 rounded-sm">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="mb-6 md:mb-0">
-               <h2 className="font-display text-2xl md:text-3xl font-semibold mb-2 text-white">
-                  {t('blog.subscribe.title')}
-                </h2>
-                <p className="font-body text-white/80">
+        {/* Newsletter Subscription */}
+        <section className="mb-16 bg-gradient-to-r from-[#003366] to-[#004080] rounded-lg overflow-hidden">
+          <div className="p-8 md:p-10">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
+                  <i className="fa-solid fa-envelope text-[#D4AF37] text-2xl"></i>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white font-['Montserrat']">
+                    {t('blog.subscribe.title')}
+                  </h2>
+                </div>
+                <p className="text-white/70">
                   {t('blog.subscribe.description')}
                 </p>
-            </div>
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="email"
-                placeholder={t('blog.subscribe.placeholder')}
-                value={subscriberEmail}
-                onChange={(e) => setSubscriberEmail(e.target.value)}
-                className="px-4 py-3 bg-white/10 text-white placeholder-white/60 border border-white/20 rounded-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent-600)] w-full sm:w-64"
-                disabled={isSubscribing}
-              />
+              </div>
+              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <input
+                  type="email"
+                  placeholder={t('blog.subscribe.placeholder')}
+                  value={subscriberEmail}
+                  onChange={(e) => setSubscriberEmail(e.target.value)}
+                  className="px-5 py-3 bg-white/10 text-white placeholder-white/50 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent w-full sm:w-72"
+                  disabled={isSubscribing}
+                />
                 <button 
                   type="submit"
                   disabled={isSubscribing}
-                  className="inline-block bg-[var(--accent-600)] text-white px-6 py-3 rounded-sm font-medium hover:bg-[var(--accent-700)] transition-all duration-300 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-3 bg-[#D4AF37] text-white rounded-lg font-semibold hover:bg-[#C9A227] transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  {isSubscribing ? t('blog.subscribe.subscribing') : t('blog.subscribe.button')}
+                  {isSubscribing ? (
+                    <>
+                      <i className="fa-solid fa-spinner fa-spin"></i>
+                      {t('blog.subscribe.subscribing')}
+                    </>
+                  ) : (
+                    <>
+                      <i className="fa-solid fa-paper-plane"></i>
+                      {t('blog.subscribe.button')}
+                    </>
+                  )}
                 </button>
-            </form>
+              </form>
+            </div>
+          </div>
+        </section>
+        
+        {/* Author Portal Section */}
+        <section className="mb-16">
+          <div className="bg-gradient-to-br from-[#F4F6F9] via-white to-[#F4F6F9] rounded-lg border border-gray-200 overflow-hidden">
+            {isLoggedIn && authorInfo ? (
+              /* 已登录状态 - 紧凑型欢迎卡片 */
+              <div className="p-6 md:p-8">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#D4AF37] to-[#B8960C] rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                      {authorInfo.display_name?.charAt(0)?.toUpperCase() || 'A'}
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">{t('blog.author.welcome', { name: '' }).replace(',', '')}</p>
+                      <h3 className="text-xl font-bold text-[#003366]">{authorInfo.display_name}</h3>
+                      <p className="text-sm text-gray-500">{t('blog.author.subtitle.loggedIn')}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <Link
+                      to="/author/write"
+                      className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#D4AF37] to-[#B8960C] text-white rounded-lg font-semibold hover:shadow-lg transition-all"
+                    >
+                      <i className="fa-solid fa-pen-to-square"></i>
+                      <span>{t('blog.author.writeArticle')}</span>
+                    </Link>
+                    <Link
+                      to="/author/dashboard"
+                      className="flex items-center gap-2 px-5 py-2.5 bg-white text-[#003366] border-2 border-[#003366] rounded-lg font-semibold hover:bg-[#003366] hover:text-white transition-all"
+                    >
+                      <i className="fa-solid fa-chart-pie"></i>
+                      <span>{t('blog.author.myDashboard')}</span>
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="px-4 py-2.5 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-lg font-medium transition-all"
+                    >
+                      <i className="fa-solid fa-sign-out-alt mr-2"></i>
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* 未登录状态 - 吸引作者加入 */
+              <div className="p-8 md:p-12">
+                <div className="flex flex-col lg:flex-row items-center gap-8">
+                  {/* 左侧：内容 */}
+                  <div className="flex-1 text-center lg:text-left">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#D4AF37]/10 text-[#D4AF37] rounded-full text-sm font-medium mb-4">
+                      <i className="fa-solid fa-star"></i>
+                      <span>Join Our Expert Community</span>
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-bold text-[#003366] mb-3 font-['Montserrat']">
+                      {t('blog.author.title')}
+                    </h3>
+                    <p className="text-gray-600 text-lg mb-6 max-w-lg">
+                      {t('blog.author.subtitle.guest')}
+                    </p>
+                    
+                    {/* 作者权益 */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                      <div className="flex items-center gap-3 bg-white p-4 rounded-lg">
+                        <div className="w-10 h-10 bg-[#003366]/10 rounded-lg flex items-center justify-center">
+                          <i className="fa-solid fa-pen-nib text-[#003366]"></i>
+                        </div>
+                        <div className="text-left">
+                          <p className="font-semibold text-[#003366]">Share Insights</p>
+                          <p className="text-xs text-gray-500">Publish articles</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 bg-white p-4 rounded-lg">
+                        <div className="w-10 h-10 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center">
+                          <i className="fa-solid fa-users text-[#D4AF37]"></i>
+                        </div>
+                        <div className="text-left">
+                          <p className="font-semibold text-[#003366]">Build Audience</p>
+                          <p className="text-xs text-gray-500">Grow followers</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 bg-white p-4 rounded-lg">
+                        <div className="w-10 h-10 bg-[#003366]/10 rounded-lg flex items-center justify-center">
+                          <i className="fa-solid fa-award text-[#003366]"></i>
+                        </div>
+                        <div className="text-left">
+                          <p className="font-semibold text-[#003366]">Get Recognized</p>
+                          <p className="text-xs text-gray-500">Author profile</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* 按钮组 */}
+                    <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                      <Link
+                        to="/author/register"
+                        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#D4AF37] to-[#B8960C] text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all"
+                      >
+                        <i className="fa-solid fa-user-plus"></i>
+                        <span>{t('blog.author.becomeAuthor')}</span>
+                      </Link>
+                      <Link
+                        to="/author/login"
+                        className="flex items-center gap-2 px-6 py-3 bg-white text-[#003366] border-2 border-[#003366] rounded-lg font-semibold hover:bg-[#003366] hover:text-white transition-all"
+                      >
+                        <i className="fa-solid fa-sign-in-alt"></i>
+                        <span>{t('blog.author.login')}</span>
+                      </Link>
+                    </div>
+                  </div>
+                  
+                  {/* 右侧：装饰图 */}
+                  <div className="hidden lg:block w-80 flex-shrink-0">
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/20 to-[#003366]/20 rounded-2xl transform rotate-6"></div>
+                      <div className="relative bg-white p-6 rounded-2xl shadow-xl">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 bg-gradient-to-br from-[#D4AF37] to-[#B8960C] rounded-full flex items-center justify-center text-white font-bold">
+                            JD
+                          </div>
+                          <div>
+                            <p className="font-bold text-[#003366]">John Doe</p>
+                            <p className="text-xs text-gray-500">Senior Engineer</p>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="h-3 bg-gray-100 rounded w-full"></div>
+                          <div className="h-3 bg-gray-100 rounded w-4/5"></div>
+                          <div className="h-3 bg-gray-100 rounded w-3/5"></div>
+                        </div>
+                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                          <div className="flex items-center gap-4 text-sm text-gray-500">
+                            <span><i className="fa-solid fa-eye mr-1"></i> 1.2k</span>
+                            <span><i className="fa-solid fa-heart mr-1"></i> 89</span>
+                          </div>
+                          <span className="text-xs text-[#D4AF37] font-medium">Published</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </div>
@@ -394,12 +470,17 @@ const Blog = () => {
       />
       
       {/* Mobile Sticky Footer */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg flex">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg flex border-t border-gray-200">
         <a href="tel:+8613793280176" className="flex-1 py-4 bg-[#003366] text-white flex items-center justify-center">
           <i className="fa-solid fa-phone mr-2"></i>
           <span>{t('blog.mobile.contact')}</span>
         </a>
-        <a href="https://wa.me/8613800138000" className="flex-1 py-4 bg-[#D4AF37] text-white flex items-center justify-center">
+        <a 
+          href="https://wa.me/8613793280176" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="flex-1 py-4 bg-[#25D366] text-white flex items-center justify-center"
+        >
           <i className="fa-brands fa-whatsapp mr-2"></i>
           <span>{t('blog.mobile.whatsapp')}</span>
         </a>

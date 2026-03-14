@@ -1207,7 +1207,8 @@
   "blog": {
     "hero": {
       "title": "China Special Oil Industry News & Insights",
-      "alt": "China Special Oil Industry News"
+      "alt": "China Special Oil Industry News",
+      "subtitle": "Insights, trends, and expertise from industry professionals"
     },
     "loading": "Loading articles...",
     "searchPlaceholder": "Search for articles...",
