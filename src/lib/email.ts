@@ -285,4 +285,382 @@ function generateNewsletterHTML(
   `;
 }
 
+// ==================== 作者系统邮件模板 ====================
+
+/**
+ * 发送邮箱验证码
+ */
+export async function sendVerificationCode(
+  email: string, 
+  code: string, 
+  type: 'register' | 'reset_password' = 'register'
+): Promise<boolean> {
+  if (!resend) {
+    console.log('Resend not configured, skipping email');
+    return false;
+  }
+
+  const typeText = type === 'register' ? 'Email Verification' : 'Password Reset';
+  const purposeText = type === 'register' 
+    ? 'Please use the following code to verify your email address for author registration.'
+    : 'Please use the following code to reset your password.';
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: `${SITE_NAME} - ${typeText} Code`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles}
+        </head>
+        <body>
+          <div class="header">
+            <h1>🏭 ${SITE_NAME}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>${typeText}</h2>
+            <p>${purposeText}</p>
+            <div style="background: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
+              <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #003366;">${code}</span>
+            </div>
+            <p style="color: #666; font-size: 14px;">This code will expire in <strong>10 minutes</strong>.</p>
+            <p style="color: #999; font-size: 12px;">If you didn't request this code, please ignore this email.</p>
+            <p style="margin-top: 30px;">Best regards,<br><strong>The ${SITE_NAME} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL}">Visit Website</a></p>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error('Failed to send verification code:', error);
+      return false;
+    }
+
+    console.log('Verification code sent:', data?.id);
+    return true;
+  } catch (error) {
+    console.error('Error sending verification code:', error);
+    return false;
+  }
+}
+
+/**
+ * 发送作者申请提交确认邮件（给用户）
+ */
+export async function sendApplicationConfirmation(
+  email: string,
+  name: string
+): Promise<boolean> {
+  if (!resend) {
+    console.log('Resend not configured, skipping email');
+    return false;
+  }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: `${SITE_NAME} - Author Application Submitted`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles}
+        </head>
+        <body>
+          <div class="header">
+            <h1>🏭 ${SITE_NAME}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>Application Received!</h2>
+            <p>Dear <strong>${name}</strong>,</p>
+            <p>Thank you for applying to become an author on <strong>${SITE_NAME}</strong>.</p>
+            <p>Your application has been submitted successfully and is now <strong>pending review</strong> by our team.</p>
+            <div style="background: #fff3cd; border-left: 4px solid #D4AF37; padding: 15px; margin: 20px 0; border-radius: 4px;">
+              <p style="margin: 0; color: #856404;"><strong>⏳ What's Next?</strong></p>
+              <ul style="margin: 10px 0 0; padding-left: 20px; color: #856404;">
+                <li>Our team will review your application within 1-3 business days</li>
+                <li>You will receive an email notification once approved</li>
+                <li>To expedite the review process, you may contact our administrator</li>
+              </ul>
+            </div>
+            <p style="margin-top: 30px;">Best regards,<br><strong>The ${SITE_NAME} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL}">Visit Website</a> | <a href="mailto:kdwelly@163.com">Contact Administrator</a></p>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error('Failed to send application confirmation:', error);
+      return false;
+    }
+
+    console.log('Application confirmation sent:', data?.id);
+    return true;
+  } catch (error) {
+    console.error('Error sending application confirmation:', error);
+    return false;
+  }
+}
+
+/**
+ * 发送新申请通知邮件（给管理员）
+ */
+export async function sendAdminApplicationNotification(
+  applicantName: string,
+  applicantEmail: string,
+  company: string,
+  expertiseAreas: string[],
+  bio: string
+): Promise<boolean> {
+  if (!resend) {
+    console.log('Resend not configured, skipping email');
+    return false;
+  }
+
+  const adminEmail = process.env.ADMIN_EMAIL || 'kdwelly@163.com';
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: adminEmail,
+      subject: `🔔 New Author Application - ${applicantName}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles}
+        </head>
+        <body>
+          <div class="header">
+            <h1>🏭 ${SITE_NAME}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">New Author Application</p>
+          </div>
+          <div class="content">
+            <h2>New Author Application Received</h2>
+            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="margin-top: 0;">Applicant Information</h3>
+              <table style="width: 100%;">
+                <tr>
+                  <td style="padding: 8px 0; color: #666; width: 120px;"><strong>Name:</strong></td>
+                  <td style="padding: 8px 0;">${applicantName}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Email:</strong></td>
+                  <td style="padding: 8px 0;"><a href="mailto:${applicantEmail}">${applicantEmail}</a></td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Company:</strong></td>
+                  <td style="padding: 8px 0;">${company || 'Not provided'}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Expertise:</strong></td>
+                  <td style="padding: 8px 0;">${expertiseAreas.join(', ') || 'Not specified'}</td>
+                </tr>
+              </table>
+              ${bio ? `
+                <h4 style="margin-top: 15px;">About the Applicant</h4>
+                <p style="background: white; padding: 15px; border-radius: 4px; border: 1px solid #ddd;">${bio}</p>
+              ` : ''}
+            </div>
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${SITE_URL}/admin?tab=applications" class="button">Review Application</a>
+            </div>
+            <p style="margin-top: 30px;">Best regards,<br><strong>${SITE_NAME} System</strong></p>
+          </div>
+          <div class="footer">
+            <p>This is an automated notification from ${SITE_NAME}</p>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error('Failed to send admin notification:', error);
+      return false;
+    }
+
+    console.log('Admin notification sent:', data?.id);
+    return true;
+  } catch (error) {
+    console.error('Error sending admin notification:', error);
+    return false;
+  }
+}
+
+/**
+ * 发送审核通过邮件（给用户）
+ */
+export async function sendApprovalEmail(
+  email: string,
+  name: string,
+  username: string,
+  tempPassword?: string
+): Promise<boolean> {
+  if (!resend) {
+    console.log('Resend not configured, skipping email');
+    return false;
+  }
+
+  const loginUrl = `${SITE_URL}/author/login`;
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: `🎉 ${SITE_NAME} - Your Author Account is Approved!`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles}
+        </head>
+        <body>
+          <div class="header">
+            <h1>🏭 ${SITE_NAME}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>🎉 Congratulations, ${name}!</h2>
+            <p>Your author application has been <strong style="color: #28a745;">approved</strong>! Welcome to the <strong>${SITE_NAME}</strong> author community.</p>
+            
+            <div style="background: #e8f5e9; border-left: 4px solid #28a745; padding: 20px; margin: 20px 0; border-radius: 4px;">
+              <h3 style="margin-top: 0; color: #28a745;">Your Account Details</h3>
+              <table style="width: 100%;">
+                <tr>
+                  <td style="padding: 8px 0; color: #666; width: 120px;"><strong>Username:</strong></td>
+                  <td style="padding: 8px 0; font-family: monospace; background: white; padding: 5px 10px; border-radius: 4px;">${username}</td>
+                </tr>
+                ${tempPassword ? `
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Temp Password:</strong></td>
+                  <td style="padding: 8px 0; font-family: monospace; background: white; padding: 5px 10px; border-radius: 4px;">${tempPassword}</td>
+                </tr>
+                ` : ''}
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Login URL:</strong></td>
+                  <td style="padding: 8px 0;"><a href="${loginUrl}">${loginUrl}</a></td>
+                </tr>
+              </table>
+            </div>
+            
+            <p><strong>⚠️ Important:</strong> Please change your password after your first login.</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${loginUrl}" class="button">Login Now</a>
+            </div>
+            
+            <h4>What you can do now:</h4>
+            <ul>
+              <li>📝 Write and publish articles about special oil industry</li>
+              <li>📊 Track your article views and engagement</li>
+              <li>👨‍💼 Manage your author profile</li>
+            </ul>
+            
+            <p style="margin-top: 30px;">We look forward to seeing your contributions!</p>
+            <p>Best regards,<br><strong>The ${SITE_NAME} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL}">Visit Website</a> | <a href="mailto:kdwelly@163.com">Contact Administrator</a></p>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error('Failed to send approval email:', error);
+      return false;
+    }
+
+    console.log('Approval email sent:', data?.id);
+    return true;
+  } catch (error) {
+    console.error('Error sending approval email:', error);
+    return false;
+  }
+}
+
+/**
+ * 发送审核拒绝邮件（给用户）
+ */
+export async function sendRejectionEmail(
+  email: string,
+  name: string,
+  reason: string
+): Promise<boolean> {
+  if (!resend) {
+    console.log('Resend not configured, skipping email');
+    return false;
+  }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: `${SITE_NAME} - Application Status Update`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles}
+        </head>
+        <body>
+          <div class="header">
+            <h1>🏭 ${SITE_NAME}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>Application Status Update</h2>
+            <p>Dear <strong>${name}</strong>,</p>
+            <p>Thank you for your interest in becoming an author on <strong>${SITE_NAME}</strong>.</p>
+            <p>After careful review, we regret to inform you that your application was not approved at this time.</p>
+            
+            ${reason ? `
+            <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+              <p style="margin: 0; color: #856404;"><strong>Reason:</strong></p>
+              <p style="margin: 10px 0 0; color: #856404;">${reason}</p>
+            </div>
+            ` : ''}
+            
+            <p>You're welcome to reapply in the future with updated information.</p>
+            <p>If you have any questions, please don't hesitate to contact our administrator.</p>
+            
+            <p style="margin-top: 30px;">Best regards,<br><strong>The ${SITE_NAME} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL}">Visit Website</a> | <a href="mailto:kdwelly@163.com">Contact Administrator</a></p>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error('Failed to send rejection email:', error);
+      return false;
+    }
+
+    console.log('Rejection email sent:', data?.id);
+    return true;
+  } catch (error) {
+    console.error('Error sending rejection email:', error);
+    return false;
+  }
+}
+
 export { resend };

@@ -24,6 +24,9 @@ import AdminChat from "@/pages/AdminChat";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
 import CookiePolicy from "@/pages/CookiePolicy";
+import AuthorRegister from "@/pages/AuthorRegister";
+import AuthorLogin from "@/pages/AuthorLogin";
+import AuthorDashboard from "@/pages/AuthorDashboard";
 import ChatWidget from "@/components/ChatWidget";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import VisitorTracker from "@/components/VisitorTracker";
@@ -37,7 +40,8 @@ function AppLayout({ children }: { children: React.ReactNode }) {
   const isAdminPage = location.pathname === '/login' || 
                        location.pathname === '/admin' || 
                        location.pathname.startsWith('/admin/') ||
-                       location.pathname === '/admin/chat';
+                       location.pathname === '/admin/chat' ||
+                       location.pathname.startsWith('/author/');
   
   if (isAdminPage) {
     return <>{children}</>;
@@ -92,6 +96,9 @@ export default function App() {
           <Route path="/admin/edit/:id" element={<ArticleEditor />} />
           <Route path="/admin/subscribers" element={<SubscribersAdmin />} />
           <Route path="/admin/chat" element={<AdminChat />} />
+          <Route path="/author/register" element={<AuthorRegister />} />
+          <Route path="/author/login" element={<AuthorLogin />} />
+          <Route path="/author/dashboard" element={<AuthorDashboard />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />

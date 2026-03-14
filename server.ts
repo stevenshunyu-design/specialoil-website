@@ -1930,6 +1930,614 @@ app.get('/api/health', (_req: Request, res: Response) => {
   });
 });
 
+// ==================== 作者系统 API ====================
+
+// 导入邮件发送函数
+import {
+  sendVerificationCode,
+  sendApplicationConfirmation,
+  sendAdminApplicationNotification,
+  sendApprovalEmail,
+  sendRejectionEmail
+} from './src/lib/email';
+
+// 密码哈希工具
+import crypto from 'crypto';
+
+function hashPassword(password: string): string {
+  return crypto.createHash('sha256').update(password + 'specialoil_salt').digest('hex');
+}
+
+function generateRandomPassword(): string {
+  return Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+}
+
+function generateUsername(name: string): string {
+  const base = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const random = Math.floor(Math.random() * 10000);
+  return `${base}${random}`;
+}
+
+// 生成6位验证码
+function generateVerificationCode(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// ==================== 验证码 API ====================
+
+// 发送验证码
+app.post('/api/auth/send-code', async (req: Request, res: Response) => {
+  try {
+    const { email, type = 'register' } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email is required' });
+    }
+
+    // 验证邮箱格式
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ success: false, error: 'Invalid email format' });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 检查是否已有待审核的申请
+    if (type === 'register') {
+      const { data: existingApp } = await client
+        .from('author_applications')
+        .select('id, status')
+        .eq('email', email)
+        .single();
+      
+      if (existingApp) {
+        if (existingApp.status === 'pending') {
+          return res.status(400).json({ 
+            success: false, 
+            error: 'You already have a pending application. Please wait for review.' 
+          });
+        }
+        if (existingApp.status === 'approved') {
+          return res.status(400).json({ 
+            success: false, 
+            error: 'This email is already registered. Please login instead.' 
+          });
+        }
+      }
+    }
+
+    // 生成验证码
+    const code = generateVerificationCode();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10分钟过期
+
+    // 保存验证码到数据库
+    const { error: insertError } = await client
+      .from('email_verification_codes')
+      .insert({
+        email,
+        code,
+        type,
+        expires_at: expiresAt.toISOString(),
+      });
+
+    if (insertError) {
+      console.error('Failed to save verification code:', insertError);
+      return res.status(500).json({ success: false, error: 'Failed to generate code' });
+    }
+
+    // 发送验证码邮件
+    const sent = await sendVerificationCode(email, code, type);
+    
+    if (!sent) {
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to send verification email. Please try again later.' 
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Verification code sent to your email',
+      expiresIn: 600 // 10分钟
+    });
+  } catch (error) {
+    console.error('Send verification code error:', error);
+    res.status(500).json({ success: false, error: 'Failed to send verification code' });
+  }
+});
+
+// 验证验证码
+app.post('/api/auth/verify-code', async (req: Request, res: Response) => {
+  try {
+    const { email, code, type = 'register' } = req.body;
+    
+    if (!email || !code) {
+      return res.status(400).json({ success: false, error: 'Email and code are required' });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 查找验证码
+    const { data: codes, error } = await client
+      .from('email_verification_codes')
+      .select('*')
+      .eq('email', email)
+      .eq('code', code)
+      .eq('type', type)
+      .eq('is_used', false)
+      .gte('expires_at', new Date().toISOString())
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (error || !codes || codes.length === 0) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Invalid or expired verification code' 
+      });
+    }
+
+    // 标记验证码为已使用
+    await client
+      .from('email_verification_codes')
+      .update({ is_used: true })
+      .eq('id', codes[0].id);
+
+    res.json({ 
+      success: true, 
+      message: 'Email verified successfully',
+      verifiedEmail: email
+    });
+  } catch (error) {
+    console.error('Verify code error:', error);
+    res.status(500).json({ success: false, error: 'Failed to verify code' });
+  }
+});
+
+// ==================== 作者申请 API ====================
+
+// 提交作者申请
+app.post('/api/author/apply', async (req: Request, res: Response) => {
+  try {
+    const { 
+      name, 
+      email, 
+      phone, 
+      company, 
+      expertiseAreas, 
+      bio,
+      verificationCode 
+    } = req.body;
+    
+    // 验证必填字段
+    if (!name || !email || !verificationCode) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Name, email, and verification code are required' 
+      });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 验证验证码
+    const { data: codes } = await client
+      .from('email_verification_codes')
+      .select('*')
+      .eq('email', email)
+      .eq('code', verificationCode)
+      .eq('type', 'register')
+      .eq('is_used', true)
+      .gte('expires_at', new Date().toISOString())
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (!codes || codes.length === 0) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Please verify your email first' 
+      });
+    }
+
+    // 检查是否已有申请
+    const { data: existingApp } = await client
+      .from('author_applications')
+      .select('id, status')
+      .eq('email', email)
+      .single();
+
+    if (existingApp) {
+      if (existingApp.status === 'pending') {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'You already have a pending application' 
+        });
+      }
+      if (existingApp.status === 'approved') {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'This email is already registered' 
+        });
+      }
+    }
+
+    // 创建申请
+    const { error: insertError } = await client
+      .from('author_applications')
+      .insert({
+        name,
+        email,
+        phone: phone || null,
+        company: company || null,
+        expertise_areas: expertiseAreas || [],
+        bio: bio || null,
+        status: 'pending',
+      });
+
+    if (insertError) {
+      console.error('Failed to create application:', insertError);
+      return res.status(500).json({ success: false, error: 'Failed to submit application' });
+    }
+
+    // 发送确认邮件给用户
+    await sendApplicationConfirmation(email, name);
+    
+    // 发送通知邮件给管理员
+    await sendAdminApplicationNotification(
+      name, 
+      email, 
+      company || '', 
+      expertiseAreas || [], 
+      bio || ''
+    );
+
+    res.json({ 
+      success: true, 
+      message: 'Application submitted successfully! Please wait for review.' 
+    });
+  } catch (error) {
+    console.error('Author application error:', error);
+    res.status(500).json({ success: false, error: 'Failed to submit application' });
+  }
+});
+
+// 获取所有作者申请（管理员）
+app.get('/api/admin/applications', async (req: Request, res: Response) => {
+  try {
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.json({ success: true, data: [] });
+    }
+
+    const { status } = req.query;
+    let query = client
+      .from('author_applications')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (status && status !== 'all') {
+      query = query.eq('status', status);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Failed to fetch applications:', error);
+      return res.json({ success: true, data: [] });
+    }
+
+    res.json({ success: true, data: data || [] });
+  } catch (error) {
+    console.error('Get applications error:', error);
+    res.status(500).json({ error: 'Failed to get applications' });
+  }
+});
+
+// 审核作者申请（管理员）
+app.post('/api/admin/applications/:id/review', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { action, rejectionReason, adminEmail } = req.body;
+    
+    if (!action || !['approve', 'reject'].includes(action)) {
+      return res.status(400).json({ success: false, error: 'Invalid action' });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 获取申请详情
+    const { data: application, error: fetchError } = await client
+      .from('author_applications')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (fetchError || !application) {
+      return res.status(404).json({ success: false, error: 'Application not found' });
+    }
+
+    if (application.status !== 'pending') {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'This application has already been processed' 
+      });
+    }
+
+    if (action === 'approve') {
+      // 生成用户名和密码
+      const username = generateUsername(application.name);
+      const tempPassword = generateRandomPassword();
+      const passwordHash = hashPassword(tempPassword);
+
+      // 更新申请状态
+      const { error: updateError } = await client
+        .from('author_applications')
+        .update({
+          status: 'approved',
+          username,
+          password_hash: passwordHash,
+          reviewed_at: new Date().toISOString(),
+          reviewed_by: adminEmail || 'admin',
+        })
+        .eq('id', id);
+
+      if (updateError) {
+        console.error('Failed to update application:', updateError);
+        return res.status(500).json({ success: false, error: 'Failed to approve application' });
+      }
+
+      // 创建作者记录
+      const { error: authorError } = await client
+        .from('authors')
+        .insert({
+          application_id: id,
+          name: application.name,
+          email: application.email,
+          phone: application.phone,
+          company: application.company,
+          username,
+          password_hash: passwordHash,
+          expertise_areas: application.expertise_areas,
+          bio: application.bio,
+        });
+
+      if (authorError) {
+        console.error('Failed to create author:', authorError);
+        // 回滚申请状态
+        await client
+          .from('author_applications')
+          .update({ status: 'pending', username: null, password_hash: null })
+          .eq('id', id);
+        return res.status(500).json({ success: false, error: 'Failed to create author account' });
+      }
+
+      // 发送审批通过邮件
+      await sendApprovalEmail(application.email, application.name, username, tempPassword);
+
+      res.json({ 
+        success: true, 
+        message: 'Application approved! Account created and email sent.',
+        username
+      });
+    } else {
+      // 拒绝申请
+      const { error: updateError } = await client
+        .from('author_applications')
+        .update({
+          status: 'rejected',
+          rejection_reason: rejectionReason || null,
+          reviewed_at: new Date().toISOString(),
+          reviewed_by: adminEmail || 'admin',
+        })
+        .eq('id', id);
+
+      if (updateError) {
+        console.error('Failed to reject application:', updateError);
+        return res.status(500).json({ success: false, error: 'Failed to reject application' });
+      }
+
+      // 发送拒绝邮件
+      await sendRejectionEmail(application.email, application.name, rejectionReason || '');
+
+      res.json({ success: true, message: 'Application rejected and email sent.' });
+    }
+  } catch (error) {
+    console.error('Review application error:', error);
+    res.status(500).json({ success: false, error: 'Failed to process application' });
+  }
+});
+
+// ==================== 作者登录与认证 API ====================
+
+// 作者登录
+app.post('/api/author/login', async (req: Request, res: Response) => {
+  try {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Username and password are required' 
+      });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    const passwordHash = hashPassword(password);
+
+    // 查找作者
+    const { data: author, error } = await client
+      .from('authors')
+      .select('*')
+      .eq('username', username)
+      .eq('password_hash', passwordHash)
+      .eq('status', 'active')
+      .single();
+
+    if (error || !author) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Invalid username or password' 
+      });
+    }
+
+    // 更新最后登录时间
+    await client
+      .from('authors')
+      .update({ last_login_at: new Date().toISOString() })
+      .eq('id', author.id);
+
+    // 不返回密码哈希
+    const { password_hash, ...authorData } = author;
+
+    res.json({ 
+      success: true, 
+      author: authorData,
+      message: 'Login successful'
+    });
+  } catch (error) {
+    console.error('Author login error:', error);
+    res.status(500).json({ success: false, error: 'Failed to login' });
+  }
+});
+
+// 获取作者信息
+app.get('/api/author/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    const { data: author, error } = await client
+      .from('authors')
+      .select('id, name, email, phone, company, username, expertise_areas, bio, avatar_url, articles_count, total_views, total_likes, created_at')
+      .eq('id', id)
+      .single();
+
+    if (error || !author) {
+      return res.status(404).json({ success: false, error: 'Author not found' });
+    }
+
+    res.json({ success: true, author });
+  } catch (error) {
+    console.error('Get author error:', error);
+    res.status(500).json({ success: false, error: 'Failed to get author' });
+  }
+});
+
+// 获取作者的文章列表
+app.get('/api/author/:id/articles', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.query;
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.json({ success: true, data: [] });
+    }
+
+    let query = client
+      .from('blog_posts')
+      .select('*')
+      .eq('author_id', id)
+      .order('publishedAt', { ascending: false });
+
+    if (status && status !== 'all') {
+      query = query.eq('review_status', status);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Failed to fetch author articles:', error);
+      return res.json({ success: true, data: [] });
+    }
+
+    res.json({ success: true, data: data || [] });
+  } catch (error) {
+    console.error('Get author articles error:', error);
+    res.status(500).json({ error: 'Failed to get articles' });
+  }
+});
+
+// 作者修改密码
+app.post('/api/author/:id/change-password', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { currentPassword, newPassword } = req.body;
+    
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Current and new password are required' 
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'New password must be at least 6 characters' 
+      });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 验证当前密码
+    const currentHash = hashPassword(currentPassword);
+    const { data: author, error: fetchError } = await client
+      .from('authors')
+      .select('id')
+      .eq('id', id)
+      .eq('password_hash', currentHash)
+      .single();
+
+    if (fetchError || !author) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Current password is incorrect' 
+      });
+    }
+
+    // 更新密码
+    const newHash = hashPassword(newPassword);
+    const { error: updateError } = await client
+      .from('authors')
+      .update({ password_hash: newHash, updated_at: new Date().toISOString() })
+      .eq('id', id);
+
+    if (updateError) {
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to update password' 
+      });
+    }
+
+    res.json({ success: true, message: 'Password updated successfully' });
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({ success: false, error: 'Failed to change password' });
+  }
+});
+
 // SPA 路由回退 - 所有非 API 路由返回 index.html
 app.get('*', (req: Request, res: Response) => {
   // 如果是 API 请求但路由不存在，返回 404

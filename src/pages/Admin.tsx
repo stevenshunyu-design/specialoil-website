@@ -9,9 +9,10 @@ import RichTextEditor from '../components/RichTextEditor';
 import ImageLibrary from '../components/ImageLibrary';
 import AnalyticsDashboard from '../components/AnalyticsDashboard';
 import ConfirmDialog from '../components/ui/ConfirmDialog';
+import ApplicationsAdmin from '../components/ApplicationsAdmin';
 
 // 类型定义
-type AdminTab = 'dashboard' | 'articles' | 'analytics' | 'inquiries' | 'subscribers' | 'chat';
+type AdminTab = 'dashboard' | 'articles' | 'analytics' | 'inquiries' | 'subscribers' | 'chat' | 'applications';
 
 // 统计卡片组件
 const StatCard = ({ icon, label, value, color, trend }: { 
@@ -294,6 +295,7 @@ const Admin = () => {
     { id: 'analytics' as AdminTab, icon: 'fa-chart-line', label: '访问统计' },
     { id: 'articles' as AdminTab, icon: 'fa-file-lines', label: '文章管理' },
     { id: 'inquiries' as AdminTab, icon: 'fa-envelope', label: '客户询价' },
+    { id: 'applications' as AdminTab, icon: 'fa-user-plus', label: '作者申请' },
     { id: 'subscribers' as AdminTab, icon: 'fa-users', label: '订阅管理' },
     { id: 'chat' as AdminTab, icon: 'fa-comments', label: '在线客服' },
   ];
@@ -401,6 +403,13 @@ const Admin = () => {
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">客户询价</h2>
               <InquiriesAdmin />
+            </div>
+          )}
+          
+          {activeTab === 'applications' && (
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">作者申请审核</h2>
+              <ApplicationsAdmin />
             </div>
           )}
           
