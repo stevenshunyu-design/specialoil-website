@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import ConfirmDialog from '../components/ui/ConfirmDialog';
 
 interface Inquiry {
   id: number;
@@ -23,6 +24,10 @@ const InquiriesAdmin = () => {
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [notes, setNotes] = useState('');
+  const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; id: number }>({
+    open: false,
+    id: 0,
+  });
 
   useEffect(() => {
     fetchInquiries();
@@ -82,11 +87,9 @@ const InquiriesAdmin = () => {
     }
   };
 
-  const deleteInquiry = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this inquiry?')) return;
-    
+  const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/inquiries/${id}`, {
+      const response = await fetch(`/api/inquiries/${deleteConfirm.id}`, {
         method: 'DELETE',
       });
       
@@ -98,6 +101,8 @@ const InquiriesAdmin = () => {
       }
     } catch (error) {
       toast.error('Failed to delete inquiry');
+    } finally {
+      setDeleteConfirm({ open: false, id: 0 });
     }
   };
 
@@ -225,7 +230,7 @@ const InquiriesAdmin = () => {
                         <i className="fa-solid fa-eye mr-1"></i>View
                       </button>
                       <button
-                        onClick={() => deleteInquiry(inquiry.id)}
+                        onClick={() => setDeleteConfirm({ open: true, id: inquiry.id })}
                         className="px-3 py-1 bg-red-600 text-white text-xs rounded-sm hover:bg-opacity-90"
                       >
                         <i className="fa-solid fa-trash"></i>
@@ -334,6 +339,18 @@ const InquiriesAdmin = () => {
           </div>
         </div>
       )}
+
+      {/* 删除确认对话框 */}
+      <ConfirmDialog
+        isOpen={deleteConfirm.open}
+        onClose={() => setDeleteConfirm({ open: false, id: 0 })}
+        onConfirm={handleDelete}
+        title="Delete Inquiry"
+        message="Are you sure you want to delete this inquiry? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+      />
     </div>
   );
 };

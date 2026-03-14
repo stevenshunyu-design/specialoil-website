@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useBlog } from '../hooks/useBlog';
 import { toast } from 'sonner';
+import ConfirmDialog from '../components/ui/ConfirmDialog';
 
 // 阅读进度条组件
 const ReadingProgress = () => {
@@ -130,8 +131,9 @@ const ShareButtons = ({ title, url }: { title: string; url: string }) => {
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
-  const { posts, getPostById, isAuthenticated, isLoading: blogLoading } = useBlog();
+  const { posts, getPostById, isAuthenticated, isLoading: blogLoading, deletePost } = useBlog();
   const [post, setPost] = useState<any>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const navigate = useNavigate();
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -416,11 +418,7 @@ const BlogPost = () => {
                     </Link>
                     <button
                       className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-all flex items-center gap-2"
-                      onClick={() => {
-                        if (window.confirm('Are you sure you want to delete this article?')) {
-                          navigate('/admin');
-                        }
-                      }}
+                      onClick={() => setShowDeleteConfirm(true)}
                     >
                       <i className="fa-solid fa-trash"></i>
                       Delete
@@ -540,6 +538,28 @@ const BlogPost = () => {
           <span>WhatsApp</span>
         </a>
       </div>
+
+      {/* 删除确认对话框 */}
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={() => {
+          if (post?.id) {
+            const success = deletePost(post.id);
+            if (success) {
+              toast.success('Article deleted');
+              navigate('/admin');
+            } else {
+              toast.error('Failed to delete article');
+            }
+          }
+        }}
+        title="Delete Article"
+        message="Are you sure you want to delete this article? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+      />
     </div>
   );
 };

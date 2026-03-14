@@ -8,6 +8,7 @@ import InquiriesAdmin from './InquiriesAdmin';
 import RichTextEditor from '../components/RichTextEditor';
 import ImageLibrary from '../components/ImageLibrary';
 import AnalyticsDashboard from '../components/AnalyticsDashboard';
+import ConfirmDialog from '../components/ui/ConfirmDialog';
 
 // 类型定义
 type AdminTab = 'dashboard' | 'articles' | 'analytics' | 'inquiries' | 'subscribers' | 'chat';
@@ -44,6 +45,11 @@ const ArticleList = ({ onEdit }: { onEdit: (id: string) => void }) => {
   const { posts, deletePost } = useBlog();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; id: string; title: string }>({
+    open: false,
+    id: '',
+    title: '',
+  });
   
   const categories = ['all', ...new Set(posts.map(p => p.category))];
   
@@ -53,30 +59,30 @@ const ArticleList = ({ onEdit }: { onEdit: (id: string) => void }) => {
     return matchesSearch && matchesCategory;
   });
 
-  const handleDelete = (id: string, title: string) => {
-    if (window.confirm(`确定要删除文章 "${title}" 吗？此操作不可恢复。`)) {
-      const success = deletePost(id);
-      if (success) {
-        toast.success('文章已删除');
-      } else {
-        toast.error('删除失败，请重试');
-      }
+  const handleDelete = () => {
+    const success = deletePost(deleteConfirm.id);
+    if (success) {
+      toast.success('文章已删除');
+    } else {
+      toast.error('删除失败，请重试');
     }
+    setDeleteConfirm({ open: false, id: '', title: '' });
   };
 
   return (
-    <div className="space-y-6">
-      {/* 搜索和筛选 */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1 relative">
-          <i className="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input
-            type="text"
-            placeholder="搜索文章..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
-          />
+    <>
+      <div className="space-y-6">
+        {/* 搜索和筛选 */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1 relative">
+            <i className="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input
+              type="text"
+              placeholder="搜索文章..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+            />
         </div>
         <select
           value={selectedCategory}
@@ -142,7 +148,7 @@ const ArticleList = ({ onEdit }: { onEdit: (id: string) => void }) => {
                           <i className="fa-solid fa-pen-to-square"></i>
                         </button>
                         <button 
-                          onClick={() => handleDelete(post.id, post.title)}
+                          onClick={() => setDeleteConfirm({ open: true, id: post.id, title: post.title })}
                           className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                           title="删除"
                         >
@@ -173,6 +179,19 @@ const ArticleList = ({ onEdit }: { onEdit: (id: string) => void }) => {
         </div>
       </div>
     </div>
+
+    {/* 删除确认对话框 */}
+    <ConfirmDialog
+      isOpen={deleteConfirm.open}
+      onClose={() => setDeleteConfirm({ open: false, id: '', title: '' })}
+      onConfirm={handleDelete}
+      title="删除文章"
+      message={`确定要删除文章 "${deleteConfirm.title}" 吗？此操作不可恢复。`}
+      confirmText="删除"
+      cancelText="取消"
+      variant="danger"
+    />
+  </>
   );
 };
 
@@ -448,6 +467,7 @@ export const ArticleEditor = () => {
   const [isPreview, setIsPreview] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [showFeatureImageLibrary, setShowFeatureImageLibrary] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -564,9 +584,11 @@ export const ArticleEditor = () => {
   };
 
   const handleCancel = () => {
-    if (window.confirm('确定要放弃编辑吗？未保存的内容将会丢失。')) {
-      navigate('/admin');
-    }
+    setShowCancelConfirm(true);
+  };
+
+  const confirmCancel = () => {
+    navigate('/admin');
   };
 
   // 从内容中自动生成摘要
@@ -837,6 +859,18 @@ export const ArticleEditor = () => {
           setPostData(prev => ({ ...prev, featuredImage: url }));
           setShowFeatureImageLibrary(false);
         }}
+      />
+
+      {/* 取消编辑确认对话框 */}
+      <ConfirmDialog
+        isOpen={showCancelConfirm}
+        onClose={() => setShowCancelConfirm(false)}
+        onConfirm={confirmCancel}
+        title="放弃编辑"
+        message="确定要放弃编辑吗？未保存的内容将会丢失。"
+        confirmText="放弃"
+        cancelText="继续编辑"
+        variant="warning"
       />
     </div>
   );
