@@ -230,37 +230,28 @@ const Blog = () => {
             {t('blog.insights.title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="group bg-gradient-to-br from-[#003366] to-[#004080] p-6 rounded-lg text-white hover:shadow-xl transition-all cursor-pointer">
+            <div className="group bg-gradient-to-br from-[#003366] to-[#004080] p-6 rounded-lg text-white hover:shadow-xl transition-all">
               <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <i className="fa-solid fa-chart-line text-xl"></i>
               </div>
-              <h3 className="text-lg font-bold mb-2">{t('blog.insights.trends.title')}</h3>
+              <h3 className="text-lg font-bold mb-2 text-white">{t('blog.insights.trends.title')}</h3>
               <p className="text-white/70 text-sm mb-3">{t('blog.insights.trends.description')}</p>
-              <span className="text-[#D4AF37] text-sm font-medium">
-                {t('blog.insights.trends.link')} <i className="fa-solid fa-arrow-right ml-1"></i>
-              </span>
             </div>
             
-            <div className="group bg-gradient-to-br from-[#D4AF37] to-[#B8960C] p-6 rounded-lg text-white hover:shadow-xl transition-all cursor-pointer">
+            <div className="group bg-gradient-to-br from-[#D4AF37] to-[#B8960C] p-6 rounded-lg text-white hover:shadow-xl transition-all">
               <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <i className="fa-solid fa-lightbulb text-xl"></i>
               </div>
-              <h3 className="text-lg font-bold mb-2">{t('blog.insights.guides.title')}</h3>
+              <h3 className="text-lg font-bold mb-2 text-white">{t('blog.insights.guides.title')}</h3>
               <p className="text-white/70 text-sm mb-3">{t('blog.insights.guides.description')}</p>
-              <span className="text-white text-sm font-medium">
-                {t('blog.insights.guides.link')} <i className="fa-solid fa-arrow-right ml-1"></i>
-              </span>
             </div>
             
-            <div className="group bg-gradient-to-br from-[#1a365d] to-[#2d4a7c] p-6 rounded-lg text-white hover:shadow-xl transition-all cursor-pointer">
+            <div className="group bg-gradient-to-br from-[#1a365d] to-[#2d4a7c] p-6 rounded-lg text-white hover:shadow-xl transition-all">
               <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <i className="fa-solid fa-certificate text-xl"></i>
               </div>
-              <h3 className="text-lg font-bold mb-2">{t('blog.insights.regulatory.title')}</h3>
+              <h3 className="text-lg font-bold mb-2 text-white">{t('blog.insights.regulatory.title')}</h3>
               <p className="text-white/70 text-sm mb-3">{t('blog.insights.regulatory.description')}</p>
-              <span className="text-[#D4AF37] text-sm font-medium">
-                {t('blog.insights.regulatory.link')} <i className="fa-solid fa-arrow-right ml-1"></i>
-              </span>
             </div>
           </div>
         </section>
