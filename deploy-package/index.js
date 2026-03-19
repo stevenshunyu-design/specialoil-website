@@ -33,11 +33,7 @@ if (missingVars.length > 0) {
 }
 
 console.log('========================================');
-console.log('Loading server.production.js...');
+console.log('Loading server.production.cjs...');
 
-// 动态导入 ESM 模块
-import('./server.production.js').catch(error => {
-  console.error('Failed to start server:', error);
-  console.error('Error stack:', error.stack);
-  process.exit(1);
-});
+// 使用 require 加载 CommonJS 模块
+require('./server.production.cjs');
