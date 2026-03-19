@@ -54825,8 +54825,8 @@ var init_email = __esm({
 });
 
 // server.ts
-var import_express = __toESM(require("express"), 1);
-var import_cors = __toESM(require("cors"), 1);
+var import_express = __toESM(require("express"));
+var import_cors = __toESM(require("cors"));
 var import_http2 = require("http");
 var import_socket = require("socket.io");
 
@@ -54932,10 +54932,10 @@ init__21();
 
 // server.ts
 var import_config9 = require("dotenv/config");
-var import_path37 = __toESM(require("path"), 1);
-var import_fs2 = __toESM(require("fs"), 1);
+var import_path37 = __toESM(require("path"));
+var import_fs2 = __toESM(require("fs"));
 var import_url2 = require("url");
-var import_multer = __toESM(require("multer"), 1);
+var import_multer = __toESM(require("multer"));
 
 // src/lib/email.ts
 var import_resend = require("resend");
@@ -55473,7 +55473,7 @@ async function sendArticleRejectionEmail(email3, authorName, articleTitle, reaso
 }
 
 // server.ts
-var import_crypto2 = __toESM(require("crypto"), 1);
+var import_crypto2 = __toESM(require("crypto"));
 var import_meta = {};
 console.log("\u{1F680} CODE VERSION: TEXT-MESSAGE-FORMAT-v1 (commit f5c0639)");
 process.on("uncaughtException", (error40) => {
@@ -55482,8 +55482,13 @@ process.on("uncaughtException", (error40) => {
 process.on("unhandledRejection", (reason, promise2) => {
   console.error("Unhandled Rejection at:", promise2, "reason:", reason);
 });
-var __filename = (0, import_url2.fileURLToPath)(import_meta.url);
-var __dirname = import_path37.default.dirname(__filename);
+var __dirname;
+try {
+  const __filename = (0, import_url2.fileURLToPath)(import_meta.url);
+  __dirname = import_path37.default.dirname(__filename);
+} catch {
+  __dirname = __dirname || process.cwd();
+}
 var distPath = process.env.NODE_ENV === "production" ? import_path37.default.join(__dirname, "dist") : import_path37.default.join(process.cwd(), "dist");
 console.log("========================================");
 console.log("Starting server with security features...");

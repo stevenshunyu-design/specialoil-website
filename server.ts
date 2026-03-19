@@ -23,9 +23,16 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
-// ESM 环境中获取 __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// 获取 __dirname（兼容 ESM 和 CommonJS）
+let __dirname: string;
+try {
+  // ESM 环境
+  const __filename = fileURLToPath(import.meta.url);
+  __dirname = path.dirname(__filename);
+} catch {
+  // CommonJS 环境 - __dirname 已存在
+  __dirname = __dirname || process.cwd();
+}
 
 const distPath = process.env.NODE_ENV === 'production' 
   ? path.join(__dirname, 'dist') 
