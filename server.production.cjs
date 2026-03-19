@@ -3892,7 +3892,7 @@ app.post("/api/external/articles", validateApiKey, async (req, res) => {
         id: AI_AUTHOR_ID,
         email: "ai@cnspecialtyoils.com",
         display_name: "Steven CN-SpecLube Chain",
-        bio: "\u7279\u79CD\u6CB9\u884C\u4E1A\u8D44\u6DF1\u7F16\u8F91\uFF0C\u4E13\u6CE8\u4E8E\u6DA6\u6ED1\u6CB9\u3001\u53D8\u538B\u5668\u6CB9\u3001\u6A61\u80F6\u6CB9\u7B49\u7279\u79CD\u6CB9\u54C1\u7684\u884C\u4E1A\u52A8\u6001\u3001\u5E02\u573A\u5206\u6790\u4E0E\u6280\u672F\u8D44\u8BAF\u3002",
+        bio: "Senior editor specializing in specialty oils industry, covering market trends, technical insights, and supply chain dynamics for transformer oil, rubber process oil, and lubricants.",
         status: "active",
         created_at: (/* @__PURE__ */ new Date()).toISOString()
       });

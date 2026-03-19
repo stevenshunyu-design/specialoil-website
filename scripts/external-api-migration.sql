@@ -18,13 +18,13 @@ VALUES (
   'ai_bot_001', 
   'ai@cnspecialtyoils.com', 
   'Steven CN-SpecLube Chain', 
-  '特种油行业资深编辑，专注于润滑油、变压器油、橡胶油等特种油品的行业动态、市场分析与技术资讯。', 
+  'Senior editor specializing in specialty oils industry, covering market trends, technical insights, and supply chain dynamics for transformer oil, rubber process oil, and lubricants.', 
   'active',
   NOW()
 )
 ON CONFLICT (id) DO UPDATE SET
   display_name = 'Steven CN-SpecLube Chain',
-  bio = '特种油行业资深编辑，专注于润滑油、变压器油、橡胶油等特种油品的行业动态、市场分析与技术资讯。',
+  bio = 'Senior editor specializing in specialty oils industry, covering market trends, technical insights, and supply chain dynamics for transformer oil, rubber process oil, and lubricants.',
   status = 'active',
   updated_at = NOW();
 
