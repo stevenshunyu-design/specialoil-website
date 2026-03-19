@@ -58000,9 +58000,12 @@ app.post("/api/external/articles", validateApiKey, async (req, res) => {
       console.log("[External API] Creating AI author...");
       const { error: createAuthorError } = await client2.from("authors").insert({
         id: AI_AUTHOR_ID,
+        username: "steven_ai",
+        name: "Steven CN-SpecLube Chain",
         email: "ai@cnspecialtyoils.com",
         display_name: "Steven CN-SpecLube Chain",
         bio: "Senior editor specializing in specialty oils industry, covering market trends, technical insights, and supply chain dynamics for transformer oil, rubber process oil, and lubricants.",
+        password_hash: "$2a$10$AI.SYSTEM.NO.LOGIN.PLACEHOLDER.HASH",
         status: "active",
         created_at: (/* @__PURE__ */ new Date()).toISOString()
       });
