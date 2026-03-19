@@ -3891,8 +3891,8 @@ app.post("/api/external/articles", validateApiKey, async (req, res) => {
       const { error: createAuthorError } = await client.from("authors").insert({
         id: AI_AUTHOR_ID,
         email: "ai@cnspecialtyoils.com",
-        display_name: "AI \u7F16\u8F91",
-        bio: "\u81EA\u52A8\u91C7\u96C6\u884C\u4E1A\u8D44\u8BAF\uFF0C\u7531\u4EBA\u5DE5\u667A\u80FD\u751F\u6210",
+        display_name: "Steven CN-SpecLube Chain",
+        bio: "\u7279\u79CD\u6CB9\u884C\u4E1A\u8D44\u6DF1\u7F16\u8F91\uFF0C\u4E13\u6CE8\u4E8E\u6DA6\u6ED1\u6CB9\u3001\u53D8\u538B\u5668\u6CB9\u3001\u6A61\u80F6\u6CB9\u7B49\u7279\u79CD\u6CB9\u54C1\u7684\u884C\u4E1A\u52A8\u6001\u3001\u5E02\u573A\u5206\u6790\u4E0E\u6280\u672F\u8D44\u8BAF\u3002",
         status: "active",
         created_at: (/* @__PURE__ */ new Date()).toISOString()
       });
@@ -3903,7 +3903,7 @@ app.post("/api/external/articles", validateApiKey, async (req, res) => {
           error: "Failed to initialize AI author"
         });
       }
-      author = { id: AI_AUTHOR_ID, display_name: "AI \u7F16\u8F91" };
+      author = { id: AI_AUTHOR_ID, display_name: "Steven CN-SpecLube Chain" };
     }
     if (sourceUrl) {
       const { data: existingPost } = await client.from("blog_posts").select("id, title").eq("source_url", sourceUrl).single();

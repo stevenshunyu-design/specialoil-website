@@ -3639,8 +3639,8 @@ app.post('/api/external/articles', validateApiKey, async (req: Request, res: Res
         .insert({
           id: AI_AUTHOR_ID,
           email: 'ai@cnspecialtyoils.com',
-          display_name: 'AI 编辑',
-          bio: '自动采集行业资讯，由人工智能生成',
+          display_name: 'Steven CN-SpecLube Chain',
+          bio: '特种油行业资深编辑，专注于润滑油、变压器油、橡胶油等特种油品的行业动态、市场分析与技术资讯。',
           status: 'active',
           created_at: new Date().toISOString()
         });
@@ -3653,7 +3653,7 @@ app.post('/api/external/articles', validateApiKey, async (req: Request, res: Res
         });
       }
       
-      author = { id: AI_AUTHOR_ID, display_name: 'AI 编辑' };
+      author = { id: AI_AUTHOR_ID, display_name: 'Steven CN-SpecLube Chain' };
     }
 
     // 去重检查：根据来源 URL

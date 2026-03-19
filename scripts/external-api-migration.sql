@@ -17,14 +17,14 @@ INSERT INTO authors (id, email, display_name, bio, status, created_at)
 VALUES (
   'ai_bot_001', 
   'ai@cnspecialtyoils.com', 
-  'AI 编辑', 
-  '自动采集行业资讯，由人工智能生成', 
+  'Steven CN-SpecLube Chain', 
+  '特种油行业资深编辑，专注于润滑油、变压器油、橡胶油等特种油品的行业动态、市场分析与技术资讯。', 
   'active',
   NOW()
 )
 ON CONFLICT (id) DO UPDATE SET
-  display_name = 'AI 编辑',
-  bio = '自动采集行业资讯，由人工智能生成',
+  display_name = 'Steven CN-SpecLube Chain',
+  bio = '特种油行业资深编辑，专注于润滑油、变压器油、橡胶油等特种油品的行业动态、市场分析与技术资讯。',
   status = 'active',
   updated_at = NOW();
 
