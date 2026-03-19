@@ -1416,7 +1416,7 @@ var FEISHU_CHAT_ID = process.env.FEISHU_CHAT_ID;
 var OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 var OPENAI_API_HOST = process.env.OPENAI_API_HOST || "api.openai.com";
 var EXTERNAL_API_KEY = process.env.EXTERNAL_API_KEY;
-var AI_AUTHOR_ID = process.env.AI_AUTHOR_ID || "ai_bot_001";
+var AI_AUTHOR_ID = process.env.AI_AUTHOR_ID || "18d5e355-e4ea-411b-bfc5-c42beff90d1d";
 console.log("========================================");
 console.log("Server Configuration:");
 console.log("FEISHU_APP_ID:", FEISHU_APP_ID || "NOT SET");

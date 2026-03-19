@@ -79,8 +79,8 @@ const OPENAI_API_HOST = process.env.OPENAI_API_HOST || 'api.openai.com';
 
 // 外部 API 密钥（用于扣子 AI 等第三方调用）
 const EXTERNAL_API_KEY = process.env.EXTERNAL_API_KEY;
-// AI 作者 ID（默认使用 ai_bot_001）
-const AI_AUTHOR_ID = process.env.AI_AUTHOR_ID || 'ai_bot_001';
+// AI 作者 ID（UUID 格式）
+const AI_AUTHOR_ID = process.env.AI_AUTHOR_ID || '18d5e355-e4ea-411b-bfc5-c42beff90d1d';
 
 console.log('========================================');
 console.log('Server Configuration:');

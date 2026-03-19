@@ -93,7 +93,7 @@ WHERE source_url IS NOT NULL;
 -- 5. 创建 AI 作者账号
 INSERT INTO authors (id, email, display_name, bio, status, created_at)
 VALUES (
-  'ai_bot_001', 
+  '18d5e355-e4ea-411b-bfc5-c42beff90d1d', 
   'ai@cnspecialtyoils.com', 
   'Steven CN-SpecLube Chain', 
   'Senior editor specializing in specialty oils industry, covering market trends, technical insights, and supply chain dynamics for transformer oil, rubber process oil, and lubricants.', 
@@ -133,4 +133,4 @@ UNION ALL
 SELECT 'email_verification_codes' as table_name, COUNT(*) as count FROM email_verification_codes;
 
 -- 显示 AI 作者信息
-SELECT id, display_name, bio, status FROM authors WHERE id = 'ai_bot_001';
+SELECT id, display_name, bio, status FROM authors WHERE id = '18d5e355-e4ea-411b-bfc5-c42beff90d1d';
