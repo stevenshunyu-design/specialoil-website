@@ -1415,6 +1415,8 @@ var FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET || process.env.FEISHU_CHAT
 var FEISHU_CHAT_ID = process.env.FEISHU_CHAT_ID;
 var OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 var OPENAI_API_HOST = process.env.OPENAI_API_HOST || "api.openai.com";
+var EXTERNAL_API_KEY = process.env.EXTERNAL_API_KEY;
+var AI_AUTHOR_ID = process.env.AI_AUTHOR_ID || "ai_bot_001";
 console.log("========================================");
 console.log("Server Configuration:");
 console.log("FEISHU_APP_ID:", FEISHU_APP_ID || "NOT SET");
@@ -1426,6 +1428,8 @@ console.log("OPENAI_API_KEY:", OPENAI_API_KEY ? "SET" : "NOT SET");
 console.log("RESEND_API_KEY:", process.env.RESEND_API_KEY ? "SET" : "NOT SET");
 console.log("FROM_EMAIL:", process.env.FROM_EMAIL || "NOT SET");
 console.log("ADMIN_EMAIL:", process.env.ADMIN_EMAIL || "NOT SET");
+console.log("EXTERNAL_API_KEY:", EXTERNAL_API_KEY ? "SET" : "NOT SET");
+console.log("AI_AUTHOR_ID:", AI_AUTHOR_ID);
 console.log("========================================");
 var feishuAccessToken = null;
 var tokenExpireTime = 0;
@@ -3822,6 +3826,159 @@ app.post("/api/author/articles", async (req, res) => {
     console.error("Create article error:", error);
     res.status(500).json({ success: false, error: "Failed to create article" });
   }
+});
+var validateApiKey = (req, res, next) => {
+  const apiKey = req.headers["x-api-key"];
+  if (!EXTERNAL_API_KEY) {
+    console.error("EXTERNAL_API_KEY not configured");
+    return res.status(500).json({
+      success: false,
+      error: "API key not configured on server"
+    });
+  }
+  if (!apiKey || apiKey !== EXTERNAL_API_KEY) {
+    return res.status(401).json({
+      success: false,
+      error: "Invalid or missing API key"
+    });
+  }
+  next();
+};
+app.post("/api/external/articles", validateApiKey, async (req, res) => {
+  try {
+    const {
+      title,
+      content,
+      excerpt,
+      category,
+      tags,
+      featuredImage,
+      sourceUrl
+    } = req.body;
+    console.log("[External API] Article upload request:", {
+      title: title?.substring(0, 50),
+      sourceUrl,
+      hasContent: !!content
+    });
+    if (!title || !content) {
+      return res.status(400).json({
+        success: false,
+        error: "Title and content are required"
+      });
+    }
+    if (title.length < 5 || title.length > 200) {
+      return res.status(400).json({
+        success: false,
+        error: "Title must be between 5 and 200 characters"
+      });
+    }
+    if (content.length < 100) {
+      return res.status(400).json({
+        success: false,
+        error: "Content must be at least 100 characters"
+      });
+    }
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({
+        success: false,
+        error: "Database not configured"
+      });
+    }
+    let { data: author, error: authorError } = await client.from("authors").select("id, display_name").eq("id", AI_AUTHOR_ID).single();
+    if (authorError || !author) {
+      console.log("[External API] Creating AI author...");
+      const { error: createAuthorError } = await client.from("authors").insert({
+        id: AI_AUTHOR_ID,
+        email: "ai@cnspecialtyoils.com",
+        display_name: "AI \u7F16\u8F91",
+        bio: "\u81EA\u52A8\u91C7\u96C6\u884C\u4E1A\u8D44\u8BAF\uFF0C\u7531\u4EBA\u5DE5\u667A\u80FD\u751F\u6210",
+        status: "active",
+        created_at: (/* @__PURE__ */ new Date()).toISOString()
+      });
+      if (createAuthorError) {
+        console.error("[External API] Failed to create AI author:", createAuthorError);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to initialize AI author"
+        });
+      }
+      author = { id: AI_AUTHOR_ID, display_name: "AI \u7F16\u8F91" };
+    }
+    if (sourceUrl) {
+      const { data: existingPost } = await client.from("blog_posts").select("id, title").eq("source_url", sourceUrl).single();
+      if (existingPost) {
+        console.log("[External API] Duplicate article detected:", sourceUrl);
+        return res.status(409).json({
+          success: false,
+          error: "Article already exists",
+          existingArticleId: existingPost.id
+        });
+      }
+    }
+    const { data: similarPosts } = await client.from("blog_posts").select("id, title").ilike("title", `%${title.substring(0, 30)}%`).limit(5);
+    if (similarPosts && similarPosts.length > 0) {
+      const exactMatch = similarPosts.find(
+        (p) => p.title.toLowerCase() === title.toLowerCase()
+      );
+      if (exactMatch) {
+        console.log("[External API] Duplicate title detected:", title);
+        return res.status(409).json({
+          success: false,
+          error: "Article with same title already exists",
+          existingArticleId: exactMatch.id
+        });
+      }
+    }
+    const postId = generateId();
+    const now = (/* @__PURE__ */ new Date()).toISOString();
+    const { error: insertError } = await client.from("blog_posts").insert({
+      id: postId,
+      title,
+      excerpt: excerpt || content.replace(/<[^>]*>/g, "").substring(0, 150) + "...",
+      content,
+      category: category || "Industry News",
+      tags: tags || ["\u884C\u4E1A\u52A8\u6001"],
+      featured_image: featuredImage,
+      author_id: AI_AUTHOR_ID,
+      author: author.display_name,
+      review_status: "pending",
+      // 需要管理员审核
+      source_url: sourceUrl || null,
+      publishedAt: now,
+      created_at: now,
+      updated_at: now,
+      view_count: 0,
+      like_count: 0
+    });
+    if (insertError) {
+      console.error("[External API] Insert article error:", insertError);
+      return res.status(500).json({
+        success: false,
+        error: "Failed to create article"
+      });
+    }
+    console.log("[External API] Article created successfully:", postId);
+    res.status(201).json({
+      success: true,
+      message: "Article submitted successfully, pending review",
+      articleId: postId,
+      status: "pending"
+    });
+  } catch (error) {
+    console.error("[External API] Create article error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to create article"
+    });
+  }
+});
+app.get("/api/external/health", validateApiKey, (req, res) => {
+  res.json({
+    success: true,
+    message: "External API is operational",
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  });
 });
 app.get("*", (req, res) => {
   if (req.path.startsWith("/api/") || req.path.startsWith("/feishu/")) {

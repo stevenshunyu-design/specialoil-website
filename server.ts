@@ -77,6 +77,11 @@ const FEISHU_CHAT_ID = process.env.FEISHU_CHAT_ID;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_API_HOST = process.env.OPENAI_API_HOST || 'api.openai.com';
 
+// 外部 API 密钥（用于扣子 AI 等第三方调用）
+const EXTERNAL_API_KEY = process.env.EXTERNAL_API_KEY;
+// AI 作者 ID（默认使用 ai_bot_001）
+const AI_AUTHOR_ID = process.env.AI_AUTHOR_ID || 'ai_bot_001';
+
 console.log('========================================');
 console.log('Server Configuration:');
 console.log('FEISHU_APP_ID:', FEISHU_APP_ID || 'NOT SET');
@@ -88,6 +93,8 @@ console.log('OPENAI_API_KEY:', OPENAI_API_KEY ? 'SET' : 'NOT SET');
 console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'SET' : 'NOT SET');
 console.log('FROM_EMAIL:', process.env.FROM_EMAIL || 'NOT SET');
 console.log('ADMIN_EMAIL:', process.env.ADMIN_EMAIL || 'NOT SET');
+console.log('EXTERNAL_API_KEY:', EXTERNAL_API_KEY ? 'SET' : 'NOT SET');
+console.log('AI_AUTHOR_ID:', AI_AUTHOR_ID);
 console.log('========================================');
 
 // ==================== 飞书 Token 管理 ====================
@@ -3534,6 +3541,223 @@ app.post('/api/author/articles', async (req: Request, res: Response) => {
     console.error('Create article error:', error);
     res.status(500).json({ success: false, error: 'Failed to create article' });
   }
+});
+
+// ==================== 外部 API 接口（供扣子 AI 等第三方调用）====================
+
+/**
+ * API Key 验证中间件
+ */
+const validateApiKey = (req: Request, res: Response, next: Function) => {
+  const apiKey = req.headers['x-api-key'] as string;
+  
+  if (!EXTERNAL_API_KEY) {
+    console.error('EXTERNAL_API_KEY not configured');
+    return res.status(500).json({ 
+      success: false, 
+      error: 'API key not configured on server' 
+    });
+  }
+  
+  if (!apiKey || apiKey !== EXTERNAL_API_KEY) {
+    return res.status(401).json({ 
+      success: false, 
+      error: 'Invalid or missing API key' 
+    });
+  }
+  
+  next();
+};
+
+/**
+ * 外部文章上传接口
+ * POST /api/external/articles
+ * Headers: X-API-Key: your-api-key
+ * Body: { title, content, excerpt?, category?, tags?, featuredImage?, sourceUrl? }
+ */
+app.post('/api/external/articles', validateApiKey, async (req: Request, res: Response) => {
+  try {
+    const { 
+      title, 
+      content, 
+      excerpt, 
+      category, 
+      tags, 
+      featuredImage, 
+      sourceUrl 
+    } = req.body;
+    
+    console.log('[External API] Article upload request:', { 
+      title: title?.substring(0, 50), 
+      sourceUrl,
+      hasContent: !!content 
+    });
+    
+    // 参数验证
+    if (!title || !content) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Title and content are required' 
+      });
+    }
+    
+    // 内容长度验证
+    if (title.length < 5 || title.length > 200) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Title must be between 5 and 200 characters' 
+      });
+    }
+    
+    if (content.length < 100) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Content must be at least 100 characters' 
+      });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Database not configured' 
+      });
+    }
+
+    // 检查 AI 作者是否存在，不存在则自动创建
+    let { data: author, error: authorError } = await client
+      .from('authors')
+      .select('id, display_name')
+      .eq('id', AI_AUTHOR_ID)
+      .single();
+
+    if (authorError || !author) {
+      // 自动创建 AI 作者
+      console.log('[External API] Creating AI author...');
+      const { error: createAuthorError } = await client
+        .from('authors')
+        .insert({
+          id: AI_AUTHOR_ID,
+          email: 'ai@cnspecialtyoils.com',
+          display_name: 'AI 编辑',
+          bio: '自动采集行业资讯，由人工智能生成',
+          status: 'active',
+          created_at: new Date().toISOString()
+        });
+      
+      if (createAuthorError) {
+        console.error('[External API] Failed to create AI author:', createAuthorError);
+        return res.status(500).json({ 
+          success: false, 
+          error: 'Failed to initialize AI author' 
+        });
+      }
+      
+      author = { id: AI_AUTHOR_ID, display_name: 'AI 编辑' };
+    }
+
+    // 去重检查：根据来源 URL
+    if (sourceUrl) {
+      const { data: existingPost } = await client
+        .from('blog_posts')
+        .select('id, title')
+        .eq('source_url', sourceUrl)
+        .single();
+      
+      if (existingPost) {
+        console.log('[External API] Duplicate article detected:', sourceUrl);
+        return res.status(409).json({ 
+          success: false, 
+          error: 'Article already exists',
+          existingArticleId: existingPost.id 
+        });
+      }
+    }
+
+    // 去重检查：根据标题相似度
+    const { data: similarPosts } = await client
+      .from('blog_posts')
+      .select('id, title')
+      .ilike('title', `%${title.substring(0, 30)}%`)
+      .limit(5);
+    
+    if (similarPosts && similarPosts.length > 0) {
+      // 简单的标题相似度检查
+      const exactMatch = similarPosts.find(p => 
+        p.title.toLowerCase() === title.toLowerCase()
+      );
+      
+      if (exactMatch) {
+        console.log('[External API] Duplicate title detected:', title);
+        return res.status(409).json({ 
+          success: false, 
+          error: 'Article with same title already exists',
+          existingArticleId: exactMatch.id 
+        });
+      }
+    }
+
+    // 生成文章 ID
+    const postId = generateId();
+    const now = new Date().toISOString();
+
+    // 插入文章（状态为 pending，需要审核）
+    const { error: insertError } = await client
+      .from('blog_posts')
+      .insert({
+        id: postId,
+        title,
+        excerpt: excerpt || content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+        content,
+        category: category || 'Industry News',
+        tags: tags || ['行业动态'],
+        featured_image: featuredImage,
+        author_id: AI_AUTHOR_ID,
+        author: author.display_name,
+        review_status: 'pending', // 需要管理员审核
+        source_url: sourceUrl || null,
+        publishedAt: now,
+        created_at: now,
+        updated_at: now,
+        view_count: 0,
+        like_count: 0
+      });
+
+    if (insertError) {
+      console.error('[External API] Insert article error:', insertError);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to create article' 
+      });
+    }
+
+    console.log('[External API] Article created successfully:', postId);
+    
+    res.status(201).json({ 
+      success: true, 
+      message: 'Article submitted successfully, pending review',
+      articleId: postId,
+      status: 'pending'
+    });
+  } catch (error) {
+    console.error('[External API] Create article error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to create article' 
+    });
+  }
+});
+
+/**
+ * 外部 API 健康检查
+ * GET /api/external/health
+ */
+app.get('/api/external/health', validateApiKey, (req: Request, res: Response) => {
+  res.json({ 
+    success: true, 
+    message: 'External API is operational',
+    timestamp: new Date().toISOString()
+  });
 });
 
 // SPA 路由回退 - 所有非 API 路由返回 index.html
