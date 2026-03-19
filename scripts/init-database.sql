@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   tags TEXT[] DEFAULT '{}',
   featured_image TEXT,
   author TEXT,
-  author_id UUID,
+  author_id VARCHAR(50),
   review_status TEXT DEFAULT 'pending',
   reviewed_at TIMESTAMPTZ,
   reviewed_by TEXT,
