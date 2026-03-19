@@ -1,11 +1,10 @@
+"use strict";
+var __create = Object.create;
 var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
-var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
-  get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
-}) : x)(function(x) {
-  if (typeof require !== "undefined") return require.apply(this, arguments);
-  throw Error('Dynamic require of "' + x + '" is not supported');
-});
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __esm = (fn, res) => function __init() {
   return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
 };
@@ -13,24 +12,852 @@ var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 
-// src/lib/email.ts
+// src/lib/email.js
 var email_exports = {};
 __export(email_exports, {
-  resend: () => resend,
-  sendAdminApplicationNotification: () => sendAdminApplicationNotification,
-  sendApplicationConfirmation: () => sendApplicationConfirmation,
-  sendApprovalEmail: () => sendApprovalEmail,
-  sendArticleApprovalEmail: () => sendArticleApprovalEmail,
-  sendArticleRejectionEmail: () => sendArticleRejectionEmail,
+  resend: () => resend2,
+  sendAdminApplicationNotification: () => sendAdminApplicationNotification2,
+  sendApplicationConfirmation: () => sendApplicationConfirmation2,
+  sendApprovalEmail: () => sendApprovalEmail2,
+  sendArticleApprovalEmail: () => sendArticleApprovalEmail2,
+  sendArticleRejectionEmail: () => sendArticleRejectionEmail2,
   sendNewsletter: () => sendNewsletter,
   sendNewsletterToSubscribers: () => sendNewsletterToSubscribers,
-  sendRejectionEmail: () => sendRejectionEmail,
-  sendSubscriptionConfirmation: () => sendSubscriptionConfirmation,
+  sendRejectionEmail: () => sendRejectionEmail2,
+  sendSubscriptionConfirmation: () => sendSubscriptionConfirmation2,
   sendUnsubscribeConfirmation: () => sendUnsubscribeConfirmation,
-  sendVerificationCode: () => sendVerificationCode
+  sendVerificationCode: () => sendVerificationCode2
 });
-import { Resend } from "resend";
+async function sendSubscriptionConfirmation2(email) {
+  if (!resend2) {
+    console.log("Resend not configured, skipping email");
+    return false;
+  }
+  const unsubscribeUrl = `${SITE_URL2}/unsubscribe?email=${encodeURIComponent(email)}`;
+  try {
+    const { data, error } = await resend2.emails.send({
+      from: FROM_EMAIL2,
+      to: email,
+      subject: `Welcome to ${SITE_NAME2} Newsletter! \u{1F4E7}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles2}
+        </head>
+        <body>
+          <div class="header">
+            <h1>\u{1F3ED} ${SITE_NAME2}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Your Trusted China Special Oil Partner</p>
+          </div>
+          <div class="content">
+            <h2>Welcome to Our Newsletter!</h2>
+            <p>Thank you for subscribing to the <strong>${SITE_NAME2}</strong> newsletter.</p>
+            <p>You'll now receive:</p>
+            <ul>
+              <li>\u{1F4CA} Latest China special oil industry news</li>
+              <li>\u{1F527} Technical insights and product updates</li>
+              <li>\u{1F4C8} Market analysis and price trends</li>
+              <li>\u{1F381} Exclusive offers and promotions</li>
+            </ul>
+            <p style="margin-top: 30px;">Stay tuned for our next update!</p>
+            <p>Best regards,<br><strong>The ${SITE_NAME2} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p>You're receiving this email because you subscribed to our newsletter.</p>
+            <p>
+              <a href="${unsubscribeUrl}">Unsubscribe</a> | 
+              <a href="${SITE_URL2}">Visit Website</a>
+            </p>
+          </div>
+        </body>
+        </html>
+      `
+    });
+    if (error) {
+      console.error("Failed to send subscription email:", error);
+      return false;
+    }
+    console.log("Subscription email sent:", data?.id);
+    return true;
+  } catch (error) {
+    console.error("Error sending subscription email:", error);
+    return false;
+  }
+}
+async function sendUnsubscribeConfirmation(email) {
+  if (!resend2) {
+    console.log("Resend not configured, skipping email");
+    return false;
+  }
+  const resubscribeUrl = `${SITE_URL2}/blog`;
+  try {
+    const { data, error } = await resend2.emails.send({
+      from: FROM_EMAIL2,
+      to: email,
+      subject: `You've been unsubscribed from ${SITE_NAME2} Newsletter`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles2}
+        </head>
+        <body>
+          <div class="header">
+            <h1>\u{1F3ED} ${SITE_NAME2}</h1>
+          </div>
+          <div class="content">
+            <h2>Unsubscribe Confirmation</h2>
+            <p>You have been successfully unsubscribed from our newsletter.</p>
+            <p>We're sorry to see you go! If you change your mind, you can always resubscribe:</p>
+            <a href="${resubscribeUrl}" class="button">Resubscribe</a>
+            <p>Thank you for being part of our community.</p>
+            <p>Best regards,<br><strong>The ${SITE_NAME2} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL2}">Visit Website</a></p>
+          </div>
+        </body>
+        </html>
+      `
+    });
+    if (error) {
+      console.error("Failed to send unsubscribe email:", error);
+      return false;
+    }
+    console.log("Unsubscribe email sent:", data?.id);
+    return true;
+  } catch (error) {
+    console.error("Error sending unsubscribe email:", error);
+    return false;
+  }
+}
+async function sendNewsletter(subject, articles, previewText) {
+  if (!resend2) {
+    return { success: false, sentCount: 0, error: "Resend not configured" };
+  }
+  try {
+    const { data, error } = await resend2.emails.send({
+      from: FROM_EMAIL2,
+      to: "delivered@resend.dev",
+      // 批量发送时使用这个
+      subject,
+      html: generateNewsletterHTML(subject, articles, previewText)
+    });
+    if (error) {
+      return { success: false, sentCount: 0, error: error.message };
+    }
+    return { success: true, sentCount: 1 };
+  } catch (error) {
+    return {
+      success: false,
+      sentCount: 0,
+      error: error instanceof Error ? error.message : "Unknown error"
+    };
+  }
+}
+async function sendNewsletterToSubscribers(subscribers, subject, articles, previewText) {
+  if (!resend2) {
+    return { success: false, sentCount: 0, errors: ["Resend not configured"] };
+  }
+  const errors = [];
+  let sentCount = 0;
+  for (const email of subscribers) {
+    const unsubscribeUrl = `${SITE_URL2}/unsubscribe?email=${encodeURIComponent(email)}`;
+    try {
+      const { error } = await resend2.emails.send({
+        from: FROM_EMAIL2,
+        to: email,
+        subject,
+        html: generateNewsletterHTML(subject, articles, previewText, unsubscribeUrl)
+      });
+      if (error) {
+        errors.push(`${email}: ${error.message}`);
+      } else {
+        sentCount++;
+      }
+      if (sentCount % 10 === 0) {
+        await new Promise((resolve) => setTimeout(resolve, 1e3));
+      }
+    } catch (err) {
+      errors.push(`${email}: ${err instanceof Error ? err.message : "Unknown error"}`);
+    }
+  }
+  return { success: sentCount > 0, sentCount, errors };
+}
+function generateNewsletterHTML(subject, articles, previewText, unsubscribeUrl) {
+  const defaultUnsubscribeUrl = `${SITE_URL2}/unsubscribe`;
+  const articlesHTML = articles.map((article) => `
+    <div class="article">
+      <h3><a href="${article.url}">${article.title}</a></h3>
+      <p>${article.summary}</p>
+      <a href="${article.url}" style="color: #D4AF37; text-decoration: none;">Read more \u2192</a>
+    </div>
+  `).join("");
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      ${emailStyles2}
+    </head>
+    <body>
+      <div class="header">
+        <h1>\u{1F3ED} ${SITE_NAME2}</h1>
+        <p style="margin: 10px 0 0; opacity: 0.9;">Newsletter</p>
+      </div>
+      <div class="content">
+        <h2>${subject}</h2>
+        ${previewText ? `<p style="color: #666; font-style: italic;">${previewText}</p>` : ""}
+        ${articlesHTML}
+        <p style="margin-top: 30px;">Stay connected with us!</p>
+        <p>Best regards,<br><strong>The ${SITE_NAME2} Team</strong></p>
+      </div>
+      <div class="footer">
+        <p>You're receiving this email because you subscribed to our newsletter.</p>
+        <p>
+          <a href="${unsubscribeUrl || defaultUnsubscribeUrl}">Unsubscribe</a> | 
+          <a href="${SITE_URL2}">Visit Website</a>
+        </p>
+      </div>
+    </body>
+    </html>
+  `;
+}
+async function sendVerificationCode2(email, code, type = "register") {
+  if (!resend2) {
+    console.log("========================================");
+    console.log("\u{1F4E7} EMAIL VERIFICATION CODE");
+    console.log("========================================");
+    console.log(`To: ${email}`);
+    console.log(`Type: ${type}`);
+    console.log(`Code: ${code}`);
+    console.log(`Expires: 10 minutes`);
+    console.log("========================================");
+    return true;
+  }
+  const typeText = type === "register" ? "Email Verification" : type === "bind_email" ? "Bind New Email" : type === "admin_login" ? "Admin Login Verification" : "Password Reset";
+  const purposeText = type === "register" ? "Please use the following code to verify your email address for author registration." : type === "bind_email" ? "Please use the following code to verify your new email address for account binding." : type === "admin_login" ? "Please use the following code to verify your identity for admin panel login." : "Please use the following code to reset your password.";
+  try {
+    console.log(`\u{1F4E7} Sending ${type} verification code to ${email}...`);
+    console.log(`\u{1F4E7} From: ${FROM_EMAIL2}`);
+    const { data, error } = await resend2.emails.send({
+      from: FROM_EMAIL2,
+      to: email,
+      subject: `${SITE_NAME2} - ${typeText} Code`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles2}
+        </head>
+        <body>
+          <div class="header">
+            <h1>\u{1F3ED} ${SITE_NAME2}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>${typeText}</h2>
+            <p>${purposeText}</p>
+            <div style="background: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
+              <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #003366;">${code}</span>
+            </div>
+            <p style="color: #666; font-size: 14px;">This code will expire in <strong>10 minutes</strong>.</p>
+            <p style="color: #999; font-size: 12px;">If you didn't request this code, please ignore this email.</p>
+            <p style="margin-top: 30px;">Best regards,<br><strong>The ${SITE_NAME2} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL2}">Visit Website</a></p>
+          </div>
+        </body>
+        </html>
+      `
+    });
+    if (error) {
+      console.error("\u274C Failed to send verification code:");
+      console.error("  Error name:", error.name);
+      console.error("  Error message:", error.message);
+      console.error("  Full error:", JSON.stringify(error, null, 2));
+      return false;
+    }
+    console.log("\u2705 Verification code sent successfully!");
+    console.log("  Email ID:", data?.id);
+    return true;
+  } catch (error) {
+    console.error("\u274C Exception sending verification code:");
+    console.error("  Message:", error?.message);
+    console.error("  Stack:", error?.stack);
+    return false;
+  }
+}
+async function sendApplicationConfirmation2(email, name) {
+  if (!resend2) {
+    console.log("Resend not configured, skipping email");
+    return false;
+  }
+  try {
+    const { data, error } = await resend2.emails.send({
+      from: FROM_EMAIL2,
+      to: email,
+      subject: `${SITE_NAME2} - Author Application Submitted`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles2}
+        </head>
+        <body>
+          <div class="header">
+            <h1>\u{1F3ED} ${SITE_NAME2}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>Application Received!</h2>
+            <p>Dear <strong>${name}</strong>,</p>
+            <p>Thank you for applying to become an author on <strong>${SITE_NAME2}</strong>.</p>
+            <p>Your application has been submitted successfully and is now <strong>pending review</strong> by our team.</p>
+            <div style="background: #fff3cd; border-left: 4px solid #D4AF37; padding: 15px; margin: 20px 0; border-radius: 4px;">
+              <p style="margin: 0; color: #856404;"><strong>\u23F3 What's Next?</strong></p>
+              <ul style="margin: 10px 0 0; padding-left: 20px; color: #856404;">
+                <li>Our team will review your application within 1-3 business days</li>
+                <li>You will receive an email notification once approved</li>
+                <li>To expedite the review process, you may contact our administrator</li>
+              </ul>
+            </div>
+            <p style="margin-top: 30px;">Best regards,<br><strong>The ${SITE_NAME2} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL2}">Visit Website</a> | <a href="mailto:kdwelly@163.com">Contact Administrator</a></p>
+          </div>
+        </body>
+        </html>
+      `
+    });
+    if (error) {
+      console.error("Failed to send application confirmation:", error);
+      return false;
+    }
+    console.log("Application confirmation sent:", data?.id);
+    return true;
+  } catch (error) {
+    console.error("Error sending application confirmation:", error);
+    return false;
+  }
+}
+async function sendAdminApplicationNotification2(applicantName, applicantEmail, company, expertiseAreas, bio) {
+  if (!resend2) {
+    console.log("Resend not configured, skipping email");
+    return false;
+  }
+  const adminEmail = process.env.ADMIN_EMAIL || "kdwelly@163.com";
+  try {
+    const { data, error } = await resend2.emails.send({
+      from: FROM_EMAIL2,
+      to: adminEmail,
+      subject: `\u{1F514} New Author Application - ${applicantName}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles2}
+        </head>
+        <body>
+          <div class="header">
+            <h1>\u{1F3ED} ${SITE_NAME2}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">New Author Application</p>
+          </div>
+          <div class="content">
+            <h2>New Author Application Received</h2>
+            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="margin-top: 0;">Applicant Information</h3>
+              <table style="width: 100%;">
+                <tr>
+                  <td style="padding: 8px 0; color: #666; width: 120px;"><strong>Name:</strong></td>
+                  <td style="padding: 8px 0;">${applicantName}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Email:</strong></td>
+                  <td style="padding: 8px 0;"><a href="mailto:${applicantEmail}">${applicantEmail}</a></td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Company:</strong></td>
+                  <td style="padding: 8px 0;">${company || "Not provided"}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Expertise:</strong></td>
+                  <td style="padding: 8px 0;">${expertiseAreas.join(", ") || "Not specified"}</td>
+                </tr>
+              </table>
+              ${bio ? `
+                <h4 style="margin-top: 15px;">About the Applicant</h4>
+                <p style="background: white; padding: 15px; border-radius: 4px; border: 1px solid #ddd;">${bio}</p>
+              ` : ""}
+            </div>
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${SITE_URL2}/admin?tab=applications" class="button">Review Application</a>
+            </div>
+            <p style="margin-top: 30px;">Best regards,<br><strong>${SITE_NAME2} System</strong></p>
+          </div>
+          <div class="footer">
+            <p>This is an automated notification from ${SITE_NAME2}</p>
+          </div>
+        </body>
+        </html>
+      `
+    });
+    if (error) {
+      console.error("Failed to send admin notification:", error);
+      return false;
+    }
+    console.log("Admin notification sent:", data?.id);
+    return true;
+  } catch (error) {
+    console.error("Error sending admin notification:", error);
+    return false;
+  }
+}
+async function sendApprovalEmail2(email, name, username, tempPassword) {
+  if (!resend2) {
+    console.log("Resend not configured, skipping email");
+    return false;
+  }
+  const loginUrl = `${SITE_URL2}/author/login`;
+  try {
+    const { data, error } = await resend2.emails.send({
+      from: FROM_EMAIL2,
+      to: email,
+      subject: `\u{1F389} ${SITE_NAME2} - Your Author Account is Approved!`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles2}
+        </head>
+        <body>
+          <div class="header">
+            <h1>\u{1F3ED} ${SITE_NAME2}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>\u{1F389} Congratulations, ${name}!</h2>
+            <p>Your author application has been <strong style="color: #28a745;">approved</strong>! Welcome to the <strong>${SITE_NAME2}</strong> author community.</p>
+            
+            <div style="background: #e8f5e9; border-left: 4px solid #28a745; padding: 20px; margin: 20px 0; border-radius: 4px;">
+              <h3 style="margin-top: 0; color: #28a745;">Your Account Details</h3>
+              <table style="width: 100%;">
+                <tr>
+                  <td style="padding: 8px 0; color: #666; width: 120px;"><strong>Username:</strong></td>
+                  <td style="padding: 8px 0; font-family: monospace; background: white; padding: 5px 10px; border-radius: 4px;">${username}</td>
+                </tr>
+                ${tempPassword ? `
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Temp Password:</strong></td>
+                  <td style="padding: 8px 0; font-family: monospace; background: white; padding: 5px 10px; border-radius: 4px;">${tempPassword}</td>
+                </tr>
+                ` : ""}
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Login URL:</strong></td>
+                  <td style="padding: 8px 0;"><a href="${loginUrl}">${loginUrl}</a></td>
+                </tr>
+              </table>
+            </div>
+            
+            <p><strong>\u26A0\uFE0F Important:</strong> Please change your password after your first login.</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${loginUrl}" class="button">Login Now</a>
+            </div>
+            
+            <h4>What you can do now:</h4>
+            <ul>
+              <li>\u{1F4DD} Write and publish articles about special oil industry</li>
+              <li>\u{1F4CA} Track your article views and engagement</li>
+              <li>\u{1F468}\u200D\u{1F4BC} Manage your author profile</li>
+            </ul>
+            
+            <p style="margin-top: 30px;">We look forward to seeing your contributions!</p>
+            <p>Best regards,<br><strong>The ${SITE_NAME2} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL2}">Visit Website</a> | <a href="mailto:kdwelly@163.com">Contact Administrator</a></p>
+          </div>
+        </body>
+        </html>
+      `
+    });
+    if (error) {
+      console.error("Failed to send approval email:", error);
+      return false;
+    }
+    console.log("Approval email sent:", data?.id);
+    return true;
+  } catch (error) {
+    console.error("Error sending approval email:", error);
+    return false;
+  }
+}
+async function sendRejectionEmail2(email, name, reason) {
+  if (!resend2) {
+    console.log("Resend not configured, skipping email");
+    return false;
+  }
+  try {
+    const { data, error } = await resend2.emails.send({
+      from: FROM_EMAIL2,
+      to: email,
+      subject: `${SITE_NAME2} - Application Status Update`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles2}
+        </head>
+        <body>
+          <div class="header">
+            <h1>\u{1F3ED} ${SITE_NAME2}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>Application Status Update</h2>
+            <p>Dear <strong>${name}</strong>,</p>
+            <p>Thank you for your interest in becoming an author on <strong>${SITE_NAME2}</strong>.</p>
+            <p>After careful review, we regret to inform you that your application was not approved at this time.</p>
+            
+            ${reason ? `
+            <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+              <p style="margin: 0; color: #856404;"><strong>Reason:</strong></p>
+              <p style="margin: 10px 0 0; color: #856404;">${reason}</p>
+            </div>
+            ` : ""}
+            
+            <p>You're welcome to reapply in the future with updated information.</p>
+            <p>If you have any questions, please don't hesitate to contact our administrator.</p>
+            
+            <p style="margin-top: 30px;">Best regards,<br><strong>The ${SITE_NAME2} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL2}">Visit Website</a> | <a href="mailto:kdwelly@163.com">Contact Administrator</a></p>
+          </div>
+        </body>
+        </html>
+      `
+    });
+    if (error) {
+      console.error("Failed to send rejection email:", error);
+      return false;
+    }
+    console.log("Rejection email sent:", data?.id);
+    return true;
+  } catch (error) {
+    console.error("Error sending rejection email:", error);
+    return false;
+  }
+}
+async function sendArticleApprovalEmail2(email, authorName, articleTitle, articleId) {
+  if (!resend2) {
+    console.log("Resend not configured, skipping email");
+    return false;
+  }
+  const articleUrl = `${SITE_URL2}/blog/${articleId}`;
+  try {
+    const { data, error } = await resend2.emails.send({
+      from: FROM_EMAIL2,
+      to: email,
+      subject: `\u{1F389} ${SITE_NAME2} - Your Article Has Been Published!`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles2}
+        </head>
+        <body>
+          <div class="header">
+            <h1>\u{1F3ED} ${SITE_NAME2}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>\u{1F389} Congratulations, ${authorName}!</h2>
+            <p>Your article has been <strong style="color: #28a745;">approved and published</strong>!</p>
+            
+            <div style="background: #e8f5e9; border-left: 4px solid #28a745; padding: 20px; margin: 20px 0; border-radius: 4px;">
+              <h3 style="margin-top: 0; color: #28a745;">Article Details</h3>
+              <p style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">${articleTitle}</p>
+              <a href="${articleUrl}" class="button" style="display: inline-block; background: #D4AF37; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">View Article</a>
+            </div>
+            
+            <p>Your article is now live and visible to all visitors. Share it with your network!</p>
+            
+            <h4>What happens next:</h4>
+            <ul>
+              <li>\u{1F4C8} Track your article's views and engagement</li>
+              <li>\u{1F4AC} Respond to reader comments</li>
+              <li>\u270D\uFE0F Continue writing more great content</li>
+            </ul>
+            
+            <p style="margin-top: 30px;">Thank you for contributing to ${SITE_NAME2}!</p>
+            <p>Best regards,<br><strong>The ${SITE_NAME2} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL2}/author/dashboard">Author Dashboard</a> | <a href="${SITE_URL2}">Visit Website</a></p>
+          </div>
+        </body>
+        </html>
+      `
+    });
+    if (error) {
+      console.error("Failed to send article approval email:", error);
+      return false;
+    }
+    console.log("Article approval email sent:", data?.id);
+    return true;
+  } catch (error) {
+    console.error("Error sending article approval email:", error);
+    return false;
+  }
+}
+async function sendArticleRejectionEmail2(email, authorName, articleTitle, reason) {
+  if (!resend2) {
+    console.log("Resend not configured, skipping email");
+    return false;
+  }
+  const dashboardUrl = `${SITE_URL2}/author/dashboard`;
+  try {
+    const { data, error } = await resend2.emails.send({
+      from: FROM_EMAIL2,
+      to: email,
+      subject: `${SITE_NAME2} - Article Review Update`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles2}
+        </head>
+        <body>
+          <div class="header">
+            <h1>\u{1F3ED} ${SITE_NAME2}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Author Platform</p>
+          </div>
+          <div class="content">
+            <h2>Article Review Update</h2>
+            <p>Dear <strong>${authorName}</strong>,</p>
+            <p>Thank you for submitting your article to <strong>${SITE_NAME2}</strong>.</p>
+            <p>After review, your article "<strong>${articleTitle}</strong>" requires some revisions before it can be published.</p>
+            
+            ${reason ? `
+            <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+              <p style="margin: 0; color: #856404;"><strong>Reviewer Feedback:</strong></p>
+              <p style="margin: 10px 0 0; color: #856404;">${reason}</p>
+            </div>
+            ` : ""}
+            
+            <p>Please review the feedback above and make the necessary changes. You can edit and resubmit your article from your dashboard.</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${dashboardUrl}" class="button">Go to Dashboard</a>
+            </div>
+            
+            <p style="margin-top: 30px;">We look forward to seeing your revised article!</p>
+            <p>Best regards,<br><strong>The ${SITE_NAME2} Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL2}">Visit Website</a> | <a href="mailto:kdwelly@163.com">Contact Administrator</a></p>
+          </div>
+        </body>
+        </html>
+      `
+    });
+    if (error) {
+      console.error("Failed to send article rejection email:", error);
+      return false;
+    }
+    console.log("Article rejection email sent:", data?.id);
+    return true;
+  } catch (error) {
+    console.error("Error sending article rejection email:", error);
+    return false;
+  }
+}
+var import_resend2, resend2, FROM_EMAIL2, SITE_NAME2, SITE_URL2, emailStyles2;
+var init_email = __esm({
+  "src/lib/email.js"() {
+    "use strict";
+    import_resend2 = require("resend");
+    console.log("\u{1F4E7} Email Service Config:");
+    console.log("  RESEND_API_KEY:", process.env.RESEND_API_KEY ? "SET" : "NOT SET");
+    console.log("  FROM_EMAIL:", process.env.FROM_EMAIL || "default: steven.shunyu@gmail.com");
+    resend2 = process.env.RESEND_API_KEY ? new import_resend2.Resend(process.env.RESEND_API_KEY) : null;
+    FROM_EMAIL2 = process.env.FROM_EMAIL || "steven.shunyu@gmail.com";
+    SITE_NAME2 = "SpecialOil";
+    SITE_URL2 = process.env.SITE_URL || "https://specialoil.com";
+    emailStyles2 = `
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #003366 0%, #004488 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+    .header h1 { margin: 0; font-size: 28px; }
+    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+    .button { display: inline-block; background: #D4AF37; color: white; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 20px 0; }
+    .button:hover { background: #c9a02e; }
+    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+    .footer a { color: #003366; }
+    .article { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #D4AF37; }
+    .article h3 { margin: 0 0 10px; color: #003366; }
+    .article a { color: #D4AF37; text-decoration: none; }
+  </style>
+`;
+  }
+});
+
+// server.ts
+var import_express = __toESM(require("express"), 1);
+var import_cors = __toESM(require("cors"), 1);
+var import_http = require("http");
+var import_socket = require("socket.io");
+
+// src/storage/database/supabase-client.ts
+var import_supabase_js = require("@supabase/supabase-js");
+var import_child_process = require("child_process");
+var envLoaded = false;
+function loadEnv() {
+  const hasUrl = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
+  const hasKey = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  if (envLoaded || hasUrl && hasKey) {
+    return;
+  }
+  try {
+    try {
+      require("dotenv").config();
+      const hasUrlNow = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
+      const hasKeyNow = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+      if (hasUrlNow && hasKeyNow) {
+        envLoaded = true;
+        return;
+      }
+    } catch {
+    }
+    const pythonCode = `
+import os
+import sys
+try:
+    from coze_workload_identity import Client
+    client = Client()
+    env_vars = client.get_project_env_vars()
+    client.close()
+    for env_var in env_vars:
+        print(f"{env_var.key}={env_var.value}")
+except Exception as e:
+    print(f"# Error: {e}", file=sys.stderr)
+`;
+    const output = (0, import_child_process.execSync)(`python3 -c '${pythonCode.replace(/'/g, `'"'"'`)}'`, {
+      encoding: "utf-8",
+      timeout: 1e4,
+      stdio: ["pipe", "pipe", "pipe"]
+    });
+    const lines = output.trim().split("\n");
+    for (const line of lines) {
+      if (line.startsWith("#")) continue;
+      const eqIndex = line.indexOf("=");
+      if (eqIndex > 0) {
+        const key = line.substring(0, eqIndex);
+        let value = line.substring(eqIndex + 1);
+        if (value.startsWith("'") && value.endsWith("'") || value.startsWith('"') && value.endsWith('"')) {
+          value = value.slice(1, -1);
+        }
+        if (!process.env[key]) {
+          process.env[key] = value;
+        }
+      }
+    }
+    envLoaded = true;
+  } catch {
+  }
+}
+function getSupabaseCredentials() {
+  loadEnv();
+  const url = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
+  const anonKey = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  if (!url) {
+    throw new Error("SUPABASE_URL is not set");
+  }
+  if (!anonKey) {
+    throw new Error("SUPABASE_ANON_KEY is not set");
+  }
+  return { url, anonKey };
+}
+function getSupabaseClient(token) {
+  const { url, anonKey } = getSupabaseCredentials();
+  if (token) {
+    return (0, import_supabase_js.createClient)(url, anonKey, {
+      global: {
+        headers: { Authorization: `Bearer ${token}` }
+      },
+      db: {
+        timeout: 6e4
+      },
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    });
+  }
+  return (0, import_supabase_js.createClient)(url, anonKey, {
+    db: {
+      timeout: 6e4
+    },
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  });
+}
+
+// server.ts
+var import_coze_coding_dev_sdk = require("coze-coding-dev-sdk");
+var import_config = require("dotenv/config");
+var import_path = __toESM(require("path"), 1);
+var import_fs = __toESM(require("fs"), 1);
+var import_url = require("url");
+var import_multer = __toESM(require("multer"), 1);
+
+// src/lib/email.ts
+var import_resend = require("resend");
+console.log("\u{1F4E7} Email Service Config:");
+console.log("  RESEND_API_KEY:", process.env.RESEND_API_KEY ? "SET" : "NOT SET");
+console.log("  FROM_EMAIL:", process.env.FROM_EMAIL || "default: steven.shunyu@gmail.com");
+var resend = process.env.RESEND_API_KEY ? new import_resend.Resend(process.env.RESEND_API_KEY) : null;
+var FROM_EMAIL = process.env.FROM_EMAIL || "steven.shunyu@gmail.com";
+var SITE_NAME = "SpecialOil";
+var SITE_URL = process.env.SITE_URL || "https://specialoil.com";
+var emailStyles = `
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #003366 0%, #004488 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+    .header h1 { margin: 0; font-size: 28px; }
+    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+    .button { display: inline-block; background: #D4AF37; color: white; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 20px 0; }
+    .button:hover { background: #c9a02e; }
+    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+    .footer a { color: #003366; }
+    .article { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #D4AF37; }
+    .article h3 { margin: 0 0 10px; color: #003366; }
+    .article a { color: #D4AF37; text-decoration: none; }
+  </style>
+`;
 async function sendSubscriptionConfirmation(email) {
   if (!resend) {
     console.log("Resend not configured, skipping email");
@@ -87,144 +914,6 @@ async function sendSubscriptionConfirmation(email) {
     console.error("Error sending subscription email:", error);
     return false;
   }
-}
-async function sendUnsubscribeConfirmation(email) {
-  if (!resend) {
-    console.log("Resend not configured, skipping email");
-    return false;
-  }
-  const resubscribeUrl = `${SITE_URL}/blog`;
-  try {
-    const { data, error } = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: email,
-      subject: `You've been unsubscribed from ${SITE_NAME} Newsletter`,
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          ${emailStyles}
-        </head>
-        <body>
-          <div class="header">
-            <h1>\u{1F3ED} ${SITE_NAME}</h1>
-          </div>
-          <div class="content">
-            <h2>Unsubscribe Confirmation</h2>
-            <p>You have been successfully unsubscribed from our newsletter.</p>
-            <p>We're sorry to see you go! If you change your mind, you can always resubscribe:</p>
-            <a href="${resubscribeUrl}" class="button">Resubscribe</a>
-            <p>Thank you for being part of our community.</p>
-            <p>Best regards,<br><strong>The ${SITE_NAME} Team</strong></p>
-          </div>
-          <div class="footer">
-            <p><a href="${SITE_URL}">Visit Website</a></p>
-          </div>
-        </body>
-        </html>
-      `
-    });
-    if (error) {
-      console.error("Failed to send unsubscribe email:", error);
-      return false;
-    }
-    console.log("Unsubscribe email sent:", data?.id);
-    return true;
-  } catch (error) {
-    console.error("Error sending unsubscribe email:", error);
-    return false;
-  }
-}
-async function sendNewsletter(subject, articles, previewText) {
-  if (!resend) {
-    return { success: false, sentCount: 0, error: "Resend not configured" };
-  }
-  try {
-    const { data, error } = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: "delivered@resend.dev",
-      // 批量发送时使用这个
-      subject,
-      html: generateNewsletterHTML(subject, articles, previewText)
-    });
-    if (error) {
-      return { success: false, sentCount: 0, error: error.message };
-    }
-    return { success: true, sentCount: 1 };
-  } catch (error) {
-    return {
-      success: false,
-      sentCount: 0,
-      error: error instanceof Error ? error.message : "Unknown error"
-    };
-  }
-}
-async function sendNewsletterToSubscribers(subscribers, subject, articles, previewText) {
-  if (!resend) {
-    return { success: false, sentCount: 0, errors: ["Resend not configured"] };
-  }
-  const errors = [];
-  let sentCount = 0;
-  for (const email of subscribers) {
-    const unsubscribeUrl = `${SITE_URL}/unsubscribe?email=${encodeURIComponent(email)}`;
-    try {
-      const { error } = await resend.emails.send({
-        from: FROM_EMAIL,
-        to: email,
-        subject,
-        html: generateNewsletterHTML(subject, articles, previewText, unsubscribeUrl)
-      });
-      if (error) {
-        errors.push(`${email}: ${error.message}`);
-      } else {
-        sentCount++;
-      }
-      if (sentCount % 10 === 0) {
-        await new Promise((resolve) => setTimeout(resolve, 1e3));
-      }
-    } catch (err) {
-      errors.push(`${email}: ${err instanceof Error ? err.message : "Unknown error"}`);
-    }
-  }
-  return { success: sentCount > 0, sentCount, errors };
-}
-function generateNewsletterHTML(subject, articles, previewText, unsubscribeUrl) {
-  const defaultUnsubscribeUrl = `${SITE_URL}/unsubscribe`;
-  const articlesHTML = articles.map((article) => `
-    <div class="article">
-      <h3><a href="${article.url}">${article.title}</a></h3>
-      <p>${article.summary}</p>
-      <a href="${article.url}" style="color: #D4AF37; text-decoration: none;">Read more \u2192</a>
-    </div>
-  `).join("");
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      ${emailStyles}
-    </head>
-    <body>
-      <div class="header">
-        <h1>\u{1F3ED} ${SITE_NAME}</h1>
-        <p style="margin: 10px 0 0; opacity: 0.9;">Newsletter</p>
-      </div>
-      <div class="content">
-        <h2>${subject}</h2>
-        ${previewText ? `<p style="color: #666; font-style: italic;">${previewText}</p>` : ""}
-        ${articlesHTML}
-        <p style="margin-top: 30px;">Stay connected with us!</p>
-        <p>Best regards,<br><strong>The ${SITE_NAME} Team</strong></p>
-      </div>
-      <div class="footer">
-        <p>You're receiving this email because you subscribed to our newsletter.</p>
-        <p>
-          <a href="${unsubscribeUrl || defaultUnsubscribeUrl}">Unsubscribe</a> | 
-          <a href="${SITE_URL}">Visit Website</a>
-        </p>
-      </div>
-    </body>
-    </html>
-  `;
 }
 async function sendVerificationCode(email, code, type = "register") {
   if (!resend) {
@@ -679,147 +1368,9 @@ async function sendArticleRejectionEmail(email, authorName, articleTitle, reason
     return false;
   }
 }
-var resend, FROM_EMAIL, SITE_NAME, SITE_URL, emailStyles;
-var init_email = __esm({
-  "src/lib/email.ts"() {
-    "use strict";
-    console.log("\u{1F4E7} Email Service Config:");
-    console.log("  RESEND_API_KEY:", process.env.RESEND_API_KEY ? "SET" : "NOT SET");
-    console.log("  FROM_EMAIL:", process.env.FROM_EMAIL || "default: steven.shunyu@gmail.com");
-    resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-    FROM_EMAIL = process.env.FROM_EMAIL || "steven.shunyu@gmail.com";
-    SITE_NAME = "SpecialOil";
-    SITE_URL = process.env.SITE_URL || "https://specialoil.com";
-    emailStyles = `
-  <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: linear-gradient(135deg, #003366 0%, #004488 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
-    .header h1 { margin: 0; font-size: 28px; }
-    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
-    .button { display: inline-block; background: #D4AF37; color: white; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 20px 0; }
-    .button:hover { background: #c9a02e; }
-    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-    .footer a { color: #003366; }
-    .article { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #D4AF37; }
-    .article h3 { margin: 0 0 10px; color: #003366; }
-    .article a { color: #D4AF37; text-decoration: none; }
-  </style>
-`;
-  }
-});
 
 // server.ts
-import express from "express";
-import cors from "cors";
-import { createServer } from "http";
-import { Server } from "socket.io";
-
-// src/storage/database/supabase-client.ts
-import { createClient } from "@supabase/supabase-js";
-import { execSync } from "child_process";
-var envLoaded = false;
-function loadEnv() {
-  const hasUrl = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
-  const hasKey = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
-  if (envLoaded || hasUrl && hasKey) {
-    return;
-  }
-  try {
-    try {
-      __require("dotenv").config();
-      const hasUrlNow = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
-      const hasKeyNow = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
-      if (hasUrlNow && hasKeyNow) {
-        envLoaded = true;
-        return;
-      }
-    } catch {
-    }
-    const pythonCode = `
-import os
-import sys
-try:
-    from coze_workload_identity import Client
-    client = Client()
-    env_vars = client.get_project_env_vars()
-    client.close()
-    for env_var in env_vars:
-        print(f"{env_var.key}={env_var.value}")
-except Exception as e:
-    print(f"# Error: {e}", file=sys.stderr)
-`;
-    const output = execSync(`python3 -c '${pythonCode.replace(/'/g, `'"'"'`)}'`, {
-      encoding: "utf-8",
-      timeout: 1e4,
-      stdio: ["pipe", "pipe", "pipe"]
-    });
-    const lines = output.trim().split("\n");
-    for (const line of lines) {
-      if (line.startsWith("#")) continue;
-      const eqIndex = line.indexOf("=");
-      if (eqIndex > 0) {
-        const key = line.substring(0, eqIndex);
-        let value = line.substring(eqIndex + 1);
-        if (value.startsWith("'") && value.endsWith("'") || value.startsWith('"') && value.endsWith('"')) {
-          value = value.slice(1, -1);
-        }
-        if (!process.env[key]) {
-          process.env[key] = value;
-        }
-      }
-    }
-    envLoaded = true;
-  } catch {
-  }
-}
-function getSupabaseCredentials() {
-  loadEnv();
-  const url = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
-  const anonKey = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
-  if (!url) {
-    throw new Error("SUPABASE_URL is not set");
-  }
-  if (!anonKey) {
-    throw new Error("SUPABASE_ANON_KEY is not set");
-  }
-  return { url, anonKey };
-}
-function getSupabaseClient(token) {
-  const { url, anonKey } = getSupabaseCredentials();
-  if (token) {
-    return createClient(url, anonKey, {
-      global: {
-        headers: { Authorization: `Bearer ${token}` }
-      },
-      db: {
-        timeout: 6e4
-      },
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false
-      }
-    });
-  }
-  return createClient(url, anonKey, {
-    db: {
-      timeout: 6e4
-    },
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  });
-}
-
-// server.ts
-init_email();
-import { S3Storage } from "coze-coding-dev-sdk";
-import "dotenv/config";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
-import multer from "multer";
-import crypto from "crypto";
+var import_crypto = __toESM(require("crypto"), 1);
 console.log("\u{1F680} CODE VERSION: TEXT-MESSAGE-FORMAT-v1 (commit f5c0639)");
 process.on("uncaughtException", (error) => {
   console.error("Uncaught Exception:", error);
@@ -827,21 +1378,20 @@ process.on("uncaughtException", (error) => {
 process.on("unhandledRejection", (reason, promise) => {
   console.error("Unhandled Rejection at:", promise, "reason:", reason);
 });
-var __filename = fileURLToPath(import.meta.url);
-var __dirname = path.dirname(__filename);
-var distPath = process.env.NODE_ENV === "production" ? path.join(__dirname, "dist") : path.join(process.cwd(), "dist");
+// CommonJS: __filename 和 __dirname 是 Node.js 内置全局变量
+var distPath = process.env.NODE_ENV === "production" ? import_path.default.join(__dirname, "dist") : import_path.default.join(process.cwd(), "dist");
 console.log("========================================");
 console.log("Starting server with security features...");
 console.log("PORT:", process.env.PORT || 3001);
 console.log("NODE_ENV:", process.env.NODE_ENV || "development");
 console.log("SUPABASE_URL:", process.env.SUPABASE_URL ? "SET" : "NOT SET");
 console.log("Static files path:", distPath);
-console.log("dist directory exists:", fs.existsSync(distPath));
+console.log("dist directory exists:", import_fs.default.existsSync(distPath));
 console.log("========================================");
-var app = express();
-var httpServer = createServer(app);
+var app = (0, import_express.default)();
+var httpServer = (0, import_http.createServer)(app);
 var PORT = process.env.PORT || 3001;
-var io = new Server(httpServer, {
+var io = new import_socket.Server(httpServer, {
   cors: {
     origin: ["http://localhost:5000", "http://localhost:3000", process.env.SITE_URL].filter(Boolean),
     methods: ["GET", "POST"],
@@ -849,9 +1399,9 @@ var io = new Server(httpServer, {
   },
   path: "/socket.io/"
 });
-app.use(cors());
-app.use(express.json());
-app.use(express.static(distPath, {
+app.use((0, import_cors.default)());
+app.use(import_express.default.json());
+app.use(import_express.default.static(distPath, {
   index: false,
   // 禁止自动返回 index.html，让 SPA 路由处理
   maxAge: "1d"
@@ -865,6 +1415,8 @@ var FEISHU_APP_SECRET = process.env.FEISHU_APP_SECRET || process.env.FEISHU_CHAT
 var FEISHU_CHAT_ID = process.env.FEISHU_CHAT_ID;
 var OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 var OPENAI_API_HOST = process.env.OPENAI_API_HOST || "api.openai.com";
+var EXTERNAL_API_KEY = process.env.EXTERNAL_API_KEY;
+var AI_AUTHOR_ID = process.env.AI_AUTHOR_ID || "18d5e355-e4ea-411b-bfc5-c42beff90d1d";
 console.log("========================================");
 console.log("Server Configuration:");
 console.log("FEISHU_APP_ID:", FEISHU_APP_ID || "NOT SET");
@@ -876,6 +1428,8 @@ console.log("OPENAI_API_KEY:", OPENAI_API_KEY ? "SET" : "NOT SET");
 console.log("RESEND_API_KEY:", process.env.RESEND_API_KEY ? "SET" : "NOT SET");
 console.log("FROM_EMAIL:", process.env.FROM_EMAIL || "NOT SET");
 console.log("ADMIN_EMAIL:", process.env.ADMIN_EMAIL || "NOT SET");
+console.log("EXTERNAL_API_KEY:", EXTERNAL_API_KEY ? "SET" : "NOT SET");
+console.log("AI_AUTHOR_ID:", AI_AUTHOR_ID);
 console.log("========================================");
 var feishuAccessToken = null;
 var tokenExpireTime = 0;
@@ -1749,15 +2303,15 @@ app.patch("/api/inquiries/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update inquiry" });
   }
 });
-var imageStorage = new S3Storage({
+var imageStorage = new import_coze_coding_dev_sdk.S3Storage({
   endpointUrl: process.env.COZE_BUCKET_ENDPOINT_URL,
   accessKey: "",
   secretKey: "",
   bucketName: process.env.COZE_BUCKET_NAME,
   region: "cn-beijing"
 });
-var upload = multer({
-  storage: multer.memoryStorage(),
+var upload = (0, import_multer.default)({
+  storage: import_multer.default.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
   // 限制10MB
   fileFilter: (_req, file, cb) => {
@@ -2237,7 +2791,7 @@ app.get("/api/health", (_req, res) => {
   });
 });
 function hashPassword(password) {
-  return crypto.createHash("sha256").update(password + "specialoil_salt").digest("hex");
+  return import_crypto.default.createHash("sha256").update(password + "specialoil_salt").digest("hex");
 }
 function generateRandomPassword() {
   return Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
@@ -2439,8 +2993,8 @@ app.post("/api/admin/send-login-code", async (req, res) => {
       console.error("Failed to save admin login code:", insertError);
       return res.status(500).json({ success: false, error: "Failed to generate verification code" });
     }
-    const { sendVerificationCode: sendVerificationCode2 } = await Promise.resolve().then(() => (init_email(), email_exports));
-    const emailSent = await sendVerificationCode2(email, code, "admin_login");
+    const { sendVerificationCode: sendVerificationCode3 } = await Promise.resolve().then(() => (init_email(), email_exports));
+    const emailSent = await sendVerificationCode3(email, code, "admin_login");
     if (!emailSent) {
       console.log(`Admin login code (dev): ${code}`);
     }
@@ -3273,12 +3827,165 @@ app.post("/api/author/articles", async (req, res) => {
     res.status(500).json({ success: false, error: "Failed to create article" });
   }
 });
+var validateApiKey = (req, res, next) => {
+  const apiKey = req.headers["x-api-key"];
+  if (!EXTERNAL_API_KEY) {
+    console.error("EXTERNAL_API_KEY not configured");
+    return res.status(500).json({
+      success: false,
+      error: "API key not configured on server"
+    });
+  }
+  if (!apiKey || apiKey !== EXTERNAL_API_KEY) {
+    return res.status(401).json({
+      success: false,
+      error: "Invalid or missing API key"
+    });
+  }
+  next();
+};
+app.post("/api/external/articles", validateApiKey, async (req, res) => {
+  try {
+    const {
+      title,
+      content,
+      excerpt,
+      category,
+      tags,
+      featuredImage,
+      sourceUrl
+    } = req.body;
+    console.log("[External API] Article upload request:", {
+      title: title?.substring(0, 50),
+      sourceUrl,
+      hasContent: !!content
+    });
+    if (!title || !content) {
+      return res.status(400).json({
+        success: false,
+        error: "Title and content are required"
+      });
+    }
+    if (title.length < 5 || title.length > 200) {
+      return res.status(400).json({
+        success: false,
+        error: "Title must be between 5 and 200 characters"
+      });
+    }
+    if (content.length < 100) {
+      return res.status(400).json({
+        success: false,
+        error: "Content must be at least 100 characters"
+      });
+    }
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({
+        success: false,
+        error: "Database not configured"
+      });
+    }
+    let { data: author, error: authorError } = await client.from("authors").select("id, display_name").eq("id", AI_AUTHOR_ID).single();
+    if (authorError || !author) {
+      console.log("[External API] Creating AI author...");
+      const { error: createAuthorError } = await client.from("authors").insert({
+        id: AI_AUTHOR_ID,
+        email: "ai@cnspecialtyoils.com",
+        display_name: "Steven CN-SpecLube Chain",
+        bio: "Senior editor specializing in specialty oils industry, covering market trends, technical insights, and supply chain dynamics for transformer oil, rubber process oil, and lubricants.",
+        status: "active",
+        created_at: (/* @__PURE__ */ new Date()).toISOString()
+      });
+      if (createAuthorError) {
+        console.error("[External API] Failed to create AI author:", createAuthorError);
+        return res.status(500).json({
+          success: false,
+          error: "Failed to initialize AI author"
+        });
+      }
+      author = { id: AI_AUTHOR_ID, display_name: "Steven CN-SpecLube Chain" };
+    }
+    if (sourceUrl) {
+      const { data: existingPost } = await client.from("blog_posts").select("id, title").eq("source_url", sourceUrl).single();
+      if (existingPost) {
+        console.log("[External API] Duplicate article detected:", sourceUrl);
+        return res.status(409).json({
+          success: false,
+          error: "Article already exists",
+          existingArticleId: existingPost.id
+        });
+      }
+    }
+    const { data: similarPosts } = await client.from("blog_posts").select("id, title").ilike("title", `%${title.substring(0, 30)}%`).limit(5);
+    if (similarPosts && similarPosts.length > 0) {
+      const exactMatch = similarPosts.find(
+        (p) => p.title.toLowerCase() === title.toLowerCase()
+      );
+      if (exactMatch) {
+        console.log("[External API] Duplicate title detected:", title);
+        return res.status(409).json({
+          success: false,
+          error: "Article with same title already exists",
+          existingArticleId: exactMatch.id
+        });
+      }
+    }
+    const postId = generateId();
+    const now = (/* @__PURE__ */ new Date()).toISOString();
+    const { error: insertError } = await client.from("blog_posts").insert({
+      id: postId,
+      title,
+      excerpt: excerpt || content.replace(/<[^>]*>/g, "").substring(0, 150) + "...",
+      content,
+      category: category || "Industry News",
+      tags: tags || ["\u884C\u4E1A\u52A8\u6001"],
+      featured_image: featuredImage,
+      author_id: AI_AUTHOR_ID,
+      author: author.display_name,
+      review_status: "pending",
+      // 需要管理员审核
+      source_url: sourceUrl || null,
+      publishedAt: now,
+      created_at: now,
+      updated_at: now,
+      view_count: 0,
+      like_count: 0
+    });
+    if (insertError) {
+      console.error("[External API] Insert article error:", insertError);
+      return res.status(500).json({
+        success: false,
+        error: "Failed to create article"
+      });
+    }
+    console.log("[External API] Article created successfully:", postId);
+    res.status(201).json({
+      success: true,
+      message: "Article submitted successfully, pending review",
+      articleId: postId,
+      status: "pending"
+    });
+  } catch (error) {
+    console.error("[External API] Create article error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to create article"
+    });
+  }
+});
+app.get("/api/external/health", validateApiKey, (req, res) => {
+  res.json({
+    success: true,
+    message: "External API is operational",
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  });
+});
 app.get("*", (req, res) => {
   if (req.path.startsWith("/api/") || req.path.startsWith("/feishu/")) {
     return res.status(404).json({ error: "Not found" });
   }
-  const indexPath = path.join(distPath, "index.html");
-  if (fs.existsSync(indexPath)) {
+  const indexPath = import_path.default.join(distPath, "index.html");
+  if (import_fs.default.existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
     res.status(404).send("Application not built. Please run build first.");
