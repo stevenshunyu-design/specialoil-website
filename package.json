@@ -1,7 +1,6 @@
 {
   "name": "specialoil",
   "version": "1.0.0",
-  "type": "module",
   "main": "server.production.cjs",
   "scripts": {
     "build": "echo 'Using pre-built files'",

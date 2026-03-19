@@ -10,8 +10,5 @@ console.log('- SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? 'set' : 'NOT
 console.log('- RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'set' : 'NOT SET');
 console.log('========================================');
 
-// 动态导入主服务器
-import('./server.production.js').catch(err => {
-  console.error('Failed to start server:', err);
-  process.exit(1);
-});
+// 使用 require 加载 CommonJS 模块
+require('./server.production.cjs');
