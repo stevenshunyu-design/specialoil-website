@@ -133,39 +133,73 @@ const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
   const { posts, getPostById, isAuthenticated, isLoading: blogLoading, deletePost } = useBlog();
   const [post, setPost] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const navigate = useNavigate();
   const contentRef = useRef<HTMLDivElement>(null);
 
   // 当 id 变化时，加载对应的文章
   useEffect(() => {
-    // 等待加载完成
-    if (blogLoading) return;
-    
-    // 确保有文章数据
-    if (!posts.length) {
-      console.log('BlogPost: No posts available yet');
-      return;
-    }
-    
-    if (id) {
-      console.log('BlogPost: Looking for article with id:', id);
-      console.log('BlogPost: Available posts:', posts.map(p => p.id));
-      const foundPost = getPostById(id);
-      if (foundPost) {
-        console.log('BlogPost: Found article:', foundPost.title);
-        setPost(foundPost);
-        window.scrollTo(0, 0);
-      } else {
-        console.log('BlogPost: Article not found for id:', id);
-        toast.error('Article not found');
-        navigate('/blog');
+    const loadPost = async () => {
+      if (!id) return;
+      
+      setLoading(true);
+      
+      // 先尝试从 API 获取完整文章内容
+      try {
+        const response = await fetch(`/api/blog/posts/${id}`);
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success && result.data) {
+            console.log('BlogPost: Loaded full article from API');
+            setPost({
+              id: result.data.id,
+              title: result.data.title,
+              excerpt: result.data.excerpt || '',
+              content: result.data.content || '',
+              category: result.data.category || 'Industry News',
+              tags: result.data.tags || [],
+              featuredImage: result.data.featured_image,
+              publishedAt: result.data.publishedAt || result.data.created_at,
+              author: result.data.author || result.data.authors?.display_name || 'CN-SpecLube Chain Team',
+              viewCount: result.data.view_count || 0,
+              likeCount: result.data.like_count || 0
+            });
+            setLoading(false);
+            window.scrollTo(0, 0);
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch article from API:', error);
       }
-    }
+      
+      // 如果 API 失败，尝试从本地 posts 获取
+      if (blogLoading) return;
+      
+      if (posts.length > 0) {
+        const foundPost = getPostById(id);
+        if (foundPost) {
+          console.log('BlogPost: Found article in local posts');
+          setPost(foundPost);
+          setLoading(false);
+          window.scrollTo(0, 0);
+          return;
+        }
+      }
+      
+      // 文章未找到
+      console.log('BlogPost: Article not found for id:', id);
+      toast.error('Article not found');
+      navigate('/blog');
+      setLoading(false);
+    };
+
+    loadPost();
   }, [id, getPostById, navigate, blogLoading, posts]);
 
-  // 显示加载状态（加载中或文章数据尚未准备好）
-  if (blogLoading || (!post && posts.length === 0)) {
+  // 显示加载状态
+  if (loading || blogLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
