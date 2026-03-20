@@ -2616,6 +2616,76 @@ app.post('/api/admin/articles/:id/review', async (req: Request, res: Response) =
   }
 });
 
+// ==================== 公开博客 API ====================
+
+// 获取已审核通过的文章列表（公开）
+app.get('/api/blog/posts', async (req: Request, res: Response) => {
+  try {
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    const { category, limit = 20, offset = 0 } = req.query;
+
+    let query = client
+      .from('blog_posts')
+      .select('id, title, excerpt, category, tags, featured_image, author, publishedAt, view_count, like_count, created_at', { count: 'exact' })
+      .eq('review_status', 'approved')
+      .order('publishedAt', { ascending: false })
+      .range(Number(offset), Number(offset) + Number(limit) - 1);
+
+    if (category && category !== 'All') {
+      query = query.eq('category', category);
+    }
+
+    const { data, error, count } = await query;
+
+    if (error) {
+      console.error('Failed to fetch blog posts:', error);
+      return res.status(500).json({ success: false, error: 'Failed to fetch posts' });
+    }
+
+    res.json({ success: true, data, total: count });
+  } catch (error) {
+    console.error('Fetch blog posts error:', error);
+    res.status(500).json({ success: false, error: 'Failed to fetch posts' });
+  }
+});
+
+// 获取单篇文章详情（公开）
+app.get('/api/blog/posts/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    const { data, error } = await client
+      .from('blog_posts')
+      .select('*, authors!author_id(display_name, name)')
+      .eq('id', id)
+      .eq('review_status', 'approved')
+      .single();
+
+    if (error || !data) {
+      return res.status(404).json({ success: false, error: 'Article not found' });
+    }
+
+    // 增加浏览量
+    await client
+      .from('blog_posts')
+      .update({ view_count: (data.view_count || 0) + 1 })
+      .eq('id', id);
+
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error('Fetch blog post error:', error);
+    res.status(500).json({ success: false, error: 'Failed to fetch post' });
+  }
+});
+
 // ==================== 订阅管理 ====================
 
 // 创建订阅用户表（如果不存在）

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import useSEO from '@/hooks/useSEO';

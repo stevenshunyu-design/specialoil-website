@@ -1,4 +1,3 @@
-import React from 'react';
 export interface BlogPost {
   id: string;
   title: string;

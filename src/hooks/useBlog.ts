@@ -1237,8 +1237,38 @@ export function useBlog() {
   // 加载博客文章
   useEffect(() => {
     const loadPosts = async () => {
+      // 优先从 Supabase API 获取已审核通过的文章
+      try {
+        const response = await fetch('/api/blog/posts?limit=100');
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success && result.data && result.data.length > 0) {
+            // 转换 Supabase 数据格式为 BlogPost 格式
+            const supabasePosts: BlogPost[] = result.data.map((post: any) => ({
+              id: post.id,
+              title: post.title,
+              excerpt: post.excerpt || '',
+              content: '', // 列表不返回完整内容
+              category: post.category || 'Industry News',
+              tags: post.tags || [],
+              featuredImage: post.featured_image,
+              publishedAt: post.publishedAt || post.created_at,
+              author: post.author || 'CN-SpecLube Chain Team',
+              viewCount: post.view_count || 0,
+              likeCount: post.like_count || 0
+            }));
+            setPosts(supabasePosts);
+            console.log('Loaded posts from Supabase API, count:', supabasePosts.length);
+            setIsLoading(false);
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch from Supabase API:', error);
+      }
+
+      // 如果 Supabase 没有数据，尝试 Sanity CMS
       if (USE_SANITY) {
-        // 从 Sanity CMS 获取数据
         try {
           setIsUsingSanity(true);
           const sanityPosts = await sanityClient.fetch(queries.allPosts);
