@@ -3019,7 +3019,7 @@ app.get('/api/blog/posts', async (req: Request, res: Response) => {
       .from('blog_posts')
       .select('id, title, excerpt, category, tags, featured_image, author, publishedAt, view_count, like_count, created_at', { count: 'exact' })
       .eq('review_status', 'approved')
-      .order('publishedAt', { ascending: false })
+      .order('created_at', { ascending: false })
       .range(Number(offset), Number(offset) + Number(limit) - 1);
 
     if (category && category !== 'All') {
@@ -3029,12 +3029,25 @@ app.get('/api/blog/posts', async (req: Request, res: Response) => {
     const { data, error, count } = await query;
 
     if (error) {
+      // 如果表不存在，返回空数据（前端会回退到本地数据）
+      const errorStr = JSON.stringify(error);
+      console.log('Blog API error:', errorStr);
+      if (errorStr.includes('PGRST205') || errorStr.includes('42P01') || errorStr.includes('Could not find the table')) {
+        console.log('Blog posts table does not exist, returning empty data');
+        return res.json({ success: true, data: [], total: 0, message: 'Table not initialized' });
+      }
       console.error('Failed to fetch blog posts:', error);
       return res.status(500).json({ success: false, error: 'Failed to fetch posts' });
     }
 
     res.json({ success: true, data, total: count });
   } catch (error) {
+    // 检查是否是表不存在的错误
+    const errorStr = JSON.stringify(error);
+    if (errorStr.includes('PGRST205') || errorStr.includes('42P01') || errorStr.includes('Could not find the table')) {
+      console.log('Blog posts table does not exist (caught), returning empty data');
+      return res.json({ success: true, data: [], total: 0, message: 'Table not initialized' });
+    }
     console.error('Fetch blog posts error:', error);
     res.status(500).json({ success: false, error: 'Failed to fetch posts' });
   }
