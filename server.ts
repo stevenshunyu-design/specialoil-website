@@ -2527,14 +2527,15 @@ app.get('/api/admin/articles', async (req: Request, res: Response) => {
   }
 });
 
-// 审核文章（管理员）
+// 审核文章（管理员）- 支持通过、拒绝、打回修改
 app.post('/api/admin/articles/:id/review', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { action, rejectionReason, adminEmail } = req.body;
+    const { action, rejectionReason, revisionSuggestion, adminEmail } = req.body;
     
-    if (!action || !['approve', 'reject'].includes(action)) {
-      return res.status(400).json({ success: false, error: 'Invalid action' });
+    // action: approve(通过), reject(拒绝), revise(打回修改)
+    if (!action || !['approve', 'reject', 'revise'].includes(action)) {
+      return res.status(400).json({ success: false, error: 'Invalid action. Use approve, reject, or revise' });
     }
 
     const client = getSupabaseClient();
@@ -2553,7 +2554,8 @@ app.post('/api/admin/articles/:id/review', async (req: Request, res: Response) =
       return res.status(404).json({ success: false, error: 'Article not found' });
     }
 
-    if (article.review_status !== 'pending') {
+    // 允许对待审核或打回修改状态的文章进行审核
+    if (article.review_status !== 'pending' && article.review_status !== 'needs_revision') {
       return res.status(400).json({ 
         success: false, 
         error: 'This article has already been reviewed' 
@@ -2561,18 +2563,47 @@ app.post('/api/admin/articles/:id/review', async (req: Request, res: Response) =
     }
 
     const now = new Date().toISOString();
-    const newStatus = action === 'approve' ? 'approved' : 'rejected';
+    // 根据动作设置新状态
+    let newStatus: string;
+    let notificationMessage: string;
+    
+    if (action === 'approve') {
+      newStatus = 'approved';
+      notificationMessage = 'Article approved!';
+    } else if (action === 'reject') {
+      newStatus = 'rejected';
+      notificationMessage = 'Article rejected';
+    } else {
+      // revise - 打回修改
+      newStatus = 'needs_revision';
+      notificationMessage = 'Article returned for revision';
+    }
 
     // 更新文章状态
+    const updateData: any = {
+      review_status: newStatus,
+      reviewed_at: now,
+      reviewed_by: adminEmail || 'admin',
+      updated_at: now,
+    };
+    
+    // 根据不同动作设置不同字段
+    if (action === 'approve') {
+      updateData.publishedAt = now;
+      updateData.rejection_reason = null;
+      updateData.revision_suggestion = null;
+    } else if (action === 'reject') {
+      updateData.rejection_reason = rejectionReason || null;
+      updateData.revision_suggestion = null;
+    } else {
+      // revise - 打回修改，保存修改建议
+      updateData.revision_suggestion = revisionSuggestion || rejectionReason || null;
+      updateData.rejection_reason = null;
+    }
+    
     const { error: updateError } = await client
       .from('blog_posts')
-      .update({
-        review_status: newStatus,
-        reviewed_at: now,
-        reviewed_by: adminEmail || 'admin',
-        rejection_reason: action === 'reject' ? rejectionReason : null,
-        publishedAt: action === 'approve' ? now : article.publishedAt
-      })
+      .update(updateData)
       .eq('id', id);
 
     if (updateError) {
@@ -2582,37 +2613,393 @@ app.post('/api/admin/articles/:id/review', async (req: Request, res: Response) =
 
     // 更新作者文章统计（如果审核通过）
     if (action === 'approve' && article.author_id) {
-      await client.rpc('increment_author_articles_count', { author_id: article.author_id });
+      try {
+        await client.rpc('increment_author_articles_count', { author_id: article.author_id });
+      } catch (rpcError) {
+        console.error('Failed to increment author articles count:', rpcError);
+      }
     }
 
     // 发送邮件通知作者
     const author = article.authors as any;
     if (author?.email) {
-      if (action === 'approve') {
-        await sendArticleApprovalEmail(
-          author.email,
-          author.display_name || author.name || 'Author',
-          article.title,
-          article.id
-        );
-      } else {
-        await sendArticleRejectionEmail(
-          author.email,
-          author.display_name || author.name || 'Author',
-          article.title,
-          rejectionReason
-        );
+      try {
+        if (action === 'approve') {
+          await sendArticleApprovalEmail(
+            author.email,
+            author.display_name || author.name || 'Author',
+            article.title,
+            article.id
+          );
+        } else if (action === 'reject') {
+          await sendArticleRejectionEmail(
+            author.email,
+            author.display_name || author.name || 'Author',
+            article.title,
+            rejectionReason
+          );
+        } else {
+          // revise - 发送修改建议邮件
+          await sendArticleRevisionEmail(
+            author.email,
+            author.display_name || author.name || 'Author',
+            article.title,
+            revisionSuggestion || rejectionReason
+          );
+        }
+      } catch (emailError) {
+        console.error('Failed to send notification email:', emailError);
       }
     }
 
     res.json({ 
       success: true, 
-      message: action === 'approve' ? 'Article approved!' : 'Article rejected',
+      message: notificationMessage,
       status: newStatus
     });
   } catch (error) {
     console.error('Review article error:', error);
     res.status(500).json({ success: false, error: 'Failed to review article' });
+  }
+});
+
+// 管理员编辑文章
+app.put('/api/admin/articles/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { title, excerpt, content, category, tags, featuredImage, adminEmail } = req.body;
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 检查文章是否存在
+    const { data: existingArticle, error: fetchError } = await client
+      .from('blog_posts')
+      .select('id')
+      .eq('id', id)
+      .single();
+
+    if (fetchError || !existingArticle) {
+      return res.status(404).json({ success: false, error: 'Article not found' });
+    }
+
+    // 更新文章
+    const updateData: any = {
+      updated_at: new Date().toISOString(),
+      updated_by: adminEmail || 'admin',
+    };
+    
+    if (title) updateData.title = title;
+    if (excerpt) updateData.excerpt = excerpt;
+    if (content) updateData.content = content;
+    if (category) updateData.category = category;
+    if (tags) updateData.tags = tags;
+    if (featuredImage) updateData.featured_image = featuredImage;
+
+    const { error: updateError } = await client
+      .from('blog_posts')
+      .update(updateData)
+      .eq('id', id);
+
+    if (updateError) {
+      console.error('Failed to update article:', updateError);
+      return res.status(500).json({ success: false, error: 'Failed to update article' });
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Article updated successfully'
+    });
+  } catch (error) {
+    console.error('Update article error:', error);
+    res.status(500).json({ success: false, error: 'Failed to update article' });
+  }
+});
+
+// 管理员删除文章
+app.delete('/api/admin/articles/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 检查文章是否存在
+    const { data: existingArticle, error: fetchError } = await client
+      .from('blog_posts')
+      .select('id, author_id')
+      .eq('id', id)
+      .single();
+
+    if (fetchError || !existingArticle) {
+      return res.status(404).json({ success: false, error: 'Article not found' });
+    }
+
+    // 删除文章
+    const { error: deleteError } = await client
+      .from('blog_posts')
+      .delete()
+      .eq('id', id);
+
+    if (deleteError) {
+      console.error('Failed to delete article:', deleteError);
+      return res.status(500).json({ success: false, error: 'Failed to delete article' });
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Article deleted successfully'
+    });
+  } catch (error) {
+    console.error('Delete article error:', error);
+    res.status(500).json({ success: false, error: 'Failed to delete article' });
+  }
+});
+
+// 管理员直接发布文章（无需审核）
+app.post('/api/admin/articles', async (req: Request, res: Response) => {
+  try {
+    const { title, excerpt, content, category, tags, featuredImage, author, adminEmail } = req.body;
+    
+    if (!title || !content) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Title and content are required' 
+      });
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    const postId = generateId();
+    const now = new Date().toISOString();
+
+    const { error: insertError } = await client
+      .from('blog_posts')
+      .insert({
+        id: postId,
+        title,
+        excerpt: excerpt || content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+        content,
+        category: category || 'Industry News',
+        tags: tags || [],
+        featured_image: featuredImage,
+        author: author || 'CN-SpecLube Chain Team',
+        author_id: null, // 管理员创建的文章没有关联作者
+        review_status: 'approved', // 直接发布
+        publishedAt: now,
+        created_at: now,
+        updated_at: now,
+        created_by: adminEmail || 'admin',
+        view_count: 0,
+        like_count: 0
+      });
+
+    if (insertError) {
+      console.error('Failed to create article:', insertError);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to create article' 
+      });
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Article published successfully',
+      articleId: postId 
+    });
+  } catch (error) {
+    console.error('Create article error:', error);
+    res.status(500).json({ success: false, error: 'Failed to create article' });
+  }
+});
+
+// 作者获取文章详情（用于编辑）
+app.get('/api/author/articles/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { author_id } = req.query;
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    const { data: article, error } = await client
+      .from('blog_posts')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error || !article) {
+      return res.status(404).json({ success: false, error: 'Article not found' });
+    }
+
+    // 验证作者身份
+    if (author_id && article.author_id !== author_id) {
+      return res.status(403).json({ success: false, error: 'You are not the author of this article' });
+    }
+
+    res.json({ success: true, article });
+  } catch (error) {
+    console.error('Get article error:', error);
+    res.status(500).json({ success: false, error: 'Failed to get article' });
+  }
+});
+
+// 作者更新文章（用于编辑打回的文章）
+app.put('/api/author/articles/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { title, excerpt, content, category, tags, featuredImage, author_id } = req.body;
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 获取文章详情
+    const { data: article, error: fetchError } = await client
+      .from('blog_posts')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (fetchError || !article) {
+      return res.status(404).json({ success: false, error: 'Article not found' });
+    }
+
+    // 验证作者身份
+    if (article.author_id !== author_id) {
+      return res.status(403).json({ success: false, error: 'You are not the author of this article' });
+    }
+
+    // 只允许编辑打回修改或草稿状态的文章
+    if (article.review_status !== 'needs_revision' && article.review_status !== 'draft') {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Only articles with revision requests or drafts can be edited' 
+      });
+    }
+
+    // 更新文章
+    const updateData: any = {
+      updated_at: new Date().toISOString(),
+    };
+    
+    if (title) updateData.title = title;
+    if (excerpt) updateData.excerpt = excerpt;
+    if (content) updateData.content = content;
+    if (category) updateData.category = category;
+    if (tags) updateData.tags = tags;
+    if (featuredImage) updateData.featured_image = featuredImage;
+
+    const { error: updateError } = await client
+      .from('blog_posts')
+      .update(updateData)
+      .eq('id', id);
+
+    if (updateError) {
+      console.error('Failed to update article:', updateError);
+      return res.status(500).json({ success: false, error: 'Failed to update article' });
+    }
+
+    res.json({ success: true, message: 'Article updated successfully' });
+  } catch (error) {
+    console.error('Update article error:', error);
+    res.status(500).json({ success: false, error: 'Failed to update article' });
+  }
+});
+
+// 作者重新提交审核（针对打回修改的文章）
+app.post('/api/author/articles/:id/resubmit', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { title, excerpt, content, category, tags, featuredImage, author_id } = req.body;
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ success: false, error: 'Database not configured' });
+    }
+
+    // 获取文章详情
+    const { data: article, error: fetchError } = await client
+      .from('blog_posts')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (fetchError || !article) {
+      return res.status(404).json({ success: false, error: 'Article not found' });
+    }
+
+    // 验证作者身份
+    if (article.author_id !== author_id) {
+      return res.status(403).json({ success: false, error: 'You are not the author of this article' });
+    }
+
+    // 只有打回修改状态的文章才能重新提交
+    if (article.review_status !== 'needs_revision') {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Only articles with revision requests can be resubmitted' 
+      });
+    }
+
+    const now = new Date().toISOString();
+
+    // 更新文章内容和状态
+    const updateData: any = {
+      review_status: 'pending', // 重新进入待审核状态
+      updated_at: now,
+      revision_suggestion: null, // 清除修改建议
+      resubmitted_at: now,
+    };
+    
+    // 如果提供了新的内容，则更新
+    if (title) updateData.title = title;
+    if (excerpt) updateData.excerpt = excerpt;
+    if (content) updateData.content = content;
+    if (category) updateData.category = category;
+    if (tags) updateData.tags = tags;
+    if (featuredImage) updateData.featured_image = featuredImage;
+
+    const { error: updateError } = await client
+      .from('blog_posts')
+      .update(updateData)
+      .eq('id', id);
+
+    if (updateError) {
+      console.error('Failed to resubmit article:', updateError);
+      return res.status(500).json({ success: false, error: 'Failed to resubmit article' });
+    }
+
+    // 发送通知邮件给管理员
+    try {
+      await sendArticlePendingNotification(
+        updateData.title || article.title,
+        id,
+        article.author,
+        updateData.category || article.category,
+        updateData.excerpt || article.excerpt
+      );
+    } catch (emailError) {
+      console.error('Failed to send notification email:', emailError);
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Article resubmitted for review'
+    });
+  } catch (error) {
+    console.error('Resubmit article error:', error);
+    res.status(500).json({ success: false, error: 'Failed to resubmit article' });
   }
 });
 

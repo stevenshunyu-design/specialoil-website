@@ -23,8 +23,11 @@ interface Article {
   id: string;
   title: string;
   excerpt: string;
+  content?: string;
   category: string;
-  review_status: string;
+  review_status: 'pending' | 'approved' | 'rejected' | 'draft' | 'needs_revision';
+  revision_suggestion?: string;
+  rejection_reason?: string;
   publishedAt: string;
   view_count: number;
   like_count: number;
@@ -420,8 +423,43 @@ const AuthorDashboard = () => {
       pending: 'bg-yellow-100 text-yellow-800',
       approved: 'bg-green-100 text-green-800',
       rejected: 'bg-red-100 text-red-800',
+      draft: 'bg-gray-100 text-gray-800',
+      needs_revision: 'bg-orange-100 text-orange-800',
     };
     return styles[status] || 'bg-gray-100 text-gray-800';
+  };
+
+  const getStatusLabel = (status: string) => {
+    const labels: Record<string, string> = {
+      pending: 'Pending Review',
+      approved: 'Published',
+      rejected: 'Rejected',
+      draft: 'Draft',
+      needs_revision: 'Needs Revision',
+    };
+    return labels[status] || status;
+  };
+
+  // 重新提交审核
+  const handleResubmit = async (article: Article) => {
+    try {
+      const response = await fetch(`/api/author/articles/${article.id}/resubmit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          author_id: author?.id,
+        }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        toast.success('Article resubmitted for review');
+        loadAuthorData(author?.id || '');
+      } else {
+        toast.error(data.error || 'Failed to resubmit');
+      }
+    } catch (error) {
+      toast.error('Failed to resubmit article');
+    }
   };
 
   if (loading) {
@@ -550,10 +588,30 @@ const AuthorDashboard = () => {
                       <div>
                         <h3 className="font-medium text-slate-900 mb-1">{article.title}</h3>
                         <p className="text-sm text-slate-500 line-clamp-1">{article.excerpt}</p>
+                        {/* 显示修改建议 */}
+                        {article.review_status === 'needs_revision' && article.revision_suggestion && (
+                          <div className="mt-2 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                            <p className="text-xs text-orange-800 font-medium mb-1">
+                              <i className="fa-solid fa-lightbulb mr-1"></i> Revision Suggestion:
+                            </p>
+                            <p className="text-sm text-orange-700">{article.revision_suggestion}</p>
+                          </div>
+                        )}
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(article.review_status)}`}>
-                        {article.review_status}
-                      </span>
+                      <div className="flex flex-col items-end gap-2">
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(article.review_status)}`}>
+                          {getStatusLabel(article.review_status)}
+                        </span>
+                        {/* 重新提交按钮 */}
+                        {article.review_status === 'needs_revision' && (
+                          <button
+                            onClick={() => navigate(`/author/edit/${article.id}`)}
+                            className="px-3 py-1 text-xs bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+                          >
+                            Edit & Resubmit
+                          </button>
+                        )}
+                      </div>
                     </div>
                     <div className="flex items-center gap-4 mt-3 text-sm text-slate-500">
                       <span><i className="fa-solid fa-eye mr-1"></i> {article.view_count || 0}</span>
@@ -597,6 +655,7 @@ const AuthorDashboard = () => {
                     <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Status</th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Views</th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Date</th>
+                    <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
@@ -604,6 +663,13 @@ const AuthorDashboard = () => {
                     <tr key={article.id} className="hover:bg-slate-50">
                       <td className="px-6 py-4">
                         <p className="font-medium text-slate-900">{article.title}</p>
+                        {/* 显示修改建议 */}
+                        {article.review_status === 'needs_revision' && article.revision_suggestion && (
+                          <p className="text-xs text-orange-600 mt-1">
+                            <i className="fa-solid fa-lightbulb mr-1"></i>
+                            {article.revision_suggestion.substring(0, 50)}...
+                          </p>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         <span className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-sm">
@@ -612,12 +678,42 @@ const AuthorDashboard = () => {
                       </td>
                       <td className="px-6 py-4">
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(article.review_status)}`}>
-                          {article.review_status}
+                          {getStatusLabel(article.review_status)}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-slate-600">{article.view_count || 0}</td>
                       <td className="px-6 py-4 text-slate-600">
                         {new Date(article.publishedAt).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center justify-end gap-2">
+                          {article.review_status === 'needs_revision' && (
+                            <button
+                              onClick={() => navigate(`/author/edit/${article.id}`)}
+                              className="px-3 py-1 text-xs bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+                            >
+                              Edit & Resubmit
+                            </button>
+                          )}
+                          {article.review_status === 'draft' && (
+                            <button
+                              onClick={() => navigate(`/author/edit/${article.id}`)}
+                              className="px-3 py-1 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            >
+                              Continue Editing
+                            </button>
+                          )}
+                          {article.review_status === 'approved' && (
+                            <a
+                              href={`/blog/${article.id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-1 text-xs bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                            >
+                              View
+                            </a>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}

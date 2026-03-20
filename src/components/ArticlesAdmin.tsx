@@ -12,8 +12,9 @@ interface Article {
   featured_image: string;
   author: string;
   author_id: string;
-  review_status: 'pending' | 'approved' | 'rejected' | 'draft';
+  review_status: 'pending' | 'approved' | 'rejected' | 'draft' | 'needs_revision';
   rejection_reason: string;
+  revision_suggestion: string;
   created_at: string;
   reviewed_at: string;
   view_count: number;
@@ -32,8 +33,12 @@ const ArticlesAdmin = () => {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [showApproveDialog, setShowApproveDialog] = useState(false);
   const [showRejectDialog, setShowRejectDialog] = useState(false);
+  const [showReviseDialog, setShowReviseDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showPreviewDialog, setShowPreviewDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
+  const [revisionSuggestion, setRevisionSuggestion] = useState('');
   const [processing, setProcessing] = useState(false);
   const [totalArticles, setTotalArticles] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -122,12 +127,71 @@ const ArticlesAdmin = () => {
     }
   };
 
+  // 打回修改
+  const handleRevise = async () => {
+    if (!selectedArticle) return;
+    if (!revisionSuggestion.trim()) {
+      toast.error('Please provide revision suggestions');
+      return;
+    }
+    setProcessing(true);
+    try {
+      const response = await fetch(`/api/admin/articles/${selectedArticle.id}/review`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          action: 'revise', 
+          revisionSuggestion: revisionSuggestion 
+        }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        toast.success('Article returned for revision. Author notified.');
+        setShowReviseDialog(false);
+        setSelectedArticle(null);
+        setRevisionSuggestion('');
+        fetchArticles();
+      } else {
+        toast.error(data.error || 'Failed to request revision');
+      }
+    } catch (error) {
+      toast.error('Failed to request revision');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  // 删除文章
+  const handleDelete = async () => {
+    if (!selectedArticle) return;
+    setProcessing(true);
+    try {
+      const response = await fetch(`/api/admin/articles/${selectedArticle.id}`, {
+        method: 'DELETE',
+      });
+      const data = await response.json();
+      if (data.success) {
+        toast.success('Article deleted successfully');
+        setShowDeleteDialog(false);
+        setSelectedArticle(null);
+        fetchArticles();
+      } else {
+        toast.error(data.error || 'Failed to delete');
+      }
+    } catch (error) {
+      toast.error('Failed to delete article');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     const styles: Record<string, { bg: string; text: string; label: string }> = {
       pending: { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Pending Review' },
       approved: { bg: 'bg-green-100', text: 'text-green-800', label: 'Published' },
       rejected: { bg: 'bg-red-100', text: 'text-red-800', label: 'Rejected' },
       draft: { bg: 'bg-gray-100', text: 'text-gray-800', label: 'Draft' },
+      needs_revision: { bg: 'bg-orange-100', text: 'text-orange-800', label: 'Needs Revision' },
     };
     const style = styles[status] || styles.draft;
     return (
@@ -286,8 +350,44 @@ const ArticlesAdmin = () => {
                           <i className="fa-solid fa-eye"></i>
                         </button>
                         
-                        {/* 审核按钮 - 仅待审核状态显示 */}
+                        {/* 审核按钮 - 待审核状态显示 */}
                         {article.review_status === 'pending' && (
+                          <>
+                            <button
+                              onClick={() => {
+                                setSelectedArticle(article);
+                                setShowApproveDialog(true);
+                              }}
+                              className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                              title="Approve"
+                            >
+                              <i className="fa-solid fa-check"></i>
+                            </button>
+                            <button
+                              onClick={() => {
+                                setSelectedArticle(article);
+                                setShowReviseDialog(true);
+                              }}
+                              className="p-2 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                              title="Request Revision"
+                            >
+                              <i className="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button
+                              onClick={() => {
+                                setSelectedArticle(article);
+                                setShowRejectDialog(true);
+                              }}
+                              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              title="Reject"
+                            >
+                              <i className="fa-solid fa-times"></i>
+                            </button>
+                          </>
+                        )}
+                        
+                        {/* 打回修改状态 - 可重新审核 */}
+                        {article.review_status === 'needs_revision' && (
                           <>
                             <button
                               onClick={() => {
@@ -311,6 +411,18 @@ const ArticlesAdmin = () => {
                             </button>
                           </>
                         )}
+                        
+                        {/* 删除按钮 - 所有状态都可删除 */}
+                        <button
+                          onClick={() => {
+                            setSelectedArticle(article);
+                            setShowDeleteDialog(true);
+                          }}
+                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete"
+                        >
+                          <i className="fa-solid fa-trash"></i>
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -475,6 +587,57 @@ const ArticlesAdmin = () => {
           </div>
         </div>
       )}
+
+      {/* 打回修改对话框 */}
+      {showReviseDialog && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">📝 Request Revision</h3>
+            <p className="text-gray-600 mb-4">
+              Provide suggestions for improving "{selectedArticle?.title}". The author will be notified and can resubmit after making changes.
+            </p>
+            <textarea
+              value={revisionSuggestion}
+              onChange={(e) => setRevisionSuggestion(e.target.value)}
+              placeholder="Enter revision suggestions...&#10;&#10;Example:&#10;- Add more technical details&#10;- Include relevant statistics&#10;- Improve the introduction"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+              rows={5}
+            />
+            <div className="flex items-center justify-end gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowReviseDialog(false);
+                  setRevisionSuggestion('');
+                }}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                disabled={processing}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleRevise}
+                className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50"
+                disabled={processing}
+              >
+                {processing ? 'Processing...' : 'Send Revision Request'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 删除确认对话框 */}
+      <ConfirmDialog
+        isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+        onConfirm={handleDelete}
+        title="Delete Article"
+        message={`Are you sure you want to delete "${selectedArticle?.title}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        loading={processing}
+      />
     </div>
   );
 };

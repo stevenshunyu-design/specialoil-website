@@ -924,4 +924,80 @@ export async function sendArticlePendingNotification(
   }
 }
 
+/**
+ * 发送文章修改建议邮件（打回修改）
+ */
+export async function sendArticleRevisionEmail(
+  email: string,
+  authorName: string,
+  articleTitle: string,
+  suggestion: string
+): Promise<boolean> {
+  if (!resend) {
+    console.log('Resend not configured, skipping email');
+    return false;
+  }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: `📝 ${SITE_NAME} - Revision Request for Your Article`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles}
+        </head>
+        <body>
+          <div class="header">
+            <h1>🏭 ${SITE_NAME}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Revision Request</p>
+          </div>
+          <div class="content">
+            <h2>Dear ${authorName},</h2>
+            <p>Thank you for submitting your article <strong>"${articleTitle}"</strong> to <strong>${SITE_NAME}</strong>.</p>
+            <p>Our editorial team has reviewed your article and has some <strong style="color: #ff9800;">suggestions for improvement</strong> before it can be published.</p>
+            
+            <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 20px; margin: 20px 0; border-radius: 4px;">
+              <h3 style="margin-top: 0; color: #ff9800;">📝 Revision Suggestions</h3>
+              <p style="margin-bottom: 0;">${suggestion || 'Please review your article and make necessary improvements.'}</p>
+            </div>
+            
+            <h4>How to Revise and Resubmit:</h4>
+            <ol>
+              <li>Log in to your author dashboard</li>
+              <li>Find the article marked as "Needs Revision"</li>
+              <li>Make the necessary changes based on the suggestions above</li>
+              <li>Submit your revised article for review</li>
+            </ol>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${SITE_URL}/author/dashboard" class="button">Go to Dashboard</a>
+            </div>
+            
+            <p>We look forward to receiving your revised article. Your contribution is valuable to our community!</p>
+            <p style="margin-top: 30px;">Best regards,<br><strong>The ${SITE_NAME} Editorial Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><a href="${SITE_URL}/author/dashboard">Go to Dashboard</a> | <a href="${SITE_URL}">Visit Website</a></p>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error('Failed to send article revision email:', error);
+      return false;
+    }
+
+    console.log('Article revision email sent:', data?.id);
+    return true;
+  } catch (error) {
+    console.error('Error sending article revision email:', error);
+    return false;
+  }
+}
+
 export { resend };
