@@ -29,6 +29,9 @@ CREATE TABLE IF NOT EXISTS authors (
 CREATE INDEX IF NOT EXISTS idx_authors_email ON authors(email);
 CREATE INDEX IF NOT EXISTS idx_authors_status ON authors(status);
 
+-- 如果表已存在且有 NOT NULL 约束，移除约束
+ALTER TABLE authors ALTER COLUMN password_hash DROP NOT NULL;
+
 -- 2. 创建 blog_posts 博客文章表
 CREATE TABLE IF NOT EXISTS blog_posts (
   id VARCHAR(50) PRIMARY KEY,
