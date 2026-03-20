@@ -55475,6 +55475,9 @@ async function sendArticleRejectionEmail(email3, authorName, articleTitle, reaso
 // server.ts
 var import_crypto2 = __toESM(require("crypto"));
 var import_meta = {};
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).substring(2, 15);
+}
 console.log("\u{1F680} CODE VERSION: TEXT-MESSAGE-FORMAT-v1 (commit f5c0639)");
 process.on("uncaughtException", (error40) => {
   console.error("Uncaught Exception:", error40);

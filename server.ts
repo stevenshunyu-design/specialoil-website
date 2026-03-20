@@ -10,6 +10,11 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 
+// 生成随机 ID
+function generateId(): string {
+  return Date.now().toString(36) + Math.random().toString(36).substring(2, 15);
+}
+
 // ==================== 代码版本标记 ====================
 console.log('🚀 CODE VERSION: TEXT-MESSAGE-FORMAT-v1 (commit f5c0639)');
 // ======================================================
