@@ -412,6 +412,62 @@ const ArticlesAdmin = () => {
                           </>
                         )}
                         
+                        {/* 已审核通过的文章 - 可编辑、取消发布 */}
+                        {article.review_status === 'approved' && (
+                          <>
+                            <button
+                              onClick={() => {
+                                setSelectedArticle(article);
+                                setShowEditDialog(true);
+                              }}
+                              className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              title="Edit"
+                            >
+                              <i className="fa-solid fa-edit"></i>
+                            </button>
+                            <button
+                              onClick={async () => {
+                                if (confirm('Are you sure you want to unpublish this article? It will be moved to draft status.')) {
+                                  try {
+                                    const response = await fetch(`/api/admin/articles/${article.id}`, {
+                                      method: 'PUT',
+                                      headers: { 'Content-Type': 'application/json' },
+                                      body: JSON.stringify({ review_status: 'draft' }),
+                                    });
+                                    const data = await response.json();
+                                    if (data.success) {
+                                      toast.success('Article unpublished');
+                                      fetchArticles();
+                                    } else {
+                                      toast.error(data.error || 'Failed to unpublish');
+                                    }
+                                  } catch (error) {
+                                    toast.error('Failed to unpublish article');
+                                  }
+                                }
+                              }}
+                              className="p-2 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
+                              title="Unpublish"
+                            >
+                              <i className="fa-solid fa-arrow-down"></i>
+                            </button>
+                          </>
+                        )}
+                        
+                        {/* 已拒绝的文章 - 可重新审核 */}
+                        {article.review_status === 'rejected' && (
+                          <button
+                            onClick={() => {
+                              setSelectedArticle(article);
+                              setShowApproveDialog(true);
+                            }}
+                            className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                            title="Approve"
+                          >
+                            <i className="fa-solid fa-check"></i>
+                          </button>
+                        )}
+                        
                         {/* 删除按钮 - 所有状态都可删除 */}
                         <button
                           onClick={() => {
@@ -620,6 +676,112 @@ const ArticlesAdmin = () => {
                 disabled={processing}
               >
                 {processing ? 'Processing...' : 'Send Revision Request'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 编辑文章对话框 */}
+      {showEditDialog && selectedArticle && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-xl font-semibold text-gray-900">Edit Article</h3>
+              <button
+                onClick={() => setShowEditDialog(false)}
+                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg"
+              >
+                <i className="fa-solid fa-times text-xl"></i>
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <input
+                  type="text"
+                  defaultValue={selectedArticle.title}
+                  id="edit-title"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
+                <textarea
+                  defaultValue={selectedArticle.excerpt}
+                  id="edit-excerpt"
+                  rows={2}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <select
+                  defaultValue={selectedArticle.category}
+                  id="edit-category"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                >
+                  <option value="Industry News">Industry News</option>
+                  <option value="Technical Insights">Technical Insights</option>
+                  <option value="Product Updates">Product Updates</option>
+                  <option value="Market Analysis">Market Analysis</option>
+                  <option value="Technical Information">Technical Information</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                <textarea
+                  defaultValue={selectedArticle.content}
+                  id="edit-content"
+                  rows={10}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] font-mono text-sm"
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200">
+              <button
+                onClick={() => setShowEditDialog(false)}
+                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  const title = (document.getElementById('edit-title') as HTMLInputElement)?.value;
+                  const excerpt = (document.getElementById('edit-excerpt') as HTMLTextAreaElement)?.value;
+                  const category = (document.getElementById('edit-category') as HTMLSelectElement)?.value;
+                  const content = (document.getElementById('edit-content') as HTMLTextAreaElement)?.value;
+                  
+                  if (!title?.trim()) {
+                    toast.error('Title is required');
+                    return;
+                  }
+                  
+                  setProcessing(true);
+                  try {
+                    const response = await fetch(`/api/admin/articles/${selectedArticle.id}`, {
+                      method: 'PUT',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ title, excerpt, category, content }),
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                      toast.success('Article updated successfully');
+                      setShowEditDialog(false);
+                      fetchArticles();
+                    } else {
+                      toast.error(data.error || 'Failed to update');
+                    }
+                  } catch (error) {
+                    toast.error('Failed to update article');
+                  } finally {
+                    setProcessing(false);
+                  }
+                }}
+                disabled={processing}
+                className="px-6 py-2 bg-[#D4AF37] text-white rounded-lg hover:bg-[#B8962E] transition-colors disabled:opacity-50"
+              >
+                {processing ? 'Saving...' : 'Save Changes'}
               </button>
             </div>
           </div>
