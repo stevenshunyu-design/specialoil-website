@@ -4,6 +4,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { getSupabaseClient } from './src/storage/database/supabase-client';
 import { S3Storage } from 'coze-coding-dev-sdk';
+import { sendArticlePendingNotification } from './src/lib/email';
 import 'dotenv/config';
 import path from 'path';
 import fs from 'fs';
@@ -3747,6 +3748,15 @@ app.post('/api/external/articles', validateApiKey, async (req: Request, res: Res
     }
 
     console.log('[External API] Article created successfully:', postId);
+    
+    // 发送邮件通知管理员
+    await sendArticlePendingNotification(
+      title,
+      postId,
+      author.display_name || 'Steven CN-SpecLube Chain',
+      category || 'Industry News',
+      excerpt || ''
+    );
     
     res.status(201).json({ 
       success: true, 

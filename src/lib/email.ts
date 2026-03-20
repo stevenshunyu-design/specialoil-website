@@ -841,4 +841,87 @@ export async function sendArticleRejectionEmail(
   }
 }
 
+/**
+ * 发送文章待审核通知给管理员
+ */
+export async function sendArticlePendingNotification(
+  articleTitle: string,
+  articleId: string,
+  authorName: string,
+  category: string,
+  excerpt: string
+): Promise<boolean> {
+  if (!resend) {
+    console.log('Resend not configured, skipping email');
+    return false;
+  }
+
+  const adminEmail = process.env.ADMIN_EMAIL || 'kdwelly@163.com';
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: adminEmail,
+      subject: `📝 New Article Pending Review - ${articleTitle.substring(0, 50)}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles}
+        </head>
+        <body>
+          <div class="header">
+            <h1>🏭 ${SITE_NAME}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">New Article Pending Review</p>
+          </div>
+          <div class="content">
+            <h2>📰 New Article Submitted</h2>
+            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="margin-top: 0;">${articleTitle}</h3>
+              <table style="width: 100%;">
+                <tr>
+                  <td style="padding: 8px 0; color: #666; width: 120px;"><strong>Author:</strong></td>
+                  <td style="padding: 8px 0;">${authorName}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Category:</strong></td>
+                  <td style="padding: 8px 0;">${category}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Article ID:</strong></td>
+                  <td style="padding: 8px 0;">${articleId}</td>
+                </tr>
+              </table>
+              ${excerpt ? `
+                <h4 style="margin-top: 15px;">Excerpt</h4>
+                <p style="background: white; padding: 15px; border-radius: 4px; border: 1px solid #ddd;">${excerpt}</p>
+              ` : ''}
+            </div>
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${SITE_URL}/admin?tab=articles&status=pending" class="button">Review Article</a>
+            </div>
+            <p style="margin-top: 30px;">This article was submitted via External API and is waiting for your review.</p>
+            <p>Best regards,<br><strong>${SITE_NAME} System</strong></p>
+          </div>
+          <div class="footer">
+            <p>This is an automated notification from ${SITE_NAME}</p>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error('Failed to send article pending notification:', error);
+      return false;
+    }
+
+    console.log('Article pending notification sent:', data?.id);
+    return true;
+  } catch (error) {
+    console.error('Error sending article pending notification:', error);
+    return false;
+  }
+}
+
 export { resend };

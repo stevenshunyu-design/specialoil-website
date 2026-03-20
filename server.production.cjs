@@ -54930,13 +54930,6 @@ function getSupabaseClient(token) {
 // node_modules/.pnpm/coze-coding-dev-sdk@0.7.17_openai@6.29.0_ws@8.19.0_zod@3.25.76__ws@8.19.0/node_modules/coze-coding-dev-sdk/dist/esm/index.mjs
 init__21();
 
-// server.ts
-var import_config9 = require("dotenv/config");
-var import_path37 = __toESM(require("path"));
-var import_fs2 = __toESM(require("fs"));
-var import_url2 = require("url");
-var import_multer = __toESM(require("multer"));
-
 // src/lib/email.ts
 var import_resend = require("resend");
 console.log("\u{1F4E7} Email Service Config:");
@@ -55471,8 +55464,82 @@ async function sendArticleRejectionEmail(email3, authorName, articleTitle, reaso
     return false;
   }
 }
+async function sendArticlePendingNotification(articleTitle, articleId, authorName, category, excerpt) {
+  if (!resend) {
+    console.log("Resend not configured, skipping email");
+    return false;
+  }
+  const adminEmail = process.env.ADMIN_EMAIL || "kdwelly@163.com";
+  try {
+    const { data, error: error40 } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: adminEmail,
+      subject: `\u{1F4DD} New Article Pending Review - ${articleTitle.substring(0, 50)}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          ${emailStyles}
+        </head>
+        <body>
+          <div class="header">
+            <h1>\u{1F3ED} ${SITE_NAME}</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">New Article Pending Review</p>
+          </div>
+          <div class="content">
+            <h2>\u{1F4F0} New Article Submitted</h2>
+            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="margin-top: 0;">${articleTitle}</h3>
+              <table style="width: 100%;">
+                <tr>
+                  <td style="padding: 8px 0; color: #666; width: 120px;"><strong>Author:</strong></td>
+                  <td style="padding: 8px 0;">${authorName}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Category:</strong></td>
+                  <td style="padding: 8px 0;">${category}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #666;"><strong>Article ID:</strong></td>
+                  <td style="padding: 8px 0;">${articleId}</td>
+                </tr>
+              </table>
+              ${excerpt ? `
+                <h4 style="margin-top: 15px;">Excerpt</h4>
+                <p style="background: white; padding: 15px; border-radius: 4px; border: 1px solid #ddd;">${excerpt}</p>
+              ` : ""}
+            </div>
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${SITE_URL}/admin?tab=articles&status=pending" class="button">Review Article</a>
+            </div>
+            <p style="margin-top: 30px;">This article was submitted via External API and is waiting for your review.</p>
+            <p>Best regards,<br><strong>${SITE_NAME} System</strong></p>
+          </div>
+          <div class="footer">
+            <p>This is an automated notification from ${SITE_NAME}</p>
+          </div>
+        </body>
+        </html>
+      `
+    });
+    if (error40) {
+      console.error("Failed to send article pending notification:", error40);
+      return false;
+    }
+    console.log("Article pending notification sent:", data?.id);
+    return true;
+  } catch (error40) {
+    console.error("Error sending article pending notification:", error40);
+    return false;
+  }
+}
 
 // server.ts
+var import_config9 = require("dotenv/config");
+var import_path37 = __toESM(require("path"));
+var import_fs2 = __toESM(require("fs"));
+var import_url2 = require("url");
+var import_multer = __toESM(require("multer"));
 var import_crypto2 = __toESM(require("crypto"));
 var import_meta = {};
 function generateId() {
@@ -58075,6 +58142,13 @@ app.post("/api/external/articles", validateApiKey, async (req, res) => {
       });
     }
     console.log("[External API] Article created successfully:", postId);
+    await sendArticlePendingNotification(
+      title,
+      postId,
+      author.display_name || "Steven CN-SpecLube Chain",
+      category || "Industry News",
+      excerpt || ""
+    );
     res.status(201).json({
       success: true,
       message: "Article submitted successfully, pending review",
