@@ -10,8 +10,9 @@ interface SupabaseCredentials {
 
 function loadEnv(): void {
   // 检查是否已经有环境变量（支持两种命名方式）
-  const hasUrl = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
-  const hasKey = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  // 优先使用 .env 文件中的 SUPABASE_URL，然后才使用 COZE_SUPABASE_URL
+  const hasUrl = process.env.SUPABASE_URL || process.env.COZE_SUPABASE_URL;
+  const hasKey = process.env.SUPABASE_ANON_KEY || process.env.COZE_SUPABASE_ANON_KEY;
   
   if (envLoaded || (hasUrl && hasKey)) {
     return;
@@ -77,9 +78,9 @@ except Exception as e:
 function getSupabaseCredentials(): SupabaseCredentials {
   loadEnv();
 
-  // 支持两种环境变量名称：COZE_SUPABASE_* 和 SUPABASE_*
-  const url = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
-  const anonKey = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  // 优先使用 .env 文件中的 SUPABASE_*，然后才使用 COZE_SUPABASE_*
+  const url = process.env.SUPABASE_URL || process.env.COZE_SUPABASE_URL;
+  const anonKey = process.env.SUPABASE_ANON_KEY || process.env.COZE_SUPABASE_ANON_KEY;
 
   if (!url) {
     throw new Error('SUPABASE_URL is not set');
