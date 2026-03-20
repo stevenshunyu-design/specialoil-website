@@ -9,29 +9,23 @@ interface SupabaseCredentials {
 }
 
 function loadEnv(): void {
-  // 检查是否已经有环境变量（支持两种命名方式）
-  // 优先使用 .env 文件中的 SUPABASE_URL，然后才使用 COZE_SUPABASE_URL
+  // 首先尝试从 dotenv 加载 .env 文件
+  try {
+    require('dotenv').config();
+  } catch {
+    // dotenv not available
+  }
+
+  // 检查是否已经有环境变量（优先使用 SUPABASE_URL，然后 COZE_SUPABASE_URL）
   const hasUrl = process.env.SUPABASE_URL || process.env.COZE_SUPABASE_URL;
   const hasKey = process.env.SUPABASE_ANON_KEY || process.env.COZE_SUPABASE_ANON_KEY;
   
   if (envLoaded || (hasUrl && hasKey)) {
+    envLoaded = true;
     return;
   }
 
   try {
-    try {
-      require('dotenv').config();
-      // 再次检查
-      const hasUrlNow = process.env.COZE_SUPABASE_URL || process.env.SUPABASE_URL;
-      const hasKeyNow = process.env.COZE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
-      if (hasUrlNow && hasKeyNow) {
-        envLoaded = true;
-        return;
-      }
-    } catch {
-      // dotenv not available
-    }
-
     const pythonCode = `
 import os
 import sys
