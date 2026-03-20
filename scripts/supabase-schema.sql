@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS authors (
   email TEXT NOT NULL UNIQUE,
   phone TEXT,
   company TEXT,
-  username TEXT UNIQUE,
+  username TEXT NOT NULL UNIQUE,
   password_hash TEXT,
   expertise_areas TEXT[],
   bio TEXT,
@@ -216,18 +216,20 @@ CREATE POLICY "Allow all operations for service role" ON inquiries
 -- 创建 AI 作者账号
 -- =====================================================
 
-INSERT INTO authors (id, email, display_name, name, bio, status, created_at)
+INSERT INTO authors (id, email, display_name, name, username, bio, status, created_at)
 VALUES (
   '18d5e355-e4ea-411b-bfc5-c42beff90d1d', 
   'ai@cnspecialtyoils.com', 
   'Steven CN-SpecLube Chain',
   'Steven',
+  'ai_author',
   'Senior editor specializing in specialty oils industry, covering market trends, technical insights, and supply chain dynamics for transformer oil, rubber process oil, and lubricants.', 
   'active',
   NOW()
 )
 ON CONFLICT (id) DO UPDATE SET
   display_name = 'Steven CN-SpecLube Chain',
+  username = 'ai_author',
   bio = 'Senior editor specializing in specialty oils industry, covering market trends, technical insights, and supply chain dynamics for transformer oil, rubber process oil, and lubricants.',
   status = 'active',
   updated_at = NOW();
