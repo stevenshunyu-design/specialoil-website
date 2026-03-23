@@ -15687,6 +15687,40 @@ var imageStorage = new S3Storage({
   bucketName: process.env.COZE_BUCKET_NAME,
   region: "cn-beijing"
 });
+async function addSignatureToImageUrl(url) {
+  if (!url) return null;
+  const bucketDomain = process.env.COZE_BUCKET_ENDPOINT_URL || "coze-coding-project.tos.coze.site";
+  if (!url.includes(bucketDomain) && !url.includes("coze_storage")) {
+    return url;
+  }
+  if (url.includes("sign=")) {
+    return url;
+  }
+  try {
+    const urlObj = new URL(url);
+    const pathParts = urlObj.pathname.split("/");
+    const bucketName = process.env.COZE_BUCKET_NAME || "";
+    const bucketIndex = pathParts.findIndex((p) => p === bucketName);
+    const key = bucketIndex >= 0 ? pathParts.slice(bucketIndex + 1).join("/") : pathParts.slice(1).join("/");
+    if (!key) return url;
+    const signedUrl = await imageStorage.generatePresignedUrl({
+      key,
+      expireTime: 31536e3
+      // 1年有效期
+    });
+    return signedUrl;
+  } catch (error) {
+    console.error("Failed to sign image URL:", error);
+    return url;
+  }
+}
+async function signArticlesImages(articles) {
+  if (!articles || articles.length === 0) return articles;
+  return Promise.all(articles.map(async (article) => ({
+    ...article,
+    featured_image: await addSignatureToImageUrl(article.featured_image)
+  })));
+}
 var upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
@@ -16522,7 +16556,8 @@ app.get("/api/admin/articles", async (req, res) => {
       console.error("Failed to fetch articles:", error);
       return res.json({ success: true, data: [], total: 0 });
     }
-    res.json({ success: true, data: data || [], total: count || 0 });
+    const signedData = await signArticlesImages(data || []);
+    res.json({ success: true, data: signedData, total: count || 0 });
   } catch (error) {
     console.error("Get admin articles error:", error);
     res.status(500).json({ success: false, error: "Failed to get articles" });
@@ -16758,7 +16793,8 @@ app.get("/api/author/articles/:id", async (req, res) => {
     if (author_id && article.author_id !== author_id) {
       return res.status(403).json({ success: false, error: "You are not the author of this article" });
     }
-    res.json({ success: true, article });
+    const signedArticle = (await signArticlesImages([article]))[0];
+    res.json({ success: true, article: signedArticle });
   } catch (error) {
     console.error("Get article error:", error);
     res.status(500).json({ success: false, error: "Failed to get article" });
@@ -16888,7 +16924,8 @@ app.get("/api/blog/posts", async (req, res) => {
       console.error("Failed to fetch blog posts:", error);
       return res.status(500).json({ success: false, error: "Failed to fetch posts" });
     }
-    res.json({ success: true, data, total: count });
+    const signedData = await signArticlesImages(data);
+    res.json({ success: true, data: signedData, total: count });
   } catch (error) {
     const errorStr = JSON.stringify(error);
     if (errorStr.includes("PGRST205") || errorStr.includes("42P01") || errorStr.includes("Could not find the table")) {
@@ -16911,7 +16948,8 @@ app.get("/api/blog/posts/:id", async (req, res) => {
       return res.status(404).json({ success: false, error: "Article not found" });
     }
     await client.from("blog_posts").update({ view_count: (data.view_count || 0) + 1 }).eq("id", id);
-    res.json({ success: true, data });
+    const signedData = (await signArticlesImages([data]))[0];
+    res.json({ success: true, data: signedData });
   } catch (error) {
     console.error("Fetch blog post error:", error);
     res.status(500).json({ success: false, error: "Failed to fetch post" });
@@ -17155,7 +17193,8 @@ app.get("/api/author/:id/articles", async (req, res) => {
       console.error("Failed to fetch author articles:", error);
       return res.json({ success: true, data: [] });
     }
-    res.json({ success: true, data: data || [] });
+    const signedData = await signArticlesImages(data || []);
+    res.json({ success: true, data: signedData });
   } catch (error) {
     console.error("Get author articles error:", error);
     res.status(500).json({ error: "Failed to get articles" });
