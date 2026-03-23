@@ -1,0 +1,2 @@
+生产环境使用的是编译后的 server.production.js
+部署前验证语法：node -c server.production.js 没问题就将代码推送到GitHub
