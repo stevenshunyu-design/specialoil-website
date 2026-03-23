@@ -14125,9 +14125,6 @@ function getSupabaseClient(token) {
   });
 }
 
-// server.ts
-import { S3Storage } from "coze-coding-dev-sdk";
-
 // src/lib/email.ts
 init_dist();
 console.log("\u{1F4E7} Email Service Config:");
@@ -15680,39 +15677,14 @@ app.patch("/api/inquiries/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update inquiry" });
   }
 });
-var imageStorage = new S3Storage({
-  endpointUrl: process.env.COZE_BUCKET_ENDPOINT_URL,
-  accessKey: "",
-  secretKey: "",
-  bucketName: process.env.COZE_BUCKET_NAME,
-  region: "cn-beijing"
-});
+var STORAGE_BUCKET = "blog-images";
+function getStorageBucket() {
+  const supabase = getSupabaseClient();
+  return supabase.storage.from(STORAGE_BUCKET);
+}
 async function addSignatureToImageUrl(url) {
   if (!url) return null;
-  const bucketDomain = process.env.COZE_BUCKET_ENDPOINT_URL || "coze-coding-project.tos.coze.site";
-  if (!url.includes(bucketDomain) && !url.includes("coze_storage")) {
-    return url;
-  }
-  if (url.includes("sign=")) {
-    return url;
-  }
-  try {
-    const urlObj = new URL(url);
-    const pathParts = urlObj.pathname.split("/");
-    const bucketName = process.env.COZE_BUCKET_NAME || "";
-    const bucketIndex = pathParts.findIndex((p) => p === bucketName);
-    const key = bucketIndex >= 0 ? pathParts.slice(bucketIndex + 1).join("/") : pathParts.slice(1).join("/");
-    if (!key) return url;
-    const signedUrl = await imageStorage.generatePresignedUrl({
-      key,
-      expireTime: 31536e3
-      // 1年有效期
-    });
-    return signedUrl;
-  } catch (error) {
-    console.error("Failed to sign image URL:", error);
-    return url;
-  }
+  return url;
 }
 async function signArticlesImages(articles) {
   if (!articles || articles.length === 0) return articles;
@@ -15742,22 +15714,22 @@ app.post("/api/images/upload", upload.single("image"), async (req, res) => {
     const timestamp = Date.now();
     const ext = req.file.originalname.split(".").pop() || "jpg";
     const safeName = req.file.originalname.replace(/[^a-zA-Z0-9.-]/g, "_");
-    const fileName = `blog-images/${timestamp}_${safeName}`;
-    const fileKey = await imageStorage.uploadFile({
-      fileContent: req.file.buffer,
-      fileName,
-      contentType: req.file.mimetype
+    const fileName = `${timestamp}_${safeName}`;
+    const bucket = getStorageBucket();
+    const { data, error } = await bucket.upload(fileName, req.file.buffer, {
+      contentType: req.file.mimetype,
+      upsert: false
     });
-    console.log(`\u2705 Image uploaded: ${fileKey}`);
-    const imageUrl = await imageStorage.generatePresignedUrl({
-      key: fileKey,
-      expireTime: 31536e3
-      // 1年有效期
-    });
+    if (error) {
+      console.error("Supabase Storage upload error:", error);
+      return res.status(500).json({ error: `\u4E0A\u4F20\u5931\u8D25: ${error.message}` });
+    }
+    console.log(`\u2705 Image uploaded: ${data.path}`);
+    const { data: urlData } = bucket.getPublicUrl(data.path);
     res.json({
       success: true,
-      key: fileKey,
-      url: imageUrl,
+      key: data.path,
+      url: urlData.publicUrl,
       filename: req.file.originalname
     });
   } catch (error) {
@@ -15767,31 +15739,30 @@ app.post("/api/images/upload", upload.single("image"), async (req, res) => {
 });
 app.get("/api/images", async (req, res) => {
   try {
-    const { prefix = "blog-images/", maxKeys = 100 } = req.query;
-    console.log(`\u{1F4CB} Listing images with prefix: ${prefix}`);
-    const result = await imageStorage.listFiles({
-      prefix,
-      maxKeys: Number(maxKeys)
+    const { maxKeys = 100 } = req.query;
+    console.log(`\u{1F4CB} Listing images from Supabase Storage`);
+    const bucket = getStorageBucket();
+    const { data, error } = await bucket.list("", {
+      limit: Number(maxKeys),
+      sortBy: { column: "created_at", order: "desc" }
     });
-    const images = await Promise.all(
-      (result.keys || []).map(async (key) => {
-        const url = await imageStorage.generatePresignedUrl({
-          key,
-          expireTime: 3600
-          // 1小时有效期
-        });
-        return {
-          key,
-          url,
-          name: key.split("/").pop() || key
-        };
-      })
-    );
+    if (error) {
+      console.error("Supabase Storage list error:", error);
+      return res.status(500).json({ error: `\u83B7\u53D6\u56FE\u7247\u5217\u8868\u5931\u8D25: ${error.message}` });
+    }
+    const images = (data || []).map((file) => {
+      const { data: urlData } = bucket.getPublicUrl(file.name);
+      return {
+        key: file.name,
+        url: urlData.publicUrl,
+        name: file.name
+      };
+    });
     res.json({
       success: true,
       images,
-      isTruncated: result.isTruncated,
-      nextToken: result.nextContinuationToken
+      isTruncated: false,
+      nextToken: null
     });
   } catch (error) {
     console.error("List images error:", error);
@@ -15805,12 +15776,13 @@ app.delete("/api/images/:key", async (req, res) => {
       return res.status(400).json({ error: "\u7F3A\u5C11\u56FE\u7247key" });
     }
     console.log(`\u{1F5D1}\uFE0F Deleting image: ${key}`);
-    const success = await imageStorage.deleteFile({ fileKey: key });
-    if (success) {
-      res.json({ success: true, message: "\u5220\u9664\u6210\u529F" });
-    } else {
-      res.status(404).json({ error: "\u56FE\u7247\u4E0D\u5B58\u5728" });
+    const bucket = getStorageBucket();
+    const { error } = await bucket.remove([key]);
+    if (error) {
+      console.error("Supabase Storage delete error:", error);
+      return res.status(500).json({ error: `\u5220\u9664\u5931\u8D25: ${error.message}` });
     }
+    res.json({ success: true, message: "\u5220\u9664\u6210\u529F" });
   } catch (error) {
     console.error("Delete image error:", error);
     res.status(500).json({ error: "\u5220\u9664\u5931\u8D25" });

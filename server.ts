@@ -3,7 +3,6 @@ import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { getSupabaseClient } from './src/storage/database/supabase-client';
-import { S3Storage } from 'coze-coding-dev-sdk';
 import { sendArticlePendingNotification } from './src/lib/email';
 import 'dotenv/config';
 import path from 'path';
@@ -1282,57 +1281,23 @@ app.patch('/api/inquiries/:id', async (req: Request, res: Response) => {
 });
 
 // ==================== 图片存储配置 ====================
-// 初始化 S3Storage
-const imageStorage = new S3Storage({
-  endpointUrl: process.env.COZE_BUCKET_ENDPOINT_URL,
-  accessKey: "",
-  secretKey: "",
-  bucketName: process.env.COZE_BUCKET_NAME,
-  region: "cn-beijing",
-});
+// 使用 Supabase Storage 替代 S3Storage
+// Supabase Storage bucket 名称
+const STORAGE_BUCKET = 'blog-images';
 
-// 辅助函数：为对象存储的图片URL添加签名
+// 辅助函数：获取存储桶实例
+function getStorageBucket() {
+  const supabase = getSupabaseClient();
+  return supabase.storage.from(STORAGE_BUCKET);
+}
+
+// 辅助函数：为对象存储的图片URL添加签名（Supabase Storage 使用公开 URL，无需签名）
 async function addSignatureToImageUrl(url: string | null | undefined): Promise<string | null> {
   if (!url) return null;
   
-  // 检查是否是对象存储的URL（需要签名的URL）
-  const bucketDomain = process.env.COZE_BUCKET_ENDPOINT_URL || 'coze-coding-project.tos.coze.site';
-  if (!url.includes(bucketDomain) && !url.includes('coze_storage')) {
-    // 不是对象存储的URL，直接返回（如Unsplash等外部URL）
-    return url;
-  }
-  
-  // 如果URL已经有签名参数，直接返回
-  if (url.includes('sign=')) {
-    return url;
-  }
-  
-  // 从URL中提取文件key
-  // URL格式: https://domain/bucket-name/path/to/file.jpg
-  // 需要提取: path/to/file.jpg (即 blog-images/xxx.jpg)
-  try {
-    const urlObj = new URL(url);
-    const pathParts = urlObj.pathname.split('/');
-    // 跳过 bucket name 部分，获取实际的文件路径
-    const bucketName = process.env.COZE_BUCKET_NAME || '';
-    const bucketIndex = pathParts.findIndex(p => p === bucketName);
-    const key = bucketIndex >= 0 
-      ? pathParts.slice(bucketIndex + 1).join('/')
-      : pathParts.slice(1).join('/'); // 如果没有bucket name，取第一个之后的所有部分
-    
-    if (!key) return url;
-    
-    // 生成带签名的URL
-    const signedUrl = await imageStorage.generatePresignedUrl({
-      key: key,
-      expireTime: 31536000, // 1年有效期
-    });
-    
-    return signedUrl;
-  } catch (error) {
-    console.error('Failed to sign image URL:', error);
-    return url;
-  }
+  // Supabase Storage 的 URL 是公开的，直接返回
+  // 如果是外部 URL（如 Unsplash），也直接返回
+  return url;
 }
 
 // 辅助函数：批量为文章列表的图片URL添加签名
@@ -1372,27 +1337,29 @@ app.post('/api/images/upload', upload.single('image'), async (req: Request, res:
     const timestamp = Date.now();
     const ext = req.file.originalname.split('.').pop() || 'jpg';
     const safeName = req.file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const fileName = `blog-images/${timestamp}_${safeName}`;
+    const fileName = `${timestamp}_${safeName}`;
 
-    // 上传到 S3
-    const fileKey = await imageStorage.uploadFile({
-      fileContent: req.file.buffer,
-      fileName: fileName,
+    // 上传到 Supabase Storage
+    const bucket = getStorageBucket();
+    const { data, error } = await bucket.upload(fileName, req.file.buffer, {
       contentType: req.file.mimetype,
+      upsert: false,
     });
 
-    console.log(`✅ Image uploaded: ${fileKey}`);
+    if (error) {
+      console.error('Supabase Storage upload error:', error);
+      return res.status(500).json({ error: `上传失败: ${error.message}` });
+    }
 
-    // 生成可访问的 URL
-    const imageUrl = await imageStorage.generatePresignedUrl({
-      key: fileKey,
-      expireTime: 31536000, // 1年有效期
-    });
+    console.log(`✅ Image uploaded: ${data.path}`);
+
+    // 获取公开 URL
+    const { data: urlData } = bucket.getPublicUrl(data.path);
 
     res.json({ 
       success: true, 
-      key: fileKey,
-      url: imageUrl,
+      key: data.path,
+      url: urlData.publicUrl,
       filename: req.file.originalname 
     });
   } catch (error) {
@@ -1404,35 +1371,36 @@ app.post('/api/images/upload', upload.single('image'), async (req: Request, res:
 // 获取图片列表 API
 app.get('/api/images', async (req: Request, res: Response) => {
   try {
-    const { prefix = 'blog-images/', maxKeys = 100 } = req.query;
+    const { maxKeys = 100 } = req.query;
 
-    console.log(`📋 Listing images with prefix: ${prefix}`);
+    console.log(`📋 Listing images from Supabase Storage`);
 
-    const result = await imageStorage.listFiles({
-      prefix: prefix as string,
-      maxKeys: Number(maxKeys),
+    const bucket = getStorageBucket();
+    const { data, error } = await bucket.list('', {
+      limit: Number(maxKeys),
+      sortBy: { column: 'created_at', order: 'desc' },
     });
 
-    // 为每个图片生成访问URL
-    const images = await Promise.all(
-      (result.keys || []).map(async (key) => {
-        const url = await imageStorage.generatePresignedUrl({
-          key: key,
-          expireTime: 3600, // 1小时有效期
-        });
-        return {
-          key,
-          url,
-          name: key.split('/').pop() || key,
-        };
-      })
-    );
+    if (error) {
+      console.error('Supabase Storage list error:', error);
+      return res.status(500).json({ error: `获取图片列表失败: ${error.message}` });
+    }
+
+    // 为每个图片生成公开 URL
+    const images = (data || []).map((file) => {
+      const { data: urlData } = bucket.getPublicUrl(file.name);
+      return {
+        key: file.name,
+        url: urlData.publicUrl,
+        name: file.name,
+      };
+    });
 
     res.json({ 
       success: true, 
       images,
-      isTruncated: result.isTruncated,
-      nextToken: result.nextContinuationToken 
+      isTruncated: false,
+      nextToken: null 
     });
   } catch (error) {
     console.error('List images error:', error);
@@ -1451,13 +1419,15 @@ app.delete('/api/images/:key', async (req: Request, res: Response) => {
 
     console.log(`🗑️ Deleting image: ${key}`);
 
-    const success = await imageStorage.deleteFile({ fileKey: key });
+    const bucket = getStorageBucket();
+    const { error } = await bucket.remove([key]);
 
-    if (success) {
-      res.json({ success: true, message: '删除成功' });
-    } else {
-      res.status(404).json({ error: '图片不存在' });
+    if (error) {
+      console.error('Supabase Storage delete error:', error);
+      return res.status(500).json({ error: `删除失败: ${error.message}` });
     }
+
+    res.json({ success: true, message: '删除成功' });
   } catch (error) {
     console.error('Delete image error:', error);
     res.status(500).json({ error: '删除失败' });
