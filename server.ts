@@ -1291,6 +1291,60 @@ const imageStorage = new S3Storage({
   region: "cn-beijing",
 });
 
+// 辅助函数：为对象存储的图片URL添加签名
+async function addSignatureToImageUrl(url: string | null | undefined): Promise<string | null> {
+  if (!url) return null;
+  
+  // 检查是否是对象存储的URL（需要签名的URL）
+  const bucketDomain = process.env.COZE_BUCKET_ENDPOINT_URL || 'coze-coding-project.tos.coze.site';
+  if (!url.includes(bucketDomain) && !url.includes('coze_storage')) {
+    // 不是对象存储的URL，直接返回（如Unsplash等外部URL）
+    return url;
+  }
+  
+  // 如果URL已经有签名参数，直接返回
+  if (url.includes('sign=')) {
+    return url;
+  }
+  
+  // 从URL中提取文件key
+  // URL格式: https://domain/bucket-name/path/to/file.jpg
+  // 需要提取: path/to/file.jpg (即 blog-images/xxx.jpg)
+  try {
+    const urlObj = new URL(url);
+    const pathParts = urlObj.pathname.split('/');
+    // 跳过 bucket name 部分，获取实际的文件路径
+    const bucketName = process.env.COZE_BUCKET_NAME || '';
+    const bucketIndex = pathParts.findIndex(p => p === bucketName);
+    const key = bucketIndex >= 0 
+      ? pathParts.slice(bucketIndex + 1).join('/')
+      : pathParts.slice(1).join('/'); // 如果没有bucket name，取第一个之后的所有部分
+    
+    if (!key) return url;
+    
+    // 生成带签名的URL
+    const signedUrl = await imageStorage.generatePresignedUrl({
+      key: key,
+      expireTime: 31536000, // 1年有效期
+    });
+    
+    return signedUrl;
+  } catch (error) {
+    console.error('Failed to sign image URL:', error);
+    return url;
+  }
+}
+
+// 辅助函数：批量为文章列表的图片URL添加签名
+async function signArticlesImages(articles: any[]): Promise<any[]> {
+  if (!articles || articles.length === 0) return articles;
+  
+  return Promise.all(articles.map(async (article) => ({
+    ...article,
+    featured_image: await addSignatureToImageUrl(article.featured_image)
+  })));
+}
+
 // 配置 multer 用于处理文件上传
 const upload = multer({ 
   storage: multer.memoryStorage(),
@@ -2520,7 +2574,10 @@ app.get('/api/admin/articles', async (req: Request, res: Response) => {
       return res.json({ success: true, data: [], total: 0 });
     }
 
-    res.json({ success: true, data: data || [], total: count || 0 });
+    // 为图片URL添加签名
+    const signedData = await signArticlesImages(data || []);
+
+    res.json({ success: true, data: signedData, total: count || 0 });
   } catch (error) {
     console.error('Get admin articles error:', error);
     res.status(500).json({ success: false, error: 'Failed to get articles' });
@@ -2846,7 +2903,10 @@ app.get('/api/author/articles/:id', async (req: Request, res: Response) => {
       return res.status(403).json({ success: false, error: 'You are not the author of this article' });
     }
 
-    res.json({ success: true, article });
+    // 为图片URL添加签名
+    const signedArticle = (await signArticlesImages([article]))[0];
+
+    res.json({ success: true, article: signedArticle });
   } catch (error) {
     console.error('Get article error:', error);
     res.status(500).json({ success: false, error: 'Failed to get article' });
@@ -3040,7 +3100,10 @@ app.get('/api/blog/posts', async (req: Request, res: Response) => {
       return res.status(500).json({ success: false, error: 'Failed to fetch posts' });
     }
 
-    res.json({ success: true, data, total: count });
+    // 为图片URL添加签名
+    const signedData = await signArticlesImages(data);
+
+    res.json({ success: true, data: signedData, total: count });
   } catch (error) {
     // 检查是否是表不存在的错误
     const errorStr = JSON.stringify(error);
@@ -3079,7 +3142,10 @@ app.get('/api/blog/posts/:id', async (req: Request, res: Response) => {
       .update({ view_count: (data.view_count || 0) + 1 })
       .eq('id', id);
 
-    res.json({ success: true, data });
+    // 为图片URL添加签名
+    const signedData = (await signArticlesImages([data]))[0];
+
+    res.json({ success: true, data: signedData });
   } catch (error) {
     console.error('Fetch blog post error:', error);
     res.status(500).json({ success: false, error: 'Failed to fetch post' });
@@ -3483,7 +3549,10 @@ app.get('/api/author/:id/articles', async (req: Request, res: Response) => {
       return res.json({ success: true, data: [] });
     }
 
-    res.json({ success: true, data: data || [] });
+    // 为图片URL添加签名
+    const signedData = await signArticlesImages(data || []);
+
+    res.json({ success: true, data: signedData });
   } catch (error) {
     console.error('Get author articles error:', error);
     res.status(500).json({ error: 'Failed to get articles' });
