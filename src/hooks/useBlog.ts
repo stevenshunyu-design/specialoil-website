@@ -1258,6 +1258,8 @@ export function useBlog() {
               likeCount: post.like_count || 0
             }));
             setPosts(supabasePosts);
+            // 清除 localStorage 中的旧数据，确保使用最新 API 数据
+            localStorage.removeItem('blogPosts');
             console.log('Loaded posts from Supabase API, count:', supabasePosts.length);
             setIsLoading(false);
             return;
