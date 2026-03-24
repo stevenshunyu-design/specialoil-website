@@ -54,31 +54,43 @@ const AuthorWrite = () => {
   useEffect(() => {
     // 检查登录状态
     const authorData = localStorage.getItem('author');
+    console.log('AuthorWrite - localStorage author data:', authorData ? 'exists' : 'not found');
+    
     if (!authorData) {
+      console.log('AuthorWrite - No author data, redirecting to login');
       navigate('/author/login');
       return;
     }
     
     try {
-      const author = JSON.parse(authorData);
-      setAuthor(author);
-    } catch {
+      const parsedAuthor = JSON.parse(authorData);
+      console.log('AuthorWrite - Parsed author:', parsedAuthor);
+      
+      // 验证必要的字段
+      if (!parsedAuthor || !parsedAuthor.id) {
+        console.error('AuthorWrite - Invalid author data: missing id');
+        localStorage.removeItem('author');
+        navigate('/author/login');
+        return;
+      }
+      
+      setAuthor(parsedAuthor);
+      
+      // 如果是编辑模式，加载文章数据
+      if (isEditMode && editId) {
+        loadArticleData(editId, parsedAuthor.id);
+      }
+    } catch (error) {
+      console.error('AuthorWrite - Failed to parse author data:', error);
       localStorage.removeItem('author');
       navigate('/author/login');
     }
-  }, [navigate]);
+  }, [navigate, isEditMode, editId]);
 
-  // 加载文章数据（编辑模式）
-  useEffect(() => {
-    if (isEditMode && editId && author) {
-      loadArticleData(editId);
-    }
-  }, [isEditMode, editId, author]);
-
-  const loadArticleData = async (articleId: string) => {
+  const loadArticleData = async (articleId: string, authorId: string) => {
     setLoadingArticle(true);
     try {
-      const response = await fetch(`/api/author/${author?.id}/articles`);
+      const response = await fetch(`/api/author/${authorId}/articles`);
       const data = await response.json();
       
       if (data.success) {
