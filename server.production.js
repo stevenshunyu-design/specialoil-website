@@ -17161,8 +17161,15 @@ app.post("/api/author/login", async (req, res) => {
       return res.status(500).json({ success: false, error: "Database not configured" });
     }
     const passwordHash = hashPassword(password);
-    const { data: author, error } = await client.from("authors").select("*").eq("username", username).eq("password_hash", passwordHash).eq("status", "active").single();
-    if (error || !author) {
+    const { data: authors, error: queryError } = await client.from("authors").select("*").eq("username", username).eq("status", "active");
+    if (queryError || !authors || authors.length === 0) {
+      return res.status(401).json({
+        success: false,
+        error: "Invalid username or password"
+      });
+    }
+    const author = authors.find((a) => a.password_hash === passwordHash);
+    if (!author) {
       return res.status(401).json({
         success: false,
         error: "Invalid username or password"
