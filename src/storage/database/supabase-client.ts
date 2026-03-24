@@ -6,6 +6,7 @@ let envLoaded = false;
 interface SupabaseCredentials {
   url: string;
   anonKey: string;
+  serviceRoleKey?: string;
 }
 
 function loadEnv(): void {
@@ -75,6 +76,7 @@ function getSupabaseCredentials(): SupabaseCredentials {
   // 优先使用 .env 文件中的 SUPABASE_*，然后才使用 COZE_SUPABASE_*
   const url = process.env.SUPABASE_URL || process.env.COZE_SUPABASE_URL;
   const anonKey = process.env.SUPABASE_ANON_KEY || process.env.COZE_SUPABASE_ANON_KEY;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.COZE_SUPABASE_SERVICE_ROLE_KEY;
 
   if (!url) {
     throw new Error('SUPABASE_URL is not set');
@@ -83,7 +85,7 @@ function getSupabaseCredentials(): SupabaseCredentials {
     throw new Error('SUPABASE_ANON_KEY is not set');
   }
 
-  return { url, anonKey };
+  return { url, anonKey, serviceRoleKey };
 }
 
 function getSupabaseClient(token?: string): SupabaseClient {
@@ -115,4 +117,24 @@ function getSupabaseClient(token?: string): SupabaseClient {
   });
 }
 
-export { loadEnv, getSupabaseCredentials, getSupabaseClient };
+// 管理员客户端 - 使用 service_role key 绕过 RLS
+function getSupabaseAdminClient(): SupabaseClient | null {
+  const { url, serviceRoleKey } = getSupabaseCredentials();
+  
+  if (!serviceRoleKey) {
+    console.warn('SUPABASE_SERVICE_ROLE_KEY is not set, admin operations will be limited');
+    return null;
+  }
+
+  return createClient(url, serviceRoleKey, {
+    db: {
+      timeout: 60000,
+    },
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+}
+
+export { loadEnv, getSupabaseCredentials, getSupabaseClient, getSupabaseAdminClient };

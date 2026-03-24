@@ -14090,13 +14090,14 @@ function getSupabaseCredentials() {
   loadEnv();
   const url = process.env.SUPABASE_URL || process.env.COZE_SUPABASE_URL;
   const anonKey = process.env.SUPABASE_ANON_KEY || process.env.COZE_SUPABASE_ANON_KEY;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.COZE_SUPABASE_SERVICE_ROLE_KEY;
   if (!url) {
     throw new Error("SUPABASE_URL is not set");
   }
   if (!anonKey) {
     throw new Error("SUPABASE_ANON_KEY is not set");
   }
-  return { url, anonKey };
+  return { url, anonKey, serviceRoleKey };
 }
 function getSupabaseClient(token) {
   const { url, anonKey } = getSupabaseCredentials();
@@ -14115,6 +14116,22 @@ function getSupabaseClient(token) {
     });
   }
   return createClient(url, anonKey, {
+    db: {
+      timeout: 6e4
+    },
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  });
+}
+function getSupabaseAdminClient() {
+  const { url, serviceRoleKey } = getSupabaseCredentials();
+  if (!serviceRoleKey) {
+    console.warn("SUPABASE_SERVICE_ROLE_KEY is not set, admin operations will be limited");
+    return null;
+  }
+  return createClient(url, serviceRoleKey, {
     db: {
       timeout: 6e4
     },
@@ -15680,11 +15697,11 @@ app.patch("/api/inquiries/:id", async (req, res) => {
 app.delete("/api/inquiries/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const client = getSupabaseClient();
-    if (!client) {
-      return res.status(500).json({ error: "Database not configured" });
+    const adminClient = getSupabaseAdminClient();
+    if (!adminClient) {
+      return res.status(500).json({ error: "Admin access not configured" });
     }
-    const { error } = await client.from("inquiries").delete().eq("id", id);
+    const { error } = await adminClient.from("inquiries").delete().eq("id", id);
     if (error) {
       console.error("Error deleting inquiry:", error);
       return res.status(500).json({ error: "Failed to delete inquiry" });

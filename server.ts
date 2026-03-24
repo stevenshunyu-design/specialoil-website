@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { getSupabaseClient } from './src/storage/database/supabase-client';
+import { getSupabaseClient, getSupabaseAdminClient } from './src/storage/database/supabase-client';
 import { sendArticlePendingNotification } from './src/lib/email';
 import 'dotenv/config';
 import path from 'path';
@@ -1280,17 +1280,18 @@ app.patch('/api/inquiries/:id', async (req: Request, res: Response) => {
   }
 });
 
-// 删除询盘
+// 删除询盘（需要管理员权限）
 app.delete('/api/inquiries/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const client = getSupabaseClient();
-    if (!client) {
-      return res.status(500).json({ error: 'Database not configured' });
+    // 使用管理员客户端绕过 RLS
+    const adminClient = getSupabaseAdminClient();
+    if (!adminClient) {
+      return res.status(500).json({ error: 'Admin access not configured' });
     }
 
-    const { error } = await client
+    const { error } = await adminClient
       .from('inquiries')
       .delete()
       .eq('id', id);
