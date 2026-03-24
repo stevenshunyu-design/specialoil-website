@@ -1280,10 +1280,30 @@ app.patch('/api/inquiries/:id', async (req: Request, res: Response) => {
   }
 });
 
-// 删除询盘（需要管理员权限）
+// ==================== 超级管理员配置 ====================
+// 只有这些邮箱拥有最高权限（如删除询盘）
+const SUPER_ADMIN_EMAILS = [
+  'kdwelly@163.com',
+  // 未来可以添加其他超级管理员
+];
+
+// 验证超级管理员权限
+function isSuperAdmin(email: string | undefined | null): boolean {
+  if (!email) return false;
+  return SUPER_ADMIN_EMAILS.includes(email.toLowerCase());
+}
+
+// 删除询盘（需要超级管理员权限）
 app.delete('/api/inquiries/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const userEmail = req.headers['x-user-email'] as string;
+
+    // 验证超级管理员权限
+    if (!isSuperAdmin(userEmail)) {
+      console.log(`Delete inquiry denied for: ${userEmail}`);
+      return res.status(403).json({ error: 'Permission denied. Only super admin can delete inquiries.' });
+    }
 
     // 使用管理员客户端绕过 RLS
     const adminClient = getSupabaseAdminClient();
@@ -1301,6 +1321,7 @@ app.delete('/api/inquiries/:id', async (req: Request, res: Response) => {
       return res.status(500).json({ error: 'Failed to delete inquiry' });
     }
 
+    console.log(`Inquiry ${id} deleted by super admin: ${userEmail}`);
     res.json({ success: true });
   } catch (error) {
     console.error('Delete inquiry error:', error);

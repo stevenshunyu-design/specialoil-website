@@ -88,15 +88,26 @@ const InquiriesAdmin = () => {
 
   const handleDelete = async () => {
     try {
+      // 获取当前登录用户信息
+      const authorStr = localStorage.getItem('author');
+      const author = authorStr ? JSON.parse(authorStr) : null;
+      const userEmail = author?.email || '';
+
       const response = await fetch(`/api/inquiries/${deleteConfirm.id}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-email': userEmail,
+        },
       });
       
-      if (response.ok) {
+      const result = await response.json();
+      
+      if (response.ok && result.success) {
         toast.success('Inquiry deleted');
         fetchInquiries();
       } else {
-        toast.error('Failed to delete inquiry');
+        toast.error(result.error || 'Failed to delete inquiry');
       }
     } catch (error) {
       toast.error('Failed to delete inquiry');

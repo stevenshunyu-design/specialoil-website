@@ -15694,9 +15694,22 @@ app.patch("/api/inquiries/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update inquiry" });
   }
 });
+var SUPER_ADMIN_EMAILS = [
+  "kdwelly@163.com"
+  // 未来可以添加其他超级管理员
+];
+function isSuperAdmin(email) {
+  if (!email) return false;
+  return SUPER_ADMIN_EMAILS.includes(email.toLowerCase());
+}
 app.delete("/api/inquiries/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    const userEmail = req.headers["x-user-email"];
+    if (!isSuperAdmin(userEmail)) {
+      console.log(`Delete inquiry denied for: ${userEmail}`);
+      return res.status(403).json({ error: "Permission denied. Only super admin can delete inquiries." });
+    }
     const adminClient = getSupabaseAdminClient();
     if (!adminClient) {
       return res.status(500).json({ error: "Admin access not configured" });
@@ -15706,6 +15719,7 @@ app.delete("/api/inquiries/:id", async (req, res) => {
       console.error("Error deleting inquiry:", error);
       return res.status(500).json({ error: "Failed to delete inquiry" });
     }
+    console.log(`Inquiry ${id} deleted by super admin: ${userEmail}`);
     res.json({ success: true });
   } catch (error) {
     console.error("Delete inquiry error:", error);
