@@ -441,6 +441,7 @@ const AuthorWrite = () => {
                 value={postData.content}
                 onChange={(value) => setPostData(prev => ({ ...prev, content: value }))}
                 placeholder="Write your article content here..."
+                authorId={author?.id}
               />
             </div>
 
@@ -462,7 +463,8 @@ const AuthorWrite = () => {
       <ImageLibrary 
         isOpen={showImageLibrary} 
         onClose={() => setShowImageLibrary(false)} 
-        onSelect={handleSelectImage} 
+        onSelect={handleSelectImage}
+        authorId={author?.id}
       />
 
       {/* 取消确认弹窗 */}

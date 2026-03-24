@@ -7,6 +7,7 @@ interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  authorId?: string; // 作者ID，用于图片隔离
 }
 
 // 自定义样式
@@ -130,7 +131,7 @@ const editorStyle = `
   }
 `;
 
-const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange, placeholder }) => {
+const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange, placeholder, authorId }) => {
   const quillRef = useRef<ReactQuill>(null);
   const [showImageLibrary, setShowImageLibrary] = useState(false);
 
@@ -201,6 +202,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange, placeh
         isOpen={showImageLibrary}
         onClose={() => setShowImageLibrary(false)}
         onSelect={handleImageSelect}
+        authorId={authorId}
       />
     </>
   );

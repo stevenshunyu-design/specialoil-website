@@ -13,9 +13,10 @@ interface ImageLibraryProps {
   isOpen: boolean;
   onClose: () => void;
   onSelect: (imageUrl: string) => void;
+  authorId?: string; // 作者ID，用于隔离图片
 }
 
-const ImageLibrary: React.FC<ImageLibraryProps> = ({ isOpen, onClose, onSelect }) => {
+const ImageLibrary: React.FC<ImageLibraryProps> = ({ isOpen, onClose, onSelect, authorId }) => {
   const [images, setImages] = useState<Image[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -31,7 +32,8 @@ const ImageLibrary: React.FC<ImageLibraryProps> = ({ isOpen, onClose, onSelect }
   const loadImages = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/images');
+      const url = authorId ? `/api/images?authorId=${encodeURIComponent(authorId)}` : '/api/images';
+      const response = await fetch(url);
       const data = await response.json();
       
       if (data.success) {
@@ -45,7 +47,7 @@ const ImageLibrary: React.FC<ImageLibraryProps> = ({ isOpen, onClose, onSelect }
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [authorId]);
 
   useEffect(() => {
     if (isOpen) {
@@ -75,6 +77,9 @@ const ImageLibrary: React.FC<ImageLibraryProps> = ({ isOpen, onClose, onSelect }
     setIsUploading(true);
     const formData = new FormData();
     formData.append('image', file);
+    if (authorId) {
+      formData.append('authorId', authorId);
+    }
 
     try {
       const response = await fetch('/api/images/upload', {
@@ -113,7 +118,10 @@ const ImageLibrary: React.FC<ImageLibraryProps> = ({ isOpen, onClose, onSelect }
     if (!image) return;
 
     try {
-      const response = await fetch(`/api/images/${encodeURIComponent(image.key)}`, {
+      const url = authorId 
+        ? `/api/images/${encodeURIComponent(image.key)}?authorId=${encodeURIComponent(authorId)}`
+        : `/api/images/${encodeURIComponent(image.key)}`;
+      const response = await fetch(url, {
         method: 'DELETE',
       });
       

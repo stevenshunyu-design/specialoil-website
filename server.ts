@@ -1373,24 +1373,28 @@ const upload = multer({
   }
 });
 
-// 图片上传 API
+// 图片上传 API - 支持按作者隔离
 app.post('/api/images/upload', upload.single('image'), async (req: Request, res: Response) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: '没有上传文件' });
     }
 
-    console.log(`📤 Uploading image: ${req.file.originalname}, size: ${req.file.size}`);
+    const authorId = req.body.authorId as string | undefined;
+    console.log(`📤 Uploading image: ${req.file.originalname}, size: ${req.file.size}, authorId: ${authorId || 'admin'}`);
 
     // 生成唯一的文件名
     const timestamp = Date.now();
-    const ext = req.file.originalname.split('.').pop() || 'jpg';
     const safeName = req.file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
     const fileName = `${timestamp}_${safeName}`;
 
+    // 根据是否有 authorId 决定存储路径
+    // 作者图片存储在 authors/{authorId}/ 下，管理员上传的图片存储在根目录
+    const storagePath = authorId ? `authors/${authorId}/${fileName}` : fileName;
+
     // 上传到 Supabase Storage
     const bucket = getStorageBucket();
-    const { data, error } = await bucket.upload(fileName, req.file.buffer, {
+    const { data, error } = await bucket.upload(storagePath, req.file.buffer, {
       contentType: req.file.mimetype,
       upsert: false,
     });
@@ -1417,18 +1421,27 @@ app.post('/api/images/upload', upload.single('image'), async (req: Request, res:
   }
 });
 
-// 获取图片列表 API
+// 获取图片列表 API - 支持按作者过滤
 app.get('/api/images', async (req: Request, res: Response) => {
   try {
-    const { maxKeys = 100 } = req.query;
+    const { maxKeys = 100, authorId } = req.query;
 
-    console.log(`📋 Listing images from Supabase Storage`);
+    console.log(`📋 Listing images from Supabase Storage, authorId: ${authorId || 'all'}`);
 
     const bucket = getStorageBucket();
-    const { data, error } = await bucket.list('', {
+    
+    // 如果有 authorId，只列出该作者文件夹下的图片
+    // 如果没有 authorId（管理员场景），列出所有图片
+    const prefix = authorId ? `authors/${authorId}/` : '';
+    
+    console.log(`📁 Using prefix: "${prefix}"`);
+    
+    const { data, error } = await bucket.list(prefix, {
       limit: Number(maxKeys),
       sortBy: { column: 'created_at', order: 'desc' },
     });
+
+    console.log(`📦 Supabase returned ${data?.length || 0} items, error: ${error?.message || 'none'}`);
 
     if (error) {
       console.error('Supabase Storage list error:', error);
@@ -1436,14 +1449,36 @@ app.get('/api/images', async (req: Request, res: Response) => {
     }
 
     // 为每个图片生成公开 URL
-    const images = (data || []).map((file) => {
-      const { data: urlData } = bucket.getPublicUrl(file.name);
-      return {
-        key: file.name,
-        url: urlData.publicUrl,
-        name: file.name,
-      };
-    });
+    const images = (data || [])
+      .filter((file) => {
+        // 过滤掉文件夹
+        if (file.name.endsWith('/')) return false;
+        // 如果指定了 authorId，验证文件确实在该作者的文件夹下
+        // Supabase Storage 在文件夹不存在时可能会返回根目录的文件
+        if (prefix) {
+          // 检查 file.name 是否已经包含 prefix（说明是正确路径）
+          // 或者 file.name 是相对路径，我们需要验证它属于正确的文件夹
+          // 安全的做法：如果 file.name 不以 'authors/' 开头，说明 Supabase 返回了根目录文件
+          // 这是 Supabase 的一个怪异行为
+          if (!file.name.startsWith('authors/')) {
+            console.log(`⚠️ Filtering out root file (prefix was "${prefix}"): ${file.name}`);
+            return false;
+          }
+        }
+        return true;
+      })
+      .map((file) => {
+        // 文件的完整路径（包含前缀）
+        const fullPath = prefix ? `${prefix}${file.name}` : file.name;
+        const { data: urlData } = bucket.getPublicUrl(fullPath);
+        return {
+          key: fullPath,
+          url: urlData.publicUrl,
+          name: file.name,
+        };
+      });
+
+    console.log(`✅ Returning ${images.length} images for prefix "${prefix}"`);
 
     res.json({ 
       success: true, 
@@ -1457,13 +1492,22 @@ app.get('/api/images', async (req: Request, res: Response) => {
   }
 });
 
-// 删除图片 API
+// 删除图片 API - 支持权限验证
 app.delete('/api/images/:key', async (req: Request, res: Response) => {
   try {
     const { key } = req.params;
+    const { authorId } = req.query;
     
     if (!key) {
       return res.status(400).json({ error: '缺少图片key' });
+    }
+
+    // 如果传了 authorId，验证只能删除自己文件夹下的图片
+    if (authorId) {
+      const expectedPrefix = `authors/${authorId}/`;
+      if (!key.startsWith(expectedPrefix)) {
+        return res.status(403).json({ error: '无权删除此图片' });
+      }
     }
 
     console.log(`🗑️ Deleting image: ${key}`);
