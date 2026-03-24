@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import RichTextEditor from '../components/RichTextEditor';
 import ImageLibrary from '../components/ImageLibrary';
 
 interface Author {
-  id: number;
+  id: string;
   username: string;
   display_name: string;
   email: string;
@@ -23,12 +23,16 @@ interface PostData {
 
 const AuthorWrite = () => {
   const navigate = useNavigate();
+  const { id: editId } = useParams<{ id: string }>();
+  const isEditMode = !!editId;
+  
   const [author, setAuthor] = useState<Author | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
   const [showImageLibrary, setShowImageLibrary] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [tagInput, setTagInput] = useState('');
+  const [loadingArticle, setLoadingArticle] = useState(false);
   
   const [postData, setPostData] = useState<PostData>({
     title: '',
@@ -49,7 +53,7 @@ const AuthorWrite = () => {
 
   useEffect(() => {
     // 检查登录状态
-    const authorData = localStorage.getItem('authorInfo');
+    const authorData = localStorage.getItem('author');
     if (!authorData) {
       navigate('/author/login');
       return;
@@ -59,10 +63,50 @@ const AuthorWrite = () => {
       const author = JSON.parse(authorData);
       setAuthor(author);
     } catch {
-      localStorage.removeItem('authorInfo');
+      localStorage.removeItem('author');
       navigate('/author/login');
     }
   }, [navigate]);
+
+  // 加载文章数据（编辑模式）
+  useEffect(() => {
+    if (isEditMode && editId && author) {
+      loadArticleData(editId);
+    }
+  }, [isEditMode, editId, author]);
+
+  const loadArticleData = async (articleId: string) => {
+    setLoadingArticle(true);
+    try {
+      const response = await fetch(`/api/author/${author?.id}/articles`);
+      const data = await response.json();
+      
+      if (data.success) {
+        const article = data.data.find((a: any) => a.id === articleId);
+        if (article) {
+          setPostData({
+            title: article.title || '',
+            excerpt: article.excerpt || '',
+            content: article.content || '',
+            category: article.category || 'Industry News',
+            tags: article.tags || [],
+            featuredImage: article.featured_image || article.featuredImage || ''
+          });
+        } else {
+          toast.error('Article not found');
+          navigate('/author/dashboard');
+        }
+      } else {
+        toast.error('Failed to load article');
+        navigate('/author/dashboard');
+      }
+    } catch (error) {
+      toast.error('Failed to load article');
+      navigate('/author/dashboard');
+    } finally {
+      setLoadingArticle(false);
+    }
+  };
 
   // 自动生成摘要
   useEffect(() => {
@@ -152,7 +196,11 @@ const AuthorWrite = () => {
   };
 
   if (!author) {
-    return null;
+    return (
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#D4AF37]"></div>
+      </div>
+    );
   }
 
   return (
@@ -166,6 +214,12 @@ const AuthorWrite = () => {
                 <i className="fa-solid fa-arrow-left"></i>
                 <span>Back to Dashboard</span>
               </Link>
+              {isEditMode && (
+                <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">
+                  <i className="fa-solid fa-pen mr-1"></i>
+                  Edit Mode
+                </span>
+              )}
             </div>
             <div className="flex items-center gap-3">
               <button
@@ -193,7 +247,7 @@ const AuthorWrite = () => {
                 disabled={isLoading}
                 className="px-6 py-2 bg-gradient-to-r from-[#D4AF37] to-[#B8960C] text-white rounded-lg font-medium hover:shadow-lg transition-all disabled:opacity-50"
               >
-                {isLoading ? 'Submitting...' : 'Submit for Review'}
+                {isLoading ? (isEditMode ? 'Updating...' : 'Submitting...') : (isEditMode ? 'Update & Resubmit' : 'Submit for Review')}
               </button>
             </div>
           </div>

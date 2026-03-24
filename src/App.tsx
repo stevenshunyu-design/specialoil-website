@@ -101,6 +101,7 @@ export default function App() {
           <Route path="/author/login" element={<AuthorLogin />} />
           <Route path="/author/dashboard" element={<AuthorDashboard />} />
           <Route path="/author/write" element={<AuthorWrite />} />
+          <Route path="/author/edit/:id" element={<AuthorWrite />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
