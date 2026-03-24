@@ -15677,6 +15677,24 @@ app.patch("/api/inquiries/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update inquiry" });
   }
 });
+app.delete("/api/inquiries/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const client = getSupabaseClient();
+    if (!client) {
+      return res.status(500).json({ error: "Database not configured" });
+    }
+    const { error } = await client.from("inquiries").delete().eq("id", id);
+    if (error) {
+      console.error("Error deleting inquiry:", error);
+      return res.status(500).json({ error: "Failed to delete inquiry" });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Delete inquiry error:", error);
+    res.status(500).json({ error: "Failed to delete inquiry" });
+  }
+});
 var STORAGE_BUCKET = "blog-images";
 function getStorageBucket() {
   const supabase = getSupabaseClient();
