@@ -3478,15 +3478,22 @@ app.post('/api/author/login', async (req: Request, res: Response) => {
     const passwordHash = hashPassword(password);
 
     // 查找作者
-    const { data: author, error } = await client
+    const { data: authors, error: queryError } = await client
       .from('authors')
       .select('*')
       .eq('username', username)
-      .eq('password_hash', passwordHash)
-      .eq('status', 'active')
-      .single();
+      .eq('status', 'active');
 
-    if (error || !author) {
+    if (queryError || !authors || authors.length === 0) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Invalid username or password' 
+      });
+    }
+
+    const author = authors.find(a => a.password_hash === passwordHash);
+
+    if (!author) {
       return res.status(401).json({ 
         success: false, 
         error: 'Invalid username or password' 
